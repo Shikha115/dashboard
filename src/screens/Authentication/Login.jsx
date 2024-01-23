@@ -1,17 +1,20 @@
 import React, { useState } from "react";
-import logo_dark from "../../assets/images/logo-dark.png";
+
 import axios from "axios";
+import { images } from "../../components/Images";
+import { Link } from "react-router-dom";
 const url = "https://api.oralfish.new-india-consultants.com/api/v1";
 
 function Login() {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(email);
     console.log(password);
     localStorage.setItem("token","true");
+    handleLogin();
     
   };
 
@@ -42,10 +45,10 @@ function Login() {
                     <div className="d-flex flex-column h-100">
                       <div className="auth-brand px-4 pt-4 text-center">
                         <a href="index.html" className="logo-light">
-                          <img src={logo_dark} alt="logo" height={22} />
+                          <img src={images.logo_dark} alt="logo" height={22} />
                         </a>
                         <a href="index.html" className="logo-dark">
-                          <img src={logo_dark} alt="dark logo" height={52} />
+                          <img src={images.logo_dark} alt="dark logo" height={52} />
                         </a>
                       </div>
                       <div className="px-4 mb-4">
@@ -55,7 +58,7 @@ function Login() {
                           account.
                         </p>
                         {/* form */}
-                        <form action="#" onSubmit={handleSubmit}>
+                        <form action="/" onSubmit={handleSubmit}>
                           <div className="mb-3">
                             <label
                               htmlFor="emailaddress"
@@ -67,30 +70,30 @@ function Login() {
                               className="form-control"
                               type="email"
                               id="emailaddress"
-                              required=""
                               placeholder="Enter your email"
                               value={email}
                               onChange={(e) => setEmail(e.target.value)}
+                              required
                             />
                           </div>
                           <div className="mb-3">
-                            <a
-                              href="auth-forgotpw.html"
+                            <Link
+                              to="/forgot-password"
                               className="text-muted float-end"
                             >
                               <small>Forgot your password?</small>
-                            </a>
+                            </Link>
                             <label htmlFor="password" className="form-label">
                               Password
                             </label>
                             <input
                               className="form-control"
                               type="password"
-                              required=""
                               id="password"
                               placeholder="Enter your password"
                               value={password}
                               onChange={(e) => setPassword(e.target.value)}
+                              required
                             />
                           </div>
                           <div className="mb-3">
