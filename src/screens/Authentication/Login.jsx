@@ -1,32 +1,40 @@
-import React, { useState } from "react";
-
+import React, { useRef, useState } from "react";
 import axios from "axios";
 import { images } from "../../components/Images";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import useAuthStore from "../../store/authStore";
 const url = "https://api.oralfish.new-india-consultants.com/api/v1";
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
+  const navigate = useNavigate();
+  const { token, setToken } = useAuthStore();
+  console.log(token);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const emailRef = useRef();
+  const passwordRef = useRef();
   const handleSubmit = (e) => {
     e.preventDefault();
+    setToken(50);
+    console.log(emailRef.current.value);
+    passwordRef.current.focus();
+    // navigate("/");
+    return;
     console.log(email);
     console.log(password);
-    localStorage.setItem("token","true");
+    localStorage.setItem("token", "true");
     handleLogin();
-    
   };
 
   const handleLogin = () => {
-    const URL = "https://api.oralfish.new-india-consultants.com/api/v1/auth/login";
-    // const URL = url + "/auth/login";
+    // const URL = "https://api.oralfish.new-india-consultants.com/api/v1/auth/login";
+    const URL = url + "/auth/login";
     let data = { email, password };
     axios
       .post(URL, data)
       .then((e) => {
         console.log(e);
-        localStorage.setItem("token",e.data);
+        localStorage.setItem("token", e.data);
       })
       .catch((error) => {
         console.log(error);
@@ -48,7 +56,11 @@ function Login() {
                           <img src={images.logo_dark} alt="logo" height={22} />
                         </a>
                         <a href="index.html" className="logo-dark">
-                          <img src={images.logo_dark} alt="dark logo" height={52} />
+                          <img
+                            src={images.logo_dark}
+                            alt="dark logo"
+                            height={52}
+                          />
                         </a>
                       </div>
                       <div className="px-4 mb-4">
@@ -63,7 +75,7 @@ function Login() {
                             <label
                               htmlFor="emailaddress"
                               className="form-label"
-                            >
+                              >
                               Email address
                             </label>
                             <input
@@ -71,8 +83,9 @@ function Login() {
                               type="email"
                               id="emailaddress"
                               placeholder="Enter your email"
-                              value={email}
-                              onChange={(e) => setEmail(e.target.value)}
+                              ref={emailRef}
+                              // value={email}
+                              // onChange={(e) => setEmail(e.target.value)}
                               required
                             />
                           </div>
@@ -91,8 +104,9 @@ function Login() {
                               type="password"
                               id="password"
                               placeholder="Enter your password"
-                              value={password}
-                              onChange={(e) => setPassword(e.target.value)}
+                              // value={password}
+                              ref={passwordRef}
+                              // onChange={(e) => setPassword(e.target.value)}
                               required
                             />
                           </div>
