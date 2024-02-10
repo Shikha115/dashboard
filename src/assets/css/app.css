@@ -15207,7 +15207,11 @@ fieldset:disabled .btn {
   }
 }
 .logo-lg img {
-  height: var(--tz-logo-lg-height);
+  /* height: var(--tz-logo-lg-height); */
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  filter: brightness(17.5);
 }
 
 .logo-sm img {
@@ -16304,7 +16308,6 @@ html[data-sidenav-size="full"]:not([data-layout="topnav"]).sidebar-enable
   height: 100%;
   font-size: 22px;
   line-height: normal;
-  
 }
 .navbar-custom .topbar-menu {
   position: relative;
@@ -21745,4 +21748,43 @@ span.flatpickr-weekday,
   display: block;
   margin: -0.5rem -0.75rem;
   padding: 0.5rem 0.75rem;
+}
+
+.custom-table-btn {
+  display: flex;
+  gap: 10px;
+}
+
+.custom-table-btn .btn {
+  --tz-btn-padding-y: 6px;
+  --tz-btn-padding-x: 10px;
+}
+.rdt_Table {
+  padding: 1pc;
+}
+
+.rdt_TableCol {
+  font-size: 14px;
+  font-weight: 700;
+  color: gray;
+}
+
+.rdt_TableCell {
+  color: gray;
+}
+
+.rdt_TableRow,
+.rdt_TableHeadRow {
+  padding: 12px 0;
+}
+.rdt_TableCell div {
+  white-space: normal;
+}
+
+.form-switch input{
+  cursor: pointer;
+}
+.rdt_TableCell .form-switch input{
+  height: 20px;
+  width: 2.3pc;
 }

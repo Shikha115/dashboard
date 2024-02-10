@@ -19,17 +19,14 @@ function Sidebar() {
       category: "Manage Bank",
       subcategory: [],
       isActive: false,
-      link: "#",
+      link: "/manage-bank",
     },
     {
       icon: <FaAddressCard />,
       category: "Credit Card",
-      subcategory: [
-        { category: "Manage Credit Card", link: "#" },
-        { category: "Add Credit Card", link: "#" },
-      ],
+      subcategory: [],
       isActive: false,
-      link: "#",
+      link: "/manage-credit-card",
     },
     {
       icon: <MdAccountBox />,
@@ -72,7 +69,6 @@ function Sidebar() {
     const temp = data.map((item, index) => {
       if (i === index) {
         item.isActive = !item.isActive;
-        console.log(item.isActive,'className');
       }
       return item;
     });
@@ -103,7 +99,7 @@ function Sidebar() {
       <div className="h-100" id="leftside-menu-container">
         {/*- Sidemenu */}
         <ul className="side-nav">
-          <li className="side-nav-title">Main</li>
+          <li className="side-nav-title">Admin</li>
           {data.map((item, i) => {
             if (item.subcategory.length === 0) {
               return (
@@ -121,7 +117,7 @@ function Sidebar() {
                 <li className="side-nav-item" key={i}>
                   <Link
                     to={item.link}
-                    onClick={(i) => handleDropdown(i)}
+                    onClick={() => handleDropdown(i)}
                     aria-controls={`sidebarPages_${i}`}
                     aria-expanded={item.isActive}
                     className="side-nav-link"

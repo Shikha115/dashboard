@@ -10,6 +10,9 @@ import Register from "./screens/Authentication/Register";
 import ForgotPassword from "./screens/Authentication/ForgotPassword";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
+import ManageBank from "./screens/ManageBank";
+import ManageCredit from "./screens/ManageCredit";
+import AddCredit from "./screens/AddCredit";
 
 function App() {
   return (
@@ -26,6 +29,9 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/manage-bank" element={<ManageBank />} />
+          <Route path="/manage-credit-card" element={<ManageCredit />} />
+          <Route path="/add-credit-card" element={<AddCredit />} />
         </Routes>
       </section>
     </BrowserRouter>
