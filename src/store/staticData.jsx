@@ -336,3 +336,19 @@ export const LEAD_DATA = [
     title: "	AXIS ASAP",
   },
 ];
+export const MUTUAL_FUND_DATA = [
+  {
+    id: 1,
+    date: "Feb 4, 2024	",
+    name: "gyan test kotak	",
+    mobile: "9999999999",
+    bank: "SBI BANK",
+    email: "gyantest@gmail.com",
+    income: "777777777",
+    pan: "",
+    emp_status: "salaried",
+    lead_type: "saving account",
+    title: "	Kotak 811",
+  },
+ 
+];
