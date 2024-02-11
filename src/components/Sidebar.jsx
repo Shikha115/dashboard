@@ -58,6 +58,7 @@ function Sidebar() {
       category: "Lead Report ",
       subcategory: [],
       isActive: false,
+      link: "/lead",
     },
   ]);
   let handleDropdown = (i) => {

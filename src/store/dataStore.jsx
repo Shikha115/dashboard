@@ -9,6 +9,8 @@ const useDataStore = create((set) => ({
   setSaving: (data) => set({ saving: data }),
   loan: "",
   setLoan: (data) => set({ loan: data }),
+  lead: "",
+  setLead: (data) => set({ lead: data }),
 }));
 
 export default useDataStore;

@@ -17,6 +17,7 @@ import ManageSaving from "./screens/saving/ManageSaving";
 import AddSaving from "./screens/saving/AddSaving";
 import ManageLoan from "./screens/loan/ManageLoan";
 import AddLoan from "./screens/loan/AddLoan";
+import Lead from "./screens/Lead";
 
 function App() {
   return (
@@ -39,7 +40,8 @@ function App() {
           <Route path="/manage-saving" element={<ManageSaving />} />
           <Route path="/add-saving" element={<AddSaving />} />
           <Route path="/manage-loan" element={<ManageLoan />} />
-          <Route path="/add-loan" element={<AddLoan/>} />
+          <Route path="/add-loan" element={<AddLoan />} />
+          <Route path="/lead" element={<Lead />} />
         </Routes>
       </section>
     </BrowserRouter>
