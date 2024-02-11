@@ -11,8 +11,12 @@ import ForgotPassword from "./screens/Authentication/ForgotPassword";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import ManageBank from "./screens/ManageBank";
-import ManageCredit from "./screens/ManageCredit";
-import AddCredit from "./screens/AddCredit";
+import ManageCredit from "./screens/credit_card/ManageCredit";
+import AddCredit from "./screens/credit_card/AddCredit";
+import ManageSaving from "./screens/saving/ManageSaving";
+import AddSaving from "./screens/saving/AddSaving";
+import ManageLoan from "./screens/loan/ManageLoan";
+import AddLoan from "./screens/loan/AddLoan";
 
 function App() {
   return (
@@ -32,6 +36,10 @@ function App() {
           <Route path="/manage-bank" element={<ManageBank />} />
           <Route path="/manage-credit-card" element={<ManageCredit />} />
           <Route path="/add-credit-card" element={<AddCredit />} />
+          <Route path="/manage-saving" element={<ManageSaving />} />
+          <Route path="/add-saving" element={<AddSaving />} />
+          <Route path="/manage-loan" element={<ManageLoan />} />
+          <Route path="/add-loan" element={<AddLoan/>} />
         </Routes>
       </section>
     </BrowserRouter>

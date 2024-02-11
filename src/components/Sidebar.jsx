@@ -31,21 +31,16 @@ function Sidebar() {
     {
       icon: <MdAccountBox />,
       category: "Savings Account",
-      subcategory: [
-        { category: "Manage Savings Account", link: "#" },
-        { category: "Add Savings Account", link: "#" },
-      ],
+      subcategory: [],
       isActive: false,
-      link: "#",
+      link: "/manage-saving",
     },
     {
       icon: <GiTakeMyMoney />,
       category: "Loan",
-      subcategory: [
-        { category: "Manage Loan", link: "#" },
-        { category: "Add Loan", link: "#" },
-      ],
+      subcategory: [],
       isActive: false,
+      link:"/manage-loan"
     },
     {
       icon: <GiProgression />,

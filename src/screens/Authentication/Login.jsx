@@ -75,7 +75,21 @@ function Login() {
                             <label
                               htmlFor="emailaddress"
                               className="form-label"
-                              >
+                            >
+                              Type
+                            </label>
+                            <select class="form-select">
+                              <option value="1" selected>
+                                Admin
+                              </option>
+                              <option value="2">Manager</option>
+                            </select>
+                          </div>
+                          <div className="mb-3">
+                            <label
+                              htmlFor="emailaddress"
+                              className="form-label"
+                            >
                               Email address
                             </label>
                             <input

@@ -100,19 +100,17 @@ function ManageBank() {
         <div className="content">
           <div className="container-fluid">
             <div className="manage-bank">
-              <div className="top-btn">
-                <div className="page-title-box">
-                  <div className="page-title-right">
-                    <button
-                      type="button"
-                      className="btn btn-primary"
-                      onClick={() => setAddBank(true)}
-                    >
-                      Add Bank Name
-                    </button>
-                  </div>
-                  <h4 className="page-title">Manage Bank</h4>
+              <div className="page-title-box">
+                <div className="page-title-right">
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={() => setAddBank(true)}
+                  >
+                    Add Bank Name
+                  </button>
                 </div>
+                <h4 className="page-title">Manage Bank</h4>
               </div>
               <DataTable
                 // title="Movie List"
