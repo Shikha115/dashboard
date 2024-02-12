@@ -2,13 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
 import useDataStore from "../../store/dataStore";
-import { LOAN_DATA } from "../../store/staticData";
+import { DEMAT_DATA } from "../../store/staticData";
 import { MdDelete, MdEdit } from "react-icons/md";
 import Modal from "react-bootstrap/Modal";
 
-function MutualFund() {
+function Demat() {
   const [isLoading, setIsLoading] = useState(true);
-  const { loan, setLoan } = useDataStore();
+  const { demat, setDemat } = useDataStore();
 
   const columns = [
     {
@@ -17,32 +17,28 @@ function MutualFund() {
       width: "60px",
     },
     {
-      name: "Title	",
+      name: "Title",
       selector: (row) => row.title,
     },
     {
-      name: "Loan Type	",
-      selector: (row) => row.type,
-    },
-    {
-      name: "Bank Name	",
+      name: "Bank Name",
       selector: (row) => row.bank,
     },
     {
-      name: "Rank	",
+      name: "Exchange",
+      selector: (row) => row.exhange,
+    },
+    {
+      name: "Trading Fee",
+      selector: (row) => row.trading_fee,
+    },
+    {
+      name: "Rank",
       selector: (row) => row.rank,
     },
     {
-      name: "Interest Rate	",
+      name: "Interest Rate",
       selector: (row) => row.interest,
-    },
-    {
-      name: "Processing Fee	",
-      selector: (row) => row.process_fee,
-    },
-    {
-      name: "Tenure Range",
-      selector: (row) => row.tenure_range,
     },
     {
       name: "Status",
@@ -56,7 +52,7 @@ function MutualFund() {
       name: "Action",
       cell: (row) => (
         <div className="custom-table-btn">
-          <Link className="btn btn-purple" to="/add-loan">
+          <Link className="btn btn-purple" to="/offer/demat/add">
             <MdEdit className="fs-18" />
           </Link>
           <Link className="btn btn-pink" to="#">
@@ -70,7 +66,7 @@ function MutualFund() {
   useEffect(() => {
     setIsLoading(true);
     let timer = setTimeout(() => {
-      setLoan(LOAN_DATA);
+      setDemat(DEMAT_DATA);
       setIsLoading(false);
     }, 0);
     return () => {
@@ -86,16 +82,16 @@ function MutualFund() {
             <div className="manage-bank">
               <div className="page-title-box">
                 <div className="page-title-right">
-                  <Link className="btn btn-primary" to="/add-loan">
-                    Add Loan
+                  <Link className="btn btn-primary" to="/offer/demat/add">
+                    Add Demat
                   </Link>
                 </div>
-                <h4 className="page-title">Manage Loan</h4>
+                <h4 className="page-title">Manage Demat</h4>
               </div>
               <DataTable
                 // title="Movie List"
                 columns={columns}
-                data={loan}
+                data={demat}
                 progressPending={isLoading}
                 pagination
               />
@@ -107,4 +103,4 @@ function MutualFund() {
   );
 }
 
-export default MutualFund;
+export default Demat;

@@ -56,7 +56,7 @@ function ManageCredit() {
       // selector: (row) => row.year,
       cell: (row) => (
         <div className="custom-table-btn">
-          <Link className="btn btn-purple" to="/add-credit-card">
+          <Link className="btn btn-purple" to="/offer/credit-card/add">
             <MdEdit className="fs-18" />
           </Link>
           <Link className="btn btn-pink" to="#">
@@ -86,7 +86,7 @@ function ManageCredit() {
             <div className="manage-bank">
               <div className="page-title-box">
                 <div className="page-title-right">
-                  <Link className="btn btn-primary" to="/add-credit-card">
+                  <Link className="btn btn-primary" to="/offer/credit-card/add">
                     Add Credit Card
                   </Link>
                 </div>

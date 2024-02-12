@@ -56,7 +56,7 @@ function ManageLoan() {
       name: "Action",
       cell: (row) => (
         <div className="custom-table-btn">
-          <Link className="btn btn-purple" to="/add-loan">
+          <Link className="btn btn-purple" to="/offer/loan/add">
             <MdEdit className="fs-18" />
           </Link>
           <Link className="btn btn-pink" to="#">
@@ -86,7 +86,7 @@ function ManageLoan() {
             <div className="manage-bank">
               <div className="page-title-box">
                 <div className="page-title-right">
-                  <Link className="btn btn-primary" to="/add-loan">
+                  <Link className="btn btn-primary" to="/offer/loan/add">
                     Add Loan
                   </Link>
                 </div>

@@ -2,13 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
 import useDataStore from "../../store/dataStore";
-import { SAVING_DATA } from "../../store/staticData";
+import { MUTUAL_FUND_DATA } from "../../store/staticData";
 import { MdDelete, MdEdit } from "react-icons/md";
 import Modal from "react-bootstrap/Modal";
 
-function ManageSaving() {
+function MutualFund() {
   const [isLoading, setIsLoading] = useState(true);
-  const { saving, setSaving } = useDataStore();
+  const { mutualFund, setMutualFund } = useDataStore();
 
   const columns = [
     {
@@ -17,38 +17,34 @@ function ManageSaving() {
       width: "60px",
     },
     {
-      name: "Title",
+      name: "	Title	",
       selector: (row) => row.title,
     },
     {
-      name: "Bank Name",
+      name: "	Bank Name	",
       selector: (row) => row.bank,
     },
     {
-      name: "Opening Charges	",
-      selector: (row) => row.opening_charge,
+      name: "	Fund Category	",
+      selector: (row) => row.category,
     },
     {
-      name: "Minimum Balance	",
-      selector: (row) => row.min_balance,
+      name: "	Return	",
+      selector: (row) => row.return,
     },
     {
-      name: "Interest Rate",
-      selector: (row) => row.interest,
+      name: "	Rank	",
+      selector: (row) => row.rank,
     },
     {
-      name: "Status",
-      cell: (row) => (
-        <div className="form-check form-switch">
-          <input type="checkbox" className="form-check-input" />
-        </div>
-      ),
+      name: "	Minimum Investment",
+      selector: (row) => row.min_investment,
     },
     {
       name: "Action",
       cell: (row) => (
         <div className="custom-table-btn">
-          <Link className="btn btn-purple" to="/offer/saving/add">
+          <Link className="btn btn-purple" to="/offer/mutual-fund/add">
             <MdEdit className="fs-18" />
           </Link>
           <Link className="btn btn-pink" to="#">
@@ -62,7 +58,7 @@ function ManageSaving() {
   useEffect(() => {
     setIsLoading(true);
     let timer = setTimeout(() => {
-      setSaving(SAVING_DATA);
+      setMutualFund(MUTUAL_FUND_DATA);
       setIsLoading(false);
     }, 0);
     return () => {
@@ -78,16 +74,16 @@ function ManageSaving() {
             <div className="manage-bank">
               <div className="page-title-box">
                 <div className="page-title-right">
-                  <Link className="btn btn-primary" to="/offer/saving/add">
-                    Add Saving Account
+                  <Link className="btn btn-primary" to="/offer/mutual-fund/add">
+                    Add Mutual Fund
                   </Link>
                 </div>
-                <h4 className="page-title">Manage Saving Account</h4>
+                <h4 className="page-title">Mutual Fund</h4>
               </div>
               <DataTable
                 // title="Movie List"
                 columns={columns}
-                data={saving}
+                data={mutualFund}
                 progressPending={isLoading}
                 pagination
               />
@@ -99,4 +95,4 @@ function ManageSaving() {
   );
 }
 
-export default ManageSaving;
+export default MutualFund;

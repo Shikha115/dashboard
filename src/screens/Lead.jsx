@@ -55,7 +55,7 @@ function Lead() {
     },
   ];
 
-//   =============================== EXPORT CSV ======================================================
+  //   =============================== EXPORT CSV ======================================================
   function convertArrayOfObjectsToCSV(array) {
     let result;
 
@@ -112,7 +112,7 @@ function Lead() {
     () => <Export onExport={() => downloadCSV(LEAD_DATA)} />,
     []
   );
-//   =====================================================================================
+  //   =====================================================================================
 
   useEffect(() => {
     setIsLoading(true);
@@ -132,7 +132,7 @@ function Lead() {
           <div className="manage-bank">
             <div className="page-title-box">
               {/* <div className="page-title-right">
-              <Link className="btn btn-primary" to="/add-loan">
+              <Link className="btn btn-primary" to="/offer/loan/add">
                Lead
               </Link>
             </div> */}

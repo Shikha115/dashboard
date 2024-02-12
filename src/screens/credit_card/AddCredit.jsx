@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
+import { BANK_DATA } from "../../store/staticData";
 
 function AddCredit() {
   const [description, setDescription] = useState("");
@@ -22,29 +23,13 @@ function AddCredit() {
                   <div className="col-12 col-md-6 mb-3">
                     <label className="form-label">Choose Bank</label>
                     <select className="form-select">
-                      <option value="1" selected>
-                        SBI BANK
-                      </option>
-                      <option value="1">AXIS BANK</option>
-                      <option value="1">DENA BANK</option>
-                      <option value="1">ICICI BANK</option>
-                      <option value="1">Equitas Bank</option>
-                      <option value="1">AU Bank</option>
-                      <option value="1">IndusInd Bank</option>
-                      <option value="1">Kotak Bank</option>
-                      <option value="1">IDFC Bank</option>
-                      <option value="1">Bank of Baroda</option>
-                      <option value="1">CITI BANK</option>
-                      <option value="1">Standard Chartered Bank</option>
-                      <option value="1">HDFC Bank</option>
-                      <option value="1">Navi Finserv (NBFC)</option>
-                      <option value="1">Aditya Birla (NBFC)</option>
-                      <option value="1">KNAB Finance (NBFC)</option>
-                      <option value="1">L&amp;T Finance (NBFC)</option>
-                      <option value="1">Yes Bank</option>
-                      <option value="1">Bajaj Finance (NBFC)</option>
-                      <option value="1">Demat</option>
-                      <option value="1">Mutual Fund</option>
+                    {BANK_DATA.map((item, i) => {
+                        return (
+                          <option value={item.bank} key={i}>
+                            {item.bank}
+                          </option>
+                        );
+                      })}
                     </select>
                   </div>
                   <div className="col-12 col-md-6 mb-3">

@@ -11,6 +11,12 @@ const useDataStore = create((set) => ({
   setLoan: (data) => set({ loan: data }),
   lead: "",
   setLead: (data) => set({ lead: data }),
+  mutualFund: "",
+  setMutualFund: (data) => set({ mutualFund: data }),
+  demat: "",
+  setDemat: (data) => set({ demat: data }),
+  fixedDeposit: "",
+  setFixedDeposit: (data) => set({ fixedDeposit: data }),
 }));
 
 export default useDataStore;

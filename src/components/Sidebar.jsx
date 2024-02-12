@@ -21,34 +21,28 @@ function Sidebar() {
       isActive: false,
       link: "/manage-bank",
     },
-    {
-      icon: <FaAddressCard />,
-      category: "Credit Card",
-      subcategory: [],
-      isActive: false,
-      link: "/manage-credit-card",
-    },
-    {
-      icon: <MdAccountBox />,
-      category: "Savings Account",
-      subcategory: [],
-      isActive: false,
-      link: "/manage-saving",
-    },
-    {
-      icon: <GiTakeMyMoney />,
-      category: "Loan",
-      subcategory: [],
-      isActive: false,
-      link:"/manage-loan"
-    },
+
     {
       icon: <GiProgression />,
-      category: " Investment",
+      category: "Offers",
       subcategory: [
-        { category: "Manage Mutual Fund", link: "#" },
-        { category: "Mutual Demat", link: "#" },
-        { category: "Manage Fixed Deposit", link: "#" },
+        {
+          category: "Credit Card",
+
+          link: "/offer/credit-card",
+        },
+        {
+          category: "Savings Account",
+
+          link: "/offer/saving",
+        },
+        {
+          category: "Loan",
+          link: "/offer/loan",
+        },
+        { category: "Mutual Fund", link: "/offer/mutual-fund" },
+        { category: "Demat", link: "/offer/demat" },
+        { category: "Fixed Deposit", link: "/offer/fixed-deposit" },
       ],
       isActive: false,
       link: "#",
