@@ -141,9 +141,9 @@ function Lead() {
             <div className="card">
               <div className="card-body">
                 <form action="#" className="row">
-                  <div class="col-12 col-md-6 mb-3">
-                    <label class="form-label">Enter a Date Range</label>
-                    <input class="form-control" type="date" name="date" />
+                  <div className="col-12 col-md-6 mb-3">
+                    <label className="form-label">Enter a Date Range</label>
+                    <input className="form-control" type="date" name="date" />
                   </div>
                   <div className="col-12 col-md-6 mb-3">
                     <label className="form-label">Bank Name</label>
@@ -183,9 +183,9 @@ function Lead() {
                       <option value="1">self-employed</option>
                     </select>
                   </div>
-                  <div class="col-12">
-                    <label class="form-label">Search by name</label>
-                    <input class="form-control" type="search" name="date" />
+                  <div className="col-12">
+                    <label className="form-label">Search by name</label>
+                    <input className="form-control" type="search" name="date" />
                   </div>
                 </form>
               </div>

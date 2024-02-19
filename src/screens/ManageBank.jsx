@@ -2,11 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
 import useDataStore from "../store/dataStore";
-import { BANK_DATA } from "../store/staticData";
 import { MdDelete, MdEdit } from "react-icons/md";
 import Modal from "react-bootstrap/Modal";
 
 function ManageBank() {
+  const { bank, setBank, getAllBank } = useDataStore();
   const [isLoading, setIsLoading] = useState(true);
   const [updateBank, setUpdateBank] = useState({
     state: false,
@@ -15,20 +15,36 @@ function ManageBank() {
   const [addBank, setAddBank] = useState(false);
   const addBankValue = useRef();
   const updateBankValue = useRef();
-  const { bank, setBank } = useDataStore();
 
   const columns = [
     {
-      name: "#",
-      selector: (row) => row.id,
+      name: "S.No",
+      selector: (row, id) => id + 1,
+    },
+    {
+      name: "Image",
+      selector: (row) => (
+        <img
+          src={row?.image}
+          style={{
+            justifyContent: "center",
+            width: 80,
+            aspectRatio: 1,
+            borderWidth: 1,
+            borderStyle: "solid",
+            borderRadius: 100,
+          }}
+        />
+      ),
     },
     {
       name: "Bank Name",
-      selector: (row) => row.bank,
+      selector: (row) => row.bank_name,
     },
+
     {
-      name: "Action",
       // selector: (row) => row.year,
+      name: "Action",
       cell: (row) => (
         <div className="custom-table-btn">
           <Link
@@ -53,9 +69,9 @@ function ManageBank() {
   useEffect(() => {
     setIsLoading(true);
     let timer = setTimeout(() => {
-      setBank(BANK_DATA);
+      getAllBank();
       setIsLoading(false);
-    }, 0);
+    }, 200);
     return () => {
       clearTimeout(timer);
     };
@@ -68,6 +84,7 @@ function ManageBank() {
     console.log(index, val, "info");
     setBank([...bank, { id: index, bank: val }]);
   };
+
   const handleBankUpdate = () => {
     console.log(
       updateBank.currentRow,
