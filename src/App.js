@@ -22,8 +22,12 @@ import MutualFund from "./screens/mutual_fund/MutualFund";
 import AddMutualFund from "./screens/mutual_fund/AddMutualFund";
 import Demat from "./screens/demat/Demat";
 import AddDemat from "./screens/demat/AddDemat";
-import FixedDeposit from "./screens/fixed_dep[osit/FixedDeposit";
-import AddFixedDeposit from "./screens/fixed_dep[osit/AddFixedDeposit";
+import FixedDeposit from "./screens/fixed_deposit/FixedDeposit";
+import AddFixedDeposit from "./screens/fixed_deposit/AddFixedDeposit";
+import MyLeads from "./screens/MyLeads";
+import Users from "./screens/Users/Users";
+import AddUser from "./screens/Users/AddUser";
+import ViewUser from "./screens/Users/ViewUser";
 
 function App() {
   return (
@@ -57,6 +61,10 @@ function App() {
             path="/offer/fixed-deposit/add"
             element={<AddFixedDeposit />}
           />
+          <Route path="/my-leads" element={<MyLeads />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/users/add" element={<AddUser />} />
+          <Route path="/users/view" element={<ViewUser />} />
         </Routes>
       </section>
     </BrowserRouter>

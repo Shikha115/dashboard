@@ -2,60 +2,57 @@ import React, { useEffect, useRef, useState } from "react";
 import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
 import useDataStore from "../../store/dataStore";
-import { DEMAT_DATA } from "../../store/staticData";
 import { MdDelete, MdEdit } from "react-icons/md";
+import { USER_DATA } from "../../store/staticData";
+import { FaEye } from "react-icons/fa";
 import Modal from "react-bootstrap/Modal";
 import { CiWarning } from "react-icons/ci";
 
-function Demat() {
+function Users() {
+  const { users, setUsers, getAllBank } = useDataStore();
   const [isLoading, setIsLoading] = useState(true);
-  const { demat, setDemat } = useDataStore();
   const [deleteModal, setDeleteModal] = useState(false);
 
   const columns = [
     {
       name: "#",
-      selector: (row) => row.id,
+      selector: (row, id) => id + 1,
       width: "60px",
     },
     {
-      name: "Title",
-      selector: (row) => row.title,
+      name: "Name",
+      selector: (row) => row.name,
     },
     {
-      name: "Bank Name",
-      selector: (row) => row.bank,
+      name: "Email",
+      selector: (row) => row.email,
     },
     {
-      name: "Exchange",
-      selector: (row) => row.exhange,
+      name: "Contact No.",
+      selector: (row) => row.phone,
     },
     {
-      name: "Trading Fee",
-      selector: (row) => row.trading_fee,
+      name: "DOB",
+      selector: (row) => row.dob,
     },
     {
-      name: "Rank",
-      selector: (row) => row.rank,
+      name: "Type",
+      selector: (row) => row.type,
     },
     {
-      name: "Interest Rate",
-      selector: (row) => row.interest,
+      name: "Wallet",
+      selector: (row) => row.wallet,
     },
-    {
-      name: "Status",
-      cell: (row) => (
-        <div className="form-check form-switch">
-          <input type="checkbox" className="form-check-input" />
-        </div>
-      ),
-    },
+
     {
       name: "Action",
       cell: (row) => (
         <div className="custom-table-btn">
-          <Link className="btn btn-purple" to="/offer/demat/add">
+          <Link className="btn btn-purple" to="/users/add">
             <MdEdit className="fs-18" />
+          </Link>
+          <Link className="btn btn-warning" to="/users/view">
+            <FaEye className="fs-18" />
           </Link>
           <Link
             className="btn btn-pink"
@@ -72,9 +69,9 @@ function Demat() {
   useEffect(() => {
     setIsLoading(true);
     let timer = setTimeout(() => {
-      setDemat(DEMAT_DATA);
+      setUsers(USER_DATA);
       setIsLoading(false);
-    }, 0);
+    }, 200);
     return () => {
       clearTimeout(timer);
     };
@@ -88,16 +85,15 @@ function Demat() {
             <div className="manage-bank">
               <div className="page-title-box">
                 <div className="page-title-right">
-                  <Link className="btn btn-primary" to="/offer/demat/add">
-                    Add Demat
+                  <Link to="/users/add" className="btn btn-primary">
+                    Add User
                   </Link>
                 </div>
-                <h4 className="page-title">Manage Demat</h4>
+                <h4 className="page-title">Users</h4>
               </div>
               <DataTable
-                // title="Movie List"
                 columns={columns}
-                data={demat}
+                data={users}
                 progressPending={isLoading}
                 pagination
               />
@@ -105,6 +101,7 @@ function Demat() {
           </div>
         </div>
       </div>
+
       <Modal
         size="sm"
         show={deleteModal}
@@ -131,4 +128,4 @@ function Demat() {
   );
 }
 
-export default Demat;
+export default Users;

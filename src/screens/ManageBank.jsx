@@ -4,10 +4,12 @@ import { Link } from "react-router-dom";
 import useDataStore from "../store/dataStore";
 import { MdDelete, MdEdit } from "react-icons/md";
 import Modal from "react-bootstrap/Modal";
+import { CiWarning } from "react-icons/ci";
 
 function ManageBank() {
   const { bank, setBank, getAllBank } = useDataStore();
   const [isLoading, setIsLoading] = useState(true);
+  const [deleteModal, setDeleteModal] = useState(false);
   const [updateBank, setUpdateBank] = useState({
     state: false,
     currentRow: null,
@@ -25,7 +27,7 @@ function ManageBank() {
       name: "Image",
       selector: (row) => (
         <img
-          src={row?.image}
+          src={row?.image?.replace("http://192.168.1.8:", "http://localhost:")}
           style={{
             justifyContent: "center",
             width: 80,
@@ -104,8 +106,10 @@ function ManageBank() {
     });
     setBank([...temp]);
   };
+
   const handleDelete = (e, id) => {
     e.preventDefault();
+    setDeleteModal(true);
     // const item = bank.filter((item) => item.id === id);
     // const index = bank.findIndex(item);
     // console.log(index, "csjdkm");
@@ -209,6 +213,29 @@ function ManageBank() {
             Add
           </button>
         </Modal.Footer>
+      </Modal>
+
+      <Modal
+        size="sm"
+        show={deleteModal}
+        centered
+        onHide={() => setDeleteModal(false)}
+      >
+        <Modal.Body className="text-center p-4">
+          <CiWarning className="fs-48 text-danger" />
+          <h4 className="mt-2">Are You Sure?</h4>
+          <p className="mt-3">
+            Warning: You are about to delete this item. This action cannot be
+            undone. Are you sure you want to proceed with the deletion?
+          </p>
+          <button
+            type="button"
+            className="btn btn-danger my-2"
+            onClick={() => setDeleteModal(false)}
+          >
+            Continue
+          </button>
+        </Modal.Body>
       </Modal>
     </>
   );

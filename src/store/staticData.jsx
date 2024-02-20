@@ -405,3 +405,14 @@ export const FIXED_DEPOSIT_DATA = [
     interest: "50%",
   },
 ];
+export const USER_DATA = [
+  {
+    id: 1,
+    name: "Sahaj Arya",
+    email: "sahajk3@gmail.comm",
+    phone: "7982167949",
+    dob: "1707108360000",
+    type: "Agent",
+    wallet: "8900",
+  },
+];

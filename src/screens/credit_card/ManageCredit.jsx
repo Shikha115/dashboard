@@ -5,15 +5,17 @@ import useDataStore from "../../store/dataStore";
 import { CREDIT_DATA } from "../../store/staticData";
 import { MdDelete, MdEdit } from "react-icons/md";
 import Modal from "react-bootstrap/Modal";
+import { CiWarning } from "react-icons/ci";
 
 function ManageCredit() {
   const [isLoading, setIsLoading] = useState(true);
-  const { credit, setCredit } = useDataStore();
+  const { credit, setCredit, allOffer, getAllOffer } = useDataStore();
+  const [deleteModal, setDeleteModal] = useState(false);
 
   const columns = [
     {
       name: "#",
-      selector: (row) => row.id,
+      selector: (row, i) => row.i,
       width: "60px",
     },
     {
@@ -23,17 +25,17 @@ function ManageCredit() {
     },
     {
       name: "Bank Name",
-      selector: (row) => row.bank,
+      selector: (row) => row.bank_name,
       width: "180px",
     },
     {
       name: "Card Type",
-      selector: (row) => row.card,
+      selector: (row) => row.card_type,
       width: "150px",
     },
     {
       name: "Annual Fee",
-      selector: (row) => row.annual_fee,
+      selector: (row) => row.annual_fees,
     },
     {
       name: "Rank",
@@ -41,7 +43,7 @@ function ManageCredit() {
     },
     {
       name: "Joining Fee",
-      selector: (row) => row.joining_fee,
+      selector: (row) => row.joining_fees,
     },
     {
       name: "Status",
@@ -59,7 +61,11 @@ function ManageCredit() {
           <Link className="btn btn-purple" to="/offer/credit-card/add">
             <MdEdit className="fs-18" />
           </Link>
-          <Link className="btn btn-pink" to="#">
+          <Link
+            className="btn btn-pink"
+            to="#"
+            onClick={() => setDeleteModal(true)}
+          >
             <MdDelete className="fs-18" />
           </Link>
         </div>
@@ -70,12 +76,14 @@ function ManageCredit() {
   useEffect(() => {
     setIsLoading(true);
     let timer = setTimeout(() => {
-      setCredit(CREDIT_DATA);
+      getAllOffer();
+      // setCredit(CREDIT_DATA);
       setIsLoading(false);
     }, 0);
     return () => {
       clearTimeout(timer);
     };
+    console.log(allOffer, "abc");
   }, []);
 
   return (
@@ -103,6 +111,28 @@ function ManageCredit() {
           </div>
         </div>
       </div>
+      <Modal
+        size="sm"
+        show={deleteModal}
+        centered
+        onHide={() => setDeleteModal(false)}
+      >
+        <Modal.Body className="text-center p-4">
+          <CiWarning className="fs-48 text-danger" />
+          <h4 className="mt-2">Are You Sure?</h4>
+          <p className="mt-3">
+            Warning: You are about to delete this item. This action cannot be
+            undone. Are you sure you want to proceed with the deletion?
+          </p>
+          <button
+            type="button"
+            className="btn btn-danger my-2"
+            onClick={() => setDeleteModal(false)}
+          >
+            Continue
+          </button>
+        </Modal.Body>
+      </Modal>
     </>
   );
 }

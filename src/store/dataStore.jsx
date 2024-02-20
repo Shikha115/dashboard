@@ -10,6 +10,15 @@ const useDataStore = create((set) => ({
     console.log(res.data?.data);
     set({ bank: res.data?.data });
   },
+  allOffer: [],
+  getAllOffer: async () => {
+    const res = await axios.get(apis.getallOffers);
+    console.log(res.data?.data);
+    set({ allOffer: res.data?.data });
+    set({
+      credit: res.data?.data.filter((item) => (item.type = "credit_card")),
+    });
+  },
   credit: "",
   setCredit: (data) => set({ credit: data }),
   saving: "",
@@ -24,6 +33,8 @@ const useDataStore = create((set) => ({
   setDemat: (data) => set({ demat: data }),
   fixedDeposit: "",
   setFixedDeposit: (data) => set({ fixedDeposit: data }),
+  users: "",
+  setUsers: (data) => set({ users: data }),
 }));
 
 export default useDataStore;

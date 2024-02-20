@@ -14,9 +14,11 @@ import avatar_4 from "../assets/images/users/avatar-4.jpg";
 import avatar_5 from "../assets/images/users/avatar-5.jpg";
 import avatar_6 from "../assets/images/users/avatar-6.jpg";
 import avatar_7 from "../assets/images/users/avatar-7.jpg";
+import bg_profile from "../assets/images/bg-profile.jpg";
 
 export const images = {
   logo_dark,
+  bg_profile,
   logo_sm,
   flag_italy,
   auth_img,

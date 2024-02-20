@@ -5,10 +5,12 @@ import useDataStore from "../../store/dataStore";
 import { SAVING_DATA } from "../../store/staticData";
 import { MdDelete, MdEdit } from "react-icons/md";
 import Modal from "react-bootstrap/Modal";
+import { CiWarning } from "react-icons/ci";
 
 function ManageSaving() {
   const [isLoading, setIsLoading] = useState(true);
   const { saving, setSaving } = useDataStore();
+  const [deleteModal, setDeleteModal] = useState(false);
 
   const columns = [
     {
@@ -51,7 +53,11 @@ function ManageSaving() {
           <Link className="btn btn-purple" to="/offer/saving/add">
             <MdEdit className="fs-18" />
           </Link>
-          <Link className="btn btn-pink" to="#">
+          <Link
+            className="btn btn-pink"
+            to="#"
+            onClick={() => setDeleteModal(true)}
+          >
             <MdDelete className="fs-18" />
           </Link>
         </div>
@@ -95,6 +101,28 @@ function ManageSaving() {
           </div>
         </div>
       </div>
+      <Modal
+        size="sm"
+        show={deleteModal}
+        centered
+        onHide={() => setDeleteModal(false)}
+      >
+        <Modal.Body className="text-center p-4">
+          <CiWarning className="fs-48 text-danger" />
+          <h4 className="mt-2">Are You Sure?</h4>
+          <p className="mt-3">
+            Warning: You are about to delete this item. This action cannot be
+            undone. Are you sure you want to proceed with the deletion?
+          </p>
+          <button
+            type="button"
+            className="btn btn-danger my-2"
+            onClick={() => setDeleteModal(false)}
+          >
+            Continue
+          </button>
+        </Modal.Body>
+      </Modal>
     </>
   );
 }

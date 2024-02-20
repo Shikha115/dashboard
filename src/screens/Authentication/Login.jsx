@@ -78,7 +78,7 @@ function Login() {
                             >
                               Type
                             </label>
-                            <select class="form-select">
+                            <select className="form-select">
                               <option value="1" selected>
                                 Admin
                               </option>

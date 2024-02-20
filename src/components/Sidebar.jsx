@@ -6,6 +6,7 @@ import {
   FaChevronDown,
   FaChevronRight,
   FaPiggyBank,
+  FaUsers,
 } from "react-icons/fa";
 import { MdAccountBox } from "react-icons/md";
 import { GiProgression, GiTakeMyMoney } from "react-icons/gi";
@@ -54,7 +55,22 @@ function Sidebar() {
       isActive: false,
       link: "/lead",
     },
+    {
+      icon: <FaStar />,
+      category: "My Leads",
+      subcategory: [],
+      isActive: false,
+      link: "/my-leads",
+    },
+    {
+      icon: <FaUsers />,
+      category: "Users",
+      subcategory: [],
+      isActive: false,
+      link: "/users",
+    },
   ]);
+
   let handleDropdown = (i) => {
     const temp = data.map((item, index) => {
       if (i === index) {
