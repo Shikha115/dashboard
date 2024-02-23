@@ -1,40 +1,40 @@
 import React, { useRef, useState } from "react";
 import axios from "axios";
 import { images } from "../../components/Images";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuthStore from "../../store/authStore";
-const url = "https://api.oralfish.new-india-consultants.com/api/v1";
+import { apis } from "../../utils/URL";
 
 function Login() {
   const navigate = useNavigate();
   const { token, setToken } = useAuthStore();
   console.log(token);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const path = queryParams.get("path");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const emailRef = useRef();
   const passwordRef = useRef();
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    setToken(50);
-    console.log(emailRef.current.value);
-    passwordRef.current.focus();
-    // navigate("/");
-    return;
-    console.log(email);
-    console.log(password);
-    localStorage.setItem("token", "true");
     handleLogin();
   };
 
   const handleLogin = () => {
     // const URL = "https://api.oralfish.new-india-consultants.com/api/v1/auth/login";
-    const URL = url + "/auth/login";
-    let data = { email, password };
+    let data = {
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
+    };
+    console.log(data, "data");
     axios
-      .post(URL, data)
+      .post(apis.login, data)
       .then((e) => {
-        console.log(e);
-        localStorage.setItem("token", e.data);
+        console.log(e?.data, "res");
+        localStorage.setItem("token", e?.data?.token);
+        navigate(`${path ? path : "/manage-bank"}`);
       })
       .catch((error) => {
         console.log(error);
@@ -79,9 +79,7 @@ function Login() {
                               Type
                             </label>
                             <select className="form-select">
-                              <option value="1" selected>
-                                Admin
-                              </option>
+                              <option value="1">Admin</option>
                               <option value="2">Manager</option>
                             </select>
                           </div>
@@ -139,7 +137,7 @@ function Login() {
                               </label>
                             </div>
                           </div>
-                          <div className="mb-0 text-start">
+                          <div className="mb-3 text-start">
                             <button
                               className="btn btn-soft-primary w-100"
                               type="submit"
@@ -147,6 +145,12 @@ function Login() {
                               <i className="ri-login-circle-fill me-1" />
                               <span className="fw-bold">Log In</span>
                             </button>
+                          </div>
+                          <div className="mb-0 text-start">
+                            <p className="text-muted text-center mb-3">
+                              Don't have an account?{" "}
+                              <Link to="/register">Register here</Link>
+                            </p>
                           </div>
                         </form>
                         {/* end form*/}

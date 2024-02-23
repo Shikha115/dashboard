@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { images } from "./Images";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import { BsEnvelope } from "react-icons/bs";
 import { GoBell } from "react-icons/go";
@@ -8,7 +8,9 @@ import { FaChevronDown } from "react-icons/fa";
 import Collapse from "react-bootstrap/Collapse";
 
 function Navbar() {
+
   const [open, setOpen] = useState(false);
+
   return (
     <div className="navbar-custom">
       <div className="topbar container-fluid">
@@ -417,7 +419,13 @@ function Navbar() {
                   <span>Lock Screen</span>
                 </Link>
 
-                <Link to="auth-logout-2.html" className="dropdown-item">
+                <Link
+                  to="/logout"
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                  }}
+                  className="dropdown-item"
+                >
                   <i className="ri-logout-box-line fs-18 align-middle me-1" />
                   <span>Logout</span>
                 </Link>

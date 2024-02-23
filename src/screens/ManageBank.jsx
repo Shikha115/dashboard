@@ -158,15 +158,26 @@ function ManageBank() {
           <Modal.Title>Update Bank Name</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <form action="#">
-            <label className="form-label">Bank Name</label>
-            <input
-              className="form-control"
-              type="email"
-              required=""
-              ref={updateBankValue}
-              placeholder="Enter bank name"
-            />
+          <form action="#" className="row">
+            <div className="col-12 col-md-12 mb-2">
+              <label className="form-label">Bank Name</label>
+              <input
+                className="form-control"
+                type="email"
+                required=""
+                ref={updateBankValue}
+                placeholder="Enter bank name"
+              />
+            </div>
+            <div className="col-12 col-md-12">
+              <label className="form-label">Upload Image</label>
+              <input
+                className="form-control"
+                type="file"
+                required=""
+                placeholder="Enter bank name"
+              />
+            </div>
           </form>
         </Modal.Body>
         <Modal.Footer>
@@ -191,15 +202,26 @@ function ManageBank() {
           <Modal.Title>Add Bank Name</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <form action="#">
-            <label className="form-label">Bank Name</label>
-            <input
-              className="form-control"
-              type="email"
-              required=""
-              placeholder="Enter bank name"
-              ref={addBankValue}
-            />
+          <form action="#" className="row">
+            <div className="col-12 col-md-12 mb-2">
+              <label className="form-label">Bank Name</label>
+              <input
+                className="form-control"
+                type="email"
+                required=""
+                placeholder="Enter bank name"
+                ref={addBankValue}
+              />
+            </div>
+            <div className="col-12 col-md-12">
+              <label className="form-label">Upload Image</label>
+              <input
+                className="form-control"
+                type="file"
+                required=""
+                placeholder="Enter bank name"
+              />
+            </div>
           </form>
         </Modal.Body>
         <Modal.Footer>

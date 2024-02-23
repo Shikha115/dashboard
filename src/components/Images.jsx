@@ -15,6 +15,7 @@ import avatar_5 from "../assets/images/users/avatar-5.jpg";
 import avatar_6 from "../assets/images/users/avatar-6.jpg";
 import avatar_7 from "../assets/images/users/avatar-7.jpg";
 import bg_profile from "../assets/images/bg-profile.jpg";
+import shield from "../assets/images/svg/shield.gif";
 
 export const images = {
   logo_dark,
@@ -22,7 +23,7 @@ export const images = {
   logo_sm,
   flag_italy,
   auth_img,
-  flag_us,
+  flag_us,shield,
   flag_spain,
   logo,
   flag_germany,
