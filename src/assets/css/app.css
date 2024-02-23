@@ -21862,8 +21862,12 @@ span.flatpickr-weekday,
     border-radius: 0px;
   }
 
-  .lead-card > .row {
-    margin: 0 1pc;
+  .lead-card .left-outer {
+    margin: 0 2pc;
+  }
+
+  .left-outer ul li:nth-child(n + 5) {
+    display: none;
   }
 
   .lead-card-data .btn {
@@ -21874,8 +21878,9 @@ span.flatpickr-weekday,
   .lead-card-data {
     background: #fff;
     border-radius: 10px;
-    padding: 2pc;    
-    margin: 0pc 1.5pc;
+    padding: 2pc;
+    padding-top: 4pc;
+    margin: -2pc 0;
     z-index: 3;
   }
 
