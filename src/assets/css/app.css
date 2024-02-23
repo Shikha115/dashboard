@@ -21874,8 +21874,7 @@ span.flatpickr-weekday,
   .lead-card-data {
     background: #fff;
     border-radius: 10px;
-    padding: 2pc;
-    padding-top: 3pc;
+    padding: 2pc;    
     margin: 0pc 1.5pc;
     z-index: 3;
   }
