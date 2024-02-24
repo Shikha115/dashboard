@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import { BANK_DATA } from "../../store/staticData";
+import { Link } from "react-router-dom";
 
 function AddCredit() {
   const [description, setDescription] = useState("");
@@ -11,6 +12,11 @@ function AddCredit() {
         <div className="container-fluid">
           <div className="add-credit">
             <div className="page-title-box">
+              <div className="page-title-right">
+                <Link className="btn btn-primary" to="/offer/credit-card">
+                  Back
+                </Link>
+              </div>
               <h4 className="page-title">Add Credit Card</h4>
             </div>
             <div className="card">
@@ -23,7 +29,7 @@ function AddCredit() {
                   <div className="col-12 col-md-6 mb-3">
                     <label className="form-label">Choose Bank</label>
                     <select className="form-select">
-                    {BANK_DATA.map((item, i) => {
+                      {BANK_DATA.map((item, i) => {
                         return (
                           <option value={item.bank} key={i}>
                             {item.bank}

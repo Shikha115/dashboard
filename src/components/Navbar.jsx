@@ -76,7 +76,7 @@ function Navbar() {
               </form>
             </div>
           </li>
-          <li className="dropdown notification-list">
+          {/* <li className="dropdown notification-list">
             <Link
               className="nav-link dropdown-toggle arrow-none"
               data-bs-toggle="dropdown"
@@ -257,7 +257,6 @@ function Navbar() {
                   </div>
                 </Link>
               </div>
-              {/* All*/}
               <Link
                 to="#"
                 className="dropdown-item text-center text-primary text-decoration-underline fw-bold notify-item border-top border-light py-2"
@@ -265,8 +264,8 @@ function Navbar() {
                 View All
               </Link>
             </div>
-          </li>
-          <li className="dropdown notification-list">
+          </li> */}
+          {/* <li className="dropdown notification-list">
             <Link
               className="nav-link dropdown-toggle arrow-none"
               data-bs-toggle="dropdown"
@@ -357,7 +356,6 @@ function Navbar() {
                   </p>
                 </Link>
               </div>
-              {/* All*/}
               <Link
                 to="#"
                 className="dropdown-item text-center text-primary text-decoration-underline fw-bold notify-item border-top border-light py-2"
@@ -365,7 +363,7 @@ function Navbar() {
                 View All
               </Link>
             </div>
-          </li>
+          </li> */}
           <li className="dropdown">
             <Link
               className="nav-link arrow-none nav-user"
@@ -385,7 +383,7 @@ function Navbar() {
               </span>
               <span className="d-lg-block d-none">
                 <h5 className="my-0 fw-normal">
-                  Thomson{" "}
+                 Admin{" "}
                   <FaChevronDown className="fs-10 ms-1 d-none d-sm-inline-block align-middle" />
                 </h5>
               </span>
