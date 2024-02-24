@@ -1,9 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import { BANK_DATA } from "../../store/staticData";
+import useDataStore from "../../store/dataStore";
 
 function AddCredit() {
   const [description, setDescription] = useState("");
+  const { bank, setBank, getAllBank, getAllCategory, category } =
+    useDataStore();
+
+  useEffect(() => {
+    getAllBank();
+    getAllCategory();
+  }, []);
+
+  const AddBank = async () => {
+    let data = {
+      type_id: "65c4bb05058cfc0846d4685c",
+      title: "",
+      bank_id: "65c0685d058cfc0846d46844",
+      card_type: "",
+      annual_fees: "",
+      joining_fees: "T",
+      bank_image: "",
+      apply_link: "",
+      desc: {
+        eligibility: "",
+        benefits: [],
+        documents: [],
+      },
+      rank: 9,
+      status: true,
+      bank_name: "Standard Chartered Bank",
+    };
+  };
 
   return (
     <div className="content-page">
@@ -23,18 +52,15 @@ function AddCredit() {
                   <div className="col-12 col-md-6 mb-3">
                     <label className="form-label">Choose Bank</label>
                     <select className="form-select">
-                    {BANK_DATA.map((item, i) => {
-                        return (
-                          <option value={item.bank} key={i}>
-                            {item.bank}
-                          </option>
-                        );
-                      })}
+                      {bank &&
+                        bank?.map((item, i) => {
+                          return (
+                            <option value={item?.bank_name} key={i}>
+                              {item?.bank_name}
+                            </option>
+                          );
+                        })}
                     </select>
-                  </div>
-                  <div className="col-12 col-md-6 mb-3">
-                    <label className="form-label">Card Type</label>
-                    <input type="text" className="form-control" />
                   </div>
                   <div className="col-12 col-md-6 mb-3">
                     <label className="form-label">Joining Fee</label>
@@ -52,28 +78,11 @@ function AddCredit() {
                     <label className="form-label">Apply Link</label>
                     <input type="url" className="form-control" />
                   </div>
-                  <div className="col-12 col-md-6 mb-3 d-flex align-items-center">
-                    <div className="form-check">
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        id="customCheck1"
-                      />
-                      <label className="form-check-label" for="customCheck1">
-                        Featured
-                      </label>
-                    </div>
+                  <div className="col-12 col-md-6 mb-3 ">
+                    <label className="form-label">Apply Link</label>
+                    <input type="url" className="form-control" />
                   </div>
-                  <div className="col-12 mb-3">
-                    <label className="form-label">Description</label>
-                    <ReactQuill
-                      theme="snow"
-                      // value={description}
-                      // onChange={setDescription}
-                    >
-                      <div className="my-editing-area" />
-                    </ReactQuill>
-                  </div>
+                  <div className="col-12 mb-3"></div>
                   <div className="col-12">
                     <button className="btn btn-primary">Add</button>
                   </div>

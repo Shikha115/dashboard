@@ -9,7 +9,7 @@ import Modal from "react-bootstrap/Modal";
 import { CiWarning } from "react-icons/ci";
 
 function Users() {
-  const { users, setUsers, getAllUsers } = useDataStore();
+  const { users, getAllUsers, setSelectedUser } = useDataStore();
   const [isLoading, setIsLoading] = useState(true);
   const [deleteModal, setDeleteModal] = useState(false);
 
@@ -51,7 +51,11 @@ function Users() {
           <Link className="btn btn-purple" to="/users/add">
             <MdEdit className="fs-18" />
           </Link>
-          <Link className="btn btn-warning" to="/users/view">
+          <Link
+            className="btn btn-warning"
+            to="/users/view"
+            onClick={() => setSelectedUser(row)}
+          >
             <FaEye className="fs-18" />
           </Link>
           <Link
