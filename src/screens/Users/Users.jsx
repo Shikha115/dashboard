@@ -9,7 +9,7 @@ import Modal from "react-bootstrap/Modal";
 import { CiWarning } from "react-icons/ci";
 
 function Users() {
-  const { users, setUsers, getAllBank } = useDataStore();
+  const { users, setUsers, getAllUsers } = useDataStore();
   const [isLoading, setIsLoading] = useState(true);
   const [deleteModal, setDeleteModal] = useState(false);
 
@@ -69,7 +69,7 @@ function Users() {
   useEffect(() => {
     setIsLoading(true);
     let timer = setTimeout(() => {
-      setUsers(USER_DATA);
+      getAllUsers();
       setIsLoading(false);
     }, 200);
     return () => {

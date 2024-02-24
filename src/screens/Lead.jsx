@@ -2,32 +2,39 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import useDataStore from "../store/dataStore";
 import { LEAD_DATA } from "../store/staticData";
+import moment from "moment";
 
 function Lead() {
-  const { lead, setLead } = useDataStore();
+  const { lead, setLead, getAlLeads } = useDataStore();
   const [isLoading, setIsLoading] = useState(true);
 
   const columns = [
     {
       name: "#",
-      selector: (row) => row.id,
+      selector: (row, index) => index + 1,
       width: "60px",
     },
     {
       name: "Date	",
-      selector: (row) => row.date,
+      selector: (row) =>
+        row?.created ? moment(row?.created).format("YYYY-MM-DD") : row?.created,
+    },
+    {
+      name: "Time	",
+      selector: (row) =>
+        row?.created ? moment(row?.created).format(" HH:mm:ss") : row?.created,
     },
     {
       name: "Name	",
-      selector: (row) => row.name,
+      selector: (row) => row.first_name + row?.last_name,
     },
     {
       name: "Mobile	",
-      selector: (row) => row.mobile,
+      selector: (row) => row?.phone,
     },
     {
       name: "Bank Name	",
-      selector: (row) => row.bank,
+      selector: (row) => row?.bank_info?.bank_name,
     },
     {
       name: "Email	",
@@ -35,23 +42,20 @@ function Lead() {
     },
     {
       name: "Income	",
-      selector: (row) => row.income,
+      selector: (row) => row?.user_info?.income,
     },
     {
       name: "Pan	",
-      selector: (row) => row.pan,
+      selector: (row) => row?.user_info?.pan_no,
     },
-    {
-      name: "Emp Status	",
-      selector: (row) => row.emp_status,
-    },
+
     {
       name: "Lead Type	",
-      selector: (row) => row.lead_type,
+      selector: (row) => row.category_info?.name,
     },
     {
       name: "Title",
-      selector: (row) => row.title,
+      selector: (row) => row?.offer_info?.title,
     },
   ];
 
@@ -61,7 +65,7 @@ function Lead() {
 
     const columnDelimiter = ",";
     const lineDelimiter = "\n";
-    const keys = Object.keys(LEAD_DATA[0]);
+    const keys = Object.keys(lead);
 
     result = "";
     result += keys.join(columnDelimiter);
@@ -117,7 +121,7 @@ function Lead() {
   useEffect(() => {
     setIsLoading(true);
     let timer = setTimeout(() => {
-      setLead(LEAD_DATA);
+      getAlLeads();
       setIsLoading(false);
     }, 0);
     return () => {

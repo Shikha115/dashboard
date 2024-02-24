@@ -10,6 +10,7 @@ const useDataStore = create((set) => ({
     console.log(res.data?.data);
     set({ bank: res.data?.data });
   },
+
   allOffer: [],
   getAllOffer: async () => {
     const res = await axios.get(apis.getallOffers);
@@ -25,8 +26,15 @@ const useDataStore = create((set) => ({
   setSaving: (data) => set({ saving: data }),
   loan: "",
   setLoan: (data) => set({ loan: data }),
-  lead: "",
+
+  lead: [],
   setLead: (data) => set({ lead: data }),
+  getAlLeads: async () => {
+    const res = await axios.get(apis.getAllLeads);
+    console.log(res.data?.data);
+    set({ lead: res.data?.data });
+  },
+
   mutualFund: "",
   setMutualFund: (data) => set({ mutualFund: data }),
   demat: "",
@@ -35,6 +43,11 @@ const useDataStore = create((set) => ({
   setFixedDeposit: (data) => set({ fixedDeposit: data }),
   users: "",
   setUsers: (data) => set({ users: data }),
+  getAllUsers: async () => {
+    const res = await axios.get(apis.getAllLUsers);
+    console.log(res);
+    set({ users: res.data?.data });
+  },
 }));
 
 export default useDataStore;
