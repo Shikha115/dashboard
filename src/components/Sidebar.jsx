@@ -56,13 +56,6 @@ function Sidebar() {
       link: "/lead",
     },
     {
-      icon: <FaStar />,
-      category: "My Leads",
-      subcategory: [],
-      isActive: false,
-      link: "/my-leads",
-    },
-    {
       icon: <FaUsers />,
       category: "Users",
       subcategory: [],

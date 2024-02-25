@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import { BANK_DATA } from "../../store/staticData";
+import { Link } from "react-router-dom";
 
 function AddUser() {
   const [description, setDescription] = useState("");
@@ -11,6 +12,11 @@ function AddUser() {
         <div className="container-fluid">
           <div className="add-credit">
             <div className="page-title-box">
+              <div className="page-title-right">
+                <Link className="btn btn-primary" to="/users">
+                  Back
+                </Link>
+              </div>
               <h4 className="page-title">Add User</h4>
             </div>
             <div className="card">

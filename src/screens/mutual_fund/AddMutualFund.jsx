@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import { BANK_DATA } from "../../store/staticData";
+import { Link } from "react-router-dom";
 
 function AddMutualFund() {
   const [description, setDescription] = useState("");
@@ -11,6 +12,11 @@ function AddMutualFund() {
         <div className="container-fluid">
           <div className="add-credit">
             <div className="page-title-box">
+              <div className="page-title-right">
+                <Link className="btn btn-primary" to="/offer/mutual-fund">
+                  Back
+                </Link>
+              </div>
               <h4 className="page-title">Add Mutual Fund</h4>
             </div>
             <div className="card">

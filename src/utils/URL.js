@@ -17,4 +17,7 @@ export const apis = {
   login: `${baseURL}/auth/login`,
   register: `${baseURL}/auth/register`,
   getOfferWeb: `${baseURL}/offers/get-offer-web`,
+  createLead: `${baseURL}/lead/create-lead`,
+  getAllLeads: `${baseURL}/lead/get-all-leads`,
+  getAllLUsers: `${baseURL}/profile/get-all-profiles`,
 };

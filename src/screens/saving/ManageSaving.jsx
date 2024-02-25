@@ -9,7 +9,7 @@ import { CiWarning } from "react-icons/ci";
 
 function ManageSaving() {
   const [isLoading, setIsLoading] = useState(true);
-  const { saving, setSaving } = useDataStore();
+  const { saving, setSaving,allOffer } = useDataStore();
   const [deleteModal, setDeleteModal] = useState(false);
 
   const columns = [
@@ -66,6 +66,7 @@ function ManageSaving() {
   ];
 
   useEffect(() => {
+    console.log(allOffer,'allOffer');
     setIsLoading(true);
     let timer = setTimeout(() => {
       setSaving(SAVING_DATA);

@@ -3,38 +3,62 @@ import { create } from "zustand";
 import { apis } from "../utils/URL";
 
 const useDataStore = create((set) => ({
-  bank: "",
+  bank: [],
+  allOffer: [],
+  credit: [],
+  saving: [],
+  loan: [],
+  lead: [],
+  demat: [],
+  fixedDeposit: [],
+  mutualFund: [],
+  selectedUser: {},
+  users: [],
+  category: [],
+
   setBank: (data) => set({ bank: data }),
   getAllBank: async () => {
     const res = await axios.get(apis.getAllBanks);
-    console.log(res.data?.data);
     set({ bank: res.data?.data });
   },
-  allOffer: [],
+
+  setCategory: (data) => set({ category: data }),
+  getAllCategory: async () => {
+    const res = await axios.get(apis.getCategories);
+    set({ category: res.data?.data });
+  },
+
   getAllOffer: async () => {
     const res = await axios.get(apis.getallOffers);
-    console.log(res.data?.data);
     set({ allOffer: res.data?.data });
     set({
       credit: res.data?.data.filter((item) => (item.type = "credit_card")),
     });
   },
-  credit: "",
+
   setCredit: (data) => set({ credit: data }),
-  saving: "",
   setSaving: (data) => set({ saving: data }),
-  loan: "",
   setLoan: (data) => set({ loan: data }),
-  lead: "",
+
   setLead: (data) => set({ lead: data }),
-  mutualFund: "",
+  getAlLeads: async () => {
+    const res = await axios.get(apis.getAllLeads);
+    console.log(res.data?.data);
+    set({ lead: res.data?.data });
+  },
+
   setMutualFund: (data) => set({ mutualFund: data }),
-  demat: "",
   setDemat: (data) => set({ demat: data }),
-  fixedDeposit: "",
   setFixedDeposit: (data) => set({ fixedDeposit: data }),
-  users: "",
   setUsers: (data) => set({ users: data }),
+  getAllUsers: async () => {
+    const res = await axios.get(apis.getAllLUsers);
+    set({ users: res.data?.data });
+  },
+
+  setSelectedUser: (data) => {
+    set({ selectedUser: data });
+  },
 }));
 
 export default useDataStore;

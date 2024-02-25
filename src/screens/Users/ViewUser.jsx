@@ -1,8 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { images } from "../../components/Images";
+import useDataStore from "../../store/dataStore";
+import moment from "moment";
 
 function ViewUser() {
+  const { selectedUser } = useDataStore();
   return (
     <div className="content-page">
       <div className="content">
@@ -23,7 +26,7 @@ function ViewUser() {
                     <div className="col-sm-6">
                       <div className="profile-user-img">
                         <img
-                          src={images.avatar_1}
+                          src={selectedUser?.profile_image}
                           alt=""
                           className="avatar-lg rounded-circle"
                         />
@@ -31,9 +34,11 @@ function ViewUser() {
                       <div className="">
                         {/* name */}
                         <h4 className="mt-4 fs-17 ellipsis">
-                          Michael A. Franklin
+                          {selectedUser?.firstName +
+                            " " +
+                            selectedUser?.lastName}
                         </h4>
-                        <p className="font-13">Agent</p>
+                        <p className="font-13">Advisor</p>
                       </div>
                     </div>
                     <div className="col-sm-6">
@@ -61,16 +66,21 @@ function ViewUser() {
                           <tbody>
                             <tr>
                               <th scope="row">Email</th>
-                              <td className="ng-binding">example@gmail.com</td>
+                              <td className="ng-binding">
+                                {selectedUser?.email}
+                              </td>
                             </tr>
                             <tr>
                               <th scope="row">Phone</th>
-                              <td className="ng-binding">(123)-456-7890</td>
+                              <td className="ng-binding">
+                                {" "}
+                                {selectedUser?.phone}
+                              </td>
                             </tr>
                             <tr>
                               <th scope="row">Address</th>
                               <td className="ng-binding">
-                                California, United States
+                                {selectedUser?.address}
                               </td>
                             </tr>
                           </tbody>
@@ -81,15 +91,23 @@ function ViewUser() {
                           <tbody>
                             <tr>
                               <th scope="row">Gender</th>
-                              <td className="ng-binding">Female</td>
+                              <td className="ng-binding">
+                                {selectedUser?.gender}
+                              </td>
                             </tr>
                             <tr>
                               <th scope="row">Pan no</th>
-                              <td className="ng-binding">b6gchd78y7ygy</td>
+                              <td className="ng-binding">
+                                {selectedUser?.pan_no}
+                              </td>
                             </tr>
                             <tr>
                               <th scope="row">DOB</th>
-                              <td className="ng-binding">1 jan, 2001</td>
+                              <td className="ng-binding">
+                                {moment(Number(selectedUser?.dob)).format(
+                                  "DD MMM YY"
+                                )}
+                              </td>
                             </tr>
                           </tbody>
                         </table>
@@ -108,15 +126,21 @@ function ViewUser() {
                           <tbody>
                             <tr>
                               <th scope="row">Occupation</th>
-                              <td className="ng-binding">Web Developer</td>
+                              <td className="ng-binding">
+                                {selectedUser?.occupation}
+                              </td>
                             </tr>
                             <tr>
                               <th scope="row">Work Experience</th>
-                              <td className="ng-binding">2 Year</td>
+                              <td className="ng-binding">
+                                {selectedUser?.work_experience} Years
+                              </td>
                             </tr>
                             <tr>
                               <th scope="row">Income</th>
-                              <td className="ng-binding">25000</td>
+                              <td className="ng-binding">
+                                {selectedUser?.income}
+                              </td>
                             </tr>
                           </tbody>
                         </table>
@@ -152,7 +176,7 @@ function ViewUser() {
                       <div className="col-12 col-md-4">
                         <div className="text-center">
                           <img
-                            src={images.avatar_1}
+                            src={selectedUser?.pan_image}
                             alt=""
                             className="img-thumbnail w-100 profile-doc-img"
                           />
@@ -164,7 +188,7 @@ function ViewUser() {
                       <div className="col-12 col-md-4">
                         <div className="text-center">
                           <img
-                            src={images.avatar_1}
+                            src={selectedUser?.cancelled_check}
                             alt=""
                             className="img-thumbnail w-100 profile-doc-img"
                           />
