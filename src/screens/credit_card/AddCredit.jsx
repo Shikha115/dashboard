@@ -3,6 +3,8 @@ import ReactQuill from "react-quill";
 import { BANK_DATA } from "../../store/staticData";
 import { Link } from "react-router-dom";
 import useDataStore from "../../store/dataStore";
+import { apis } from "../../utils/URL";
+import axios from "axios";
 
 function AddCredit() {
   const [description, setDescription] = useState("");
@@ -32,12 +34,11 @@ function AddCredit() {
   };
 
   const AddBank = async () => {
-    
-    
+    const bank_detail = bank_name.current.value.split(",");
     let data = {
       type_id: "65c4bb05058cfc0846d4685c",
       title: title.current.value,
-      bank_id: "65c0685d058cfc0846d46844",
+      bank_id: bank_detail[1],
       card_type: card_type.current.value,
       annual_fees: annual_fee.current.value,
       joining_fees: join_fee.current.value,
@@ -50,9 +51,16 @@ function AddCredit() {
       },
       rank: rank.current.value,
       status: true,
-      bank_name: bank_name.current.value,
+      bank_name: bank_detail[0],
     };
-    console.log(data, "data");
+    axios
+      .post(apis.getallOffers, data)
+      .then((response) => {
+        console.log(data, "data");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -72,16 +80,28 @@ function AddCredit() {
               <div className="card-body">
                 <form className="row" onSubmit={handleSubmit}>
                   <div className="col-12 col-md-6 mb-3">
-                    <label className="form-label">Title</label>
-                    <input type="text" className="form-control" ref={title} />
+                    <label className="form-label">
+                      Title<span className="fs-17 text-danger">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      required
+                      ref={title}
+                    />
                   </div>
                   <div className="col-12 col-md-6 mb-3">
-                    <label className="form-label">Choose Bank</label>
-                    <select className="form-select" ref={bank_name}>
+                    <label className="form-label">
+                      Choose Bank<span className="fs-17 text-danger">*</span>
+                    </label>
+                    <select className="form-select" required ref={bank_name}>
                       {bank &&
                         bank?.map((item, i) => {
                           return (
-                            <option value={item?.bank_name} key={i}>
+                            <option
+                              value={`${item?.bank_name},${item?._id}`}
+                              key={i}
+                            >
                               {item?.bank_name}
                             </option>
                           );
@@ -89,70 +109,102 @@ function AddCredit() {
                     </select>
                   </div>
                   <div className="col-12 col-md-6 mb-3">
-                    <label className="form-label">Card Type</label>
+                    <label className="form-label">
+                      Card Type<span className="fs-17 text-danger">*</span>
+                    </label>
                     <input
                       type="text"
                       className="form-control"
+                      required
                       ref={card_type}
                     />
                   </div>
                   <div className="col-12 col-md-6 mb-3">
-                    <label className="form-label">Joining Fee</label>
+                    <label className="form-label">
+                      Joining Fee<span className="fs-17 text-danger">*</span>
+                    </label>
                     <input
                       type="number"
                       className="form-control"
+                      required
                       ref={join_fee}
                     />
                   </div>
                   <div className="col-12 col-md-6 mb-3">
-                    <label className="form-label">Annual Fee</label>
+                    <label className="form-label">
+                      Annual Fee<span className="fs-17 text-danger">*</span>
+                    </label>
                     <input
                       type="number"
                       className="form-control"
+                      required
                       ref={annual_fee}
                     />
                   </div>
                   <div className="col-12 col-md-6 mb-3">
-                    <label className="form-label">Upload Card Image</label>
+                    <label className="form-label">
+                      Upload Card Image
+                      <span className="fs-17 text-danger">*</span>
+                    </label>
                     <input
                       type="file"
                       className="form-control"
+                      required
                       ref={card_image}
                     />
                   </div>
                   <div className="col-12 col-md-6 mb-3">
-                    <label className="form-label">Apply Link</label>
+                    <label className="form-label">
+                      Apply Link<span className="fs-17 text-danger">*</span>
+                    </label>
                     <input
                       type="url"
                       className="form-control"
+                      required
                       ref={apply_link}
                     />
                   </div>
                   <div className="col-12 col-md-6 mb-3 ">
-                    <label className="form-label">Rank</label>
-                    <input type="number" className="form-control" ref={rank} />
+                    <label className="form-label">
+                      Rank<span className="fs-17 text-danger">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      required
+                      ref={rank}
+                    />
                   </div>
                   <div className="col-12 col-md-6 mb-3 ">
-                    <label className="form-label">Eligibility</label>
+                    <label className="form-label">
+                      Eligibility<span className="fs-17 text-danger">*</span>
+                    </label>
                     <input
                       type="text"
                       className="form-control"
+                      required
                       ref={eligibility}
                     />
                   </div>
                   <div className="col-12 col-md-6 mb-3 ">
-                    <label className="form-label">Benefits</label>
+                    <label className="form-label">
+                      Benefits<span className="fs-17 text-danger">*</span>
+                    </label>
                     <input
                       type="text"
                       className="form-control"
+                      required
                       ref={benefits}
                     />
                   </div>
                   <div className="col-12 col-md-6 mb-3 ">
-                    <label className="form-label">Documents</label>
+                    <label className="form-label">
+                      Documents<span className="fs-17 text-danger">*</span>
+                    </label>
                     <input
                       type="text"
                       className="form-control"
+                      required
                       ref={documents}
                     />
                   </div>
