@@ -15308,6 +15308,18 @@ html[data-bs-theme="dark"] .logo.logo-dark {
   margin-right: 5px;
   border: none;
 }
+.modal-dialog-scrollable .modal-body::-webkit-scrollbar {
+  width: 5px;
+  transition: all 0.5s;
+}
+
+/* Handle */
+.modal-dialog-scrollable .modal-body::-webkit-scrollbar-thumb {
+  background-color: lightgray;
+  border-radius: 10px;
+  margin-right: 5px;
+  border: none;
+}
 .side-nav ul {
   list-style-type: none;
 }
@@ -21791,7 +21803,7 @@ span.flatpickr-weekday,
 }
 
 .ql-editor {
-  height: 145px;
+  max-height: 145px;
 }
 
 .lead-card {
