@@ -16,7 +16,7 @@ function Users() {
   const columns = [
     {
       name: "#",
-      selector: (row, id) => id + 1,
+      selector: (row, i) => i + 1,
       width: "60px",
     },
     {
