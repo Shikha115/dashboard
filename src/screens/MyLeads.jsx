@@ -4,6 +4,8 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { apis } from "../utils/URL";
 import { Alert } from "react-bootstrap";
+import moment from "moment";
+import { validateEmail } from "../utils/regex";
 
 function MyLeads() {
   const [loading, setLoading] = useState();
@@ -15,6 +17,7 @@ function MyLeads() {
   const queryParams = new URLSearchParams(location.search);
   const offerId = queryParams.get("oid");
   const userId = queryParams.get("uid");
+  const affiliateId = queryParams.get("afid");
 
   const getOffer = async () => {
     setLoading(true);
@@ -38,7 +41,7 @@ function MyLeads() {
     e.preventDefault();
 
     if (!userDetails?.first_name) {
-      alert("First name cannot be empty");
+      alert("Name cannot be empty");
       return;
     } else if (!userDetails?.phone) {
       alert("Phone cannot be empty");
@@ -46,10 +49,17 @@ function MyLeads() {
     } else if (!userDetails?.email) {
       alert("Email cannot be empty");
       return;
+    } else if (!validateEmail(userDetails?.email)) {
+      alert("Invalid Email");
+      return;
     }
 
-    let date = Date.now();
-    let click_id = `${offer?.apply_link}&uid=${userId}&cid&=${date}`;
+    let now = Date.now();
+
+    let mil = moment().milliseconds();
+    let date =
+      mil.toString().slice(-2) + moment(now).format("smHDM").toString();
+    let click_id = `${offer?.apply_link}&sub_aff_id=${affiliateId}_${date}`;
 
     const data = {
       offer_id: offerId,
@@ -61,11 +71,14 @@ function MyLeads() {
       apply_link: offer?.apply_link,
       link_with_click_id: click_id,
       first_name: userDetails?.first_name,
-      last_name: userDetails?.last_name,
       email: userDetails?.email,
       phone: userDetails?.phone,
       earning: 0,
+      sub_id: affiliateId,
     };
+
+    // console.log(date);
+    // return;
     axios
       .post(apis.createLead, data)
       .then((e) => {
@@ -99,10 +112,11 @@ function MyLeads() {
                 <div className="lead-card-data">
                   <form action="#" className="row">
                     <div className="col-12 col-lg-6 mb-3">
-                      <label className="form-label">First Name</label>
+                      <label className="form-label">Full Name</label>
                       <input
                         type="text"
                         className="form-control"
+                        value={userDetails?.first_name}
                         onChange={(e) => {
                           setUserDetails({
                             ...userDetails,
@@ -111,7 +125,7 @@ function MyLeads() {
                         }}
                       />
                     </div>
-                    <div className="col-12 col-lg-6 mb-3">
+                    {/* <div className="col-12 col-lg-6 mb-3">
                       <label className="form-label">Last Name</label>
                       <input
                         type="text"
@@ -123,19 +137,21 @@ function MyLeads() {
                           });
                         }}
                       />
-                    </div>
+                    </div> */}
                     <div className="col-12 col-lg-6 mb-3">
                       <label className="form-label">Phone no.</label>
                       <input
-                        maxLength={10}
-                        minLength={10}
+                        maxLength="11"
                         type="number"
                         className="form-control"
+                        value={userDetails?.phone}
                         onChange={(e) => {
-                          setUserDetails({
-                            ...userDetails,
-                            phone: e.target.value,
-                          });
+                          if (e.target.value.length <= 10) {
+                            setUserDetails({
+                              ...userDetails,
+                              phone: e.target.value,
+                            });
+                          }
                         }}
                       />
                     </div>
@@ -143,6 +159,7 @@ function MyLeads() {
                       <label className="form-label">Email</label>
                       <input
                         type="email"
+                        value={userDetails?.email}
                         className="form-control"
                         onChange={(e) => {
                           setUserDetails({

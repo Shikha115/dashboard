@@ -3,6 +3,8 @@ import ReactQuill from "react-quill";
 import { BANK_DATA } from "../../store/staticData";
 import { Link } from "react-router-dom";
 import useDataStore from "../../store/dataStore";
+import axios from "axios";
+import { apis } from "../../utils/URL";
 
 function AddCredit() {
   const [description, setDescription] = useState("");
@@ -25,6 +27,7 @@ function AddCredit() {
   const eligibility = useRef(null);
   const benefits = useRef(null);
   const documents = useRef(null);
+  const earning = useRef(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,27 +35,43 @@ function AddCredit() {
   };
 
   const AddBank = async () => {
-    
-    
-    let data = {
-      type_id: "65c4bb05058cfc0846d4685c",
-      title: title.current.value,
-      bank_id: "65c0685d058cfc0846d46844",
-      card_type: card_type.current.value,
-      annual_fees: annual_fee.current.value,
-      joining_fees: join_fee.current.value,
-      image: card_image.current.value,
-      apply_link: apply_link.current.value,
-      desc: {
-        eligibility: eligibility.current.value,
-        benefits: benefits.current.value.split(","),
-        documents: documents.current.value.split(","),
-      },
-      rank: rank.current.value,
-      status: true,
-      bank_name: bank_name.current.value,
-    };
-    console.log(data, "data");
+    let BANK_INFO = JSON.parse(bank_name.current.value);
+
+    const formData = new FormData();
+
+    formData.append("type_id", "65c4bb05058cfc0846d4685c");
+    formData.append("title", title.current.value);
+    formData.append("bank_id", BANK_INFO?._id);
+    formData.append("card_type", card_type.current.value);
+    formData.append("annual_fees", annual_fee.current.value);
+    formData.append("joining_fees", join_fee.current.value);
+    formData.append("image", card_image.current.files[0]);
+    formData.append("apply_link", apply_link.current.value);
+    formData.append("desc[eligibility]", eligibility.current.value);
+    formData.append("desc[benefits]", benefits.current.value);
+    formData.append("desc[documents]", documents.current.value);
+    formData.append("rank", rank.current.value);
+    formData.append("status", true);
+    formData.append("bank_name", BANK_INFO?.bank_name);
+    formData.append("earning", earning?.current?.value);
+
+    // // console.log(card_image.current.files[0], "img");
+    // // for (const pair of formData.entries()) {
+    //   // console.log(pair[0] + ": " + pair[1]);
+    // // }
+
+    axios
+      .post(apis.createOffer, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((e) => {
+        console.log(e);
+        alert("e.data.message");
+        window.location.reload();
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -81,8 +100,8 @@ function AddCredit() {
                       {bank &&
                         bank?.map((item, i) => {
                           return (
-                            <option value={item?.bank_name} key={i}>
-                              {item?.bank_name}
+                            <option value={JSON.stringify(item)} key={i}>
+                              {item.bank_name}
                             </option>
                           );
                         })}
@@ -116,6 +135,7 @@ function AddCredit() {
                     <label className="form-label">Upload Card Image</label>
                     <input
                       type="file"
+                      accept="image/*"
                       className="form-control"
                       ref={card_image}
                     />
@@ -132,6 +152,23 @@ function AddCredit() {
                     <label className="form-label">Rank</label>
                     <input type="number" className="form-control" ref={rank} />
                   </div>
+
+                  <div className="col-12 col-md-6 mb-3 ">
+                    <label className="form-label">Benefits</label>
+                    <textarea
+                      type="text"
+                      className="form-control"
+                      ref={benefits}
+                    />
+                  </div>
+                  <div className="col-12 col-md-6 mb-3 ">
+                    <label className="form-label">Documents</label>
+                    <textarea
+                      type="text"
+                      className="form-control"
+                      ref={documents}
+                    />
+                  </div>
                   <div className="col-12 col-md-6 mb-3 ">
                     <label className="form-label">Eligibility</label>
                     <input
@@ -141,20 +178,8 @@ function AddCredit() {
                     />
                   </div>
                   <div className="col-12 col-md-6 mb-3 ">
-                    <label className="form-label">Benefits</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      ref={benefits}
-                    />
-                  </div>
-                  <div className="col-12 col-md-6 mb-3 ">
-                    <label className="form-label">Documents</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      ref={documents}
-                    />
+                    <label className="form-label">Earning</label>
+                    <input type="text" className="form-control" ref={earning} />
                   </div>
                   <div className="col-12">
                     <button type="submit" className="btn btn-primary">
