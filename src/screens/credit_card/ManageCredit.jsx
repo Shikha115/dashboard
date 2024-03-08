@@ -88,10 +88,7 @@ function ManageCredit() {
           >
             <MdEdit className="fs-18" />
           </button>
-          <button
-            className="btn btn-pink"
-            onClick={() => setDeleteModal(true)}
-          >
+          <button className="btn btn-pink" onClick={() => setDeleteModal(true)}>
             <MdDelete className="fs-18" />
           </button>
         </div>
@@ -132,21 +129,21 @@ function ManageCredit() {
       card_type: card_type.current.value,
       annual_fees: annual_fee.current.value,
       joining_fees: join_fee.current.value,
-      image: card_image.current.value,
+      image: card_image.current.files[0],
       apply_link: apply_link.current.value,
       desc: {
         eligibility: eligibility.current.value,
-        benefits: benefits.current.value.split(","),
-        documents: documents.current.value.split(","),
+        benefits: benefits.current.value.split("/n"),
+        documents_required: documents.current.value.split("/n"),
       },
       rank: rank.current.value,
       status: true,
       bank_name: bank_detail[0],
     };
     axios
-      .post(apis.getallOffers, data)
-      .then((response) => {
-        console.log(data, "data");
+      .post(apis.createOffer, data)
+      .then((res) => {
+        console.log(res, "data");
       })
       .catch((error) => {
         console.log(error);
@@ -154,7 +151,42 @@ function ManageCredit() {
     setAddModal({ ...addModal, state: false });
   };
   const UpdateData = async () => {
-  
+    const bank_detail = bank_name.current.value.split(",");
+
+    let data = {
+      id: currentData?._id,
+      title: title.current.value,
+      bank_id: bank_detail[1],
+      card_type: card_type.current.value,
+      annual_fees: annual_fee.current.value,
+      joining_fees: join_fee.current.value,
+
+      apply_link: apply_link.current.value,
+      desc: {
+        eligibility: eligibility.current.value,
+        benefits: benefits.current.value.split("/n"),
+        documents_required: documents.current.value.split("/n"),
+      },
+      rank: rank.current.value,
+      status: true,
+      bank_name: bank_detail[0],
+    };
+
+    if (card_image.current.files[0]) {
+      data["image"] = card_image.current.files[0];
+    }
+
+    console.log(currentData, data);
+    return;
+    axios
+      .post(apis.updateOffer, data)
+      .then((res) => {
+        console.log(res, "data");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     setAddModal({ ...addModal, state: false });
   };
 
@@ -235,7 +267,9 @@ function ManageCredit() {
                 className="form-control"
                 required
                 ref={title}
-                defaultValue={addModal.type === "edit" ? currentData.title : ""}
+                defaultValue={
+                  addModal.type === "edit" ? currentData?.title : ""
+                }
               />
             </div>
             <div className="col-12 col-md-6 mb-3">
@@ -248,7 +282,7 @@ function ManageCredit() {
                 ref={bank_name}
                 defaultValue={
                   addModal.type === "edit"
-                    ? currentData.bank_name
+                    ? currentData?.bank_name
                     : "Select a bank"
                 }
               >
@@ -272,7 +306,7 @@ function ManageCredit() {
                 required
                 ref={card_type}
                 defaultValue={
-                  addModal.type === "edit" ? currentData.card_type : ""
+                  addModal.type === "edit" ? currentData?.card_type : ""
                 }
               />
             </div>
@@ -286,7 +320,7 @@ function ManageCredit() {
                 required
                 ref={join_fee}
                 defaultValue={
-                  addModal.type === "edit" ? currentData.joining_fees : ""
+                  addModal.type === "edit" ? currentData?.joining_fees : ""
                 }
               />
             </div>
@@ -300,7 +334,7 @@ function ManageCredit() {
                 required
                 ref={annual_fee}
                 defaultValue={
-                  addModal.type === "edit" ? currentData.annual_fees : ""
+                  addModal.type === "edit" ? currentData?.annual_fees : ""
                 }
               />
             </div>
@@ -311,9 +345,25 @@ function ManageCredit() {
               </label>
               <input
                 type="file"
+                accept="image/*"
                 className="form-control"
                 required
                 ref={card_image}
+                // defaultValue={currentData?.image}
+                onChange={(e) => {
+                  if (e.target.files[0]) {
+                    let image = URL.createObjectURL(e.target.files[0]);
+                    console.log(image, "hgf");
+                    setCurrentData({ ...currentData, image });
+                  }
+                }}
+              />
+              <img
+                defaultValue={currentData?.image}
+                src={currentData?.image}
+                alt="Selected"
+                width="50"
+                height={40}
               />
             </div>
             <div className="col-12 col-md-6 mb-3">
@@ -326,7 +376,7 @@ function ManageCredit() {
                 required
                 ref={apply_link}
                 defaultValue={
-                  addModal.type === "edit" ? currentData.apply_link : ""
+                  addModal.type === "edit" ? currentData?.apply_link : ""
                 }
               />
             </div>
@@ -339,7 +389,7 @@ function ManageCredit() {
                 className="form-control"
                 required
                 ref={rank}
-                defaultValue={addModal.type === "edit" ? currentData.rank : ""}
+                defaultValue={addModal.type === "edit" ? currentData?.rank : ""}
               />
             </div>
             <div className="col-12 col-md-6 mb-3 ">
@@ -352,7 +402,7 @@ function ManageCredit() {
                 required
                 ref={eligibility}
                 defaultValue={
-                  addModal.type === "edit" ? currentData.desc.Eligibility : ""
+                  addModal.type === "edit" ? currentData?.desc?.eligibility : ""
                 }
               />
             </div>
@@ -360,14 +410,15 @@ function ManageCredit() {
               <label className="form-label">
                 Benefits<span className="fs-17 text-danger">*</span>
               </label>
-              <input
+              <textarea
                 type="text"
                 className="form-control"
                 required
+                style={{ height: "auto" }}
                 ref={benefits}
                 defaultValue={
                   addModal.type === "edit"
-                    ? currentData.desc.Features.toString()
+                    ? currentData?.desc?.features?.toString()
                     : ""
                 }
               />
@@ -376,14 +427,14 @@ function ManageCredit() {
               <label className="form-label">
                 Documents<span className="fs-17 text-danger">*</span>
               </label>
-              <input
+              <textarea
                 type="text"
                 className="form-control"
                 required
                 ref={documents}
                 defaultValue={
                   addModal.type === "edit"
-                    ? currentData.desc["Document Required"].toString()
+                    ? currentData?.desc?.documents_required?.toString()
                     : ""
                 }
               />

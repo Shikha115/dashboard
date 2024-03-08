@@ -9,6 +9,8 @@ export const apis = {
   loginWithOtp: `${baseURL}/auth/login-via-otp`,
   verifyOTP: `${baseURL}/auth/verify-otp`,
   getallOffers: `${baseURL}/offers/get-all-offers`,
+  createOffer: `${baseURL}/offers/create-offer`,
+  updateOffer: `${baseURL}/offers/update-offer`,
   getCategories: `${baseURL}/category/get-all-categories`,
   getAllBanners: `${baseURL}/banner/get-all-banners`,
   getProfile: `${baseURL}/profile/get-profile`,
