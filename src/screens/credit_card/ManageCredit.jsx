@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import DataTable from "react-data-table-component";
-import { Link } from "react-router-dom";
 import useDataStore from "../../store/dataStore";
-import { CREDIT_DATA } from "../../store/staticData";
 import { MdDelete, MdEdit } from "react-icons/md";
 import Modal from "react-bootstrap/Modal";
 import { CiWarning } from "react-icons/ci";
@@ -20,7 +18,7 @@ function ManageCredit() {
 
   const title = useRef(null);
   const bank_name = useRef(null);
-  const card_type = useRef(null);
+  const earning = useRef(null);
   const join_fee = useRef(null);
   const annual_fee = useRef(null);
   const card_image = useRef(null);
@@ -67,7 +65,11 @@ function ManageCredit() {
       name: "Status",
       cell: (row) => (
         <div className="form-check form-switch">
-          <input type="checkbox" className="form-check-input" />
+          <input
+            type="checkbox"
+            className="form-check-input"
+            checked={row?.status}
+          />
         </div>
       ),
     },
@@ -82,7 +84,7 @@ function ManageCredit() {
               setAddModal({ type: "edit", state: true });
               setCurrentData(row);
               setTimeout(() => {
-                console.log(currentData, "Current Row Clicked");
+                // console.log(currentData, "Current Row Clicked");
               }, 2000);
             }}
           >
@@ -102,13 +104,12 @@ function ManageCredit() {
     getAllCategory();
     let timer = setTimeout(() => {
       getAllOffer();
-      // setCredit(CREDIT_DATA);
       setIsLoading(false);
     }, 0);
     return () => {
       clearTimeout(timer);
     };
-    console.log(allOffer, "abc");
+    // console.log(allOffer, "abc");
   }, []);
 
   const handleSubmit = (e) => {
@@ -121,65 +122,74 @@ function ManageCredit() {
   };
 
   const AddData = async () => {
-    const bank_detail = bank_name.current.value.split(",");
-    let data = {
-      type_id: "65c4bb05058cfc0846d4685c",
-      title: title.current.value,
-      bank_id: bank_detail[1],
-      card_type: card_type.current.value,
-      annual_fees: annual_fee.current.value,
-      joining_fees: join_fee.current.value,
-      image: card_image.current.files[0],
-      apply_link: apply_link.current.value,
-      desc: {
-        eligibility: eligibility.current.value,
-        benefits: benefits.current.value.split("/n"),
-        documents_required: documents.current.value.split("/n"),
-      },
-      rank: rank.current.value,
-      status: true,
-      bank_name: bank_detail[0],
-    };
+    const bank_detail = bank_name?.current.value.split(",");
+    let formData = new FormData();
+
+    formData.append("type_id", "65c4bb05058cfc0846d4685c");
+    formData.append("title", title.current.value);
+    formData.append("bank_id", bank_detail[1]);
+    formData.append("annual_fees", annual_fee.current.value);
+    formData.append("joining_fees", join_fee.current.value);
+    formData.append("apply_link", apply_link.current.value);
+    formData.append("desc[eligibility]", eligibility.current.value);
+    formData.append("card_type", "Credit Card");
+    formData.append("rank", Number(rank.current.value));
+    formData.append("status", true);
+    formData.append("earning", Number(earning.current.value));
+    formData.append("bank_name", bank_detail[0]);
+
+    if (benefits.current.value) {
+      formData.append("desc[features]", benefits.current.value);
+    }
+
+    if (documents.current.value) {
+      formData.append("desc[documents_required]", documents.current.value);
+    }
+
+    if (card_image.current.files[0]) {
+      formData.append("image", card_image.current.files[0]);
+    }
     axios
-      .post(apis.createOffer, data)
+      .post(apis.createOffer, formData)
       .then((res) => {
         console.log(res, "data");
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response.data);
       });
-    setAddModal({ ...addModal, state: false });
+    // setAddModal({ ...addModal, state: false });
   };
   const UpdateData = async () => {
     const bank_detail = bank_name.current.value.split(",");
 
-    let data = {
-      id: currentData?._id,
-      title: title.current.value,
-      bank_id: bank_detail[1],
-      card_type: card_type.current.value,
-      annual_fees: annual_fee.current.value,
-      joining_fees: join_fee.current.value,
+    const formData = new FormData();
+    formData.append("id", currentData?._id);
+    formData.append("title", title.current.value);
+    formData.append("bank_id", bank_detail[1]);
+    formData.append("card_type", "Credit Card");
+    formData.append("annual_fees", annual_fee.current.value);
+    formData.append("joining_fees", join_fee.current.value);
+    formData.append("apply_link", apply_link.current.value);
+    formData.append("desc[eligibility]", eligibility.current.value);
 
-      apply_link: apply_link.current.value,
-      desc: {
-        eligibility: eligibility.current.value,
-        benefits: benefits.current.value.split("/n"),
-        documents_required: documents.current.value.split("/n"),
-      },
-      rank: rank.current.value,
-      status: true,
-      bank_name: bank_detail[0],
-    };
+    formData.append("rank", rank.current.value);
+    formData.append("status", true);
+    formData.append("bank_name", bank_detail[0]);
 
-    if (card_image.current.files[0]) {
-      data["image"] = card_image.current.files[0];
+    if (benefits.current.value) {
+      formData.append("desc[features]", benefits.current.value);
     }
 
-    console.log(currentData, data);
-    return;
+    if (documents.current.value) {
+      formData.append("desc[documents_required]", documents.current.value);
+    }
+
+    if (card_image.current.files[0]) {
+      formData.append("image", card_image.current.files[0]);
+    }
+
     axios
-      .post(apis.updateOffer, data)
+      .post(apis.updateOffer, formData)
       .then((res) => {
         console.log(res, "data");
       })
@@ -187,7 +197,7 @@ function ManageCredit() {
         console.log(error);
       });
 
-    setAddModal({ ...addModal, state: false });
+    // setAddModal({ ...addModal, state: false });
   };
 
   return (
@@ -200,7 +210,10 @@ function ManageCredit() {
                 <div className="page-title-right">
                   <button
                     className="btn btn-primary"
-                    onClick={() => setAddModal({ type: "add", state: true })}
+                    onClick={() => {
+                      setCurrentData({});
+                      setAddModal({ type: "add", state: true });
+                    }}
                   >
                     Add Credit Card
                   </button>
@@ -281,9 +294,8 @@ function ManageCredit() {
                 required
                 ref={bank_name}
                 defaultValue={
-                  addModal.type === "edit"
-                    ? currentData?.bank_name
-                    : "Select a bank"
+                  currentData?.bank_name + "," + currentData?.bank_id ??
+                  "Select a bank"
                 }
               >
                 {bank &&
@@ -296,7 +308,7 @@ function ManageCredit() {
                   })}
               </select>
             </div>
-            <div className="col-12 col-md-6 mb-3">
+            {/* <div className="col-12 col-md-6 mb-3">
               <label className="form-label">
                 Card Type<span className="fs-17 text-danger">*</span>
               </label>
@@ -309,7 +321,7 @@ function ManageCredit() {
                   addModal.type === "edit" ? currentData?.card_type : ""
                 }
               />
-            </div>
+            </div> */}
             <div className="col-12 col-md-3 mb-3">
               <label className="form-label">
                 Joining Fee<span className="fs-17 text-danger">*</span>
@@ -337,6 +349,20 @@ function ManageCredit() {
                   addModal.type === "edit" ? currentData?.annual_fees : ""
                 }
               />
+            </div>{" "}
+            <div className="col-12 col-md-6 mb-3">
+              <label className="form-label">
+                Earning<span className="fs-17 text-danger">*</span>
+              </label>
+              <input
+                type="url"
+                className="form-control"
+                required
+                ref={earning}
+                defaultValue={
+                  addModal.type === "edit" ? currentData?.earning : ""
+                }
+              />
             </div>
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">
@@ -353,7 +379,7 @@ function ManageCredit() {
                 onChange={(e) => {
                   if (e.target.files[0]) {
                     let image = URL.createObjectURL(e.target.files[0]);
-                    console.log(image, "hgf");
+                    // console.log(image, "hgf");
                     setCurrentData({ ...currentData, image });
                   }
                 }}

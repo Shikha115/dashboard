@@ -83,7 +83,7 @@ function ManageBank() {
     setAddBank(false);
     const index = bank.length + 1;
     const val = addBankValue.current.value;
-    console.log(index, val, "info");
+    // console.log(index, val, "info");
     setBank([...bank, { id: index, bank: val }]);
   };
 
