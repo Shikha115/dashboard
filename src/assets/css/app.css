@@ -21965,7 +21965,7 @@ span.flatpickr-weekday,
   background: transparent;
   color: #fff;
   border: 0;
-  pb
+  padding-bottom: 0;
 }
 
 .toast-body {
