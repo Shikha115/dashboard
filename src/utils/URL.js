@@ -8,18 +8,23 @@ const baseURL = AppInfo.baseUrlAPI + "/" + AppInfo.apiVersion;
 export const apis = {
   loginWithOtp: `${baseURL}/auth/login-via-otp`,
   verifyOTP: `${baseURL}/auth/verify-otp`,
-  getallOffers: `${baseURL}/offers/get-all-offers`,
-  createOffer: `${baseURL}/offers/create-offer`,
-  updateOffer: `${baseURL}/offers/update-offer`,
-  getCategories: `${baseURL}/category/get-all-categories`,
-  getAllBanners: `${baseURL}/banner/get-all-banners`,
-  getProfile: `${baseURL}/profile/get-profile`,
-  updateProfile: `${baseURL}/profile/update-profile`,
-  getAllBanks: `${baseURL}/bank/get-all-banks`,
   login: `${baseURL}/auth/login`,
   register: `${baseURL}/auth/register`,
+
+  getCategories: `${baseURL}/category/get-all-categories`,
+
+  getAllBanners: `${baseURL}/banner/get-all-banners`,
+
+  getProfile: `${baseURL}/profile/get-profile`,
+  getAllLUsers: `${baseURL}/profile/get-all-profiles`,
+  updateProfile: `${baseURL}/profile/update-profile`,
+  getallOffers: `${baseURL}/offers/get-all-offers-web`,
+  createOffer: `${baseURL}/offers/create-offer`,
+  updateOffer: `${baseURL}/offers/update-offer`,
+  updateOfferStatus: `${baseURL}/offers/update-offer-status`,
   getOfferWeb: `${baseURL}/offers/get-offer-web`,
+
   createLead: `${baseURL}/lead/create-lead`,
   getAllLeads: `${baseURL}/lead/get-all-leads`,
-  getAllLUsers: `${baseURL}/profile/get-all-profiles`,
+  getAllBanks: `${baseURL}/bank/get-all-banks`,
 };

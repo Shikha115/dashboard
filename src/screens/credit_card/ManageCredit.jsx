@@ -28,6 +28,13 @@ function ManageCredit() {
   const benefits = useRef(null);
   const documents = useRef(null);
 
+  const updateStatus = async (id, status) => {
+    axios
+      .post(apis.updateOfferStatus, { id, status })
+      .then((e) => {})
+      .catch((err) => {});
+  };
+
   const columns = [
     {
       name: "#",
@@ -68,7 +75,12 @@ function ManageCredit() {
           <input
             type="checkbox"
             className="form-check-input"
-            checked={row?.status}
+            defaultChecked={row?.status}
+            onChange={(e) => {
+              let val = e.target.checked;
+              updateStatus(row?._id, val);
+              row.status = val;
+            }}
           />
         </div>
       ),

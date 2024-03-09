@@ -1,16 +1,11 @@
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
 import Login from "./screens/Authentication/Login";
-// import "./assets/css/app-rtl.min.css";
-// import "./assets/css/app-rtl.css";
-// import "./assets/css/app.min.css";
+
 import "./assets/css/app.css";
 import Home from "./screens/Home";
 import ProtectedRoute from "./components/protectedRoute";
 import Register from "./screens/Authentication/Register";
 import ForgotPassword from "./screens/Authentication/ForgotPassword";
-import Navbar from "./components/Navbar";
-import Sidebar from "./components/Sidebar";
 import ManageBank from "./screens/ManageBank";
 import ManageCredit from "./screens/credit_card/ManageCredit";
 import AddCredit from "./screens/credit_card/AddCredit";
@@ -32,12 +27,9 @@ import ViewUser from "./screens/Users/ViewUser";
 import Logout from "./screens/Authentication/Logout";
 
 function App() {
-
-
   return (
     <BrowserRouter>
       <section className="wrapper">
-
         <Routes>
           <Route
             path="/"
@@ -50,43 +42,99 @@ function App() {
           <Route path="/logout" element={<Logout />} />
           <Route
             path="/manage-bank"
-            element={<ProtectedRoute path="/manage-bank" Component={ManageBank} header={true} />}
+            element={
+              <ProtectedRoute
+                path="/manage-bank"
+                Component={ManageBank}
+                header={true}
+              />
+            }
           />
           <Route
             path="/offer/credit-card"
-            element={<ProtectedRoute path="/offer/credit-card" Component={ManageCredit} header={true} />}
+            element={
+              <ProtectedRoute
+                path="/offer/credit-card"
+                Component={ManageCredit}
+                header={true}
+              />
+            }
           />
           <Route
             path="/offer/credit-card/add"
-            element={<ProtectedRoute  path="/offer/credit-card/add" Component={AddCredit} header={true} />}
+            element={
+              <ProtectedRoute
+                path="/offer/credit-card/add"
+                Component={AddCredit}
+                header={true}
+              />
+            }
           />
           <Route
             path="/offer/saving"
-            element={<ProtectedRoute path="/offer/saving" Component={ManageSaving} header={true} />}
+            element={
+              <ProtectedRoute
+                path="/offer/saving"
+                Component={ManageSaving}
+                header={true}
+              />
+            }
           />
           <Route
             path="/offer/saving/add"
-            element={<ProtectedRoute  path="/offer/saving/add" Component={AddSaving} header={true} />}
+            element={
+              <ProtectedRoute
+                path="/offer/saving/add"
+                Component={AddSaving}
+                header={true}
+              />
+            }
           />
           <Route
             path="/offer/loan"
-            element={<ProtectedRoute   path="/offer/loan" Component={ManageLoan} header={true} />}
+            element={
+              <ProtectedRoute
+                path="/offer/loan"
+                Component={ManageLoan}
+                header={true}
+              />
+            }
           />
           <Route
             path="/offer/loan/add"
-            element={<ProtectedRoute  path="/offer/loan/add" Component={AddLoan} header={true} />}
+            element={
+              <ProtectedRoute
+                path="/offer/loan/add"
+                Component={AddLoan}
+                header={true}
+              />
+            }
           />
           <Route
             path="/lead"
-            element={<ProtectedRoute path="/lead" Component={Lead} header={true} />}
+            element={
+              <ProtectedRoute path="/lead" Component={Lead} header={true} />
+            }
           />
           <Route
             path="/offer/mutual-fund"
-            element={<ProtectedRoute    path="/offer/mutual-fund" Component={MutualFund} header={true} />}
+            element={
+              <ProtectedRoute
+                path="/offer/mutual-fund"
+                Component={MutualFund}
+                header={true}
+              />
+            }
           />
           <Route
             path="/offer/mutual-fund/add"
-            element={<ProtectedRoute path="/offer/mutual-fund/add" Component={AddMutualFund} header={true} />}
+            element={
+              <ProtectedRoute
+                path="/offer/mutual-fund/add"
+                Component={AddMutualFund}
+                header={true}
+              />
+            }
           />
           <Route
             path="/offer/demat"
@@ -94,33 +142,61 @@ function App() {
           />
           <Route
             path="/offer/demat/add"
-            element={<ProtectedRoute   path="/offer/demat/add" Component={AddDemat} header={true} />}
+            element={
+              <ProtectedRoute
+                path="/offer/demat/add"
+                Component={AddDemat}
+                header={true}
+              />
+            }
           />
           <Route
             path="/offer/fixed-deposit"
-            element={<ProtectedRoute   path="/offer/fixed-deposit" Component={FixedDeposit} header={true} />}
+            element={
+              <ProtectedRoute
+                path="/offer/fixed-deposit"
+                Component={FixedDeposit}
+                header={true}
+              />
+            }
           />
           <Route
             path="/offer/fixed-deposit/add"
             element={
-              <ProtectedRoute  path="/offer/fixed-deposit/add" Component={AddFixedDeposit} header={true} />
+              <ProtectedRoute
+                path="/offer/fixed-deposit/add"
+                Component={AddFixedDeposit}
+                header={true}
+              />
+            }
+          />
+          <Route path="/my-leads" element={<MyLeads />} />
+          <Route path="/delete-account" element={<MyLeads />} />
+          <Route
+            path="/users"
+            element={
+              <ProtectedRoute path="/users" Component={Users} header={true} />
             }
           />
           <Route
-            path="/my-leads"
-            element={<MyLeads />}
-          />
-          <Route
-            path="/users"
-            element={<ProtectedRoute   path="/users" Component={Users} header={true} />}
-          />
-          <Route
             path="/users/add"
-            element={<ProtectedRoute  path="/users/add" Component={AddUser} header={true} />}
+            element={
+              <ProtectedRoute
+                path="/users/add"
+                Component={AddUser}
+                header={true}
+              />
+            }
           />
           <Route
             path="/users/view"
-            element={<ProtectedRoute  path="/users/view" Component={ViewUser} header={true} />}
+            element={
+              <ProtectedRoute
+                path="/users/view"
+                Component={ViewUser}
+                header={true}
+              />
+            }
           />
         </Routes>
       </section>
