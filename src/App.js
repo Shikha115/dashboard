@@ -26,11 +26,16 @@ import AddUser from "./screens/Users/AddUser";
 import ViewUser from "./screens/Users/ViewUser";
 import Logout from "./screens/Authentication/Logout";
 import useAuthStore from "./store/authStore";
-import Lottie from "lottie-react";
-import Loader from "./components/Loader";
+import { useEffect } from "react";
+import useDataStore from "./store/dataStore";
 
 function App() {
   const { loading } = useAuthStore();
+  const { getAllBank } = useDataStore();
+  useEffect(() => {
+    getAllBank();
+  }, []);
+
   return (
     <>
       <BrowserRouter>

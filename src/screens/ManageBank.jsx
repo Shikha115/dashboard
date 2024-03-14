@@ -7,8 +7,8 @@ import Modal from "react-bootstrap/Modal";
 import { CiWarning } from "react-icons/ci";
 
 function ManageBank() {
-  const { bank, setBank, getAllBank } = useDataStore();
-  const [isLoading, setIsLoading] = useState(true);
+  const { bank, setBank, isLoading, setIsLoading } = useDataStore();
+
   const [deleteModal, setDeleteModal] = useState(false);
   const [updateBank, setUpdateBank] = useState({
     state: false,
@@ -67,17 +67,6 @@ function ManageBank() {
       ),
     },
   ];
-
-  useEffect(() => {
-    setIsLoading(true);
-    let timer = setTimeout(() => {
-      getAllBank();
-      setIsLoading(false);
-    }, 200);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
 
   const handleBankAdd = () => {
     setAddBank(false);

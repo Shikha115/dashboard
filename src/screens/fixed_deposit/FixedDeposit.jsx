@@ -14,7 +14,7 @@ function FixedDeposit() {
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState({ type: "", state: false });
   const [currentData, setCurrentData] = useState(null);
-  const { bank, getAllBank } = useDataStore();
+  const { bank, } = useDataStore();
 
   const columns = [
     {
@@ -71,7 +71,6 @@ function FixedDeposit() {
   ];
 
   useEffect(() => {
-    getAllBank();
     setIsLoading(true);
     let timer = setTimeout(() => {
       setFixedDeposit(FIXED_DEPOSIT_DATA);

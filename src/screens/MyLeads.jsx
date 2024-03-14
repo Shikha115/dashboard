@@ -37,7 +37,7 @@ function MyLeads() {
   const SubmitLeads = async (e) => {
     e.preventDefault();
 
-    if (!userDetails?.first_name) {
+    if (!userDetails?.name) {
       alert("First name cannot be empty");
       return;
     } else if (!userDetails?.phone) {
@@ -45,6 +45,9 @@ function MyLeads() {
       return;
     } else if (!userDetails?.email) {
       alert("Email cannot be empty");
+      return;
+    } else if (userDetails?.phone.length < 10) {
+      alert("Phone number should be of 10 digits");
       return;
     }
 
@@ -60,8 +63,8 @@ function MyLeads() {
       customer_url: window?.location?.href,
       apply_link: offer?.apply_link,
       link_with_click_id: click_id,
-      first_name: userDetails?.first_name,
-      last_name: userDetails?.last_name,
+
+      name: userDetails?.name,
       email: userDetails?.email,
       phone: userDetails?.phone,
       earning: 0,
@@ -99,27 +102,14 @@ function MyLeads() {
                 <div className="lead-card-data">
                   <form action="#" className="row">
                     <div className="col-12 col-lg-6 mb-3">
-                      <label className="form-label">First Name</label>
+                      <label className="form-label">Full Name</label>
                       <input
                         type="text"
                         className="form-control"
                         onChange={(e) => {
                           setUserDetails({
                             ...userDetails,
-                            first_name: e.target.value,
-                          });
-                        }}
-                      />
-                    </div>
-                    <div className="col-12 col-lg-6 mb-3">
-                      <label className="form-label">Last Name</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        onChange={(e) => {
-                          setUserDetails({
-                            ...userDetails,
-                            last_name: e.target.value,
+                            name: e.target.value,
                           });
                         }}
                       />
@@ -127,9 +117,10 @@ function MyLeads() {
                     <div className="col-12 col-lg-6 mb-3">
                       <label className="form-label">Phone no.</label>
                       <input
-                        maxLength={10}
+                        value={userDetails?.phone}
                         minLength={10}
-                        type="number"
+                        maxLength={10}
+                        type="num-pad"
                         className="form-control"
                         onChange={(e) => {
                           setUserDetails({

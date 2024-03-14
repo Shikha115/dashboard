@@ -1,8 +1,10 @@
 export const AppInfo = {
   baseUrlAPI: "http://localhost:5001", // Rojgar Dev
   // baseUrlAPI: "https://api.dev.rojgar.new-india-consultants.com", // Rojgar Dev
+  // baseUrlAPI: "https://api.prod.rojgar.new-india-consultants.com", // Rojgar Prod
   apiVersion: "api/v1",
 };
+
 const baseURL = AppInfo.baseUrlAPI + "/" + AppInfo.apiVersion;
 
 export const apis = {
@@ -19,6 +21,7 @@ export const apis = {
   getAllLUsers: `${baseURL}/profile/get-all-profiles`,
   updateProfile: `${baseURL}/profile/update-profile`,
   getallOffers: `${baseURL}/offers/get-all-offers-web`,
+  getSpecificOffer: `${baseURL}/offers/get-selected-offers-web`,
   createOffer: `${baseURL}/offers/create-offer`,
   updateOffer: `${baseURL}/offers/update-offer`,
   updateOfferStatus: `${baseURL}/offers/update-offer-status`,

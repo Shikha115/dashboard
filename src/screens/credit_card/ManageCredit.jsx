@@ -9,12 +9,11 @@ import axios from "axios";
 
 function ManageCredit() {
   const [isLoading, setIsLoading] = useState(true);
-  const { credit, setCredit, allOffer, getAllOffer } = useDataStore();
+  const { credit, getCredit } = useDataStore();
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState({ type: "", state: false });
   const [currentData, setCurrentData] = useState(null);
-  const { bank, setBank, getAllBank, getAllCategory, category } =
-    useDataStore();
+  const { bank, getAllCategory } = useDataStore();
 
   const title = useRef(null);
   const bank_name = useRef(null);
@@ -27,6 +26,10 @@ function ManageCredit() {
   const eligibility = useRef(null);
   const benefits = useRef(null);
   const documents = useRef(null);
+
+  useEffect(() => {
+    getCredit();
+  }, []);
 
   const updateStatus = async (id, status) => {
     axios
@@ -95,9 +98,6 @@ function ManageCredit() {
             onClick={() => {
               setAddModal({ type: "edit", state: true });
               setCurrentData(row);
-              setTimeout(() => {
-                // console.log(currentData, "Current Row Clicked");
-              }, 2000);
             }}
           >
             <MdEdit className="fs-18" />
@@ -112,10 +112,8 @@ function ManageCredit() {
 
   useEffect(() => {
     setIsLoading(true);
-    getAllBank();
     getAllCategory();
     let timer = setTimeout(() => {
-      getAllOffer();
       setIsLoading(false);
     }, 0);
     return () => {
@@ -164,12 +162,12 @@ function ManageCredit() {
     axios
       .post(apis.createOffer, formData)
       .then((res) => {
-        console.log(res, "data");
+        getCredit();
+        setAddModal({ ...addModal, state: false });
       })
       .catch((error) => {
         console.log(error.response.data);
       });
-    // setAddModal({ ...addModal, state: false });
   };
   const UpdateData = async () => {
     const bank_detail = bank_name.current.value.split(",");
@@ -183,7 +181,7 @@ function ManageCredit() {
     formData.append("joining_fees", join_fee.current.value);
     formData.append("apply_link", apply_link.current.value);
     formData.append("desc[eligibility]", eligibility.current.value);
-
+    formData.append("earning", Number(earning.current.value));
     formData.append("rank", rank.current.value);
     formData.append("status", true);
     formData.append("bank_name", bank_detail[0]);
@@ -203,13 +201,12 @@ function ManageCredit() {
     axios
       .post(apis.updateOffer, formData)
       .then((res) => {
-        console.log(res, "data");
+        getCredit();
+        setAddModal({ ...addModal, state: false });
       })
       .catch((error) => {
         console.log(error);
       });
-
-    // setAddModal({ ...addModal, state: false });
   };
 
   return (
@@ -456,7 +453,7 @@ function ManageCredit() {
                 ref={benefits}
                 defaultValue={
                   addModal.type === "edit"
-                    ? currentData?.desc?.features?.toString()
+                    ? currentData?.desc?.features?.join("\n")
                     : ""
                 }
               />
@@ -472,7 +469,7 @@ function ManageCredit() {
                 ref={documents}
                 defaultValue={
                   addModal.type === "edit"
-                    ? currentData?.desc?.documents_required?.toString()
+                    ? currentData?.desc?.documents_required?.join("\n")
                     : ""
                 }
               />

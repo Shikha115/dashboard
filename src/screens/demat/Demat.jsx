@@ -10,16 +10,14 @@ import ReactQuill from "react-quill";
 
 function Demat() {
   const [isLoading, setIsLoading] = useState(true);
-  const { demat, setDemat } = useDataStore();
+  const { demat, setDemat, bank } = useDataStore();
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState({ type: "", state: false });
   const [currentData, setCurrentData] = useState(null);
-  const { bank, getAllBank } = useDataStore();
-
   const columns = [
     {
       name: "#",
-      selector: (row,i) => i + 1,
+      selector: (row, i) => i + 1,
       width: "60px",
     },
     {
@@ -79,7 +77,6 @@ function Demat() {
   ];
 
   useEffect(() => {
-    getAllBank();
     setIsLoading(true);
     let timer = setTimeout(() => {
       setDemat(DEMAT_DATA);
