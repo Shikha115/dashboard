@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { apis } from "../utils/URL";
 import { Alert } from "react-bootstrap";
+import moment from "moment";
 
 function MyLeads() {
   const [loading, setLoading] = useState();
@@ -15,6 +16,7 @@ function MyLeads() {
   const queryParams = new URLSearchParams(location.search);
   const offerId = queryParams.get("oid");
   const userId = queryParams.get("uid");
+  const affiliateId = queryParams.get("afid");
 
   const getOffer = async () => {
     setLoading(true);
@@ -51,8 +53,12 @@ function MyLeads() {
       return;
     }
 
-    let date = Date.now();
-    let click_id = `${offer?.apply_link}&uid=${userId}&cid&=${date}`;
+    let now = Date.now();
+
+    let mil = moment().milliseconds();
+    let date =
+      mil.toString().slice(-2) + moment(now).format("smHDM").toString();
+    let click_id = `${offer?.apply_link}&sub_aff_id=${affiliateId}_${date}`;
 
     const data = {
       offer_id: offerId,
@@ -104,6 +110,7 @@ function MyLeads() {
                     <div className="col-12 col-lg-6 mb-3">
                       <label className="form-label">Full Name</label>
                       <input
+                        value={userDetails?.name}
                         type="text"
                         className="form-control"
                         onChange={(e) => {
@@ -135,6 +142,7 @@ function MyLeads() {
                       <input
                         type="email"
                         className="form-control"
+                        value={userDetails?.email}
                         onChange={(e) => {
                           setUserDetails({
                             ...userDetails,
