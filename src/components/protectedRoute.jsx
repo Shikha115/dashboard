@@ -11,7 +11,7 @@ function ProtectedRoute({ Component, header, path }) {
     // localStorage.removeItem("token");
     if (!token) {
       navigate(`/login?path=${path}`);
-    } 
+    }
   }, []);
 
   if (!localStorage.getItem("token")) {

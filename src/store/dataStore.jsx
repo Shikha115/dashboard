@@ -34,6 +34,7 @@ const useDataStore = create((set) => ({
     const res = await axios.get(apis.getallOffers);
     set({ allOffer: res.data?.data });
   },
+
   getCredit: async () => {
     const res = await axios.post(apis.getSpecificOffer, {
       id: "65c4bb05058cfc0846d4685c",
@@ -49,6 +50,7 @@ const useDataStore = create((set) => ({
     set({ saving: res.data?.data });
   },
   setSaving: (data) => set({ saving: data }),
+
   setLoan: (data) => set({ loan: data }),
 
   setLead: (data) => set({ lead: data }),

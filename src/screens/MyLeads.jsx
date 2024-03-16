@@ -75,6 +75,8 @@ function MyLeads() {
       phone: userDetails?.phone,
       earning: 0,
     };
+    console.log(data);
+    return;
     axios
       .post(apis.createLead, data)
       .then((e) => {

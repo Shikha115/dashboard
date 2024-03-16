@@ -7,6 +7,15 @@ export const AppInfo = {
 
 const baseURL = AppInfo.baseUrlAPI + "/" + AppInfo.apiVersion;
 
+export const config = (token) => {
+  return {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+  };
+};
+
 export const apis = {
   loginWithOtp: `${baseURL}/auth/login-via-otp`,
   verifyOTP: `${baseURL}/auth/verify-otp`,
@@ -17,7 +26,7 @@ export const apis = {
 
   getAllBanners: `${baseURL}/banner/get-all-banners`,
 
-  getProfile: `${baseURL}/profile/get-profile`,
+  getProfileWeb: `${baseURL}/profile/get-profile-web`,
   getAllLUsers: `${baseURL}/profile/get-all-profiles`,
   updateProfile: `${baseURL}/profile/update-profile`,
   getallOffers: `${baseURL}/offers/get-all-offers-web`,

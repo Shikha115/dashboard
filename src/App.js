@@ -30,11 +30,22 @@ import { useEffect } from "react";
 import useDataStore from "./store/dataStore";
 
 function App() {
-  const { loading } = useAuthStore();
+  const { getProfileWeb } = useAuthStore();
   const { getAllBank } = useDataStore();
+
   useEffect(() => {
-    getAllBank();
+    getData();
   }, []);
+
+  const getData = async () => {
+    let tokenVal = localStorage.getItem("token");
+    // console.log(tokenVal, "h");
+    // return;
+    // if (tokenVal) {
+    //   await getProfileWeb(tokenVal);
+    // }
+    getAllBank();
+  };
 
   return (
     <>

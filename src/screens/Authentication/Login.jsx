@@ -28,11 +28,10 @@ function Login() {
       email: emailRef.current.value,
       password: passwordRef.current.value,
     };
-    console.log(data, "data");
     axios
       .post(apis.login, data)
       .then((e) => {
-        console.log(e?.data, "res");
+        // console.log(e?.data.token, "res");
         localStorage.setItem("token", e?.data?.token);
         navigate(`${path ? path : "/manage-bank"}`);
       })
