@@ -2,7 +2,7 @@ import axios from "axios";
 import { create } from "zustand";
 import { apis } from "../utils/URL";
 
-const useDataStore = create((set) => ({
+const useDataStore = create((set, getState) => ({
   bank: [],
   allOffer: [],
   credit: [],
@@ -19,7 +19,10 @@ const useDataStore = create((set) => ({
   setIsLoading: (data) => set({ isLoading: data }),
 
   setBank: (data) => set({ bank: data }),
-  getAllBank: async () => {
+  getAllBank: async (override) => {
+    if (getState()?.bank.length > 1 && !override) {
+      return;
+    }
     const res = await axios.get(apis.getAllBanks);
     set({ bank: res.data?.data, isLoading: false });
   },

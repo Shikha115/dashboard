@@ -31,7 +31,7 @@ import useDataStore from "./store/dataStore";
 import ManageCategory from "./screens/ManageCategory";
 
 function App() {
-  const { getProfileWeb } = useAuthStore();
+  const { getProfileWeb, loading, setLoading } = useAuthStore();
   const { getAllBank } = useDataStore();
 
   useEffect(() => {
@@ -39,15 +39,19 @@ function App() {
   }, []);
 
   const getData = async () => {
+    setLoading(true);
     let tokenVal = localStorage.getItem("token");
-    // console.log(tokenVal, "h");
     // return;
-    // if (tokenVal) {
-    //   await getProfileWeb(tokenVal);
-    // }
+    if (tokenVal) {
+      await getProfileWeb(tokenVal);
+    }
     getAllBank();
+    setLoading(false);
   };
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
     <>
       <BrowserRouter>

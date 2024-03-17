@@ -31,8 +31,8 @@ function Login() {
     axios
       .post(apis.login, data)
       .then((e) => {
-        // console.log(e?.data.token, "res");
         localStorage.setItem("token", e?.data?.token);
+        localStorage.setItem("id", e?.data?._id);
         navigate(`${path ? path : "/manage-bank"}`);
       })
       .catch((error) => {
