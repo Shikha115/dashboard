@@ -28,6 +28,7 @@ import Logout from "./screens/Authentication/Logout";
 import useAuthStore from "./store/authStore";
 import { useEffect } from "react";
 import useDataStore from "./store/dataStore";
+import ManageCategory from "./screens/ManageCategory";
 
 function App() {
   const { getProfileWeb } = useAuthStore();
@@ -67,6 +68,16 @@ function App() {
                 <ProtectedRoute
                   path="/manage-bank"
                   Component={ManageBank}
+                  header={true}
+                />
+              }
+            />
+            <Route
+              path="/manage-category"
+              element={
+                <ProtectedRoute
+                  path="/manage-category"
+                  Component={ManageCategory}
                   header={true}
                 />
               }

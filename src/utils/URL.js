@@ -23,12 +23,15 @@ export const apis = {
   register: `${baseURL}/auth/register`,
 
   getCategories: `${baseURL}/category/get-all-categories`,
+  updateCategory: `${baseURL}/category/update-category`,
 
   getAllBanners: `${baseURL}/banner/get-all-banners`,
 
   getProfileWeb: `${baseURL}/profile/get-profile-web`,
-  getAllLUsers: `${baseURL}/profile/get-all-profiles`,
+
   updateProfile: `${baseURL}/profile/update-profile`,
+  getAllLUsers: `${baseURL}/profile/get-all-profiles`,
+
   getallOffers: `${baseURL}/offers/get-all-offers-web`,
   getSpecificOffer: `${baseURL}/offers/get-selected-offers-web`,
   createOffer: `${baseURL}/offers/create-offer`,
