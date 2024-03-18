@@ -15,29 +15,34 @@ function Lead() {
       width: "60px",
     },
     {
-      name: "Date	",
+      name: "Date",
+      minWidth: "120px",
+
       selector: (row) =>
-        row?.created ? moment(row?.created).format("YYYY-MM-DD") : row?.created,
+        row?.created
+          ? moment(row?.created).format("YYYY-MM-DD") +
+            "\n" +
+            moment(row?.created).format(" HH:mm:ss")
+          : row?.created,
     },
-    {
-      name: "Time	",
-      selector: (row) =>
-        row?.created ? moment(row?.created).format(" HH:mm:ss") : row?.created,
-    },
+
     {
       name: "Name	",
-      selector: (row) => row.first_name + row?.last_name,
+      selector: (row) => row.name,
     },
     {
       name: "Mobile	",
+      minWidth: "120px",
       selector: (row) => row?.phone,
     },
     {
-      name: "Bank Name	",
+      name: "Bank Name",
       selector: (row) => row?.bank_info?.bank_name,
     },
     {
-      name: "Email	",
+      name: "Email",
+      minWidth: "160px",
+
       selector: (row) => row.email,
     },
     {
@@ -46,6 +51,7 @@ function Lead() {
     },
     {
       name: "Pan	",
+      minWidth: "120px",
       selector: (row) => row?.user_info?.pan_no,
     },
 
