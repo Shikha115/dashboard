@@ -6,7 +6,7 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import { USER_DATA } from "../../store/staticData";
 import { FaEye } from "react-icons/fa";
 import Modal from "react-bootstrap/Modal";
-import { CiWarning } from "react-icons/ci";
+import { CiSearch, CiWarning } from "react-icons/ci";
 
 function Users() {
   const { users, getAllUsers, setSelectedUser } = useDataStore();
@@ -89,6 +89,20 @@ function Users() {
             <div className="manage-bank">
               <div className="page-title-box">
                 <div className="page-title-right">
+                <div className="app-search">
+                    <form>
+                      <div className="input-group">
+                        <input
+                          type="search"
+                          className="form-control"
+                          placeholder="Search..."
+                        />
+                        <span className="search-icon">
+                          <CiSearch className="text-muted" />
+                        </span>
+                      </div>
+                    </form>
+                  </div>
                   <Link to="/users/add" className="btn btn-primary">
                     Add User
                   </Link>

@@ -5,6 +5,10 @@ import { apis, config } from "../utils/URL";
 const useAuthStore = create((set) => ({
   token: "",
   setToken: (data) => set({ token: data }),
+  showToast: false,
+  setShowToast: (data) => set({ showToast: data }),
+  toastData: { color: "#33b0e0", message: "Default message" },
+  setToastData: (data) => set({ toastData: data }),
   loading: true,
   setLoading: (data) => set({ loading: data }),
   profile: {},

@@ -1,17 +1,15 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { images } from "../../components/Images";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuthStore from "../../store/authStore";
 import { apis } from "../../utils/URL";
-import Toast from "react-bootstrap/Toast";
-import ToastContainer from "react-bootstrap/ToastContainer";
+import ToastComponent from "../../components/ToastComponent";
 
 function Login() {
   const navigate = useNavigate();
-  const { token, setToken } = useAuthStore();
-  const [showToast, setShowToast] = useState(false);
-  const [loginStatus, setLoginStatus] = useState();
+  const { token, setToken, setToastData, setShowToast } = useAuthStore();
+
   console.log(token);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -42,12 +40,12 @@ function Login() {
         localStorage.setItem("token", e?.data?.token);
         localStorage.setItem("id", e?.data?._id);
         navigate(`${path ? path : "/manage-bank"}`);
-        setLoginStatus("success");
+        setToastData({ color: "#33b0e0", message: `Login Successfully with status ${e.status}` });
+        console.log(e, "e");
       })
       .catch((error) => {
         console.log(error, "error");
-
-        setLoginStatus("failure");
+        setToastData({ color: "#d03f3f", message: error.message });
       });
   };
 
@@ -86,7 +84,7 @@ function Login() {
                           </p>
                           {/* form */}
                           <form action="/" onSubmit={handleSubmit}>
-                            <div className="mb-3">
+                            {/* <div className="mb-3">
                               <label
                                 htmlFor="emailaddress"
                                 className="form-label"
@@ -97,7 +95,7 @@ function Login() {
                                 <option value="1">Admin</option>
                                 <option value="2">Manager</option>
                               </select>
-                            </div>
+                            </div> */}
                             <div className="mb-3">
                               <label
                                 htmlFor="emailaddress"
@@ -137,7 +135,7 @@ function Login() {
                                 required
                               />
                             </div>
-                            <div className="mb-3">
+                            {/* <div className="mb-3">
                               <div className="form-check">
                                 <input
                                   type="checkbox"
@@ -151,7 +149,7 @@ function Login() {
                                   Remember me
                                 </label>
                               </div>
-                            </div>
+                            </div> */}
                             <div className="mb-3 text-start">
                               <button
                                 className="btn btn-soft-primary w-100"
@@ -183,18 +181,6 @@ function Login() {
           {/* end container */}
         </div>
       </section>
-      <ToastContainer position="top-end" className="position-fixed">
-        <Toast show={showToast} onClose={() => setShowToast(false)}>
-          <Toast.Header>
-            <h2>Heads up!</h2>
-          </Toast.Header>
-          <Toast.Body>
-            {loginStatus === "success"
-              ? "Login Successfully"
-              : "Incorrect ID or Password"}
-          </Toast.Body>
-        </Toast>
-      </ToastContainer>
     </>
   );
 }

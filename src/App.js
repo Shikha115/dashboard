@@ -29,9 +29,10 @@ import useAuthStore from "./store/authStore";
 import { useEffect } from "react";
 import useDataStore from "./store/dataStore";
 import ManageCategory from "./screens/ManageCategory";
+import ToastComponent from "./components/ToastComponent";
 
 function App() {
-  const { getProfileWeb, loading, setLoading } = useAuthStore();
+  const { getProfileWeb, loading, setLoading,showToast,setShowToast } = useAuthStore();
   const { getAllBank } = useDataStore();
 
   useEffect(() => {
@@ -54,6 +55,7 @@ function App() {
   }
   return (
     <>
+      <ToastComponent />
       <BrowserRouter>
         <section className="wrapper">
           <Routes>

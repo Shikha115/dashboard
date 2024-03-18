@@ -16566,7 +16566,14 @@ html[data-bs-theme="dark"] #light-dark-mode .ri-moon-line::before {
 .page-title-box .page-title-right {
   float: right;
   margin-top: 20px;
+  display: flex;
+  gap: 10px;
 }
+.page-title-right input.form-control {
+  background: #fff;
+  border-radius: 5px !important;
+}
+
 .page-title-box .breadcrumb {
   padding-top: 8px;
 }
@@ -21927,17 +21934,19 @@ span.flatpickr-weekday,
   margin: 1pc;
 }
 .toast {
-  background: #33b0e0;
+
   color: #fff;
   --tz-toast-max-width: 250px;
   position: relative;
   overflow: hidden;
 }
+
 .toast:before {
   content: "";
   position: absolute;
   height: 3px;
   width: 0%;
+  
   background: #ffffff75;
   animation: line-animation 2.6s linear 0s;
 }

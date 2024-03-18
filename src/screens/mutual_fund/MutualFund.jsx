@@ -5,7 +5,7 @@ import useDataStore from "../../store/dataStore";
 import { MUTUAL_FUND_DATA } from "../../store/staticData";
 import { MdDelete, MdEdit } from "react-icons/md";
 import Modal from "react-bootstrap/Modal";
-import { CiWarning } from "react-icons/ci";
+import { CiSearch, CiWarning } from "react-icons/ci";
 import ReactQuill from "react-quill";
 
 function MutualFund() {
@@ -132,6 +132,20 @@ function MutualFund() {
             <div className="manage-bank">
               <div className="page-title-box">
                 <div className="page-title-right">
+                <div className="app-search">
+                    <form>
+                      <div className="input-group">
+                        <input
+                          type="search"
+                          className="form-control"
+                          placeholder="Search..."
+                        />
+                        <span className="search-icon">
+                          <CiSearch className="text-muted" />
+                        </span>
+                      </div>
+                    </form>
+                  </div>
                   <button
                     className="btn btn-primary"
                     onClick={() => setAddModal({ type: "add", state: true })}

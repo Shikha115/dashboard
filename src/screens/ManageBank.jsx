@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import useDataStore from "../store/dataStore";
 import { MdDelete, MdEdit } from "react-icons/md";
 import Modal from "react-bootstrap/Modal";
-import { CiWarning } from "react-icons/ci";
+import { CiSearch, CiWarning } from "react-icons/ci";
 
 function ManageBank() {
   const { bank, setBank, isLoading, setIsLoading } = useDataStore();
@@ -112,6 +112,20 @@ function ManageBank() {
             <div className="manage-bank">
               <div className="page-title-box">
                 <div className="page-title-right">
+                  <div className="app-search">
+                    <form>
+                      <div className="input-group">
+                        <input
+                          type="search"
+                          className="form-control"
+                          placeholder="Search..."
+                        />
+                        <span className="search-icon">
+                          <CiSearch className="text-muted" />
+                        </span>
+                      </div>
+                    </form>
+                  </div>
                   <button
                     type="button"
                     className="btn btn-primary"
