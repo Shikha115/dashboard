@@ -14,8 +14,7 @@ function ManageLoan() {
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState({ type: "", state: false });
   const [currentData, setCurrentData] = useState(null);
-  const { bank, getAllBank } = useDataStore();
-
+  const { bank,  } = useDataStore();
   const columns = [
     {
       name: "#",
@@ -83,7 +82,6 @@ function ManageLoan() {
   ];
 
   useEffect(() => {
-    getAllBank();
     setIsLoading(true);
     let timer = setTimeout(() => {
       setLoan(LOAN_DATA);
@@ -207,7 +205,12 @@ function ManageLoan() {
           <form className="row">
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">Title</label>
-              <input type="text" className="form-control" required defaultValue={addModal.type === "edit" ? currentData.title : ""} />
+              <input
+                type="text"
+                className="form-control"
+                required
+                defaultValue={addModal.type === "edit" ? currentData.title : ""}
+              />
             </div>
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">Choose Bank</label>
@@ -232,12 +235,15 @@ function ManageLoan() {
             </div>
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">Loan Type</label>
-              <select className="form-select"  required
+              <select
+                className="form-select"
+                required
                 defaultValue={
                   addModal.type === "edit"
                     ? currentData.loan_type
                     : "Select a bank"
-                }>
+                }
+              >
                 <option value="1">Home Loan</option>
                 <option value="1">Personal Loan</option>
                 <option value="1">Business Loan</option>
@@ -250,23 +256,51 @@ function ManageLoan() {
             </div>
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">Interest Rate</label>
-              <input type="text" className="form-control" required defaultValue={addModal.type === "edit" ? currentData.interest_range : ""} />
+              <input
+                type="text"
+                className="form-control"
+                required
+                defaultValue={
+                  addModal.type === "edit" ? currentData.interest_range : ""
+                }
+              />
             </div>
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">Processing Fee</label>
-              <input type="text" className="form-control" required defaultValue={addModal.type === "edit" ? currentData.process_fee : ""} />
+              <input
+                type="text"
+                className="form-control"
+                required
+                defaultValue={
+                  addModal.type === "edit" ? currentData.process_fee : ""
+                }
+              />
             </div>
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">Upload Card Image</label>
-              <input type="file" className="form-control" required  />
+              <input type="file" className="form-control" required />
             </div>
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">Tenure Range</label>
-              <input type="text" className="form-control" required defaultValue={addModal.type === "edit" ? currentData.tenure_range : ""} />
+              <input
+                type="text"
+                className="form-control"
+                required
+                defaultValue={
+                  addModal.type === "edit" ? currentData.tenure_range : ""
+                }
+              />
             </div>
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">Apply Link</label>
-              <input type="url" className="form-control" required defaultValue={addModal.type === "edit" ? currentData.apply_link : ""} />
+              <input
+                type="url"
+                className="form-control"
+                required
+                defaultValue={
+                  addModal.type === "edit" ? currentData.apply_link : ""
+                }
+              />
             </div>
             <div className="col-12 col-md-6 mb-3">
               <div className="form-check">

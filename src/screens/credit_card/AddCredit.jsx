@@ -8,11 +8,11 @@ import axios from "axios";
 
 function AddCredit() {
   const [description, setDescription] = useState("");
-  const { bank, setBank, getAllBank, getAllCategory, category } =
+  const { bank, setBank, getAllCategory, category } =
     useDataStore();
 
   useEffect(() => {
-    getAllBank();
+
     getAllCategory();
   }, []);
 

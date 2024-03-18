@@ -5,9 +5,12 @@ import useDataStore from "../store/dataStore";
 import { MdDelete, MdEdit } from "react-icons/md";
 import Modal from "react-bootstrap/Modal";
 import { CiWarning } from "react-icons/ci";
+import { apis } from "../utils/URL";
+import axios from "axios";
 
-function ManageBank() {
-  const { bank, setBank, isLoading, setIsLoading } = useDataStore();
+function ManageCategory() {
+  const { bank, setBank, isLoading, setIsLoading, category, getAllCategory } =
+    useDataStore();
 
   const [deleteModal, setDeleteModal] = useState(false);
   const [updateBank, setUpdateBank] = useState({
@@ -18,30 +21,66 @@ function ManageBank() {
   const addBankValue = useRef();
   const updateBankValue = useRef();
 
+  useEffect(() => {
+    getAllCategory();
+  }, []);
+
+  const updateStatus = async (id, status) => {
+    // console.log(id, status);
+    axios
+      .post(apis.updateCategory, { id, status })
+      .then((e) => {})
+      .catch((err) => {});
+  };
+  const updateRank = async (id, rank) => {
+    // console.log(id, rank);
+    axios
+      .post(apis.updateCategory, { id, rank: Number(rank) })
+      .then((e) => {})
+      .catch((err) => {});
+  };
   const columns = [
     {
       name: "S.No",
       selector: (row, id) => id + 1,
     },
     {
-      name: "Image",
-      selector: (row) => (
-        <img
-          src={row?.image?.replace("http://192.168.1.8:", "http://localhost:")}
-          style={{
-            justifyContent: "center",
-            width: 80,
-            aspectRatio: 1,
-            borderWidth: 1,
-            borderStyle: "solid",
-            borderRadius: 100,
-          }}
-        />
-      ),
+      name: "Category",
+      selector: (row) => row?.name,
     },
     {
-      name: "Bank Name",
-      selector: (row) => row.bank_name,
+      name: "Status",
+      cell: (row) => (
+        <div className="form-check form-switch">
+          <input
+            type="checkbox"
+            className="form-check-input"
+            defaultChecked={row?.status}
+            onChange={(e) => {
+              let val = e.target.checked;
+              updateStatus(row?._id, val);
+              row.status = val;
+            }}
+          />
+        </div>
+      ),
+    },
+
+    {
+      name: "Rank",
+      cell: (row) => (
+        <div className="form-switch">
+          <input
+            defaultValue={row?.rank}
+            type="number"
+            onChange={(e) => {
+              let val = e.target.value;
+              updateRank(row?._id, val);
+              row.status = val;
+            }}
+          />
+        </div>
+      ),
     },
 
     {
@@ -125,9 +164,10 @@ function ManageBank() {
               <DataTable
                 // title="Movie List"
                 columns={columns}
-                data={bank}
+                data={category}
                 progressPending={isLoading}
                 pagination
+                paginationRowsPerPageOptions={[50, 100, 150, 200]}
               />
             </div>
           </div>
@@ -252,4 +292,4 @@ function ManageBank() {
   );
 }
 
-export default ManageBank;
+export default ManageCategory;

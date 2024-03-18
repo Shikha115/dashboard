@@ -1,67 +1,117 @@
 import React, { useEffect, useRef, useState } from "react";
 import DataTable from "react-data-table-component";
-import { Link } from "react-router-dom";
 import useDataStore from "../../store/dataStore";
-import { SAVING_DATA } from "../../store/staticData";
 import { MdDelete, MdEdit } from "react-icons/md";
 import Modal from "react-bootstrap/Modal";
 import { CiWarning } from "react-icons/ci";
-import ReactQuill from "react-quill";
+import { apis } from "../../utils/URL";
+import axios from "axios";
 
 function ManageSaving() {
   const [isLoading, setIsLoading] = useState(true);
-  const { saving, setSaving, allOffer } = useDataStore();
+  const { saving, getSaving } = useDataStore();
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState({ type: "", state: false });
   const [currentData, setCurrentData] = useState(null);
-  const { bank, getAllBank } = useDataStore();
+  const { bank, getAllCategory } = useDataStore();
+
+  const title = useRef(null);
+  const bank_name = useRef(null);
+  const earning = useRef(null);
+  const opening_charge = useRef(null);
+  const min_balance = useRef(null);
+  const interest_rate = useRef(null);
+  const card_image = useRef(null);
+  const apply_link = useRef(null);
+  const rank = useRef(null);
+  const eligibility = useRef(null);
+  const benefits = useRef(null);
+  const documents = useRef(null);
+
+  useEffect(() => {}, []);
+
+  const updateStatus = async (id, status) => {
+    axios
+      .post(apis.updateOfferStatus, { id, status })
+      .then((e) => {})
+      .catch((err) => {});
+  };
 
   const columns = [
     {
       name: "#",
       selector: (row, i) => i + 1,
-      width: "60px",
+      width: "5%",
     },
     {
       name: "Title",
-      selector: (row) => row.title,
+      selector: (row) => row?.title,
+      maxWidth: "15%",
+      minWidth: "10%",
     },
     {
       name: "Bank Name",
-      selector: (row) => row.bank_name,
+      selector: (row) => row?.bank_name,
+      maxWidth: "15%",
+      minWidth: "10%",
     },
     {
-      name: "Opening Charges	",
-      selector: (row) => row.opening_charge,
+      name: "Opening Charges",
+      selector: (row) => row?.opening_charge,
+      maxWidth: "15%",
+      minWidth: "5%",
     },
     {
-      name: "Minimum Balance	",
-      selector: (row) => row.min_balance,
+      name: "Min. Balance",
+      selector: (row) => row?.min_balance,
+      maxWidth: "10%",
+      minWidth: "5%",
     },
     {
       name: "Interest Rate",
-      selector: (row) => row.interest_rate,
+      selector: (row) => row?.interest_rate,
+      maxWidth: "10%",
+      minWidth: "5%",
+    },
+    {
+      name: "Earning",
+      selector: (row) => row?.earning,
+      maxWidth: "10%",
+      minWidth: "5%",
+    },
+    {
+      name: "Rank",
+      selector: (row) => row?.rank,
+      maxWidth: "10%",
+      minWidth: "5%",
     },
     {
       name: "Status",
       cell: (row) => (
         <div className="form-check form-switch">
-          <input type="checkbox" className="form-check-input" />
+          <input
+            type="checkbox"
+            className="form-check-input"
+            defaultChecked={row?.status}
+            onChange={(e) => {
+              let val = e.target.checked;
+              updateStatus(row?._id, val);
+              row.status = val;
+            }}
+          />
         </div>
       ),
     },
     {
       name: "Action",
+      // selector: (row) => row.year,
       cell: (row) => (
         <div className="custom-table-btn">
           <button
             className="btn btn-purple"
             onClick={() => {
-              setAddModal({ type: "edit", state: true });
               setCurrentData(row);
-              setTimeout(() => {
-                console.log(currentData, "Current Row Clicked");
-              }, 2000);
+              setAddModal({ type: "edit", state: true });
             }}
           >
             <MdEdit className="fs-18" />
@@ -75,16 +125,16 @@ function ManageSaving() {
   ];
 
   useEffect(() => {
-    getAllBank();
-    console.log(allOffer, "allOffer");
     setIsLoading(true);
+    getAllCategory();
     let timer = setTimeout(() => {
-      setSaving(SAVING_DATA);
+      getSaving();
       setIsLoading(false);
     }, 0);
     return () => {
       clearTimeout(timer);
     };
+    // console.log(allOffer, "abc");
   }, []);
 
   const handleSubmit = (e) => {
@@ -97,37 +147,85 @@ function ManageSaving() {
   };
 
   const AddData = async () => {
-    // const bank_detail = bank_name.current.value.split(",");
-    // let data = {
-    //   type_id: "65c4bb05058cfc0846d4685c",
-    //   title: title.current.value,
-    //   bank_id: bank_detail[1],
-    //   card_type: card_type.current.value,
-    //   annual_fees: annual_fee.current.value,
-    //   joining_fees: join_fee.current.value,
-    //   image: card_image.current.value,
-    //   apply_link: apply_link.current.value,
-    //   desc: {
-    //     eligibility: eligibility.current.value,
-    //     benefits: benefits.current.value.split(","),
-    //     documents: documents.current.value.split(","),
-    //   },
-    //   rank: rank.current.value,
-    //   status: true,
-    //   bank_name: bank_detail[0],
-    // };
-    // axios
-    //   .post(apis.getallOffers, data)
-    //   .then((response) => {
-    //     console.log(data, "data");
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-    setAddModal({ ...addModal, state: false });
+    const bank_detail = bank_name?.current.value.split(",");
+    let formData = new FormData();
+
+    formData.append("type_id", "65c4bb05058cfc0846d4685d");
+    formData.append("card_type", "Savings Account");
+    formData.append("title", title.current.value);
+    formData.append("bank_id", bank_detail[1]);
+    formData.append("min_balance", min_balance.current.value);
+    formData.append("opening_charge", opening_charge.current.value);
+    formData.append("interest_rate", interest_rate.current.value);
+    formData.append("apply_link", apply_link.current.value);
+    formData.append("desc[eligibility]", eligibility.current.value);
+    formData.append("rank", Number(rank.current.value));
+    formData.append("status", true);
+    formData.append("earning", Number(earning.current.value));
+    formData.append("bank_name", bank_detail[0]);
+
+    if (benefits.current.value) {
+      formData.append("desc[features]", benefits.current.value);
+    }
+
+    if (documents.current.value) {
+      formData.append("desc[documents_required]", documents.current.value);
+    }
+
+    if (card_image.current.files[0]) {
+      formData.append("image", card_image.current.files[0]);
+    }
+    axios
+      .post(apis.createOffer, formData)
+      .then((res) => {
+        getSaving();
+
+        setAddModal({ ...addModal, state: false });
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
   };
   const UpdateData = async () => {
-    setAddModal({ ...addModal, state: false });
+    const bank_detail = bank_name.current.value.split(",");
+
+    const formData = new FormData();
+    formData.append("id", currentData?._id);
+    formData.append("title", title.current.value);
+    formData.append("bank_id", bank_detail[1]);
+    formData.append("card_type", "Savings Account");
+    formData.append("min_balance", min_balance.current.value);
+    formData.append("opening_charge", opening_charge.current.value);
+    formData.append("interest_rate", interest_rate.current.value);
+    formData.append("apply_link", apply_link.current.value);
+    formData.append("desc[eligibility]", eligibility.current.value);
+    formData.append("earning", Number(earning.current.value));
+    formData.append("rank", rank.current.value);
+    formData.append("status", true);
+    formData.append("bank_name", bank_detail[0]);
+
+    if (benefits.current.value) {
+      formData.append("desc[features]", benefits.current.value);
+    }
+
+    if (documents.current.value) {
+      formData.append("desc[documents_required]", documents.current.value);
+    }
+
+    if (card_image.current.files[0]) {
+      formData.append("image", card_image.current.files[0]);
+    }
+
+    // return;
+    axios
+      .post(apis.updateOffer, formData)
+      .then((res) => {
+        getSaving();
+        setAddModal({ ...addModal, state: false });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -140,12 +238,15 @@ function ManageSaving() {
                 <div className="page-title-right">
                   <button
                     className="btn btn-primary"
-                    onClick={() => setAddModal({ type: "add", state: true })}
+                    onClick={() => {
+                      setCurrentData({});
+                      setAddModal({ type: "add", state: true });
+                    }}
                   >
-                    Add Saving Account
+                    Add Savings Account
                   </button>
                 </div>
-                <h4 className="page-title">Manage Saving Account</h4>
+                <h4 className="page-title">Manage Savings Account</h4>
               </div>
               <DataTable
                 // title="Movie List"
@@ -185,37 +286,45 @@ function ManageSaving() {
         scrollable
         show={addModal.state}
         centered
-        onHide={() =>
+        onHide={() => {
           setAddModal((prev) => {
             return { ...prev, state: false };
-          })
-        }
+          });
+          setCurrentData({});
+        }}
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            {addModal.type === "add" ? "Add" : "Edit"} Saving Account
+            {addModal.type === "add" ? "Add" : "Edit"} Credit Card
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form className="row">
             <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Title</label>
+              <label className="form-label">
+                Title<span className="fs-17 text-danger">*</span>
+              </label>
               <input
                 type="text"
                 className="form-control"
-                defaultValue={addModal.type === "edit" ? currentData.title : ""}
                 required
+                ref={title}
+                defaultValue={
+                  addModal.type === "edit" ? currentData?.title : ""
+                }
               />
             </div>
             <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Choose Bank</label>
+              <label className="form-label">
+                Choose Bank<span className="fs-17 text-danger">*</span>
+              </label>
               <select
                 className="form-select"
                 required
+                ref={bank_name}
                 defaultValue={
-                  addModal.type === "edit"
-                    ? currentData.bank_name
-                    : "Select a bank"
+                  currentData?.bank_name + "," + currentData?.bank_id ??
+                  "Select a bank"
                 }
               >
                 {bank &&
@@ -228,76 +337,162 @@ function ManageSaving() {
                   })}
               </select>
             </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Opening Charges</label>
+            <div className="col-12 col-md-3 mb-3">
+              <label className="form-label">
+                Opening Charge<span className="fs-17 text-danger">*</span>
+              </label>
               <input
                 type="text"
                 className="form-control"
-                defaultValue={
-                  addModal.type === "edit" ? currentData.opening_charge : ""
-                }
                 required
+                ref={opening_charge}
+                defaultValue={
+                  addModal.type === "edit" ? currentData?.opening_charge : ""
+                }
               />
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Interest Rate</label>
+            </div>{" "}
+            <div className="col-12 col-md-3 mb-3">
+              <label className="form-label">
+                Minimum Balance<span className="fs-17 text-danger">*</span>
+              </label>
               <input
                 type="text"
                 className="form-control"
-                defaultValue={
-                  addModal.type === "edit" ? currentData.interest_rate : ""
-                }
                 required
+                ref={min_balance}
+                defaultValue={
+                  addModal.type === "edit" ? currentData?.min_balance : ""
+                }
               />
             </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Minimum Balance</label>
+            <div className="col-12 col-md-3 mb-3">
+              <label className="form-label">
+                Interest Rate<span className="fs-17 text-danger">*</span>
+              </label>
               <input
                 type="text"
                 className="form-control"
-                defaultValue={
-                  addModal.type === "edit" ? currentData.min_balance : ""
-                }
                 required
+                ref={interest_rate}
+                defaultValue={
+                  addModal.type === "edit" ? currentData?.interest_rate : ""
+                }
               />
             </div>
             <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Upload Card Image</label>
-              <input type="file" className="form-control" required />
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Apply Link</label>
+              <label className="form-label">
+                Earning<span className="fs-17 text-danger">*</span>
+              </label>
               <input
                 type="url"
                 className="form-control"
-                defaultValue={
-                  addModal.type === "edit" ? currentData.apply_link : ""
-                }
                 required
+                ref={earning}
+                defaultValue={
+                  addModal.type === "edit" ? currentData?.earning : ""
+                }
               />
             </div>
-            <div className="col-12 col-md-6 mb-3 d-flex align-items-center">
-              <div className="form-check">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="customCheck1"
-                />
-                <label className="form-check-label" for="customCheck1">
-                  Featured
-                </label>
-              </div>
+            <div className="col-12 col-md-6 mb-3">
+              <label className="form-label">
+                Upload Card Image
+                <span className="fs-17 text-danger">*</span>
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                className="form-control"
+                required
+                ref={card_image}
+                // defaultValue={currentData?.image}
+                onChange={(e) => {
+                  if (e.target.files[0]) {
+                    let image = URL.createObjectURL(e.target.files[0]);
+                    // console.log(image, "hgf");
+                    setCurrentData({ ...currentData, image });
+                  }
+                }}
+              />
+              <img
+                defaultValue={currentData?.image}
+                src={currentData?.image}
+                alt="Selected"
+                width="50"
+                height={40}
+              />
             </div>
-            <div className="col-12 mb-3">
-              <label className="form-label">Description</label>
-              <ReactQuill
-                theme="snow"
-                // value={description}
-                // onChange={setDescription}
-                defaultValue={addModal.type === "edit" ? currentData.desp : ""}
-              >
-                <div className="my-editing-area" />
-              </ReactQuill>
+            <div className="col-12 col-md-6 mb-3">
+              <label className="form-label">
+                Apply Link<span className="fs-17 text-danger">*</span>
+              </label>
+              <input
+                type="url"
+                className="form-control"
+                required
+                ref={apply_link}
+                defaultValue={
+                  addModal.type === "edit" ? currentData?.apply_link : ""
+                }
+              />
+            </div>
+            <div className="col-12 col-md-6 mb-3 ">
+              <label className="form-label">
+                Rank<span className="fs-17 text-danger">*</span>
+              </label>
+              <input
+                type="number"
+                className="form-control"
+                required
+                ref={rank}
+                defaultValue={addModal.type === "edit" ? currentData?.rank : ""}
+              />
+            </div>
+            <div className="col-12 col-md-6 mb-3 ">
+              <label className="form-label">
+                Eligibility<span className="fs-17 text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                required
+                ref={eligibility}
+                defaultValue={
+                  addModal.type === "edit" ? currentData?.desc?.eligibility : ""
+                }
+              />
+            </div>
+            <div className="col-12 col-md-6 mb-3 ">
+              <label className="form-label">
+                Benefits<span className="fs-17 text-danger">*</span>
+              </label>
+              <textarea
+                type="text"
+                className="form-control"
+                required
+                style={{ height: "auto" }}
+                ref={benefits}
+                defaultValue={
+                  addModal.type === "edit"
+                    ? currentData?.desc?.features?.join("\n")
+                    : ""
+                }
+              />
+            </div>
+            <div className="col-12 col-md-6 mb-3 ">
+              <label className="form-label">
+                Documents<span className="fs-17 text-danger">*</span>
+              </label>
+              <textarea
+                type="text"
+                className="form-control"
+                required
+                ref={documents}
+                defaultValue={
+                  addModal.type === "edit"
+                    ? currentData?.desc?.documents_required?.join("\n")
+                    : ""
+                }
+              />
             </div>
           </form>
         </Modal.Body>

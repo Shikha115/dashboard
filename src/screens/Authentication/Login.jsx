@@ -36,12 +36,11 @@ function Login() {
       email: emailRef.current.value,
       password: passwordRef.current.value,
     };
-    console.log(data, "data");
     axios
       .post(apis.login, data)
       .then((e) => {
-        console.log(e?.data, "res");
         localStorage.setItem("token", e?.data?.token);
+        localStorage.setItem("id", e?.data?._id);
         navigate(`${path ? path : "/manage-bank"}`);
         setLoginStatus("success");
       })

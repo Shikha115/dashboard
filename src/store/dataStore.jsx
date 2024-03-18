@@ -2,7 +2,7 @@ import axios from "axios";
 import { create } from "zustand";
 import { apis } from "../utils/URL";
 
-const useDataStore = create((set) => ({
+const useDataStore = create((set, getState) => ({
   bank: [],
   allOffer: [],
   credit: [],
@@ -15,11 +15,16 @@ const useDataStore = create((set) => ({
   selectedUser: {},
   users: [],
   category: [],
+  isLoading: true,
+  setIsLoading: (data) => set({ isLoading: data }),
 
   setBank: (data) => set({ bank: data }),
-  getAllBank: async () => {
+  getAllBank: async (override) => {
+    if (getState()?.bank.length > 1 && !override) {
+      return;
+    }
     const res = await axios.get(apis.getAllBanks);
-    set({ bank: res.data?.data });
+    set({ bank: res.data?.data, isLoading: false });
   },
 
   setCategory: (data) => set({ category: data }),
@@ -31,13 +36,24 @@ const useDataStore = create((set) => ({
   getAllOffer: async () => {
     const res = await axios.get(apis.getallOffers);
     set({ allOffer: res.data?.data });
-    set({
-      credit: res.data?.data.filter((item) => (item.type = "credit_card")),
-    });
   },
 
+  getCredit: async () => {
+    const res = await axios.post(apis.getSpecificOffer, {
+      id: "65c4bb05058cfc0846d4685c",
+    });
+    set({ credit: res.data?.data });
+  },
   setCredit: (data) => set({ credit: data }),
+
+  getSaving: async () => {
+    const res = await axios.post(apis.getSpecificOffer, {
+      id: "65c4bb05058cfc0846d4685d",
+    });
+    set({ saving: res.data?.data });
+  },
   setSaving: (data) => set({ saving: data }),
+
   setLoan: (data) => set({ loan: data }),
 
   setLead: (data) => set({ lead: data }),

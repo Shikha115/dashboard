@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { apis } from "../utils/URL";
 import { Alert } from "react-bootstrap";
+import moment from "moment";
 
 function MyLeads() {
   const [loading, setLoading] = useState();
@@ -15,6 +16,7 @@ function MyLeads() {
   const queryParams = new URLSearchParams(location.search);
   const offerId = queryParams.get("oid");
   const userId = queryParams.get("uid");
+  const affiliateId = queryParams.get("afid");
 
   const getOffer = async () => {
     setLoading(true);
@@ -37,7 +39,7 @@ function MyLeads() {
   const SubmitLeads = async (e) => {
     e.preventDefault();
 
-    if (!userDetails?.first_name) {
+    if (!userDetails?.name) {
       alert("First name cannot be empty");
       return;
     } else if (!userDetails?.phone) {
@@ -46,10 +48,17 @@ function MyLeads() {
     } else if (!userDetails?.email) {
       alert("Email cannot be empty");
       return;
+    } else if (userDetails?.phone.length < 10) {
+      alert("Phone number should be of 10 digits");
+      return;
     }
 
-    let date = Date.now();
-    let click_id = `${offer?.apply_link}&uid=${userId}&cid&=${date}`;
+    let now = Date.now();
+
+    let mil = moment().milliseconds();
+    let date =
+      mil.toString().slice(-2) + moment(now).format("smHDM").toString();
+    let click_id = `${offer?.apply_link}&sub_aff_id=${affiliateId}_${date}`;
 
     const data = {
       offer_id: offerId,
@@ -60,12 +69,14 @@ function MyLeads() {
       customer_url: window?.location?.href,
       apply_link: offer?.apply_link,
       link_with_click_id: click_id,
-      first_name: userDetails?.first_name,
-      last_name: userDetails?.last_name,
+
+      name: userDetails?.name,
       email: userDetails?.email,
       phone: userDetails?.phone,
       earning: 0,
     };
+    console.log(data);
+    return;
     axios
       .post(apis.createLead, data)
       .then((e) => {
@@ -99,27 +110,15 @@ function MyLeads() {
                 <div className="lead-card-data">
                   <form action="#" className="row">
                     <div className="col-12 col-lg-6 mb-3">
-                      <label className="form-label">First Name</label>
+                      <label className="form-label">Full Name</label>
                       <input
+                        value={userDetails?.name}
                         type="text"
                         className="form-control"
                         onChange={(e) => {
                           setUserDetails({
                             ...userDetails,
-                            first_name: e.target.value,
-                          });
-                        }}
-                      />
-                    </div>
-                    <div className="col-12 col-lg-6 mb-3">
-                      <label className="form-label">Last Name</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        onChange={(e) => {
-                          setUserDetails({
-                            ...userDetails,
-                            last_name: e.target.value,
+                            name: e.target.value,
                           });
                         }}
                       />
@@ -127,9 +126,10 @@ function MyLeads() {
                     <div className="col-12 col-lg-6 mb-3">
                       <label className="form-label">Phone no.</label>
                       <input
-                        maxLength={10}
+                        value={userDetails?.phone}
                         minLength={10}
-                        type="number"
+                        maxLength={10}
+                        type="num-pad"
                         className="form-control"
                         onChange={(e) => {
                           setUserDetails({
@@ -144,6 +144,7 @@ function MyLeads() {
                       <input
                         type="email"
                         className="form-control"
+                        value={userDetails?.email}
                         onChange={(e) => {
                           setUserDetails({
                             ...userDetails,

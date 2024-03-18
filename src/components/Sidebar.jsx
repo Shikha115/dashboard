@@ -22,6 +22,13 @@ function Sidebar() {
       isActive: false,
       link: "/manage-bank",
     },
+    {
+      icon: <FaPiggyBank />,
+      category: "Manage Category",
+      subcategory: [],
+      isActive: false,
+      link: "/manage-category",
+    },
 
     {
       icon: <GiProgression />,

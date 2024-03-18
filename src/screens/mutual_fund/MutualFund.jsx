@@ -14,7 +14,7 @@ function MutualFund() {
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState({ type: "", state: false });
   const [currentData, setCurrentData] = useState(null);
-  const { bank, getAllBank } = useDataStore();
+  const { bank,  } = useDataStore();
 
   const columns = [
     {
@@ -71,7 +71,6 @@ function MutualFund() {
   ];
 
   useEffect(() => {
-    getAllBank();
     setIsLoading(true);
     let timer = setTimeout(() => {
       setMutualFund(MUTUAL_FUND_DATA);
@@ -197,7 +196,12 @@ function MutualFund() {
               <label className="form-label">
                 Title <span className="fs-16">*</span>
               </label>
-              <input type="text" className="form-control" required defaultValue={addModal.type === "edit" ? currentData.title : ""} />
+              <input
+                type="text"
+                className="form-control"
+                required
+                defaultValue={addModal.type === "edit" ? currentData.title : ""}
+              />
             </div>
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">
@@ -226,31 +230,59 @@ function MutualFund() {
               <label className="form-label">
                 Fund Category <span className="fs-16">*</span>
               </label>
-              <input type="text" className="form-control" required defaultValue={addModal.type === "edit" ? currentData.category_fund : ""} />
+              <input
+                type="text"
+                className="form-control"
+                required
+                defaultValue={
+                  addModal.type === "edit" ? currentData.category_fund : ""
+                }
+              />
             </div>
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">
                 Minimum Investment <span className="fs-16">*</span>
               </label>
-              <input type="text" className="form-control" required defaultValue={addModal.type === "edit" ? currentData.min_investment : ""} />
+              <input
+                type="text"
+                className="form-control"
+                required
+                defaultValue={
+                  addModal.type === "edit" ? currentData.min_investment : ""
+                }
+              />
             </div>
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">
                 Return <span className="fs-16">*</span>
               </label>
-              <input type="text" className="form-control" required defaultValue={addModal.type === "edit" ? currentData.return : ""} />
+              <input
+                type="text"
+                className="form-control"
+                required
+                defaultValue={
+                  addModal.type === "edit" ? currentData.return : ""
+                }
+              />
             </div>
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">
                 Upload Card Image <span className="fs-16">*</span>
               </label>
-              <input type="file" className="form-control" required  />
+              <input type="file" className="form-control" required />
             </div>
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">
                 Apply Link <span className="fs-16">*</span>
               </label>
-              <input type="url" className="form-control" required defaultValue={addModal.type === "edit" ? currentData.apply_link : ""} />
+              <input
+                type="url"
+                className="form-control"
+                required
+                defaultValue={
+                  addModal.type === "edit" ? currentData.apply_link : ""
+                }
+              />
             </div>
             <div className="col-12 col-md-6 mb-3 d-flex align-items-center">
               <div className="form-check">
