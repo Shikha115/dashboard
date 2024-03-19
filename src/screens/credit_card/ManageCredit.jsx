@@ -68,7 +68,21 @@ function ManageCredit() {
     },
     {
       name: "Rank",
-      selector: (row) => row.rank,
+      // selector: (row) => row.rank,
+      cell: (row) => (
+        <div>
+          <input
+            defaultValue={row?.rank}
+            type="number"
+            className="form-control"
+            // onChange={(e) => {
+            //   let val = e.target.value;
+            //   updateRank(row?._id, val);
+            //   row.status = val;
+            // }}
+          />
+        </div>
+      ),
     },
     {
       name: "Joining Fee",

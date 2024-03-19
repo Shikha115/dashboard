@@ -81,9 +81,23 @@ function ManageSaving() {
     },
     {
       name: "Rank",
-      selector: (row) => row?.rank,
-      maxWidth: "10%",
-      minWidth: "5%",
+      // selector: (row) => row?.rank,
+      // maxWidth: "10%",
+      // minWidth: "5%",
+      cell: (row) => (
+        <div>
+          <input
+            defaultValue={row?.rank}
+            type="number"
+            className="form-control"
+            // onChange={(e) => {
+            //   let val = e.target.value;
+            //   updateRank(row?._id, val);
+            //   row.status = val;
+            // }}
+          />
+        </div>
+      ),
     },
     {
       name: "Status",

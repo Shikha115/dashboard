@@ -69,10 +69,12 @@ function ManageCategory() {
     {
       name: "Rank",
       cell: (row) => (
-        <div className="form-switch">
+        <div>
           <input
             defaultValue={row?.rank}
             type="number"
+            className="form-control"
+            style={{width:"50%"}}
             onChange={(e) => {
               let val = e.target.value;
               updateRank(row?._id, val);
