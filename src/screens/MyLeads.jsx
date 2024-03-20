@@ -66,6 +66,7 @@ function MyLeads() {
       bank_id: offer?.bank_info?._id,
       category_id: offer?.category_info?._id,
       click_id: date,
+      affiliate_id:affiliateId,
       customer_url: window?.location?.href,
       apply_link: offer?.apply_link,
       link_with_click_id: click_id,
@@ -73,10 +74,11 @@ function MyLeads() {
       name: userDetails?.name,
       email: userDetails?.email,
       phone: userDetails?.phone,
+
       earning: 0,
     };
-    console.log(data);
-    return;
+    // console.log(data);
+    // return;
     axios
       .post(apis.createLead, data)
       .then((e) => {

@@ -41,49 +41,34 @@ function ManageSaving() {
     {
       name: "#",
       selector: (row, i) => i + 1,
-      width: "5%",
     },
     {
       name: "Title",
       selector: (row) => row?.title,
-      maxWidth: "15%",
-      minWidth: "10%",
     },
     {
       name: "Bank Name",
       selector: (row) => row?.bank_name,
-      maxWidth: "15%",
-      minWidth: "10%",
     },
     {
       name: "Opening Charges",
       selector: (row) => row?.opening_charge,
-      maxWidth: "15%",
-      minWidth: "5%",
     },
     {
       name: "Min. Balance",
       selector: (row) => row?.min_balance,
-      maxWidth: "10%",
-      minWidth: "5%",
     },
     {
       name: "Interest Rate",
       selector: (row) => row?.interest_rate,
-      maxWidth: "10%",
-      minWidth: "5%",
     },
     {
       name: "Earning",
       selector: (row) => row?.earning,
-      maxWidth: "10%",
-      minWidth: "5%",
     },
     {
       name: "Rank",
       selector: (row) => row?.rank,
-      maxWidth: "10%",
-      minWidth: "5%",
     },
     {
       name: "Status",

@@ -3,6 +3,9 @@ import DataTable from "react-data-table-component";
 import useDataStore from "../store/dataStore";
 import { LEAD_DATA } from "../store/staticData";
 import moment from "moment";
+import * as XLSX from "xlsx";
+import axios from "axios";
+import { apis } from "../utils/URL";
 
 function Lead() {
   const { lead, setLead, getAlLeads } = useDataStore();
@@ -10,14 +13,19 @@ function Lead() {
 
   const columns = [
     {
-      name: "#",
+      name: "S.no",
       selector: (row, index) => index + 1,
       width: "60px",
     },
     {
+      name: "Title",
+      selector: (row) => {
+        // console.log(row);
+        return row?.offer_info?.title;
+      },
+    },
+    {
       name: "Date",
-      minWidth: "120px",
-
       selector: (row) =>
         row?.created
           ? moment(row?.created).format("YYYY-MM-DD") +
@@ -32,7 +40,6 @@ function Lead() {
     },
     {
       name: "Mobile	",
-      minWidth: "120px",
       selector: (row) => row?.phone,
     },
     {
@@ -41,8 +48,6 @@ function Lead() {
     },
     {
       name: "Email",
-      minWidth: "160px",
-
       selector: (row) => row.email,
     },
     {
@@ -51,7 +56,6 @@ function Lead() {
     },
     {
       name: "Pan	",
-      minWidth: "120px",
       selector: (row) => row?.user_info?.pan_no,
     },
 
@@ -59,12 +63,9 @@ function Lead() {
       name: "Lead Type	",
       selector: (row) => row.category_info?.name,
     },
-    {
-      name: "Title",
-      selector: (row) => row?.offer_info?.title,
-    },
   ];
 
+  // console.log(lead);
   //   =============================== EXPORT CSV ======================================================
   function convertArrayOfObjectsToCSV(array) {
     let result;
@@ -109,6 +110,48 @@ function Lead() {
     link.click();
   }
 
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = async (e) => {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: "array" });
+
+      // Assuming there's only one sheet in the Excel file
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+
+      // Convert the worksheet to an array of objects
+      const objectData = XLSX.utils.sheet_to_json(worksheet, {
+        header: 1,
+        raw: true,
+      });
+
+      // Assuming the first row contains headers
+      const headers = objectData[0];
+      const arrayData = objectData.slice(1).map((row) => {
+        const obj = {};
+        headers.forEach((header, index) => {
+          obj[header.toLowerCase()] =
+            typeof row[index] === "number" ? String(row[index]) : row[index];
+
+          if (header.toLowerCase() === "affiliate_id") {
+            obj["refferal_id"] = obj?.affiliate_id?.split("_")[0];
+            obj["click_id"] = obj?.affiliate_id?.split("_")[1];
+            delete obj.affiliate_id;
+          }
+        });
+        return obj;
+      });
+
+      let res = await axios.post(apis.settleLeads, { data: arrayData });
+      console.log(res);
+    };
+
+    reader.readAsArrayBuffer(file);
+  };
+
   const Export = ({ onExport }) => (
     <button
       className="btn btn-primary"
@@ -117,9 +160,22 @@ function Lead() {
       Export
     </button>
   );
+  const Import = ({ onImport }) => (
+    <input
+      type="file"
+      accept=".xlsx, .xls"
+      onChange={handleFileUpload}
+      title="Import"
+    />
+  );
 
   const actionsMemo = React.useMemo(
-    () => <Export onExport={() => downloadCSV(LEAD_DATA)} />,
+    () => (
+      <>
+        <Export onExport={() => downloadCSV(LEAD_DATA)} />
+        <Import />
+      </>
+    ),
     []
   );
   //   =====================================================================================
@@ -158,9 +214,7 @@ function Lead() {
                   <div className="col-12 col-md-6 mb-3">
                     <label className="form-label">Bank Name</label>
                     <select className="form-select">
-                      <option value="1" selected>
-                        Select All
-                      </option>
+                      <option value="1">Select All</option>
                       <option value="1">SBI BANK</option>
                       <option value="1">Standard Chartered Bank</option>
                       <option value="1">AXIS BANK</option>
