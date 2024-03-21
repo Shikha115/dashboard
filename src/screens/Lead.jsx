@@ -10,6 +10,9 @@ import { apis } from "../utils/URL";
 function Lead() {
   const { lead, setLead, getAlLeads } = useDataStore();
   const [isLoading, setIsLoading] = useState(true);
+  const [filterText, setFilterText] = React.useState("");
+
+
 
   const columns = [
     {
@@ -166,6 +169,7 @@ function Lead() {
       accept=".xlsx, .xls"
       onChange={handleFileUpload}
       title="Import"
+      className="form-control w-50"
     />
   );
 
