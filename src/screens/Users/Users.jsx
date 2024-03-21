@@ -306,66 +306,85 @@ function Users() {
                 }
               />
             </div>
-            {currentData?.bank_details.map((item, i) => {
-              return (
-                <>
-                  <div className="col-12 col-md-6 mb-3">
-                    <label className="form-label">Bank Name</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      defaultValue={
-                        addModal.type === "edit" ? item?.bank_name : ""
-                      }
-                    />
-                  </div>
-                  <div className="col-12 col-md-6 mb-3">
-                    <label className="form-label">Account No.</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      defaultValue={
-                        addModal.type === "edit" ? item?.account_no : ""
-                      }
-                    />
-                  </div>
-                  <div className="col-12 col-md-6 mb-3">
-                    <label className="form-label">IFSC Code</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      defaultValue={
-                        addModal.type === "edit" ? item?.bank_ifsc : ""
-                      }
-                    />
-                  </div>
-                  <div className="col-12 col-md-6 mb-3">
-                    <label className="form-label">Cancelled Check</label>
-                    <input
-                      type="file"
-                      className="form-control"
-                      // defaultValue={
-                      //   addModal.type === "edit"
-                      //     ? item?.cancelled_check
-                      //     : ""
-                      // }
-                    />
-                  </div>
-                  <div className="col-12 col-md-6 mb-3">
-                    <label className="form-label">Bank Passbook</label>
-                    <input
-                      type="file"
-                      className="form-control"
-                      // defaultValue={
-                      //   addModal.type === "edit"
-                      //     ? item?.bank_passbook
-                      //     : ""
-                      // }
-                    />
-                  </div>
-                </>
-              );
-            })}
+            {addModal.type === "edit" ? (
+              currentData?.bank_details?.map((item, i) => {
+                return (
+                  <>
+                    <div className="col-12 col-md-6 mb-3">
+                      <label className="form-label">Bank Name</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        defaultValue={item?.bank_name}
+                      />
+                    </div>
+                    <div className="col-12 col-md-6 mb-3">
+                      <label className="form-label">Account No.</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        defaultValue={item?.account_no}
+                      />
+                    </div>
+                    <div className="col-12 col-md-6 mb-3">
+                      <label className="form-label">IFSC Code</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        defaultValue={item?.bank_ifsc}
+                      />
+                    </div>
+                    <div className="col-12 col-md-6 mb-3">
+                      <label className="form-label">Cancelled Check</label>
+                      <input
+                        type="file"
+                        className="form-control"
+                        // defaultValue={
+                        //   addModal.type === "edit"
+                        //     ? item?.cancelled_check
+                        //     : ""
+                        // }
+                      />
+                    </div>
+                    <div className="col-12 col-md-6 mb-3">
+                      <label className="form-label">Bank Passbook</label>
+                      <input
+                        type="file"
+                        className="form-control"
+                        // defaultValue={
+                        //   addModal.type === "edit"
+                        //     ? item?.bank_passbook
+                        //     : ""
+                        // }
+                      />
+                    </div>
+                  </>
+                );
+              })
+            ) : (
+              <>
+                <div className="col-12 col-md-6 mb-3">
+                  <label className="form-label">Bank Name</label>
+                  <input type="text" className="form-control" />
+                </div>
+                <div className="col-12 col-md-6 mb-3">
+                  <label className="form-label">Account No.</label>
+                  <input type="text" className="form-control" />
+                </div>
+                <div className="col-12 col-md-6 mb-3">
+                  <label className="form-label">IFSC Code</label>
+                  <input type="text" className="form-control" />
+                </div>
+                <div className="col-12 col-md-6 mb-3">
+                  <label className="form-label">Cancelled Check</label>
+                  <input type="file" className="form-control" />
+                </div>
+                <div className="col-12 col-md-6 mb-3">
+                  <label className="form-label">Bank Passbook</label>
+                  <input type="file" className="form-control" />
+                </div>
+              </>
+            )}
           </form>
         </Modal.Body>
         <Modal.Footer>

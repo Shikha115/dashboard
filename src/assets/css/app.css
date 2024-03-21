@@ -21990,3 +21990,20 @@ span.flatpickr-weekday,
   filter: invert(1);
   background-size: 11px;
 }
+
+
+.update-img img {
+    height: 70px;
+    width: 70px;
+    background: #fff;
+    padding: 3px;
+    border: 1px solid #00000030;
+    border-radius: 2px;
+}
+
+.update-img {
+    margin-top: 7px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}

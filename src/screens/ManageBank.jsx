@@ -52,7 +52,10 @@ function ManageBank() {
           <Link
             className="btn btn-purple"
             to="#"
-            onClick={() => setUpdateBank({ state: true, currentRow: row.id })}
+            onClick={() => {
+              setUpdateBank({ state: true, currentRow: row });
+              console.log(row, "update");
+            }}
           >
             <MdEdit className="fs-18" />
           </Link>
@@ -168,8 +171,7 @@ function ManageBank() {
                 className="form-control"
                 type="email"
                 required=""
-                ref={updateBankValue}
-                placeholder="Enter bank name"
+                defaultValue={updateBank?.currentRow?.bank_name}
               />
             </div>
             <div className="col-12 col-md-12">
@@ -180,6 +182,11 @@ function ManageBank() {
                 required=""
                 placeholder="Enter bank name"
               />
+              {updateBank?.currentRow?.image && (
+                <div className="update-img">
+                  <img src={updateBank?.currentRow?.image} />
+                </div>
+              )}
             </div>
           </form>
         </Modal.Body>
