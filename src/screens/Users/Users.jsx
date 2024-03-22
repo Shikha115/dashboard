@@ -14,6 +14,8 @@ function Users() {
   const [isLoading, setIsLoading] = useState(true);
   const [deleteModal, setDeleteModal] = useState(false);
   const [viewModal, setViewModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+  const [currentData, setCurrentData] = useState(null);
 
   const columns = [
     {
@@ -59,9 +61,16 @@ function Users() {
       name: "Action",
       cell: (row) => (
         <div className="custom-table-btn">
-          <Link className="btn btn-purple" to="/users/add">
+          <button
+            className="btn btn-purple"
+            onClick={() => {
+              setEditModal(true);
+              setCurrentData(row);
+              console.log(row, "row");
+            }}
+          >
             <MdEdit className="fs-18" />
-          </Link>
+          </button>
           <Link
             className="btn btn-warning"
             // to="/users/view"
@@ -95,6 +104,10 @@ function Users() {
       clearTimeout(timer);
     };
   }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
 
   return (
     <>
@@ -139,6 +152,7 @@ function Users() {
         </div>
       </div>
 
+      {/* view */}
       <Modal
         size="xl"
         show={viewModal}
@@ -152,6 +166,180 @@ function Users() {
           <ViewUser />
         </Modal.Body>
       </Modal>
+
+      {/* update */}
+      <Modal
+        size="lg"
+        scrollable
+        show={editModal}
+        centered
+        onHide={() => setEditModal(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Edit User</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form className="row">
+            <div className="col-12 col-md-6 mb-3">
+              <label className="form-label">Name</label>
+              <input
+                type="text"
+                className="form-control"
+                defaultValue={currentData?.name}
+              />
+            </div>
+            <div className="col-12 col-md-6 mb-3">
+              <label className="form-label">Profile Image</label>
+              <input type="file" className="form-control" />
+            </div>
+            <div className="col-12 col-md-6 mb-3">
+              <label className="form-label">Email</label>
+              <input
+                type="email"
+                className="form-control"
+                defaultValue={currentData?.email}
+              />
+            </div>
+            <div className="col-12 col-md-6 mb-3">
+              <label className="form-label">Phone no.</label>
+              <input
+                type="number"
+                className="form-control"
+                defaultValue={currentData?.phone}
+              />
+            </div>
+            <div className="col-12 col-md-6 mb-3">
+              <label className="form-label">Address</label>
+              <input
+                type="text"
+                className="form-control"
+                defaultValue={currentData?.address}
+              />
+            </div>
+            <div className="col-12 col-md-6 mb-3">
+              <label className="form-label">DOB</label>
+              <input
+                type="date"
+                className="form-control"
+                defaultValue={currentData?.dob}
+              />
+            </div>
+            <div className="col-12 col-md-6 mb-3">
+              <label className="form-label">Type</label>
+              <select className="form-select" defaultValue={currentData?.type}>
+                <option value="1">Agent</option>
+                <option value="2">Manager</option>
+              </select>
+            </div>
+            <div className="col-12 col-md-6 mb-3">
+              <label className="form-label">Gender</label>
+              <select
+                className="form-select"
+                defaultValue={currentData?.gender}
+              >
+                <option value="1">Male</option>
+                <option value="2">Female</option>
+              </select>
+            </div>
+            <div className="col-12 col-md-6 mb-3">
+              <label className="form-label">Pan no</label>
+              <input
+                type="text"
+                className="form-control"
+                defaultValue={currentData?.pan_no}
+              />
+            </div>
+            <div className="col-12 col-md-6 mb-3">
+              <label className="form-label">Pan Image</label>
+              <input type="file" className="form-control" />
+            </div>
+            <div className="col-12 col-md-6 mb-3">
+              <label className="form-label">Occupation</label>
+              <input
+                type="text"
+                className="form-control"
+                defaultValue={currentData?.occupation}
+              />
+            </div>
+            <div className="col-12 col-md-6 mb-3">
+              <label className="form-label">Work Experience</label>
+              <input
+                type="text"
+                className="form-control"
+                defaultValue={currentData?.work_experience}
+              />
+            </div>
+            <div className="col-12 col-md-6 mb-3">
+              <label className="form-label">Income</label>
+              <input
+                type="text"
+                className="form-control"
+                defaultValue={currentData?.income}
+              />
+            </div>
+            {currentData?.bank_details.map((item, i) => {
+              return (
+                <>
+                  <div className="col-12">
+                    <h5 className="border-bottom pb-2">
+                      Bank Information {i + 1}
+                    </h5>
+                  </div>
+                  <div className="col-12 col-md-6 mb-3">
+                    <label className="form-label">Bank Name</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      defaultValue={item?.bank_name}
+                    />
+                  </div>
+                  <div className="col-12 col-md-6 mb-3">
+                    <label className="form-label">Account No.</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      defaultValue={item?.account_no}
+                    />
+                  </div>
+                  <div className="col-12 col-md-6 mb-3">
+                    <label className="form-label">IFSC Code</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      defaultValue={item?.bank_ifsc}
+                    />
+                  </div>
+                  <div className="col-12 col-md-6 mb-3">
+                    <label className="form-label">Cancelled Check</label>
+                    <input type="file" className="form-control" />
+                  </div>
+                  <div className="col-12 col-md-6 mb-3">
+                    <label className="form-label">Bank Passbook</label>
+                    <input type="file" className="form-control" />
+                  </div>
+                </>
+              );
+            })}
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <button
+            className="btn btn-secondary"
+            onClick={() => setEditModal(false)}
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="btn btn-primary"
+            onClick={handleSubmit}
+          >
+            Edit
+          </button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* delete */}
       <Modal
         size="sm"
         show={deleteModal}
