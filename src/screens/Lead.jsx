@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DataTable from "react-data-table-component";
 import useDataStore from "../store/dataStore";
 import { LEAD_DATA } from "../store/staticData";
@@ -13,6 +13,7 @@ function Lead() {
   const [filterText, setFilterText] = React.useState("");
 
 
+  const fileInputRef = useRef(null);
 
   const columns = [
     {
@@ -163,20 +164,31 @@ function Lead() {
       Export
     </button>
   );
+
   const Import = ({ onImport }) => (
-    <input
-      type="file"
-      accept=".xlsx, .xls"
-      onChange={handleFileUpload}
-      title="Import"
-      className="form-control w-50"
-    />
+    <>
+      <div>
+        <input
+          type="file"
+          accept=".xlsx, .xls"
+          onChange={handleFileUpload}
+          style={{ display: "none" }}
+          ref={fileInputRef}
+        />
+        <button
+          className="btn btn-primary"
+          onClick={() => fileInputRef.current.click()}
+        >
+          Upload Leads
+        </button>
+      </div>
+    </>
   );
 
   const actionsMemo = React.useMemo(
     () => (
       <>
-        <Export onExport={() => downloadCSV(LEAD_DATA)} />
+        {/* <Export onExport={() => downloadCSV(LEAD_DATA)} /> */}
         <Import />
       </>
     ),

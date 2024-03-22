@@ -7,11 +7,13 @@ import { USER_DATA } from "../../store/staticData";
 import { FaEye } from "react-icons/fa";
 import Modal from "react-bootstrap/Modal";
 import { CiSearch, CiWarning } from "react-icons/ci";
+import ViewUser from "./ViewUser";
 
 function Users() {
   const { users, getAllUsers, setSelectedUser } = useDataStore();
   const [isLoading, setIsLoading] = useState(true);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [viewModal, setViewModal] = useState(false);
   const [addModal, setAddModal] = useState({ type: "", state: false });
   const [currentData, setCurrentData] = useState(null);
 
@@ -62,12 +64,19 @@ function Users() {
           </button>
           <Link
             className="btn btn-warning"
-            to="/users/view"
-            onClick={() => setSelectedUser(row)}
+            // to="/users/view"
+            // onClick={() => setSelectedUser(row)}
+            onClick={() => {
+              setSelectedUser(row);
+              setViewModal(true);
+            }}
           >
             <FaEye className="fs-18" />
           </Link>
-          <button className="btn btn-pink" onClick={() => setDeleteModal(true)}>
+          <button
+            className="btn btn-pink"
+            onClick={() => setDeleteModal(true)}
+          >
             <MdDelete className="fs-18" />
           </button>
         </div>
@@ -121,11 +130,9 @@ function Users() {
                     </form>
                   </div>
                   <button
+                    // to="/users/add"
+                    onClick={() => setViewModal(true)}
                     className="btn btn-primary"
-                    onClick={() => {
-                      setCurrentData({});
-                      setAddModal({ type: "add", state: true });
-                    }}
                   >
                     Add User
                   </button>
@@ -143,6 +150,19 @@ function Users() {
         </div>
       </div>
 
+      <Modal
+        size="xl"
+        show={viewModal}
+        centered
+        onHide={() => setViewModal(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>View Profile</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ViewUser />
+        </Modal.Body>
+      </Modal>
       <Modal
         size="sm"
         show={deleteModal}
