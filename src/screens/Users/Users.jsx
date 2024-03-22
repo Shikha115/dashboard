@@ -7,11 +7,13 @@ import { USER_DATA } from "../../store/staticData";
 import { FaEye } from "react-icons/fa";
 import Modal from "react-bootstrap/Modal";
 import { CiSearch, CiWarning } from "react-icons/ci";
+import ViewUser from "./ViewUser";
 
 function Users() {
   const { users, getAllUsers, setSelectedUser } = useDataStore();
   const [isLoading, setIsLoading] = useState(true);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [viewModal, setViewModal] = useState(false);
 
   const columns = [
     {
@@ -53,11 +55,24 @@ function Users() {
           </Link>
           <Link
             className="btn btn-warning"
-            to="/users/view"
-            onClick={() => setSelectedUser(row)}
+            // to="/users/view"
+            // onClick={() => setSelectedUser(row)}
+            onClick={() => {
+              setSelectedUser(row);
+              setViewModal(true);
+            }}
           >
             <FaEye className="fs-18" />
           </Link>
+          {row?.lead_settlement.length > 0 ? (
+            <Link
+              className="btn btn-warning "
+              to="/users/view"
+              onClick={() => setSelectedUser(row)}
+            >
+              <p>ghfhg</p>
+            </Link>
+          ) : null}
           <Link
             className="btn btn-pink"
             to="#"
@@ -89,7 +104,7 @@ function Users() {
             <div className="manage-bank">
               <div className="page-title-box">
                 <div className="page-title-right">
-                <div className="app-search">
+                  <div className="app-search">
                     <form>
                       <div className="input-group">
                         <input
@@ -103,7 +118,11 @@ function Users() {
                       </div>
                     </form>
                   </div>
-                  <Link to="/users/add" className="btn btn-primary">
+                  <Link
+                    // to="/users/add"
+                    onClick={() => setViewModal(true)}
+                    className="btn btn-primary"
+                  >
                     Add User
                   </Link>
                 </div>
@@ -120,6 +139,19 @@ function Users() {
         </div>
       </div>
 
+      <Modal
+        size="xl"
+        show={viewModal}
+        centered
+        onHide={() => setViewModal(false)}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>View Profile</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ViewUser />
+        </Modal.Body>
+      </Modal>
       <Modal
         size="sm"
         show={deleteModal}
