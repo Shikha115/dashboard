@@ -14,8 +14,6 @@ function Users() {
   const [isLoading, setIsLoading] = useState(true);
   const [deleteModal, setDeleteModal] = useState(false);
   const [viewModal, setViewModal] = useState(false);
-  const [addModal, setAddModal] = useState({ type: "", state: false });
-  const [currentData, setCurrentData] = useState(null);
 
   const columns = [
     {
@@ -47,21 +45,23 @@ function Users() {
       name: "Wallet",
       selector: (row) => row.wallet,
     },
+    {
+      name: "Settlement",
+      cell: (row) =>
+        row?.lead_settlement.length > 0 ? (
+          <Link className="btn btn-info" onClick={() => setSelectedUser(row)}>
+            Settle
+          </Link>
+        ) : null,
+    },
 
     {
       name: "Action",
       cell: (row) => (
         <div className="custom-table-btn">
-          <button
-            className="btn btn-purple"
-            onClick={() => {
-              setAddModal({ type: "edit", state: true });
-              setCurrentData(row);
-              console.log(row, "row");
-            }}
-          >
+          <Link className="btn btn-purple" to="/users/add">
             <MdEdit className="fs-18" />
-          </button>
+          </Link>
           <Link
             className="btn btn-warning"
             // to="/users/view"
@@ -73,12 +73,13 @@ function Users() {
           >
             <FaEye className="fs-18" />
           </Link>
-          <button
+          <Link
             className="btn btn-pink"
+            to="#"
             onClick={() => setDeleteModal(true)}
           >
             <MdDelete className="fs-18" />
-          </button>
+          </Link>
         </div>
       ),
     },
@@ -94,18 +95,6 @@ function Users() {
       clearTimeout(timer);
     };
   }, []);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (addModal.type === "add") {
-      AddData();
-    } else {
-      UpdateData();
-    }
-  };
-
-  const AddData = async () => {};
-  const UpdateData = async () => {};
 
   return (
     <>
@@ -129,13 +118,13 @@ function Users() {
                       </div>
                     </form>
                   </div>
-                  <button
+                  {/* <Link
                     // to="/users/add"
                     onClick={() => setViewModal(true)}
                     className="btn btn-primary"
                   >
                     Add User
-                  </button>
+                  </Link> */}
                 </div>
                 <h4 className="page-title">Users</h4>
               </div>
@@ -184,248 +173,6 @@ function Users() {
             Continue
           </button>
         </Modal.Body>
-      </Modal>
-      <Modal
-        size="lg"
-        scrollable
-        show={addModal.state}
-        centered
-        onHide={() =>
-          setAddModal((prev) => {
-            return { ...prev, state: false };
-          })
-        }
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>
-            {addModal.type === "add" ? "Add" : "Edit"} User
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <form className="row">
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Name</label>
-              <input
-                type="text"
-                className="form-control"
-                defaultValue={addModal.type === "edit" ? currentData?.name : ""}
-              />
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Profile Image</label>
-              <input
-                type="file"
-                className="form-control"
-                // defaultValue={
-                //   addModal.type === "edit" ? currentData?.profile_image : ""
-                // }
-              />
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Email</label>
-              <input
-                type="email"
-                className="form-control"
-                defaultValue={
-                  addModal.type === "edit" ? currentData?.email : ""
-                }
-              />
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Phone no.</label>
-              <input
-                type="number"
-                className="form-control"
-                defaultValue={
-                  addModal.type === "edit" ? currentData?.phone : ""
-                }
-              />
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Address</label>
-              <input
-                type="text"
-                className="form-control"
-                defaultValue={
-                  addModal.type === "edit" ? currentData?.address : ""
-                }
-              />
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">DOB</label>
-              <input
-                type="date"
-                className="form-control"
-                defaultValue={addModal.type === "edit" ? currentData?.dob : ""}
-              />
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Type</label>
-              <select className="form-select" defaultValue={currentData?.type}>
-                <option value="1">Agent</option>
-                <option value="2">Manager</option>
-              </select>
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Gender</label>
-              <select
-                className="form-select"
-                defaultValue={currentData?.gender}
-              >
-                <option value="1">Male</option>
-                <option value="2">Female</option>
-              </select>
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Pan no</label>
-              <input
-                type="text"
-                className="form-control"
-                defaultValue={
-                  addModal.type === "edit" ? currentData?.pan_no : ""
-                }
-              />
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Pan Image</label>
-              <input
-                type="file"
-                className="form-control"
-                // defaultValue={
-                //   addModal.type === "edit" ? currentData?.pan_image : ""
-                // }
-              />
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Occupation</label>
-              <input
-                type="text"
-                className="form-control"
-                defaultValue={
-                  addModal.type === "edit" ? currentData?.occupation : ""
-                }
-              />
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Work Experience</label>
-              <input
-                type="text"
-                className="form-control"
-                defaultValue={
-                  addModal.type === "edit" ? currentData?.work_experience : ""
-                }
-              />
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Income</label>
-              <input
-                type="text"
-                className="form-control"
-                defaultValue={
-                  addModal.type === "edit" ? currentData?.income : ""
-                }
-              />
-            </div>
-            {addModal.type === "edit" ? (
-              currentData?.bank_details?.map((item, i) => {
-                return (
-                  <>
-                    <div className="col-12 col-md-6 mb-3">
-                      <label className="form-label">Bank Name</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        defaultValue={item?.bank_name}
-                      />
-                    </div>
-                    <div className="col-12 col-md-6 mb-3">
-                      <label className="form-label">Account No.</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        defaultValue={item?.account_no}
-                      />
-                    </div>
-                    <div className="col-12 col-md-6 mb-3">
-                      <label className="form-label">IFSC Code</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        defaultValue={item?.bank_ifsc}
-                      />
-                    </div>
-                    <div className="col-12 col-md-6 mb-3">
-                      <label className="form-label">Cancelled Check</label>
-                      <input
-                        type="file"
-                        className="form-control"
-                        // defaultValue={
-                        //   addModal.type === "edit"
-                        //     ? item?.cancelled_check
-                        //     : ""
-                        // }
-                      />
-                    </div>
-                    <div className="col-12 col-md-6 mb-3">
-                      <label className="form-label">Bank Passbook</label>
-                      <input
-                        type="file"
-                        className="form-control"
-                        // defaultValue={
-                        //   addModal.type === "edit"
-                        //     ? item?.bank_passbook
-                        //     : ""
-                        // }
-                      />
-                    </div>
-                  </>
-                );
-              })
-            ) : (
-              <>
-                <div className="col-12 col-md-6 mb-3">
-                  <label className="form-label">Bank Name</label>
-                  <input type="text" className="form-control" />
-                </div>
-                <div className="col-12 col-md-6 mb-3">
-                  <label className="form-label">Account No.</label>
-                  <input type="text" className="form-control" />
-                </div>
-                <div className="col-12 col-md-6 mb-3">
-                  <label className="form-label">IFSC Code</label>
-                  <input type="text" className="form-control" />
-                </div>
-                <div className="col-12 col-md-6 mb-3">
-                  <label className="form-label">Cancelled Check</label>
-                  <input type="file" className="form-control" />
-                </div>
-                <div className="col-12 col-md-6 mb-3">
-                  <label className="form-label">Bank Passbook</label>
-                  <input type="file" className="form-control" />
-                </div>
-              </>
-            )}
-          </form>
-        </Modal.Body>
-        <Modal.Footer>
-          <button
-            className="btn btn-secondary"
-            onClick={() =>
-              setAddModal((prev) => {
-                return { ...prev, state: false };
-              })
-            }
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="btn btn-primary"
-            onClick={handleSubmit}
-          >
-            {addModal.type === "add" ? "Add" : "Edit"}
-          </button>
-        </Modal.Footer>
       </Modal>
     </>
   );

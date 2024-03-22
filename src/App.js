@@ -30,9 +30,12 @@ import { useEffect } from "react";
 import useDataStore from "./store/dataStore";
 import ManageCategory from "./screens/ManageCategory";
 import ToastComponent from "./components/ToastComponent";
+import Location from "./components/Location";
+import Loader from "./components/Loader";
 
 function App() {
-  const { getProfileWeb, loading, setLoading,showToast,setShowToast } = useAuthStore();
+  const { getProfileWeb, loading, setLoading, showToast, setShowToast } =
+    useAuthStore();
   const { getAllBank } = useDataStore();
 
   useEffect(() => {
@@ -50,14 +53,15 @@ function App() {
     setLoading(false);
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  // if (loading) {
+  //   return <Loader />;
+  // }
   return (
     <>
       <ToastComponent />
       <BrowserRouter>
         <section className="wrapper">
+          <Location />
           <Routes>
             <Route
               path="/"

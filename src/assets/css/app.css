@@ -16256,7 +16256,7 @@ html[data-sidenav-size="full"]:not([data-layout="topnav"]).sidebar-enable
     margin: 0 auto;
     -webkit-box-shadow: var(--tz-box-shadow);
     box-shadow: var(--tz-box-shadow);
-    max-width: 1300px;
+    /* max-width: 1300px; */
     background-color: var(--tz-body-bg);
   }
 }
@@ -19223,13 +19223,71 @@ html[data-bs-theme="dark"] .auth-brand .logo-dark {
 }
 
 .profile-user-img img {
-  position: absolute;
+  /* position: absolute;
   top: -56px;
   border: 3px solid var(--tz-border-color);
   -webkit-box-shadow: 2px 6px 30px -15px #212529;
-  box-shadow: 2px 6px 30px -15px #212529;
+  box-shadow: 2px 6px 30px -15px #212529; */
+  object-fit: cover;
 }
 
+.user-bank-img .btn:hover + img {
+  display: block;
+}
+
+.user-bank-img img {
+  position: absolute;
+  height: 200px;
+  width: 50%;
+  object-fit: contain;
+  background: #fff;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  display: none;
+  z-index: 9;
+  margin-bottom: 5px;
+}
+
+.user-bank-img {
+  position: relative;
+}
+
+.view-user .img-thumbnail {
+  background-color: #fff;
+}
+
+.view-user-basic-detail {
+  height: 250px;
+}
+
+ul.view-user-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  column-gap: 1pc;
+  margin: 0;
+  padding: 0;
+}
+
+ul.view-user-list li {
+  border-bottom: 1px solid #eee;
+  padding: 10px 0;
+  min-width: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1pc;
+}
+
+ul.view-user-list li:last-child {
+  border: 0;
+}
+.view-user .card-body {
+  background-color: #eaf1f333;
+}
 .profile-content .nav-underline .nav-item .nav-link {
   color: var(--tz-secondary-color);
   font-weight: 600;
@@ -21781,6 +21839,7 @@ span.flatpickr-weekday,
 }
 .rdt_Table {
   padding: 1pc;
+  overflow-x: scroll;
 }
 
 .rdt_TableCol {
@@ -21934,7 +21993,6 @@ span.flatpickr-weekday,
   margin: 1pc;
 }
 .toast {
-
   color: #fff;
   --tz-toast-max-width: 250px;
   position: relative;
@@ -21946,7 +22004,7 @@ span.flatpickr-weekday,
   position: absolute;
   height: 3px;
   width: 0%;
-  
+
   background: #ffffff75;
   animation: line-animation 2.6s linear 0s;
 }
@@ -21991,19 +22049,18 @@ span.flatpickr-weekday,
   background-size: 11px;
 }
 
-
 .update-img img {
-    height: 70px;
-    width: 70px;
-    background: #fff;
-    padding: 3px;
-    border: 1px solid #00000030;
-    border-radius: 2px;
+  height: 70px;
+  width: 70px;
+  background: #fff;
+  padding: 3px;
+  border: 1px solid #00000030;
+  border-radius: 2px;
 }
 
 .update-img {
-    margin-top: 7px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
+  margin-top: 7px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
 }
