@@ -56,6 +56,17 @@ function Users() {
           </Link>
         ) : null,
     },
+    {
+      name: "Approved",
+      cell: (row) =>
+        row?.isProfileVerified ? (
+          <h4>Verification</h4>
+        ) : (
+          <Link className="btn btn-info" onClick={() => setSelectedUser(row)}>
+            Approve Advisor
+          </Link>
+        ),
+    },
 
     {
       name: "Action",
