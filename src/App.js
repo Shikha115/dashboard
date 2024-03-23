@@ -32,10 +32,17 @@ import ManageCategory from "./screens/ManageCategory";
 import ToastComponent from "./components/ToastComponent";
 import Location from "./components/Location";
 import Loader from "./components/Loader";
+import Delete from "./screens/Delete";
+import AccountDelete from "./screens/Authentication/AccountDelete";
 
 function App() {
-  const { getProfileWeb, loading, setLoading, showToast, setShowToast } =
-    useAuthStore();
+  const {
+    getProfileWeb,
+    loading,
+    setLoading,
+    showToast,
+    setShowToast,
+  } = useAuthStore();
   const { getAllBank } = useDataStore();
 
   useEffect(() => {
@@ -69,6 +76,7 @@ function App() {
               exact
             />
             <Route path="/login" element={<Login />} />
+            <Route path={`/account-delete`} element={<AccountDelete />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/logout" element={<Logout />} />
@@ -78,7 +86,7 @@ function App() {
                 <ProtectedRoute
                   path="/manage-bank"
                   Component={ManageBank}
-                  header={true}
+                  header={false}
                 />
               }
             />
@@ -236,6 +244,16 @@ function App() {
                 <ProtectedRoute
                   path="/users/view"
                   Component={ViewUser}
+                  header={true}
+                />
+              }
+            />
+            <Route
+              path="/delete"
+              element={
+                <ProtectedRoute
+                  path="/delete"
+                  Component={Delete}
                   header={true}
                 />
               }
