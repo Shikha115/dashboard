@@ -26,7 +26,7 @@ import AddUser from "./screens/Users/AddUser";
 import ViewUser from "./screens/Users/ViewUser";
 import Logout from "./screens/Authentication/Logout";
 import useAuthStore from "./store/authStore";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import useDataStore from "./store/dataStore";
 import ManageCategory from "./screens/ManageCategory";
 import ToastComponent from "./components/ToastComponent";
@@ -42,11 +42,21 @@ function App() {
     setLoading,
     showToast,
     setShowToast,
+    defaultSidebar,
+    setDefaultSidebar,
   } = useAuthStore();
   const { getAllBank } = useDataStore();
 
   useEffect(() => {
     getData();
+    console.log(defaultSidebar, "defaultSidebar");
+  }, []);
+
+  useLayoutEffect(() => {
+    console.log(window.innerWidth, "window.innerWidth");
+    if (window.innerWidth < 768) {
+      setDefaultSidebar("condensed");
+    }
   }, []);
 
   const getData = async () => {
@@ -67,7 +77,7 @@ function App() {
     <>
       <ToastComponent />
       <BrowserRouter>
-        <section className="wrapper">
+        <section className="wrapper" id={defaultSidebar ? defaultSidebar : ""}>
           <Location />
           <Routes>
             <Route
