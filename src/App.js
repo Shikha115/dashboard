@@ -32,8 +32,8 @@ import ManageCategory from "./screens/ManageCategory";
 import ToastComponent from "./components/ToastComponent";
 import Location from "./components/Location";
 import Loader from "./components/Loader";
-import Delete from "./screens/Delete";
-import AccountDelete from "./screens/Authentication/AccountDelete";
+
+import RemoveAccount from "./screens/RemoveAccount";
 
 function App() {
   const {
@@ -86,7 +86,7 @@ function App() {
               exact
             />
             <Route path="/login" element={<Login />} />
-            <Route path={`/account-delete`} element={<AccountDelete />} />
+            <Route path={`/delete-account`} element={<RemoveAccount />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/logout" element={<Logout />} />
@@ -231,7 +231,6 @@ function App() {
               }
             />
             <Route path="/my-leads" element={<MyLeads />} />
-            <Route path="/delete-account" element={<MyLeads />} />
             <Route
               path="/users"
               element={
@@ -254,16 +253,6 @@ function App() {
                 <ProtectedRoute
                   path="/users/view"
                   Component={ViewUser}
-                  header={true}
-                />
-              }
-            />
-            <Route
-              path="/delete"
-              element={
-                <ProtectedRoute
-                  path="/delete"
-                  Component={Delete}
                   header={true}
                 />
               }
