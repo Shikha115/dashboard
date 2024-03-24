@@ -1,3 +1,5 @@
+import { images } from "../components/Images";
+
 export const BANK_DATA = [
   {
     id: 1,
@@ -449,5 +451,13 @@ export const USER_DATA = [
     dob: "1707108360000",
     type: "Agent",
     wallet: "8900",
+  },
+];
+export const NOTIFICATION_DATA = [
+  {
+    title: "Sahaj Arya",
+    message: "sahajk3@gmail.comm",
+    image:images.logo,
+    token: "1707108360000",
   },
 ];

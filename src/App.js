@@ -34,6 +34,7 @@ import Location from "./components/Location";
 import Loader from "./components/Loader";
 
 import RemoveAccount from "./screens/RemoveAccount";
+import Notification from "./screens/Notification";
 
 function App() {
   const {
@@ -253,6 +254,16 @@ function App() {
                 <ProtectedRoute
                   path="/users/view"
                   Component={ViewUser}
+                  header={true}
+                />
+              }
+            />
+            <Route
+              path="/notification"
+              element={
+                <ProtectedRoute
+                  path="/notification"
+                  Component={Notification}
                   header={true}
                 />
               }

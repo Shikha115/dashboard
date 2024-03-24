@@ -80,6 +80,13 @@ function Sidebar() {
       isActive: false,
       link: "/delete-account",
     },
+    {
+      icon: <FaUsers />,
+      category: "Notification",
+      subcategory: [],
+      isActive: false,
+      link: "/notification",
+    },
   ]);
 
   let handleDropdown = (i) => {
