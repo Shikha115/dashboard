@@ -5,7 +5,7 @@ import DataTable from "react-data-table-component";
 import { NOTIFICATION_DATA } from "../store/staticData";
 
 function Notification() {
-  const [showModal, setShowModal] = useState(false);
+  const [addModal, setAddModal] = useState({ type: "", state: false });
   const [isLoading, setIsLoading] = useState(true);
   const [currentRow, setCurrentRow] = useState({});
 
@@ -34,6 +34,10 @@ function Notification() {
       ),
     },
     {
+      name: "Type",
+      selector: (row) => row.type,
+    },
+    {
       name: "Token",
       selector: (row) => row.token,
     },
@@ -43,7 +47,7 @@ function Notification() {
         <button
           className="btn btn-info"
           onClick={() => {
-            setShowModal(true);
+            setAddModal({ type: "edit", state: true });
             setCurrentRow(row);
           }}
         >
@@ -65,6 +69,11 @@ function Notification() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (addModal.type === "add") {
+      // AddData();
+    } else {
+      // UpdateData();
+    }
   };
 
   return (
@@ -89,12 +98,15 @@ function Notification() {
                       </div>
                     </form>
                   </div>
-                  {/* <button
-                className="btn btn-primary"
-           
-              >
-                Add Savings Account
-              </button> */}
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => {
+                      setCurrentRow({});
+                      setAddModal({ type: "add", state: true });
+                    }}
+                  >
+                    Add
+                  </button>
                 </div>
                 <h4 className="page-title">Notification</h4>
               </div>
@@ -111,12 +123,20 @@ function Notification() {
       <Modal
         size="lg"
         scrollable
-        show={showModal}
+        show={addModal.state}
         centered
-        onHide={() => setShowModal(false)}
+        onHide={() =>
+          setAddModal((prev) => {
+            return { ...prev, state: false };
+          })
+        }
       >
         <Modal.Header closeButton>
-          <Modal.Title>Send Notification</Modal.Title>
+          <Modal.Title>
+            {addModal.type === "edit"
+              ? "Send Notification"
+              : "Create a Template"}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form className="row">
@@ -125,7 +145,7 @@ function Notification() {
               <input
                 type="text"
                 className="form-control"
-                defaultValue={currentRow.title}
+                defaultValue={addModal.type === "edit" ? currentRow?.title : ""}
               />
             </div>
             <div className="col-12 col-lg-6 mb-2">
@@ -133,18 +153,10 @@ function Notification() {
               <input
                 type="text"
                 className="form-control"
-                defaultValue={currentRow.token}
+                defaultValue={addModal.type === "edit" ? currentRow.token : ""}
               />
             </div>
-            <div className="col-12 mb-2">
-              <label className="form-label">Message</label>
-              <input
-                type="text"
-                className="form-control"
-                defaultValue={currentRow.message}
-              />
-            </div>
-            <div className="col-12">
+            <div className="col-12 col-lg-6 mb-2">
               <label className="form-label">Upload Image</label>
               <input
                 type="file"
@@ -153,12 +165,37 @@ function Notification() {
                 // default={currentRow.image}
               />
             </div>
+            <div className="col-12 col-lg-6 mb-2">
+              <label className="form-label">Type</label>
+              <select
+                className="form-select"
+                defaultValue={addModal.type === "edit" ? currentRow?.type : ""}
+              >
+                <option value="1">Message</option>
+                <option value="2">Email</option>
+              </select>
+            </div>
+
+            <div className="col-12 mb-2">
+              <label className="form-label">Message</label>
+              <input
+                type="text"
+                className="form-control"
+                defaultValue={
+                  addModal.type === "edit" ? currentRow.message : ""
+                }
+              />
+            </div>
           </form>
         </Modal.Body>
         <Modal.Footer>
           <button
             className="btn btn-secondary"
-            onClick={() => setShowModal(false)}
+            onClick={() =>
+              setAddModal((prev) => {
+                return { ...prev, state: false };
+              })
+            }
           >
             Cancel
           </button>

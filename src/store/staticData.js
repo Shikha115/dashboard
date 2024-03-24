@@ -457,7 +457,8 @@ export const NOTIFICATION_DATA = [
   {
     title: "Sahaj Arya",
     message: "sahajk3@gmail.comm",
-    image:images.logo,
+    image: images.logo,
     token: "1707108360000",
+    type: "Email",
   },
 ];
