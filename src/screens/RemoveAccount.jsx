@@ -1,55 +1,26 @@
 import React, { useState } from "react";
 import { images } from "../components/Images";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
-
-// Define styled components
-const FormContainer = styled.div`
-  display: flex;
-  flex-direction: column; /* Stack items vertically */
-  margin-bottom: 8px;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Input = styled.input`
-  width: calc(50% - 16px); /* Half width with margin subtracted */
-  box-sizing: border-box;
-  margin-bottom: 8px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-  &:focus {
-    outline: none;
-    border-color: #007bff; /* Change border color on focus */
-    box-shadow: 0 0 4px rgba(0, 123, 255, 0.6); /* Change box shadow on focus */
-  }
-`;
-const StyledButton = styled.button`
-  background-color: #007bff; /* Primary color */
-  color: #fff; /* Text color */
-  font-weight: 600; /* Semi-bold */
-  padding: 8px 16px; /* Padding */
-  border: none; /* No border */
-  border-radius: 5px; /* Rounded corners */
-  cursor: pointer; /* Cursor style */
-  transition: background-color 0.3s ease; /* Smooth transition for background color */
-  margin-top: 30px;
-
-  &:hover {
-    background-color: #0056b3; /* Darker shade of primary color on hover */
-  }
-`;
+import useAuthStore from "../store/authStore";
 
 function RemoveAccount() {
   const [confirm, setConfirm] = useState(true);
   const [email, setEmail] = useState();
   const [phone, setPhone] = useState();
 
-  const onSubmit = async () => {
+  const { setToastData, setShowToast } = useAuthStore();
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
     setConfirm(false);
+    setShowToast(true);
+    setToastData({
+      color: "#3fba4f",
+      message: `Verification Email sended successfully`,
+    });
+    setTimeout(() => {
+      setShowToast(false);
+    }, 2650);
   };
 
   return (
@@ -77,35 +48,37 @@ function RemoveAccount() {
                   <p className="fs-16 fw-semibold text-dark mb-3">
                     To confirm deletion, provide your email and phone number
                   </p>
-                  <FormContainer>
-                    <Input
-                      type="tel"
-                      placeholder="Enter phone number"
-                      required
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                    />
-                    <Input
-                      maxLength={10}
-                      type="email"
-                      placeholder="Enter email address"
-                      required
-                      onChange={(e) => setEmail(e.target.value)}
-                      value={email}
-                    />
-                    <div className="d-flex gap-2 justify-content-center">
-                      <StyledButton
-                        // className="btn btn-primary fw-semibold"
-                        type="submit"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          onSubmit();
-                        }}
-                      >
-                        Confirm deletion
-                      </StyledButton>
+                  <form
+                    action="#"
+                    onSubmit={onSubmit}
+                    className="row justify-content-center"
+                  >
+                    <div className="col-12 col-lg-8 mb-1">
+                      <input
+                        type="email"
+                        className="form-control"
+                        placeholder="Enter email address"
+                        required
+                        onChange={(e) => setEmail(e.target.value)}
+                        value={email}
+                      />
                     </div>
-                  </FormContainer>
+                    <div className="col-12 col-lg-8 mb-3">
+                      <input
+                        type="number"
+                        className="form-control"
+                        placeholder="Enter phone number"
+                        required
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                      />
+                    </div>
+                    <div className="col-12">
+                      <button type="submit" className="btn btn-primary">
+                        Confirm deletion
+                      </button>
+                    </div>
+                  </form>
                 </div>
               ) : (
                 <div className="card overflow-hidden text-center bg-opacity-25 p-4">
@@ -117,17 +90,14 @@ function RemoveAccount() {
                       <img src={images.logo_dark} alt="dark logo" height={22} />
                     </Link>
                   </div>
-                  <h2 className="text-dark my-2">Congratulations</h2>
+                  <h2 className="text-dark my-2">Email Sent</h2>
                   <p className="text-muted mb-3">
-                    Congratulations, your account has been successfuly
-                    deleted.Hope to see you back.
+                    A Verification email has been sended to you, kindly verify
+                    that email for successfull deletion
                   </p>
-                  <Link
-                    className="btn btn-primary fw-semibold mx-auto"
-                    to="/register"
-                  >
-                    Register Again
-                  </Link>
+                  <button className="btn btn-primary fw-semibold mx-auto">
+                    Check your mail
+                  </button>
                 </div>
               )}
             </div>
