@@ -97,7 +97,7 @@ function App() {
                 <ProtectedRoute
                   path="/manage-bank"
                   Component={ManageBank}
-                  header={false}
+                  header={true}
                 />
               }
             />
