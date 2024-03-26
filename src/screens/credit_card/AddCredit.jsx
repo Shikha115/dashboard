@@ -64,7 +64,6 @@ function AddCredit() {
   };
 
   return (
-    <div className="content-page">
       <div className="content">
         <div className="container-fluid">
           <div className="add-credit">
@@ -219,7 +218,6 @@ function AddCredit() {
           </div>
         </div>
       </div>
-    </div>
   );
 }
 

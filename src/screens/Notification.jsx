@@ -78,7 +78,6 @@ function Notification() {
 
   return (
     <>
-      <div className="content-page">
         <div className="content">
           <div className="container-fluid">
             <div className="manage-bank">
@@ -119,7 +118,6 @@ function Notification() {
             </div>
           </div>
         </div>
-      </div>
       <Modal
         size="lg"
         scrollable

@@ -151,7 +151,6 @@ function ManageLoan() {
 
   return (
     <>
-      <div className="content-page">
         <div className="content">
           <div className="container-fluid">
             <div className="manage-bank">
@@ -190,7 +189,6 @@ function ManageLoan() {
             </div>
           </div>
         </div>
-      </div>
       <Modal
         size="sm"
         show={deleteModal}

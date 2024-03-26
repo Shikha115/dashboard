@@ -78,7 +78,7 @@ function App() {
     <>
       <ToastComponent />
       <BrowserRouter>
-        <section className="wrapper" id={defaultSidebar ? defaultSidebar : ""}>
+        <section className={`wrapper ${loading?'overflow-hidden':''}`} id={defaultSidebar ? defaultSidebar : ""}>
           <Location />
           <Routes>
             <Route
