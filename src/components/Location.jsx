@@ -16,7 +16,7 @@ function Location() {
       setLoading(false);
     }, 700);
   }, [location.pathname]);
-  return loading && <Loader />;
+  // return loading && <Loader />;
 }
 
 export default Location;

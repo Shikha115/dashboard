@@ -7,7 +7,6 @@ function AddSaving() {
   const [description, setDescription] = useState("");
 
   return (
-    <div className="content-page">
       <div className="content">
         <div className="container-fluid">
           <div className="add-credit">
@@ -89,7 +88,6 @@ function AddSaving() {
           </div>
         </div>
       </div>
-    </div>
   );
 }
 

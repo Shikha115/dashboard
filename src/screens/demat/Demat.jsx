@@ -146,7 +146,6 @@ function Demat() {
 
   return (
     <>
-      <div className="content-page">
         <div className="content">
           <div className="container-fluid">
             <div className="manage-bank">
@@ -185,7 +184,6 @@ function Demat() {
             </div>
           </div>
         </div>
-      </div>
       <Modal
         size="sm"
         show={deleteModal}

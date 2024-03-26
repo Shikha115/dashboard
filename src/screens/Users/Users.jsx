@@ -111,7 +111,6 @@ function Users() {
 
   return (
     <>
-      <div className="content-page">
         <div className="content">
           <div className="container-fluid">
             <div className="manage-bank">
@@ -150,7 +149,6 @@ function Users() {
             </div>
           </div>
         </div>
-      </div>
 
       {/* view */}
       <Modal

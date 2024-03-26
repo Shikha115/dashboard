@@ -208,7 +208,6 @@ function Lead() {
   }, []);
 
   return (
-    <div className="content-page">
       <div className="content">
         <div className="container-fluid">
           <div className="manage-bank">
@@ -281,7 +280,6 @@ function Lead() {
           </div>
         </div>
       </div>
-    </div>
   );
 }
 

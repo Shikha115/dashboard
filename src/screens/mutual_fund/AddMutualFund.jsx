@@ -7,7 +7,6 @@ function AddMutualFund() {
   const [description, setDescription] = useState("");
 
   return (
-    <div className="content-page">
       <div className="content">
         <div className="container-fluid">
           <div className="add-credit">
@@ -103,7 +102,6 @@ function AddMutualFund() {
           </div>
         </div>
       </div>
-    </div>
   );
 }
 
