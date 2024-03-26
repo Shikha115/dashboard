@@ -10,14 +10,11 @@ import useAuthStore from "../store/authStore";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
-  const {
-    defaultSidebar,
-    setDefaultSidebar
-  } = useAuthStore();
+  const { defaultSidebar, setDefaultSidebar } = useAuthStore();
 
   const handleToggle = () => {
     const val = defaultSidebar == "default" ? "condensed" : "default";
-    setDefaultSidebar(val)
+    setDefaultSidebar(val);
   };
 
   return (
@@ -416,17 +413,7 @@ function Navbar() {
 
                 <Link to="pages-profile.html" className="dropdown-item">
                   <i className="ri-settings-4-line fs-18 align-middle me-1" />
-                  <span>Settings</span>
-                </Link>
-
-                <Link to="pages-faq.html" className="dropdown-item">
-                  <i className="ri-customer-service-2-line fs-18 align-middle me-1" />
-                  <span>Support</span>
-                </Link>
-
-                <Link to="auth-lock-screen.html" className="dropdown-item">
-                  <i className="ri-lock-password-line fs-18 align-middle me-1" />
-                  <span>Lock Screen</span>
+                  <span>Access</span>
                 </Link>
 
                 <Link
