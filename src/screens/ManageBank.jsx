@@ -5,16 +5,19 @@ import useDataStore from "../store/dataStore";
 import { MdDelete, MdEdit } from "react-icons/md";
 import Modal from "react-bootstrap/Modal";
 import { CiSearch, CiWarning } from "react-icons/ci";
+import ImageUpload from "../components/ImageUpload";
+import { images } from "../components/Images";
 
 function ManageBank() {
   const { bank, setBank, isLoading, setIsLoading } = useDataStore();
 
   const [deleteModal, setDeleteModal] = useState(false);
-  const [updateBank, setUpdateBank] = useState({
-    state: false,
-    currentRow: null,
+  const [addModal, setAddModal] = useState({ type: "", state: false });
+  const [currentData, setCurrentData] = useState(null);
+  const [imageData, setImageData] = useState({
+    type: addModal.type,
+    image: "",
   });
-  const [addBank, setAddBank] = useState(false);
   const addBankValue = useRef();
   const updateBankValue = useRef();
 
@@ -49,16 +52,19 @@ function ManageBank() {
       name: "Action",
       cell: (row) => (
         <div className="custom-table-btn">
-          <Link
+          <button
             className="btn btn-purple"
-            to="#"
             onClick={() => {
-              setUpdateBank({ state: true, currentRow: row });
+              setAddModal({ type: "edit", state: true });
+              setCurrentData(row);
+              setImageData((prev) => {
+                return { ...prev, image: "" };
+              });
               console.log(row, "update");
             }}
           >
             <MdEdit className="fs-18" />
-          </Link>
+          </button>
           <Link
             className="btn btn-pink"
             to="#"
@@ -71,32 +77,49 @@ function ManageBank() {
     },
   ];
 
-  const handleBankAdd = () => {
-    setAddBank(false);
-    const index = bank.length + 1;
-    const val = addBankValue.current.value;
-    // console.log(index, val, "info");
-    setBank([...bank, { id: index, bank: val }]);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (addModal.type === "add") {
+      AddData();
+    } else {
+      UpdateData();
+    }
   };
 
-  const handleBankUpdate = () => {
-    console.log(
-      updateBank.currentRow,
-      "editing",
-      updateBankValue.current.value
-    );
-    const currentRow = updateBank.currentRow;
-    const val = updateBankValue.current.value;
-    setUpdateBank((prev) => {
-      return { ...prev, state: false };
+  const getImage = (image) => {
+    setImageData((prev) => {
+      return { ...prev, image };
     });
-    const temp = bank.map((item, i) => {
-      if (item.id === currentRow) {
-        item.bank = val;
-      }
-      return item;
-    });
-    setBank([...temp]);
+    console.log(image, "image");
+    if (imageData.type == "edit") {
+      setCurrentData({ ...currentData, image });
+    }
+  };
+  const AddData = async () => {
+    // setAddBank(false);
+    // const index = bank.length + 1;
+    // const val = addBankValue.current.value;
+    // // console.log(index, val, "info");
+    // setBank([...bank, { id: index, bank: val }]);
+  };
+  const UpdateData = async () => {
+    // console.log(
+    //   updateBank.currentData,
+    //   "editing",
+    //   updateBankValue.current.value
+    // );
+    // const currentData = updateBank.currentData;
+    // const val = updateBankValue.current.value;
+    // setUpdateBank((prev) => {
+    //   return { ...prev, state: false };
+    // });
+    // const temp = bank.map((item, i) => {
+    //   if (item.id === currentData) {
+    //     item.bank = val;
+    //   }
+    //   return item;
+    // });
+    // setBank([...temp]);
   };
 
   const handleDelete = (e, id) => {
@@ -109,57 +132,65 @@ function ManageBank() {
 
   return (
     <>
-        <div className="content">
-          <div className="container-fluid">
-            <div className="manage-bank">
-              <div className="page-title-box">
-                <div className="page-title-right">
-                  <div className="app-search">
-                    <form>
-                      <div className="input-group">
-                        <input
-                          type="search"
-                          className="form-control"
-                          placeholder="Search..."
-                        />
-                        <span className="search-icon">
-                          <CiSearch className="text-muted" />
-                        </span>
-                      </div>
-                    </form>
-                  </div>
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={() => setAddBank(true)}
-                  >
-                    Add Bank Name
-                  </button>
+      <div className="content">
+        <div className="container-fluid">
+          <div className="manage-bank">
+            <div className="page-title-box">
+              <div className="page-title-right">
+                <div className="app-search">
+                  <form>
+                    <div className="input-group">
+                      <input
+                        type="search"
+                        className="form-control"
+                        placeholder="Search..."
+                      />
+                      <span className="search-icon">
+                        <CiSearch className="text-muted" />
+                      </span>
+                    </div>
+                  </form>
                 </div>
-                <h4 className="page-title">Manage Bank</h4>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => {
+                    setCurrentData({});
+                    setAddModal({ type: "add", state: true });
+                    setImageData((prev) => {
+                      return { ...prev, image: "" };
+                    });
+                  }}
+                >
+                  Add Bank Name
+                </button>
               </div>
-              <DataTable
-                // title="Movie List"
-                columns={columns}
-                data={bank}
-                progressPending={isLoading}
-                pagination
-              />
+              <h4 className="page-title">Manage Bank</h4>
             </div>
+            <DataTable
+              // title="Movie List"
+              columns={columns}
+              data={bank}
+              progressPending={isLoading}
+              pagination
+            />
           </div>
         </div>
+      </div>
       <Modal
         size="sm"
-        show={updateBank.state}
+        show={addModal.state}
         centered
         onHide={() =>
-          setUpdateBank((prev) => {
+          setAddModal((prev) => {
             return { ...prev, state: false };
           })
         }
       >
         <Modal.Header closeButton>
-          <Modal.Title>Update Bank Name</Modal.Title>
+          <Modal.Title>
+            {addModal.type === "add" ? "Add" : "Edit"} Bank Name
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form action="#" className="row">
@@ -169,22 +200,37 @@ function ManageBank() {
                 className="form-control"
                 type="email"
                 required=""
-                defaultValue={updateBank?.currentRow?.bank_name}
+                defaultValue={
+                  addModal.type === "edit" ? currentData?.bank_name : ""
+                }
               />
             </div>
             <div className="col-12 col-md-12">
               <label className="form-label">Upload Image</label>
-              <input
-                className="form-control"
-                type="file"
-                required=""
-                placeholder="Enter bank name"
-              />
-              {updateBank?.currentRow?.image && (
-                <div className="update-img">
-                  <img src={updateBank?.currentRow?.image} />
-                </div>
+              {addModal.type === "add" ? (
+                <ImageUpload
+                  img={
+                    imageData.image === ""
+                      ? images.imageUpload
+                      : imageData.image
+                  }
+                  purpose={addModal.type}
+                  getImage={getImage}
+                />
+              ) : addModal.type === "edit" ? (
+                <ImageUpload
+                  img={
+                    imageData.image === ""
+                      ? currentData?.image
+                      : imageData.image
+                  }
+                  purpose={addModal.type}
+                  getImage={getImage}
+                />
+              ) : (
+                ""
               )}
+              <img src={imageData.image} alt="" />
             </div>
           </form>
         </Modal.Body>
@@ -192,55 +238,15 @@ function ManageBank() {
           <button
             className="btn btn-secondary"
             onClick={() =>
-              setUpdateBank((prev) => {
+              setAddModal((prev) => {
                 return { ...prev, state: false };
               })
             }
           >
             Cancel
           </button>
-          <button className="btn btn-primary" onClick={handleBankUpdate}>
-            Update
-          </button>
-        </Modal.Footer>
-      </Modal>
-
-      <Modal size="sm" show={addBank} centered onHide={() => setAddBank(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Bank Name</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <form action="#" className="row">
-            <div className="col-12 col-md-12 mb-2">
-              <label className="form-label">Bank Name</label>
-              <input
-                className="form-control"
-                type="email"
-                required=""
-                placeholder="Enter bank name"
-                ref={addBankValue}
-              />
-            </div>
-            <div className="col-12 col-md-12">
-              <label className="form-label">Upload Image</label>
-              <input
-                className="form-control"
-                type="file"
-                required=""
-                placeholder="Enter bank name"
-              />
-            </div>
-          </form>
-        </Modal.Body>
-        <Modal.Footer>
-          <button
-            className="btn btn-secondary"
-            onClick={() => setAddBank(false)}
-          >
-            Cancel
-          </button>
-          <button className="btn btn-primary" onClick={handleBankAdd}>
-            Add
+          <button className="btn btn-primary" onClick={handleSubmit}>
+            {addModal.type === "add" ? "Add" : "Edit"}
           </button>
         </Modal.Footer>
       </Modal>

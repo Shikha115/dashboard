@@ -17,13 +17,14 @@ import avatar_7 from "../assets/images/users/avatar-7.jpg";
 import bg_profile from "../assets/images/bg-profile.jpg";
 import shield from "../assets/images/svg/shield.gif";
 import loader from "../assets/images/loader.gif";
+import imageUpload from "../assets/images/imageUpload.png";
 
 export const images = {
   logo_dark,
   bg_profile,
   logo_sm,loader,
   flag_italy,
-  auth_img,
+  auth_img,imageUpload,
   flag_us,shield,
   flag_spain,
   logo,
