@@ -21,6 +21,7 @@ export const apis = {
   verifyOTP: `${baseURL}/auth/verify-otp`,
   login: `${baseURL}/auth/login`,
   register: `${baseURL}/auth/register`,
+  accountDeletionRequest: `${baseURL}/auth/request-account-deletion`,
 
   getCategories: `${baseURL}/category/get-all-categories`,
   updateCategory: `${baseURL}/category/update-category`,
@@ -44,4 +45,6 @@ export const apis = {
   settleLeads: `${baseURL}/lead/settle-leads`,
 
   getAllBanks: `${baseURL}/bank/get-all-banks`,
+
+  multiNotification: `${baseURL}/notification/multi-notification`,
 };

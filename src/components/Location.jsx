@@ -9,7 +9,7 @@ function Location() {
   let location = useLocation();
 
   useEffect(() => {
-    console.log(location.pathname, "location");
+    // console.log(location.pathname, "location");
     setLoading(true);
     setCurrentPath(location.pathname);
     setTimeout(() => {
