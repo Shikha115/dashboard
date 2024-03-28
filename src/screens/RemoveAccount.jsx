@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { images } from "../components/Images";
 import { Link } from "react-router-dom";
 import useAuthStore from "../store/authStore";
-import  axios  from 'axios';
+import axios from "axios";
+import { apis } from "../utils/URL";
 
 function RemoveAccount() {
   const [confirm, setConfirm] = useState(true);
@@ -13,19 +14,37 @@ function RemoveAccount() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-
- axios.post()
-
+    if (!email) {
+      return;
+    }
+    if (!phone) {
+      return;
+    }
 
     setConfirm(false);
-    setShowToast(true);
-    setToastData({
-      color: "#3fba4f",
-      message: `Verification Email sended successfully`,
-    });
-    setTimeout(() => {
-      setShowToast(false);
-    }, 2650);
+    axios
+      .post(apis.accountDeletionRequest, { email, phone })
+      .then((e) => {
+        console.log(e);
+        setShowToast(true);
+        setToastData({
+          color: "#3fba4f",
+          message: `Verification email sent successfully`,
+        });
+        setTimeout(() => {
+          setShowToast(false);
+        }, 2000);
+      })
+      .catch((err) => {
+        setShowToast(true);
+        setToastData({
+          color: "red",
+          message: `Error occured`,
+        });
+        setTimeout(() => {
+          setShowToast(false);
+        }, 2000);
+      });
   };
 
   return (
@@ -99,12 +118,9 @@ function RemoveAccount() {
                   </div>
                   <h2 className="text-dark my-2">Email Sent</h2>
                   <p className="text-muted mb-3">
-                    A Verification email has been sended to you, kindly verify
-                    that email for successfull deletion
+                    An account deletion email has been sent to you, follow to
+                    continue deletion follow steps in the email
                   </p>
-                  <button className="btn btn-primary fw-semibold mx-auto">
-                    Check your mail
-                  </button>
                 </div>
               )}
             </div>

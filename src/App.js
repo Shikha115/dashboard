@@ -35,6 +35,7 @@ import Loader from "./components/Loader";
 
 import RemoveAccount from "./screens/RemoveAccount";
 import Notification from "./screens/Notification";
+import DeleteAccount from "./screens/DeleteAccount";
 
 function App() {
   const {
@@ -78,7 +79,10 @@ function App() {
     <>
       <ToastComponent />
       <BrowserRouter>
-        <section className={`wrapper ${loading?'overflow-hidden':''}`} id={defaultSidebar ? defaultSidebar : ""}>
+        <section
+          className={`wrapper ${loading ? "overflow-hidden" : ""}`}
+          id={defaultSidebar ? defaultSidebar : ""}
+        >
           <Location />
           <Routes>
             <Route
@@ -88,6 +92,7 @@ function App() {
             />
             <Route path="/login" element={<Login />} />
             <Route path={`/delete-account`} element={<RemoveAccount />} />
+            <Route path={`/delete-account/:id`} element={<DeleteAccount />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/logout" element={<Logout />} />
