@@ -18,7 +18,7 @@ function ImageUpload({ img, purpose, getImage }) {
             onChange={(e) => {
               if (e.target.files[0]) {
                 let image = URL.createObjectURL(e.target.files[0]);
-                console.log(image, "image");
+                console.log(e.target.files[0], "image");
                 getImage(image);
                 // setCurrentData({ ...currentData, image });
               }

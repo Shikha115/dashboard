@@ -6,6 +6,8 @@ import Modal from "react-bootstrap/Modal";
 import { CiSearch, CiWarning } from "react-icons/ci";
 import { apis } from "../../utils/URL";
 import axios from "axios";
+import ImageUpload from "../../components/ImageUpload";
+import { images } from "../../components/Images";
 
 function ManageCredit() {
   const [isLoading, setIsLoading] = useState(true);
@@ -14,6 +16,10 @@ function ManageCredit() {
   const [addModal, setAddModal] = useState({ type: "", state: false });
   const [currentData, setCurrentData] = useState(null);
   const { bank, getAllCategory } = useDataStore();
+  const [imageData, setImageData] = useState({
+    type: addModal.type,
+    image: "",
+  });
 
   const title = useRef(null);
   const bank_name = useRef(null);
@@ -36,6 +42,16 @@ function ManageCredit() {
       .post(apis.updateOfferStatus, { id, status })
       .then((e) => {})
       .catch((err) => {});
+  };
+
+  const getImage = (image) => {
+    setImageData((prev) => {
+      return { ...prev, image };
+    });
+    console.log(image, "image");
+    if (imageData.type == "edit") {
+      setCurrentData({ ...currentData, image });
+    }
   };
 
   const columns = [
@@ -67,29 +83,15 @@ function ManageCredit() {
       },
     },
     {
-      name: "Rank",
-      // selector: (row) => row.rank,
-      cell: (row) => (
-        <div>
-          <input
-            defaultValue={row?.rank}
-            type="number"
-            className="form-control"
-            // onChange={(e) => {
-            //   let val = e.target.value;
-            //   updateRank(row?._id, val);
-            //   row.status = val;
-            // }}
-          />
-        </div>
-      ),
-    },
-    {
       name: "Joining Fee",
       selector: (row) => row.joining_fees,
       style: {
         justifyContent: "center",
       },
+    },
+    {
+      name: "Earning",
+      selector: (row) => row.earning,
     },
     {
       name: "Status",
@@ -118,6 +120,7 @@ function ManageCredit() {
             onClick={() => {
               setAddModal({ type: "edit", state: true });
               setCurrentData(row);
+              console.log(row, "row");
             }}
           >
             <MdEdit className="fs-18" />
@@ -231,47 +234,47 @@ function ManageCredit() {
 
   return (
     <>
-        <div className="content">
-          <div className="container-fluid">
-            <div className="manage-bank">
-              <div className="page-title-box">
-                <div className="page-title-right">
+      <div className="content">
+        <div className="container-fluid">
+          <div className="manage-bank">
+            <div className="page-title-box">
+              <div className="page-title-right">
                 <div className="app-search">
-                    <form>
-                      <div className="input-group">
-                        <input
-                          type="search"
-                          className="form-control"
-                          placeholder="Search..."
-                        />
-                        <span className="search-icon">
-                          <CiSearch className="text-muted" />
-                        </span>
-                      </div>
-                    </form>
-                  </div>
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => {
-                      setCurrentData({});
-                      setAddModal({ type: "add", state: true });
-                    }}
-                  >
-                    Add Credit Card
-                  </button>
+                  <form>
+                    <div className="input-group">
+                      <input
+                        type="search"
+                        className="form-control"
+                        placeholder="Search..."
+                      />
+                      <span className="search-icon">
+                        <CiSearch className="text-muted" />
+                      </span>
+                    </div>
+                  </form>
                 </div>
-                <h4 className="page-title">Manage Credit Card</h4>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => {
+                    setCurrentData({});
+                    setAddModal({ type: "add", state: true });
+                  }}
+                >
+                  Add Credit Card
+                </button>
               </div>
-              <DataTable
-                // title="Movie List"
-                columns={columns}
-                data={credit}
-                progressPending={isLoading}
-                pagination
-              />
+              <h4 className="page-title">Manage Credit Card</h4>
             </div>
+            <DataTable
+              // title="Movie List"
+              columns={columns}
+              data={credit}
+              progressPending={isLoading}
+              pagination
+            />
           </div>
         </div>
+      </div>
       <Modal
         size="sm"
         show={deleteModal}
@@ -349,7 +352,7 @@ function ManageCredit() {
                   })}
               </select>
             </div>
-            {/* <div className="col-12 col-md-6 mb-3">
+            <div className="col-12 col-md-6 mb-3">
               <label className="form-label">
                 Card Type<span className="fs-17 text-danger">*</span>
               </label>
@@ -357,23 +360,9 @@ function ManageCredit() {
                 type="text"
                 className="form-control"
                 required
-                ref={card_type}
+                // ref={card_type}
                 defaultValue={
                   addModal.type === "edit" ? currentData?.card_type : ""
-                }
-              />
-            </div> */}
-            <div className="col-12 col-md-3 mb-3">
-              <label className="form-label">
-                Joining Fee<span className="fs-17 text-danger">*</span>
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                required
-                ref={join_fee}
-                defaultValue={
-                  addModal.type === "edit" ? currentData?.joining_fees : ""
                 }
               />
             </div>
@@ -390,7 +379,21 @@ function ManageCredit() {
                   addModal.type === "edit" ? currentData?.annual_fees : ""
                 }
               />
-            </div>{" "}
+            </div>
+            <div className="col-12 col-md-3 mb-3">
+              <label className="form-label">
+                Joining Fee<span className="fs-17 text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                required
+                ref={join_fee}
+                defaultValue={
+                  addModal.type === "edit" ? currentData?.joining_fees : ""
+                }
+              />
+            </div>
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">
                 Earning<span className="fs-17 text-danger">*</span>
@@ -405,34 +408,7 @@ function ManageCredit() {
                 }
               />
             </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">
-                Upload Card Image
-                <span className="fs-17 text-danger">*</span>
-              </label>
-              <input
-                type="file"
-                accept="image/*"
-                className="form-control"
-                required
-                ref={card_image}
-                // defaultValue={currentData?.image}
-                onChange={(e) => {
-                  if (e.target.files[0]) {
-                    let image = URL.createObjectURL(e.target.files[0]);
-                    // console.log(image, "hgf");
-                    setCurrentData({ ...currentData, image });
-                  }
-                }}
-              />
-              <img
-                defaultValue={currentData?.image}
-                src={currentData?.image}
-                alt="Selected"
-                width="50"
-                height={40}
-              />
-            </div>
+
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">
                 Apply Link<span className="fs-17 text-danger">*</span>
@@ -444,32 +420,6 @@ function ManageCredit() {
                 ref={apply_link}
                 defaultValue={
                   addModal.type === "edit" ? currentData?.apply_link : ""
-                }
-              />
-            </div>
-            <div className="col-12 col-md-6 mb-3 ">
-              <label className="form-label">
-                Rank<span className="fs-17 text-danger">*</span>
-              </label>
-              <input
-                type="number"
-                className="form-control"
-                required
-                ref={rank}
-                defaultValue={addModal.type === "edit" ? currentData?.rank : ""}
-              />
-            </div>
-            <div className="col-12 col-md-6 mb-3 ">
-              <label className="form-label">
-                Eligibility<span className="fs-17 text-danger">*</span>
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                required
-                ref={eligibility}
-                defaultValue={
-                  addModal.type === "edit" ? currentData?.desc?.eligibility : ""
                 }
               />
             </div>
@@ -492,7 +442,7 @@ function ManageCredit() {
             </div>
             <div className="col-12 col-md-6 mb-3 ">
               <label className="form-label">
-                Documents<span className="fs-17 text-danger">*</span>
+                How to process<span className="fs-17 text-danger">*</span>
               </label>
               <textarea
                 type="text"
@@ -505,6 +455,77 @@ function ManageCredit() {
                     : ""
                 }
               />
+            </div>
+            <div className="col-12 col-md-6 mb-3 ">
+              <label className="form-label">
+                Who can apply<span className="fs-17 text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                required
+                ref={eligibility}
+                defaultValue={
+                  addModal.type === "edit" ? currentData?.desc?.eligibility : ""
+                }
+              />
+            </div>
+            <div className="col-12 col-md-6 mb-3 ">
+              <label className="form-label">
+                Marketing<span className="fs-17 text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                required
+                ref={eligibility}
+                defaultValue={
+                  addModal.type === "edit" ? currentData?.marketing : ""
+                }
+              />
+            </div>
+            <div className="col-12 col-md-6 mb-3 ">
+              <label className="form-label">
+                T&C<span className="fs-17 text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                required
+                ref={eligibility}
+                defaultValue={
+                  addModal.type === "edit" ? currentData?.t_c : ""
+                }
+              />
+            </div>
+            <div className="col-12 mb-3">
+              <label className="form-label">
+                Product Image
+                <span className="fs-17 text-danger">*</span>
+              </label>
+              {addModal.type === "add" ? (
+                <ImageUpload
+                  img={
+                    imageData.image === ""
+                      ? images.imageUpload
+                      : imageData.image
+                  }
+                  purpose={addModal.type}
+                  getImage={getImage}
+                />
+              ) : addModal.type === "edit" ? (
+                <ImageUpload
+                  img={
+                    imageData.image === ""
+                      ? currentData?.image
+                      : imageData.image
+                  }
+                  purpose={addModal.type}
+                  getImage={getImage}
+                />
+              ) : (
+                ""
+              )}
             </div>
           </form>
         </Modal.Body>

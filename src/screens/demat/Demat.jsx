@@ -7,6 +7,8 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import Modal from "react-bootstrap/Modal";
 import { CiSearch, CiWarning } from "react-icons/ci";
 import ReactQuill from "react-quill";
+import ImageUpload from "../../components/ImageUpload";
+import { images } from "../../components/Images";
 
 function Demat() {
   const [isLoading, setIsLoading] = useState(true);
@@ -14,6 +16,12 @@ function Demat() {
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState({ type: "", state: false });
   const [currentData, setCurrentData] = useState(null);
+  const [imageData, setImageData] = useState({
+    type: addModal.type,
+    image: "",
+  });
+
+
   const columns = [
     {
       name: "#",
@@ -29,34 +37,16 @@ function Demat() {
       selector: (row) => row.bank_name,
     },
     {
-      name: "Exchange",
-      selector: (row) => row.exhange,
+      name: "Demat Fee",
+      selector: (row) => row.demat_fee,
     },
     {
-      name: "Trading Fee",
+      name: "Min. Trading Amount",
       selector: (row) => row.trading_fee,
     },
     {
-      name: "Rank",
-      // selector: (row) => row.rank,
-      cell: (row) => (
-        <div>
-          <input
-            defaultValue={row?.rank}
-            type="number"
-            className="form-control"
-            // onChange={(e) => {
-            //   let val = e.target.value;
-            //   updateRank(row?._id, val);
-            //   row.status = val;
-            // }}
-          />
-        </div>
-      ),
-    },
-    {
-      name: "Interest Rate",
-      selector: (row) => row.interest_rate,
+      name: "Earning",
+      selector: (row) => row.earning,
     },
     {
       name: "Status",
@@ -89,6 +79,16 @@ function Demat() {
       ),
     },
   ];
+
+  const getImage = (image) => {
+    setImageData((prev) => {
+      return { ...prev, image };
+    });
+    console.log(image, "image");
+    if (imageData.type == "edit") {
+      setCurrentData({ ...currentData, image });
+    }
+  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -146,44 +146,44 @@ function Demat() {
 
   return (
     <>
-        <div className="content">
-          <div className="container-fluid">
-            <div className="manage-bank">
-              <div className="page-title-box">
-                <div className="page-title-right">
+      <div className="content">
+        <div className="container-fluid">
+          <div className="manage-bank">
+            <div className="page-title-box">
+              <div className="page-title-right">
                 <div className="app-search">
-                    <form>
-                      <div className="input-group">
-                        <input
-                          type="search"
-                          className="form-control"
-                          placeholder="Search..."
-                        />
-                        <span className="search-icon">
-                          <CiSearch className="text-muted" />
-                        </span>
-                      </div>
-                    </form>
-                  </div>
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => setAddModal({ type: "add", state: true })}
-                  >
-                    Add Demat
-                  </button>
+                  <form>
+                    <div className="input-group">
+                      <input
+                        type="search"
+                        className="form-control"
+                        placeholder="Search..."
+                      />
+                      <span className="search-icon">
+                        <CiSearch className="text-muted" />
+                      </span>
+                    </div>
+                  </form>
                 </div>
-                <h4 className="page-title">Manage Demat</h4>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => setAddModal({ type: "add", state: true })}
+                >
+                  Add Demat
+                </button>
               </div>
-              <DataTable
-                // title="Movie List"
-                columns={columns}
-                data={demat}
-                progressPending={isLoading}
-                pagination
-              />
+              <h4 className="page-title">Manage Demat</h4>
             </div>
+            <DataTable
+              // title="Movie List"
+              columns={columns}
+              data={demat}
+              progressPending={isLoading}
+              pagination
+            />
           </div>
         </div>
+      </div>
       <Modal
         size="sm"
         show={deleteModal}
@@ -225,20 +225,16 @@ function Demat() {
         <Modal.Body>
           <form className="row">
             <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">
-                Title <span className="fs-17 text-danger">*</span>
-              </label>
+              <label className="form-label">Title</label>
               <input
                 type="text"
                 className="form-control"
-                defaultValue={addModal.type === "edit" ? currentData.title : ""}
                 required
+                defaultValue={addModal.type === "edit" ? currentData.title : ""}
               />
             </div>
             <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">
-                Choose Bank <span className="fs-17 text-danger">*</span>
-              </label>
+              <label className="form-label">Choose Bank</label>
               <select
                 className="form-select"
                 required
@@ -260,19 +256,6 @@ function Demat() {
             </div>
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">
-                Exchange <span className="fs-17 text-danger">*</span>
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                defaultValue={
-                  addModal.type === "edit" ? currentData.exhange : ""
-                }
-                required
-              />
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">
                 Demat Fee <span className="fs-17 text-danger">*</span>
               </label>
               <input
@@ -286,7 +269,8 @@ function Demat() {
             </div>
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">
-                Trading Fee <span className="fs-17 text-danger">*</span>
+                Minimum Trading Amount{" "}
+                <span className="fs-17 text-danger">*</span>
               </label>
               <input
                 type="text"
@@ -297,60 +281,124 @@ function Demat() {
                 required
               />
             </div>
-            <div className="col-12 col-md-6 mb-3">
+            <div className="col-12 col-md-4 mb-3">
+              <label className="form-label">Earning</label>
+              <input
+                type="text"
+                className="form-control"
+                required
+                defaultValue={
+                  addModal.type === "edit" ? currentData.earning : ""
+                }
+              />
+            </div>
+            <div className="col-12 col-md-4 mb-3">
+              <label className="form-label">Apply Link</label>
+              <input
+                type="url"
+                className="form-control"
+                required
+                defaultValue={
+                  addModal.type === "edit" ? currentData.apply_link : ""
+                }
+              />
+            </div>
+            <div className="col-12 col-md-4 mb-3 ">
               <label className="form-label">
-                Interest Rate <span className="fs-17 text-danger">*</span>
+                Who can apply<span className="fs-17 text-danger">*</span>
               </label>
               <input
                 type="text"
                 className="form-control"
-                defaultValue={
-                  addModal.type === "edit" ? currentData.interest_rate : ""
-                }
                 required
+                defaultValue={
+                  addModal.type === "edit" ? currentData?.desc?.eligibility : ""
+                }
               />
             </div>
-            <div className="col-12 col-md-6 mb-3">
+            <div className="col-12 col-md-6 mb-3 ">
               <label className="form-label">
-                Upload Card Image <span className="fs-17 text-danger">*</span>
+                Benefits<span className="fs-17 text-danger">*</span>
               </label>
-              <input type="file" className="form-control" required />
+              <textarea
+                type="text"
+                className="form-control"
+                required
+                style={{ height: "auto" }}
+                defaultValue={
+                  addModal.type === "edit"
+                    ? currentData?.desc?.features?.join("\n")
+                    : ""
+                }
+              />
             </div>
-            <div className="col-12 col-md-6 mb-3">
+            <div className="col-12 col-md-6 mb-3 ">
               <label className="form-label">
-                Apply Link <span className="fs-17 text-danger">*</span>
+                How to process<span className="fs-17 text-danger">*</span>
+              </label>
+              <textarea
+                type="text"
+                className="form-control"
+                required
+                defaultValue={
+                  addModal.type === "edit"
+                    ? currentData?.desc?.documents_required?.join("\n")
+                    : ""
+                }
+              />
+            </div>
+            <div className="col-12 col-md-6 mb-3 ">
+              <label className="form-label">
+                Marketing<span className="fs-17 text-danger">*</span>
               </label>
               <input
-                type="url"
+                type="text"
                 className="form-control"
-                defaultValue={
-                  addModal.type === "edit" ? currentData.apply_link : ""
-                }
                 required
+                defaultValue={
+                  addModal.type === "edit" ? currentData?.marketing : ""
+                }
+              />
+            </div>
+            <div className="col-12 col-md-6 mb-3 ">
+              <label className="form-label">
+                T&C<span className="fs-17 text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                required
+                defaultValue={addModal.type === "edit" ? currentData?.t_c : ""}
               />
             </div>
             <div className="col-12 mb-3">
-              <div className="form-check">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="customCheck1"
+              <label className="form-label">
+                Product Image
+                <span className="fs-17 text-danger">*</span>
+              </label>
+              {addModal.type === "add" ? (
+                <ImageUpload
+                  img={
+                    imageData.image === ""
+                      ? images.imageUpload
+                      : imageData.image
+                  }
+                  purpose={addModal.type}
+                  getImage={getImage}
                 />
-                <label className="form-check-label" for="customCheck1">
-                  Featured
-                </label>
-              </div>
-            </div>
-            <div className="col-12 mb-3">
-              <label className="form-label">Description</label>
-              <ReactQuill
-                theme="snow"
-                // value={description}
-                // onChange={setDescription}
-                defaultValue={addModal.type === "edit" ? currentData.desp : ""}
-              >
-                <div className="my-editing-area" />
-              </ReactQuill>
+              ) : addModal.type === "edit" ? (
+                <ImageUpload
+                  img={
+                    imageData.image === ""
+                      ? currentData?.image
+                      : imageData.image
+                  }
+                  purpose={addModal.type}
+                  getImage={getImage}
+                />
+              ) : (
+                ""
+              )}
             </div>
           </form>
         </Modal.Body>

@@ -43,7 +43,7 @@ function Navbar() {
             </Link>
           </div>
           {/* Sidebar Menu Toggle Button */}
-          <button class="button-toggle-menu" onClick={handleToggle}>
+          <button className="button-toggle-menu" onClick={handleToggle}>
             <FaBars />
           </button>
           {/* Topbar Search Form */}
