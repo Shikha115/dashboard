@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { images } from "../components/Images";
 import { Link } from "react-router-dom";
 import useAuthStore from "../store/authStore";
+import  axios  from 'axios';
 
 function RemoveAccount() {
   const [confirm, setConfirm] = useState(true);
@@ -12,6 +13,10 @@ function RemoveAccount() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+ axios.post()
+
+
     setConfirm(false);
     setShowToast(true);
     setToastData({
@@ -65,12 +70,14 @@ function RemoveAccount() {
                     </div>
                     <div className="col-12 col-lg-8 mb-3">
                       <input
-                        type="number"
+                        type="tel"
                         className="form-control"
                         placeholder="Enter phone number"
                         required
+                        pattern="[0-9]{10}"
+                        maxLength="10"
                         value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
+                        onChange={(e) => setPhone(e.target.value?.toString())}
                       />
                     </div>
                     <div className="col-12">

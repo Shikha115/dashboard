@@ -1,0 +1,41 @@
+Installation Guide for HA-Insta-App (DEV Branch)
+
+1. Clone the Repository:
+   git clone -b development_main https://github.com/healthassure-github/HA-Insta-App.git
+
+2. Navigate to the Project Directory:
+   cd HA-Insta-App
+
+3. Install Dependencies:
+   npm install
+   # or
+   yarn install
+
+4. Link Native Dependencies (if any):
+   npx react-native link
+
+5. Add These Hotfixes in node_modules
+   Extract zip Ha_fix and copy provided files inside node_modules
+
+6. Start the Metro Bundler:
+   npx react-native start
+
+7. Run the App on Android/iOS:
+   For Android:
+   npx react-native run-android
+   For iOS:
+   npx react-native run-ios
+
+8. Testing the App:
+   - Test all functionalities thoroughly.
+   - Report any bugs or issues to the project's repository.
+
+9. Troubleshooting:
+   - Read and understand error messages carefully.
+   - Check the project's README or documentation for tips.
+   - Search online for solutions to common React Native installation issues.
+
+10. Contribute and Report Issues:
+    - Contribute fixes or enhancements to the project.
+    - Report bugs or issues to the project's repository to improve the project for everyone.
+
