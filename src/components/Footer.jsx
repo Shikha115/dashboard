@@ -9,13 +9,13 @@ function Footer() {
           <p className="mb-0">Copyright © 2024 Rojgar. All rights reserved</p>
           <ul className="m-0 p-0">
             <li>
-              <Link to="#">Privacy Policy</Link>
+              <Link to="/privacy-policy">Privacy Policy</Link>
             </li>
             <li>
               <b>|</b>
             </li>
             <li>
-              <Link to="#">Term & Condition</Link>
+              <Link to="/term-condition">Term & Condition</Link>
             </li>
           </ul>
         </div>

@@ -25,7 +25,7 @@ function ProtectedRoute({ Component, header, path }) {
     <>
       {header && <Sidebar />}
       {header && <Navbar />}
-      <div className="content-page">
+      <div className={`${header ? "content-page" : ""}`}>
         {loading ? (
           <Loader />
         ) : (

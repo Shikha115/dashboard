@@ -36,6 +36,8 @@ import Loader from "./components/Loader";
 import RemoveAccount from "./screens/RemoveAccount";
 import Notification from "./screens/Notification";
 import DeleteAccount from "./screens/DeleteAccount";
+import PrivacyPolicy from "./screens/PrivacyPolicy";
+import TermCondition from "./screens/TermCondition";
 
 function App() {
   const {
@@ -96,6 +98,26 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/logout" element={<Logout />} />
+            <Route
+              path="/privacy-policy"
+              element={
+                <ProtectedRoute
+                  path="/privacy-policy"
+                  Component={PrivacyPolicy}
+                  header={false}
+                />
+              }
+            />
+            <Route
+              path="/term-condition"
+              element={
+                <ProtectedRoute
+                  path="/term-condition"
+                  Component={TermCondition}
+                  header={false}
+                />
+              }
+            />
             <Route
               path="/manage-bank"
               element={
