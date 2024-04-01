@@ -11,6 +11,10 @@ const useAuthStore = create((set) => ({
   setToastData: (data) => set({ toastData: data }),
   loading: true,
   setLoading: (data) => set({ loading: data }),
+  currentPath: '',
+  setCurrentPath: (data) => set({ currentPath: data }),
+  defaultSidebar: 'default',
+  setDefaultSidebar: (data) => set({ defaultSidebar: data }),
   profile: {},
   getProfileWeb: async () => {
     let token = await localStorage.getItem("token");

@@ -5,12 +5,13 @@ import useAuthStore from "../store/authStore";
 import Loader from "./Loader";
 
 function Location() {
-  const { loading, setLoading } = useAuthStore();
+  const { loading, setLoading, setCurrentPath } = useAuthStore();
   let location = useLocation();
 
   useEffect(() => {
     console.log(location.pathname, "location");
     setLoading(true);
+    setCurrentPath(location.pathname);
     setTimeout(() => {
       setLoading(false);
     }, 700);

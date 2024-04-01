@@ -4,12 +4,21 @@ import { Link, useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import { BsEnvelope } from "react-icons/bs";
 import { GoBell } from "react-icons/go";
-import { FaChevronDown } from "react-icons/fa";
+import { FaBars, FaChevronDown } from "react-icons/fa";
 import Collapse from "react-bootstrap/Collapse";
+import useAuthStore from "../store/authStore";
 
 function Navbar() {
-
   const [open, setOpen] = useState(false);
+  const {
+    defaultSidebar,
+    setDefaultSidebar
+  } = useAuthStore();
+
+  const handleToggle = () => {
+    const val = defaultSidebar == "default" ? "condensed" : "default";
+    setDefaultSidebar(val)
+  };
 
   return (
     <div className="navbar-custom">
@@ -37,6 +46,9 @@ function Navbar() {
             </Link>
           </div>
           {/* Sidebar Menu Toggle Button */}
+          <button class="button-toggle-menu" onClick={handleToggle}>
+            <FaBars />
+          </button>
           {/* Topbar Search Form */}
           <div className="app-search d-none d-lg-block">
             <form>
@@ -383,7 +395,7 @@ function Navbar() {
               </span>
               <span className="d-lg-block d-none">
                 <h5 className="my-0 fw-normal">
-                 Admin{" "}
+                  Admin{" "}
                   <FaChevronDown className="fs-10 ms-1 d-none d-sm-inline-block align-middle" />
                 </h5>
               </span>

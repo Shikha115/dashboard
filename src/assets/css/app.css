@@ -15212,6 +15212,9 @@ fieldset:disabled .btn {
   height: 100%;
   width: 100%;
   object-fit: cover;
+}
+
+.leftside-menu .logo img {
   filter: brightness(17.5);
 }
 
@@ -15529,69 +15532,58 @@ html[data-bs-theme="dark"] .logo.logo-dark {
   padding-left: calc(var(--tz-menu-item-padding-x) * 2);
 }
 
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .navbar-custom {
   z-index: 1005;
   margin-left: var(--tz-leftbar-width-sm);
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu {
   position: absolute;
   width: var(--tz-leftbar-width-sm);
   min-width: var(--tz-leftbar-width-sm);
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .simplebar-mask,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .simplebar-content-wrapper {
   overflow: visible !important;
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .simplebar-scrollbar {
   display: none !important;
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .simplebar-offset {
   bottom: 0 !important;
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .logo {
   z-index: 1;
   background: var(--tz-menu-bg);
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .logo
   span.logo-lg {
   display: none;
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .logo
   span.logo-sm {
   display: block;
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .collapse,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .collapsing {
@@ -15600,38 +15592,32 @@ html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
   -webkit-transition: none !important;
   transition: none !important;
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .collapse
   .side-nav-second-level,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .collapse
   .side-nav-third-level,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .collapse
   .side-nav-forth-level,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .collapsing
   .side-nav-second-level,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .collapsing
   .side-nav-third-level,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .collapsing
@@ -15640,96 +15626,84 @@ html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
   padding: 0;
   margin-top: 0;
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .collapse
   .side-nav-second-level
   li
   a::before,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .collapse
   .side-nav-second-level
   li
   .side-nav-link::before,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .collapse
   .side-nav-third-level
   li
   a::before,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .collapse
   .side-nav-third-level
   li
   .side-nav-link::before,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .collapse
   .side-nav-forth-level
   li
   a::before,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .collapse
   .side-nav-forth-level
   li
   .side-nav-link::before,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .collapsing
   .side-nav-second-level
   li
   a::before,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .collapsing
   .side-nav-second-level
   li
   .side-nav-link::before,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .collapsing
   .side-nav-third-level
   li
   a::before,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .collapsing
   .side-nav-third-level
   li
   .side-nav-link::before,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .collapsing
   .side-nav-forth-level
   li
   a::before,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .collapsing
@@ -15738,43 +15712,37 @@ html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
   .side-nav-link::before {
   display: none;
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .collapse
   .side-nav-second-level
   .menu-arrow,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .collapse
   .side-nav-third-level
   .menu-arrow,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .collapse
   .side-nav-forth-level
   .menu-arrow,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .collapsing
   .side-nav-second-level
   .menu-arrow,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .collapsing
   .side-nav-third-level
   .menu-arrow,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .collapsing
@@ -15784,15 +15752,13 @@ html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item {
   position: relative;
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item
@@ -15803,8 +15769,7 @@ html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
   padding: calc(var(--tz-menu-item-padding-y) + 4px)
     var(--tz-menu-item-padding-x);
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item
@@ -15815,28 +15780,24 @@ html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
   );
   font-size: 1.25rem;
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item
   .side-nav-link:hover,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item
   .side-nav-link:active,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item
   .side-nav-link:focus {
   color: var(--tz-menu-item-hover-color);
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item
@@ -15844,8 +15805,7 @@ html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
   span {
   visibility: hidden;
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item
@@ -15855,8 +15815,7 @@ html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
   transform: translate(-50%, -50%) rotate(90deg);
   padding-left: 0 !important;
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item:hover
@@ -15866,8 +15825,7 @@ html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
   background: var(--tz-menu-condensed-link-bg);
   width: var(--tz-leftbar-width);
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item:hover
@@ -15875,8 +15833,7 @@ html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
   span {
   visibility: visible;
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item:hover
@@ -15884,14 +15841,12 @@ html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
   span:not(.badge) {
   margin-left: var(--tz-menu-item-padding-x);
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item:hover
   > .collapse,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item:hover
@@ -15900,20 +15855,16 @@ html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
   -webkit-transition: none !important;
   transition: none !important;
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item:hover
-  > .collapse
-  > ul,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+  >ul.collapse,
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item:hover
-  > .collapsing
-  > ul {
+  >ul.collapsing {
   display: block !important;
   left: var(--tz-leftbar-width-sm);
   position: absolute;
@@ -15922,21 +15873,17 @@ html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
   box-shadow: 0 0 45px 0 rgba(var(--tz-body-color-rgb), 0.2);
   width: calc(var(--tz-leftbar-width) - var(--tz-leftbar-width-sm));
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item:hover
-  > .collapse
-  > ul
+  >ul.collapse
   a,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item:hover
-  > .collapsing
-  > ul
+  >ul.collapsing
   a {
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -15945,58 +15892,46 @@ html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
   padding: calc(var(--tz-menu-item-padding-y) * 0.9)
     calc(var(--tz-menu-item-padding-x) * 2);
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item:hover
-  > .collapse
-  > ul
+  >ul.collapse
   a:hover,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item:hover
-  > .collapsing
-  > ul
+  >ul.collapsing
   a:hover {
   color: var(--tz-menu-item-hover-color);
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item:hover
-  > .collapse
-  > ul
+  >ul.collapse
   li:hover
   > .collapse,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item:hover
-  > .collapse
-  > ul
+  >ul.collapse
   li:hover
   > .collapsing,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item:hover
-  > .collapsing
-  > ul
+  >ul.collapsing
   li:hover
   > .collapse,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item:hover
-  > .collapsing
-  > ul
+  >ul.collapsing
   li:hover
   > .collapsing {
   display: block !important;
@@ -16004,43 +15939,35 @@ html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
   -webkit-transition: none !important;
   transition: none !important;
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item:hover
-  > .collapse
-  > ul
+  >ul.collapse
   li:hover
   > .collapse
   > ul,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item:hover
-  > .collapse
-  > ul
+  >ul.collapse
   li:hover
   > .collapsing
   > ul,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item:hover
-  > .collapsing
-  > ul
+  >ul.collapsing
   li:hover
   > .collapse
   > ul,
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .leftside-menu
   .side-nav
   .side-nav-item:hover
-  > .collapsing
-  > ul
+  >ul.collapsing
   li:hover
   > .collapsing
   > ul {
@@ -16050,13 +15977,11 @@ html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
   left: calc(var(--tz-leftbar-width) - var(--tz-leftbar-width-sm));
   width: calc(var(--tz-leftbar-width) - var(--tz-leftbar-width-sm));
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .side-nav-title {
   display: none;
 }
-html[data-sidenav-size="condensed"]:not([data-layout="topnav"])
-  .wrapper
+.wrapper#condensed
   .content-page {
   margin-left: var(--tz-leftbar-width-sm);
   min-height: var(--tz-leftbar-condensed-height);

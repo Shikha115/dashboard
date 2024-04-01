@@ -12,8 +12,11 @@ import { MdAccountBox } from "react-icons/md";
 import { GiProgression, GiTakeMyMoney } from "react-icons/gi";
 import { FaStar } from "react-icons/fa6";
 import Collapse from "react-bootstrap/Collapse";
+import useAuthStore from "../store/authStore";
 
 function Sidebar() {
+  const { currentPath } = useAuthStore();
+
   const [data, setData] = useState([
     {
       icon: <FaPiggyBank />,
@@ -68,6 +71,20 @@ function Sidebar() {
       subcategory: [],
       isActive: false,
       link: "/users",
+    },
+    {
+      icon: <FaUsers />,
+      category: "Delete",
+      subcategory: [],
+      isActive: false,
+      link: "/delete",
+    },
+    {
+      icon: <FaUsers />,
+      category: "Account Delete",
+      subcategory: [],
+      isActive: false,
+      link: '/account-delete',
     },
   ]);
 
