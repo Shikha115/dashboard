@@ -9,24 +9,19 @@ function ImageUpload({ img, purpose, getImage }) {
         type="file"
         required=""
         placeholder="Enter bank name"
+        onChange={(e) => {
+          if (e.target.files[0]) {
+            getImage(e);
+            // setCurrentData({ ...currentData, image });
+          }
+        }}
       />
       <div className="update-img">
-        {purpose == "add" ? (
-          <img
-            src={img}
-            className={purpose}
-            onChange={(e) => {
-              if (e.target.files[0]) {
-                let image = URL.createObjectURL(e.target.files[0]);
-                console.log(e.target.files[0], "image");
-                getImage(image);
-                // setCurrentData({ ...currentData, image });
-              }
-            }}
-          />
-        ) : (
-          <img src={img} className={purpose} />
-        )}
+        <img
+          src={img === "" ? images.imageUpload : img}
+          className={purpose}
+          alt=""
+        />
       </div>
     </div>
   );

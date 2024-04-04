@@ -9,10 +9,10 @@ import { apis } from "../utils/URL";
 import axios from "axios";
 
 function ManageCategory() {
-  const { bank, setBank, isLoading, setIsLoading, category, getAllCategory } =
-    useDataStore();
+  const { bank, setBank, isLoading, category, getAllCategory } = useDataStore();
 
   const [deleteModal, setDeleteModal] = useState(false);
+  const [categories, setCategories] = useState(category);
   const [updateBank, setUpdateBank] = useState({
     state: false,
     currentRow: null,
@@ -20,6 +20,24 @@ function ManageCategory() {
   const [addBank, setAddBank] = useState(false);
   const addBankValue = useRef();
   const updateBankValue = useRef();
+
+  const search = (val) => {
+    let arr = categories.filter((e) => {
+      return (
+        e?.name.toLowerCase().includes(val) ||
+        e?.isActive?.toString()?.toLowerCase()?.includes(val)
+      );
+    });
+    if (!val) {
+      setCategories(category);
+      return;
+    }
+    setCategories(arr);
+  };
+
+  useEffect(() => {
+    setCategories(category);
+  }, [category]);
 
   useEffect(() => {
     getAllCategory();
@@ -74,7 +92,7 @@ function ManageCategory() {
             defaultValue={row?.rank}
             type="number"
             className="form-control"
-            style={{width:"50%"}}
+            style={{ width: "50%" }}
             onChange={(e) => {
               let val = e.target.value;
               updateRank(row?._id, val);
@@ -147,48 +165,49 @@ function ManageCategory() {
 
   return (
     <>
-        <div className="content">
-          <div className="container-fluid">
-            <div className="manage-bank">
-              <div className="page-title-box">
-                <div className="page-title-right">
+      <div className="content">
+        <div className="container-fluid">
+          <div className="manage-bank">
+            <div className="page-title-box">
+              <div className="page-title-right">
                 <div className="app-search">
-                    <form>
-                      <div className="input-group">
-                        <input
-                          type="search"
-                          className="form-control"
-                          placeholder="Search..."
-                        />
-                        <span className="search-icon">
-                          <CiSearch className="text-muted" />
-                        </span>
-                      </div>
-                    </form>
-                  </div>
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={() => setAddBank(true)}
-                  >
-                    Add Bank Name
-                  </button>
+                  <form>
+                    <div className="input-group">
+                      <input
+                        type="search"
+                        className="form-control"
+                        placeholder="Search..."
+                        onChange={(e) => search(e.target.value)}
+                      />
+                      <span className="search-icon">
+                        <CiSearch className="text-muted" />
+                      </span>
+                    </div>
+                  </form>
                 </div>
-                <h4 className="page-title">Manage Bank</h4>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => setAddBank(true)}
+                >
+                  Add Category
+                </button>
               </div>
-              <DataTable
-                // title="Movie List"
-                columns={columns}
-                data={category}
-                progressPending={isLoading}
-                pagination
-                paginationRowsPerPageOptions={[50, 100, 150, 200]}
-              />
+              <h4 className="page-title">Manage Category</h4>
             </div>
+            <DataTable
+              // title="Movie List"
+              columns={columns}
+              data={categories}
+              progressPending={isLoading}
+              pagination
+              paginationRowsPerPageOptions={[50, 100, 150, 200]}
+            />
           </div>
         </div>
+      </div>
       <Modal
-        size="sm"
+        size="xl"
         show={updateBank.state}
         centered
         onHide={() =>
@@ -240,9 +259,9 @@ function ManageCategory() {
         </Modal.Footer>
       </Modal>
 
-      <Modal size="sm" show={addBank} centered onHide={() => setAddBank(false)}>
+      <Modal size="xl" show={addBank} centered onHide={() => setAddBank(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Add Bank Name</Modal.Title>
+          <Modal.Title>Add Category</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form action="#" className="row">

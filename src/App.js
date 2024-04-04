@@ -38,26 +38,25 @@ import Notification from "./screens/Notification";
 import DeleteAccount from "./screens/DeleteAccount";
 import PrivacyPolicy from "./screens/PrivacyPolicy";
 import TermCondition from "./screens/TermCondition";
+import Landing from "./screens/Landing";
+import Dashboard from "./screens/Dashboard";
 
 function App() {
   const {
     getProfileWeb,
     loading,
     setLoading,
-    showToast,
-    setShowToast,
     defaultSidebar,
     setDefaultSidebar,
   } = useAuthStore();
-  const { getAllBank } = useDataStore();
+  const { getAllBank, getAllCategory } = useDataStore();
 
   useEffect(() => {
     getData();
-    console.log(defaultSidebar, "defaultSidebar");
+    // console.log(defaultSidebar, "defaultSidebar");
   }, []);
 
   useLayoutEffect(() => {
-    console.log(window.innerWidth, "window.innerWidth");
     if (window.innerWidth < 768) {
       setDefaultSidebar("condensed");
     }
@@ -71,12 +70,11 @@ function App() {
       await getProfileWeb(tokenVal);
     }
     getAllBank();
+    getAllCategory();
+
     setLoading(false);
   };
 
-  // if (loading) {
-  //   return <Loader />;
-  // }
   return (
     <>
       <ToastComponent />
@@ -87,14 +85,20 @@ function App() {
         >
           <Location />
           <Routes>
+            <Route path="/" element={<Landing />} exact />
             <Route
-              path="/"
-              element={<ProtectedRoute Component={Home} header={true} />}
-              exact
+              path="/dashboard"
+              element={
+                <ProtectedRoute
+                  path="/dashboard"
+                  Component={Dashboard}
+                  header={true}
+                />
+              }
             />
             <Route path="/login" element={<Login />} />
-            <Route path={`/delete-account`} element={<RemoveAccount />} />
-            <Route path={`/delete-account/:id`} element={<DeleteAccount />} />
+            <Route path="/delete-account" element={<RemoveAccount />} />
+            <Route path="/delete-account/:id" element={<DeleteAccount />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/logout" element={<Logout />} />

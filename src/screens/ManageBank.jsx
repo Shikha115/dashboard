@@ -7,19 +7,30 @@ import Modal from "react-bootstrap/Modal";
 import { CiSearch, CiWarning } from "react-icons/ci";
 import ImageUpload from "../components/ImageUpload";
 import { images } from "../components/Images";
+import axios from "axios";
+import { apis } from "../utils/URL";
+import useAuthStore from "../store/authStore";
 
 function ManageBank() {
-  const { bank, setBank, isLoading, setIsLoading } = useDataStore();
+  const { setToastData, setShowToast } = useAuthStore();
+
+  const { bank, isLoading, getAllBank } = useDataStore();
 
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState({ type: "", state: false });
-  const [currentData, setCurrentData] = useState(null);
+  const [currentData, setCurrentData] = useState();
   const [imageData, setImageData] = useState({
     type: addModal.type,
     image: "",
   });
-  const addBankValue = useRef();
-  const updateBankValue = useRef();
+  const [banks, setBanks] = useState(bank);
+
+  const bankRef = useRef();
+  const statusRef = useRef();
+
+  useEffect(() => {
+    setBanks(bank);
+  }, [bank]);
 
   const columns = [
     {
@@ -30,7 +41,8 @@ function ManageBank() {
       name: "Image",
       selector: (row) => (
         <img
-          src={row?.image?.replace("http://192.168.1.8:", "http://localhost:")}
+          alt=""
+          src={row?.image}
           style={{
             justifyContent: "center",
             width: 80,
@@ -46,6 +58,10 @@ function ManageBank() {
       name: "Bank Name",
       selector: (row) => row.bank_name,
     },
+    {
+      name: "Status",
+      selector: (row) => (row?.isActive ? "Active" : "Inactive"),
+    },
 
     {
       // selector: (row) => row.year,
@@ -60,7 +76,7 @@ function ManageBank() {
               setImageData((prev) => {
                 return { ...prev, image: "" };
               });
-              console.log(row, "update");
+              // console.log(row, "update");
             }}
           >
             <MdEdit className="fs-18" />
@@ -68,7 +84,10 @@ function ManageBank() {
           <Link
             className="btn btn-pink"
             to="#"
-            onClick={(e) => handleDelete(e, row.id)}
+            onClick={(e) => {
+              setCurrentData(row);
+              handleDelete(e, row.id);
+            }}
           >
             <MdDelete className="fs-18" />
           </Link>
@@ -86,48 +105,115 @@ function ManageBank() {
     }
   };
 
-  const getImage = (image) => {
+  const getImage = (e) => {
+    let image = URL.createObjectURL(e.target.files[0]);
     setImageData((prev) => {
       return { ...prev, image };
     });
-    console.log(image, "image");
-    if (imageData.type == "edit") {
-      setCurrentData({ ...currentData, image });
-    }
-  };
-  const AddData = async () => {
-    // setAddBank(false);
-    // const index = bank.length + 1;
-    // const val = addBankValue.current.value;
-    // // console.log(index, val, "info");
-    // setBank([...bank, { id: index, bank: val }]);
-  };
-  const UpdateData = async () => {
-    // console.log(
-    //   updateBank.currentData,
-    //   "editing",
-    //   updateBankValue.current.value
-    // );
-    // const currentData = updateBank.currentData;
-    // const val = updateBankValue.current.value;
-    // setUpdateBank((prev) => {
-    //   return { ...prev, state: false };
-    // });
-    // const temp = bank.map((item, i) => {
-    //   if (item.id === currentData) {
-    //     item.bank = val;
-    //   }
-    //   return item;
-    // });
-    // setBank([...temp]);
+    setCurrentData({ ...currentData, image, imageData: e.target.files[0] });
+    // if (imageData.type == "edit") {
+    // }
   };
 
-  const handleDelete = (e, id) => {
+  const DeleteBank = async () => {
+    // console.log(currentData);
+    // return;
+    axios
+      .post(apis.deleteBank, { id: currentData?._id })
+      .then(async (e) => {
+        await getAllBank("true");
+        setCurrentData({});
+        setShowToast(true);
+        setToastData({
+          color: "#00ff1e",
+          message: `Bank Deleted Successfully`,
+        });
+        setDeleteModal(false);
+        setTimeout(() => {
+          setShowToast(false);
+        }, 2000);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const AddData = async () => {
+    // console.log(currentData.imageData, bankRef.current.value);
+    // return;
+    const data = new FormData();
+    data.append("image", currentData.imageData);
+    data.append("bank_name", bankRef.current.value);
+    data.append("isActive", statusRef.current.value);
+    axios
+      .post(apis.addBank, data)
+      .then(async (e) => {
+        await getAllBank("true");
+        setCurrentData({});
+        setShowToast(true);
+        setToastData({
+          color: "#00ff1e",
+          message: `Bank Added Successfully`,
+        });
+        setAddModal({ ...addModal, state: false });
+        setTimeout(() => {
+          setShowToast(false);
+        }, 2000);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const UpdateData = async () => {
+    const data = new FormData();
+    if (currentData?.imageData) {
+      data.append("image", currentData.imageData);
+    }
+    data.append("bank_name", bankRef.current.value);
+    data.append("id", currentData?._id);
+    data.append("isActive", statusRef.current.value === "true" ? true : false);
+    axios
+      .post(apis.editBank, data)
+      .then((e) => {
+        getAllBank(true);
+        setCurrentData({});
+        setShowToast(true);
+        setToastData({
+          color: "#49e45b",
+          message: `Bank Updated Successfully`,
+        });
+        setAddModal({ ...addModal, state: false });
+        setTimeout(() => {
+          setShowToast(false);
+        }, 2000);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleDelete = async (e, id) => {
     e.preventDefault();
-    setDeleteModal(true);
-    // const item = bank.filter((item) => item.id === id);
-    // const index = bank.findIndex(item);
-    // console.log(index, "csjdkm");
+
+    await axios
+      .post(apis.deleteBank)
+      .then((e) => {
+        // console.log(e);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    setDeleteModal(!deleteModal);
+  };
+
+  const search = (val) => {
+    let arr = banks.filter((e) => {
+      return (
+        e?.bank_name.toLowerCase().includes(val) ||
+        e?.isActive?.toString()?.toLowerCase()?.includes(val)
+      );
+    });
+    if (!val) {
+      setBanks(bank);
+      return;
+    }
+    setBanks(arr);
   };
 
   return (
@@ -144,6 +230,10 @@ function ManageBank() {
                         type="search"
                         className="form-control"
                         placeholder="Search..."
+                        onChange={(e) => {
+                          // console.log(e.target.value);
+                          search(e?.target?.value);
+                        }}
                       />
                       <span className="search-icon">
                         <CiSearch className="text-muted" />
@@ -170,9 +260,10 @@ function ManageBank() {
             <DataTable
               // title="Movie List"
               columns={columns}
-              data={bank}
+              data={banks}
               progressPending={isLoading}
               pagination
+              key={(e) => e._id}
             />
           </div>
         </div>
@@ -197,40 +288,31 @@ function ManageBank() {
             <div className="col-12 col-md-12 mb-2">
               <label className="form-label">Bank Name</label>
               <input
+                ref={bankRef}
                 className="form-control"
                 type="email"
                 required=""
-                defaultValue={
-                  addModal.type === "edit" ? currentData?.bank_name : ""
-                }
+                defaultValue={currentData?.bank_name ?? ""}
+              />
+            </div>{" "}
+            <div className="col-12 col-md-12 mb-2">
+              <label className="form-label">Satus</label>
+              <input
+                ref={statusRef}
+                className="form-control"
+                type="email"
+                required=""
+                defaultValue={currentData?.isActive ?? ""}
               />
             </div>
             <div className="col-12 col-md-12">
               <label className="form-label">Upload Image</label>
-              {addModal.type === "add" ? (
-                <ImageUpload
-                  img={
-                    imageData.image === ""
-                      ? images.imageUpload
-                      : imageData.image
-                  }
-                  purpose={addModal.type}
-                  getImage={getImage}
-                />
-              ) : addModal.type === "edit" ? (
-                <ImageUpload
-                  img={
-                    imageData.image === ""
-                      ? currentData?.image
-                      : imageData.image
-                  }
-                  purpose={addModal.type}
-                  getImage={getImage}
-                />
-              ) : (
-                ""
-              )}
-              <img src={imageData.image} alt="" />
+
+              <ImageUpload
+                img={currentData?.image ?? imageData?.image}
+                purpose={addModal.type}
+                getImage={getImage}
+              />
             </div>
           </form>
         </Modal.Body>
@@ -267,7 +349,7 @@ function ManageBank() {
           <button
             type="button"
             className="btn btn-danger my-2"
-            onClick={() => setDeleteModal(false)}
+            onClick={DeleteBank}
           >
             Continue
           </button>
