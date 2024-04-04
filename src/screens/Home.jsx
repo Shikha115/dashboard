@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 function Home() {
   const { token, setToken } = useAuthStore();
-  console.log(token);
+  // console.log(token);
   return (
     <div className="content-page">
       <div className="content">

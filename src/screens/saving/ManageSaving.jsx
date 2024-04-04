@@ -6,6 +6,8 @@ import Modal from "react-bootstrap/Modal";
 import { CiSearch, CiWarning } from "react-icons/ci";
 import { apis } from "../../utils/URL";
 import axios from "axios";
+import ImageUpload from "../../components/ImageUpload";
+import { images } from "../../components/Images";
 
 function ManageSaving() {
   const [isLoading, setIsLoading] = useState(true);
@@ -14,6 +16,10 @@ function ManageSaving() {
   const [addModal, setAddModal] = useState({ type: "", state: false });
   const [currentData, setCurrentData] = useState(null);
   const { bank, getAllCategory } = useDataStore();
+  const [imageData, setImageData] = useState({
+    type: addModal.type,
+    image: "",
+  });
 
   const title = useRef(null);
   const bank_name = useRef(null);
@@ -35,6 +41,16 @@ function ManageSaving() {
       .post(apis.updateOfferStatus, { id, status })
       .then((e) => {})
       .catch((err) => {});
+  };
+
+  const getImage = (image) => {
+    setImageData((prev) => {
+      return { ...prev, image };
+    });
+    console.log(image, "image");
+    if (imageData.type == "edit") {
+      setCurrentData({ ...currentData, image });
+    }
   };
 
   const columns = [
@@ -66,26 +82,23 @@ function ManageSaving() {
       name: "Earning",
       selector: (row) => row?.earning,
     },
-    {
-      name: "Rank",
-      // selector: (row) => row?.rank,
-      // maxWidth: "10%",
-      // minWidth: "5%",
-      cell: (row) => (
-        <div>
-          <input
-            defaultValue={row?.rank}
-            type="number"
-            className="form-control"
-            // onChange={(e) => {
-            //   let val = e.target.value;
-            //   updateRank(row?._id, val);
-            //   row.status = val;
-            // }}
-          />
-        </div>
-      ),
-    },
+    // {
+    //   name: "Rank",
+    //   cell: (row) => (
+    //     <div>
+    //       <input
+    //         defaultValue={row?.rank}
+    //         type="number"
+    //         className="form-control"
+    //         // onChange={(e) => {
+    //         //   let val = e.target.value;
+    //         //   updateRank(row?._id, val);
+    //         //   row.status = val;
+    //         // }}
+    //       />
+    //     </div>
+    //   ),
+    // },
     {
       name: "Status",
       cell: (row) => (
@@ -231,46 +244,44 @@ function ManageSaving() {
 
   return (
     <>
-      <div className="content-page">
-        <div className="content">
-          <div className="container-fluid">
-            <div className="manage-bank">
-              <div className="page-title-box">
-                <div className="page-title-right">
-                  <div className="app-search">
-                    <form>
-                      <div className="input-group">
-                        <input
-                          type="search"
-                          className="form-control"
-                          placeholder="Search..."
-                        />
-                        <span className="search-icon">
-                          <CiSearch className="text-muted" />
-                        </span>
-                      </div>
-                    </form>
-                  </div>
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => {
-                      setCurrentData({});
-                      setAddModal({ type: "add", state: true });
-                    }}
-                  >
-                    Add Savings Account
-                  </button>
+      <div className="content">
+        <div className="container-fluid">
+          <div className="manage-bank">
+            <div className="page-title-box">
+              <div className="page-title-right">
+                <div className="app-search">
+                  <form>
+                    <div className="input-group">
+                      <input
+                        type="search"
+                        className="form-control"
+                        placeholder="Search..."
+                      />
+                      <span className="search-icon">
+                        <CiSearch className="text-muted" />
+                      </span>
+                    </div>
+                  </form>
                 </div>
-                <h4 className="page-title">Manage Savings Account</h4>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => {
+                    setCurrentData({});
+                    setAddModal({ type: "add", state: true });
+                  }}
+                >
+                  Add Savings Account
+                </button>
               </div>
-              <DataTable
-                // title="Movie List"
-                columns={columns}
-                data={saving}
-                progressPending={isLoading}
-                pagination
-              />
+              <h4 className="page-title">Manage Savings Account</h4>
             </div>
+            <DataTable
+              // title="Movie List"
+              columns={columns}
+              data={saving}
+              progressPending={isLoading}
+              pagination
+            />
           </div>
         </div>
       </div>
@@ -352,7 +363,7 @@ function ManageSaving() {
                   })}
               </select>
             </div>
-            <div className="col-12 col-md-3 mb-3">
+            <div className="col-12 col-md-4 mb-3">
               <label className="form-label">
                 Opening Charge<span className="fs-17 text-danger">*</span>
               </label>
@@ -366,7 +377,7 @@ function ManageSaving() {
                 }
               />
             </div>{" "}
-            <div className="col-12 col-md-3 mb-3">
+            <div className="col-12 col-md-4 mb-3">
               <label className="form-label">
                 Minimum Balance<span className="fs-17 text-danger">*</span>
               </label>
@@ -380,7 +391,7 @@ function ManageSaving() {
                 }
               />
             </div>
-            <div className="col-12 col-md-3 mb-3">
+            <div className="col-12 col-md-4 mb-3">
               <label className="form-label">
                 Interest Rate<span className="fs-17 text-danger">*</span>
               </label>
@@ -394,7 +405,7 @@ function ManageSaving() {
                 }
               />
             </div>
-            <div className="col-12 col-md-6 mb-3">
+            <div className="col-12 col-md-4 mb-3">
               <label className="form-label">
                 Earning<span className="fs-17 text-danger">*</span>
               </label>
@@ -408,35 +419,7 @@ function ManageSaving() {
                 }
               />
             </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">
-                Upload Card Image
-                <span className="fs-17 text-danger">*</span>
-              </label>
-              <input
-                type="file"
-                accept="image/*"
-                className="form-control"
-                required
-                ref={card_image}
-                // defaultValue={currentData?.image}
-                onChange={(e) => {
-                  if (e.target.files[0]) {
-                    let image = URL.createObjectURL(e.target.files[0]);
-                    // console.log(image, "hgf");
-                    setCurrentData({ ...currentData, image });
-                  }
-                }}
-              />
-              <img
-                defaultValue={currentData?.image}
-                src={currentData?.image}
-                alt="Selected"
-                width="50"
-                height={40}
-              />
-            </div>
-            <div className="col-12 col-md-6 mb-3">
+            <div className="col-12 col-md-4 mb-3">
               <label className="form-label">
                 Apply Link<span className="fs-17 text-danger">*</span>
               </label>
@@ -450,21 +433,9 @@ function ManageSaving() {
                 }
               />
             </div>
-            <div className="col-12 col-md-6 mb-3 ">
+            <div className="col-12 col-md-4 mb-3 ">
               <label className="form-label">
-                Rank<span className="fs-17 text-danger">*</span>
-              </label>
-              <input
-                type="number"
-                className="form-control"
-                required
-                ref={rank}
-                defaultValue={addModal.type === "edit" ? currentData?.rank : ""}
-              />
-            </div>
-            <div className="col-12 col-md-6 mb-3 ">
-              <label className="form-label">
-                Eligibility<span className="fs-17 text-danger">*</span>
+                Who can apply<span className="fs-17 text-danger">*</span>
               </label>
               <input
                 type="text"
@@ -495,7 +466,7 @@ function ManageSaving() {
             </div>
             <div className="col-12 col-md-6 mb-3 ">
               <label className="form-label">
-                Documents<span className="fs-17 text-danger">*</span>
+                How to process<span className="fs-17 text-danger">*</span>
               </label>
               <textarea
                 type="text"
@@ -508,6 +479,61 @@ function ManageSaving() {
                     : ""
                 }
               />
+            </div>
+            <div className="col-12 col-md-6 mb-3 ">
+              <label className="form-label">
+                Marketing<span className="fs-17 text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                required
+                ref={eligibility}
+                defaultValue={
+                  addModal.type === "edit" ? currentData?.marketing : ""
+                }
+              />
+            </div>
+            <div className="col-12 col-md-6 mb-3 ">
+              <label className="form-label">
+                T&C<span className="fs-17 text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                required
+                ref={eligibility}
+                defaultValue={addModal.type === "edit" ? currentData?.t_c : ""}
+              />
+            </div>
+            <div className="col-12 mb-3">
+              <label className="form-label">
+                Product Image
+                <span className="fs-17 text-danger">*</span>
+              </label>
+              {addModal.type === "add" ? (
+                <ImageUpload
+                  img={
+                    imageData.image === ""
+                      ? images.imageUpload
+                      : imageData.image
+                  }
+                  purpose={addModal.type}
+                  getImage={getImage}
+                />
+              ) : addModal.type === "edit" ? (
+                <ImageUpload
+                  img={
+                    imageData.image === ""
+                      ? currentData?.image
+                      : imageData.image
+                  }
+                  purpose={addModal.type}
+                  getImage={getImage}
+                />
+              ) : (
+                ""
+              )}
             </div>
           </form>
         </Modal.Body>

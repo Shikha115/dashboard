@@ -5,18 +5,32 @@ import useDataStore from "../store/dataStore";
 import { MdDelete, MdEdit } from "react-icons/md";
 import Modal from "react-bootstrap/Modal";
 import { CiSearch, CiWarning } from "react-icons/ci";
+import ImageUpload from "../components/ImageUpload";
+import { images } from "../components/Images";
+import axios from "axios";
+import { apis } from "../utils/URL";
+import useAuthStore from "../store/authStore";
 
 function ManageBank() {
-  const { bank, setBank, isLoading, setIsLoading } = useDataStore();
+  const { setToastData, setShowToast } = useAuthStore();
+
+  const { bank, isLoading, getAllBank } = useDataStore();
 
   const [deleteModal, setDeleteModal] = useState(false);
-  const [updateBank, setUpdateBank] = useState({
-    state: false,
-    currentRow: null,
+  const [addModal, setAddModal] = useState({ type: "", state: false });
+  const [currentData, setCurrentData] = useState();
+  const [imageData, setImageData] = useState({
+    type: addModal.type,
+    image: "",
   });
-  const [addBank, setAddBank] = useState(false);
-  const addBankValue = useRef();
-  const updateBankValue = useRef();
+  const [banks, setBanks] = useState(bank);
+
+  const bankRef = useRef();
+  const statusRef = useRef();
+
+  useEffect(() => {
+    setBanks(bank);
+  }, [bank]);
 
   const columns = [
     {
@@ -27,7 +41,8 @@ function ManageBank() {
       name: "Image",
       selector: (row) => (
         <img
-          src={row?.image?.replace("http://192.168.1.8:", "http://localhost:")}
+          alt=""
+          src={row?.image}
           style={{
             justifyContent: "center",
             width: 80,
@@ -43,26 +58,36 @@ function ManageBank() {
       name: "Bank Name",
       selector: (row) => row.bank_name,
     },
+    {
+      name: "Status",
+      selector: (row) => (row?.isActive ? "Active" : "Inactive"),
+    },
 
     {
       // selector: (row) => row.year,
       name: "Action",
       cell: (row) => (
         <div className="custom-table-btn">
-          <Link
+          <button
             className="btn btn-purple"
-            to="#"
             onClick={() => {
-              setUpdateBank({ state: true, currentRow: row });
-              console.log(row, "update");
+              setAddModal({ type: "edit", state: true });
+              setCurrentData(row);
+              setImageData((prev) => {
+                return { ...prev, image: "" };
+              });
+              // console.log(row, "update");
             }}
           >
             <MdEdit className="fs-18" />
-          </Link>
+          </button>
           <Link
             className="btn btn-pink"
             to="#"
-            onClick={(e) => handleDelete(e, row.id)}
+            onClick={(e) => {
+              setCurrentData(row);
+              handleDelete(e, row.id);
+            }}
           >
             <MdDelete className="fs-18" />
           </Link>
@@ -71,122 +96,223 @@ function ManageBank() {
     },
   ];
 
-  const handleBankAdd = () => {
-    setAddBank(false);
-    const index = bank.length + 1;
-    const val = addBankValue.current.value;
-    // console.log(index, val, "info");
-    setBank([...bank, { id: index, bank: val }]);
-  };
-
-  const handleBankUpdate = () => {
-    console.log(
-      updateBank.currentRow,
-      "editing",
-      updateBankValue.current.value
-    );
-    const currentRow = updateBank.currentRow;
-    const val = updateBankValue.current.value;
-    setUpdateBank((prev) => {
-      return { ...prev, state: false };
-    });
-    const temp = bank.map((item, i) => {
-      if (item.id === currentRow) {
-        item.bank = val;
-      }
-      return item;
-    });
-    setBank([...temp]);
-  };
-
-  const handleDelete = (e, id) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setDeleteModal(true);
-    // const item = bank.filter((item) => item.id === id);
-    // const index = bank.findIndex(item);
-    // console.log(index, "csjdkm");
+    if (addModal.type === "add") {
+      AddData();
+    } else {
+      UpdateData();
+    }
+  };
+
+  const getImage = (e) => {
+    let image = URL.createObjectURL(e.target.files[0]);
+    setImageData((prev) => {
+      return { ...prev, image };
+    });
+    setCurrentData({ ...currentData, image, imageData: e.target.files[0] });
+    // if (imageData.type == "edit") {
+    // }
+  };
+
+  const DeleteBank = async () => {
+    // console.log(currentData);
+    // return;
+    axios
+      .post(apis.deleteBank, { id: currentData?._id })
+      .then(async (e) => {
+        await getAllBank("true");
+        setCurrentData({});
+        setShowToast(true);
+        setToastData({
+          color: "#00ff1e",
+          message: `Bank Deleted Successfully`,
+        });
+        setDeleteModal(false);
+        setTimeout(() => {
+          setShowToast(false);
+        }, 2000);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const AddData = async () => {
+    // console.log(currentData.imageData, bankRef.current.value);
+    // return;
+    const data = new FormData();
+    data.append("image", currentData.imageData);
+    data.append("bank_name", bankRef.current.value);
+    data.append("isActive", statusRef.current.value);
+    axios
+      .post(apis.addBank, data)
+      .then(async (e) => {
+        await getAllBank("true");
+        setCurrentData({});
+        setShowToast(true);
+        setToastData({
+          color: "#00ff1e",
+          message: `Bank Added Successfully`,
+        });
+        setAddModal({ ...addModal, state: false });
+        setTimeout(() => {
+          setShowToast(false);
+        }, 2000);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const UpdateData = async () => {
+    const data = new FormData();
+    if (currentData?.imageData) {
+      data.append("image", currentData.imageData);
+    }
+    data.append("bank_name", bankRef.current.value);
+    data.append("id", currentData?._id);
+    data.append("isActive", statusRef.current.value === "true" ? true : false);
+    axios
+      .post(apis.editBank, data)
+      .then((e) => {
+        getAllBank(true);
+        setCurrentData({});
+        setShowToast(true);
+        setToastData({
+          color: "#49e45b",
+          message: `Bank Updated Successfully`,
+        });
+        setAddModal({ ...addModal, state: false });
+        setTimeout(() => {
+          setShowToast(false);
+        }, 2000);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleDelete = async (e, id) => {
+    e.preventDefault();
+
+    await axios
+      .post(apis.deleteBank)
+      .then((e) => {
+        // console.log(e);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    setDeleteModal(!deleteModal);
+  };
+
+  const search = (val) => {
+    let arr = banks.filter((e) => {
+      return (
+        e?.bank_name.toLowerCase().includes(val) ||
+        e?.isActive?.toString()?.toLowerCase()?.includes(val)
+      );
+    });
+    if (!val) {
+      setBanks(bank);
+      return;
+    }
+    setBanks(arr);
   };
 
   return (
     <>
-      <div className="content-page">
-        <div className="content">
-          <div className="container-fluid">
-            <div className="manage-bank">
-              <div className="page-title-box">
-                <div className="page-title-right">
-                  <div className="app-search">
-                    <form>
-                      <div className="input-group">
-                        <input
-                          type="search"
-                          className="form-control"
-                          placeholder="Search..."
-                        />
-                        <span className="search-icon">
-                          <CiSearch className="text-muted" />
-                        </span>
-                      </div>
-                    </form>
-                  </div>
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={() => setAddBank(true)}
-                  >
-                    Add Bank Name
-                  </button>
+      <div className="content">
+        <div className="container-fluid">
+          <div className="manage-bank">
+            <div className="page-title-box">
+              <div className="page-title-right">
+                <div className="app-search">
+                  <form>
+                    <div className="input-group">
+                      <input
+                        type="search"
+                        className="form-control"
+                        placeholder="Search..."
+                        onChange={(e) => {
+                          // console.log(e.target.value);
+                          search(e?.target?.value);
+                        }}
+                      />
+                      <span className="search-icon">
+                        <CiSearch className="text-muted" />
+                      </span>
+                    </div>
+                  </form>
                 </div>
-                <h4 className="page-title">Manage Bank</h4>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => {
+                    setCurrentData({});
+                    setAddModal({ type: "add", state: true });
+                    setImageData((prev) => {
+                      return { ...prev, image: "" };
+                    });
+                  }}
+                >
+                  Add Bank Name
+                </button>
               </div>
-              <DataTable
-                // title="Movie List"
-                columns={columns}
-                data={bank}
-                progressPending={isLoading}
-                pagination
-              />
+              <h4 className="page-title">Manage Bank</h4>
             </div>
+            <DataTable
+              // title="Movie List"
+              columns={columns}
+              data={banks}
+              progressPending={isLoading}
+              pagination
+              key={(e) => e._id}
+            />
           </div>
         </div>
       </div>
       <Modal
         size="sm"
-        show={updateBank.state}
+        show={addModal.state}
         centered
         onHide={() =>
-          setUpdateBank((prev) => {
+          setAddModal((prev) => {
             return { ...prev, state: false };
           })
         }
       >
         <Modal.Header closeButton>
-          <Modal.Title>Update Bank Name</Modal.Title>
+          <Modal.Title>
+            {addModal.type === "add" ? "Add" : "Edit"} Bank Name
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form action="#" className="row">
             <div className="col-12 col-md-12 mb-2">
               <label className="form-label">Bank Name</label>
               <input
+                ref={bankRef}
                 className="form-control"
                 type="email"
                 required=""
-                defaultValue={updateBank?.currentRow?.bank_name}
+                defaultValue={currentData?.bank_name ?? ""}
+              />
+            </div>{" "}
+            <div className="col-12 col-md-12 mb-2">
+              <label className="form-label">Satus</label>
+              <input
+                ref={statusRef}
+                className="form-control"
+                type="email"
+                required=""
+                defaultValue={currentData?.isActive ?? ""}
               />
             </div>
             <div className="col-12 col-md-12">
               <label className="form-label">Upload Image</label>
-              <input
-                className="form-control"
-                type="file"
-                required=""
-                placeholder="Enter bank name"
+
+              <ImageUpload
+                img={currentData?.image ?? imageData?.image}
+                purpose={addModal.type}
+                getImage={getImage}
               />
-              {updateBank?.currentRow?.image && (
-                <div className="update-img">
-                  <img src={updateBank?.currentRow?.image} />
-                </div>
-              )}
             </div>
           </form>
         </Modal.Body>
@@ -194,55 +320,15 @@ function ManageBank() {
           <button
             className="btn btn-secondary"
             onClick={() =>
-              setUpdateBank((prev) => {
+              setAddModal((prev) => {
                 return { ...prev, state: false };
               })
             }
           >
             Cancel
           </button>
-          <button className="btn btn-primary" onClick={handleBankUpdate}>
-            Update
-          </button>
-        </Modal.Footer>
-      </Modal>
-
-      <Modal size="sm" show={addBank} centered onHide={() => setAddBank(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Bank Name</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <form action="#" className="row">
-            <div className="col-12 col-md-12 mb-2">
-              <label className="form-label">Bank Name</label>
-              <input
-                className="form-control"
-                type="email"
-                required=""
-                placeholder="Enter bank name"
-                ref={addBankValue}
-              />
-            </div>
-            <div className="col-12 col-md-12">
-              <label className="form-label">Upload Image</label>
-              <input
-                className="form-control"
-                type="file"
-                required=""
-                placeholder="Enter bank name"
-              />
-            </div>
-          </form>
-        </Modal.Body>
-        <Modal.Footer>
-          <button
-            className="btn btn-secondary"
-            onClick={() => setAddBank(false)}
-          >
-            Cancel
-          </button>
-          <button className="btn btn-primary" onClick={handleBankAdd}>
-            Add
+          <button className="btn btn-primary" onClick={handleSubmit}>
+            {addModal.type === "add" ? "Add" : "Edit"}
           </button>
         </Modal.Footer>
       </Modal>
@@ -263,7 +349,7 @@ function ManageBank() {
           <button
             type="button"
             className="btn btn-danger my-2"
-            onClick={() => setDeleteModal(false)}
+            onClick={DeleteBank}
           >
             Continue
           </button>

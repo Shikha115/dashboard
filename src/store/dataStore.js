@@ -26,10 +26,14 @@ const useDataStore = create((set, getState) => ({
     const res = await axios.get(apis.getAllBanks);
     set({ bank: res.data?.data, isLoading: false });
   },
-
+  getBanks: async () => {
+    const res = await axios.get(apis.getAllBanks);
+    set({ bank: res.data?.data, isLoading: false });
+  },
   setCategory: (data) => set({ category: data }),
   getAllCategory: async () => {
     const res = await axios.get(apis.getCategories);
+    res?.data?.data.sort((a, b) => a?.rank - b?.rank);
     set({ category: res.data?.data });
   },
 

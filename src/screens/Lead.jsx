@@ -1,19 +1,25 @@
 import React, { useEffect, useRef, useState } from "react";
 import DataTable from "react-data-table-component";
 import useDataStore from "../store/dataStore";
-import { LEAD_DATA } from "../store/staticData";
 import moment from "moment";
 import * as XLSX from "xlsx";
 import axios from "axios";
 import { apis } from "../utils/URL";
 
 function Lead() {
-  const { lead, setLead, getAlLeads } = useDataStore();
+  const { lead, setLead, getAlLeads, bank, category } = useDataStore();
   const [isLoading, setIsLoading] = useState(true);
-  const [filterText, setFilterText] = React.useState("");
-
-
+  const [filter, setFilter] = useState({ bank: "", leadType: "" });
+  const [leads, setleads] = useState(lead);
   const fileInputRef = useRef(null);
+  useEffect(() => {
+    setleads(lead);
+  }, [lead]);
+
+  const [dateRange, setDateRange] = React.useState({
+    from: 0,
+    to: Date.now(),
+  });
 
   const columns = [
     {
@@ -30,12 +36,13 @@ function Lead() {
     },
     {
       name: "Date",
-      selector: (row) =>
-        row?.created
+      selector: (row) => {
+        return row?.created
           ? moment(row?.created).format("YYYY-MM-DD") +
-            "\n" +
-            moment(row?.created).format(" HH:mm:ss")
-          : row?.created,
+              "\n" +
+              moment(row?.created).format(" HH:mm:ss")
+          : row?.created;
+      },
     },
 
     {
@@ -69,50 +76,44 @@ function Lead() {
     },
   ];
 
-  // console.log(lead);
-  //   =============================== EXPORT CSV ======================================================
-  function convertArrayOfObjectsToCSV(array) {
-    let result;
-
-    const columnDelimiter = ",";
-    const lineDelimiter = "\n";
-    const keys = Object.keys(lead);
-
-    result = "";
-    result += keys.join(columnDelimiter);
-    result += lineDelimiter;
-
-    array.forEach((item) => {
-      let ctr = 0;
-      keys.forEach((key) => {
-        if (ctr > 0) result += columnDelimiter;
-
-        result += item[key];
-
-        ctr++;
-      });
-      result += lineDelimiter;
+  const onFilter = () => {
+    const arr = lead.filter((e) => {
+      const itemDate = moment(e?.created).valueOf();
+      return dateRange.from <= itemDate && dateRange.to >= itemDate;
     });
-
-    return result;
-  }
-
-  // Blatant "inspiration" from https://codepen.io/Jacqueline34/pen/pyVoWr
-  function downloadCSV(array) {
-    const link = document.createElement("a");
-    let csv = convertArrayOfObjectsToCSV(array);
-    if (csv == null) return;
-
-    const filename = "export.csv";
-
-    if (!csv.match(/^data:text\/csv/i)) {
-      csv = `data:text/csv;charset=utf-8,${csv}`;
+    let arr2;
+    if (filter?.bank) {
+      arr2 = arr?.filter((e) => e?.bank_id === filter?.bank);
     }
+    if (filter?.bank) {
+      arr2 = arr?.filter((e) => e?.category_id === filter?.leadType);
+    }
+    if (!arr2) {
+      setleads(arr);
+      return;
+    }
+    setleads(arr2);
+  };
 
-    link.setAttribute("href", encodeURI(csv));
-    link.setAttribute("download", filename);
-    link.click();
-  }
+  const reset = () => {
+    setleads(lead);
+  };
+
+  const searchFilter = (val) => {
+    if (!val) {
+      setleads(lead);
+      return;
+    }
+    const value = val?.toLowerCase()?.trim();
+    const arr = lead.filter((e) => {
+      return (
+        e?.offer_info?.title?.toLowerCase()?.trim()?.includes(value) ||
+        e?.bank_info?.bank_name?.toLowerCase()?.trim()?.includes(value) ||
+        e?.category_info?.name?.toLowerCase()?.trim()?.includes(value)
+      );
+    });
+    setleads(arr);
+  };
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -122,17 +123,14 @@ function Lead() {
       const data = new Uint8Array(e.target.result);
       const workbook = XLSX.read(data, { type: "array" });
 
-      // Assuming there's only one sheet in the Excel file
       const sheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[sheetName];
 
-      // Convert the worksheet to an array of objects
       const objectData = XLSX.utils.sheet_to_json(worksheet, {
         header: 1,
         raw: true,
       });
 
-      // Assuming the first row contains headers
       const headers = objectData[0];
       const arrayData = objectData.slice(1).map((row) => {
         const obj = {};
@@ -156,15 +154,6 @@ function Lead() {
     reader.readAsArrayBuffer(file);
   };
 
-  const Export = ({ onExport }) => (
-    <button
-      className="btn btn-primary"
-      onClick={(e) => onExport(e.target.value)}
-    >
-      Export
-    </button>
-  );
-
   const Import = ({ onImport }) => (
     <>
       <div>
@@ -185,16 +174,7 @@ function Lead() {
     </>
   );
 
-  const actionsMemo = React.useMemo(
-    () => (
-      <>
-        {/* <Export onExport={() => downloadCSV(LEAD_DATA)} /> */}
-        <Import />
-      </>
-    ),
-    []
-  );
-  //   =====================================================================================
+  const actionsMemo = React.useMemo(() => <Import />, []);
 
   useEffect(() => {
     setIsLoading(true);
@@ -208,77 +188,128 @@ function Lead() {
   }, []);
 
   return (
-    <div className="content-page">
-      <div className="content">
-        <div className="container-fluid">
-          <div className="manage-bank">
-            <div className="page-title-box">
-              {/* <div className="page-title-right">
+    <div className="content">
+      <div className="container-fluid">
+        <div className="manage-bank">
+          <div className="page-title-box">
+            {/* <div className="page-title-right">
               <Link className="btn btn-primary" to="/offer/loan/add">
                Lead
               </Link>
             </div> */}
-              <h4 className="page-title">Lead</h4>
-            </div>
-            <div className="card">
-              <div className="card-body">
-                <form action="#" className="row">
-                  <div className="col-12 col-md-6 mb-3">
-                    <label className="form-label">Enter a Date Range</label>
-                    <input className="form-control" type="date" name="date" />
-                  </div>
-                  <div className="col-12 col-md-6 mb-3">
-                    <label className="form-label">Bank Name</label>
-                    <select className="form-select">
-                      <option value="1">Select All</option>
-                      <option value="1">SBI BANK</option>
-                      <option value="1">Standard Chartered Bank</option>
-                      <option value="1">AXIS BANK</option>
-                      <option value="1">Aditya Birla (NBFC)</option>
-                      <option value="1">HDFC Bank</option>
-                      <option value="1">Yes Bank</option>
-                      <option value="1">Equitas Bank</option>
-                      <option value="1">IndusInd Bank</option>
-                      <option value="1">DENA BANK</option>
-                      <option value="1">ICICI BANK</option>
-                    </select>
-                  </div>
-                  <div className="col-12 col-md-6 mb-3">
-                    <label className="form-label">Lead Type</label>
-                    <select className="form-select">
-                      <option value="1">Select All</option>
-                      <option value="1">saving account</option>
-                      <option value="1">credit card</option>
-                      <option value="1">home loan</option>
-                      <option value="1">Instant Loan</option>
-                      <option value="1">personal loan</option>
-                      <option value="1">demat</option>
-                    </select>
-                  </div>
-                  <div className="col-12 col-md-6 mb-3">
-                    <label className="form-label">Emp Status</label>
-                    <select className="form-select">
-                      <option value="1">Select All</option>
-                      <option value="1">salaried</option>
-                      <option value="1">self-employed</option>
-                    </select>
-                  </div>
-                  <div className="col-12">
-                    <label className="form-label">Search by name</label>
-                    <input className="form-control" type="search" name="date" />
-                  </div>
-                </form>
-              </div>
-            </div>
-            <DataTable
-              // title="Movie List"
-              columns={columns}
-              data={lead}
-              progressPending={isLoading}
-              pagination
-              actions={actionsMemo}
-            />
+            <h4 className="page-title">Lead</h4>
           </div>
+          <div className="card">
+            <div className="card-body">
+              <form action="#" className="row">
+                <div className="col-12 col-md-3 mb-3">
+                  <label className="form-label">From Date</label>
+                  <input
+                    className="form-control"
+                    type="date"
+                    name="date"
+                    onChange={(e) => {
+                      setDateRange({
+                        ...dateRange,
+                        from: moment(e.target.value).valueOf(),
+                      });
+                    }}
+                  />
+                </div>{" "}
+                <div className="col-12 col-md-3 mb-3">
+                  <label className="form-label">To Date</label>
+                  <input
+                    className="form-control"
+                    type="date"
+                    name="date"
+                    onChange={(e) => {
+                      setDateRange({
+                        ...dateRange,
+                        to: moment(e.target.value).valueOf(),
+                      });
+                    }}
+                  />
+                </div>
+                <div className="col-12 col-md-6 mb-3">
+                  <label className="form-label">Bank Name</label>
+                  <select
+                    onChange={(e) =>
+                      setFilter({ ...filter, bank: e.target.value })
+                    }
+                    className="form-select"
+                  >
+                    <option defaultValue={""} selected={true} disabled>
+                      Select
+                    </option>
+                    {bank?.map((e) => (
+                      <option key={e?._id} value={e?._id}>
+                        {e?.bank_name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="col-12 col-md-6 mb-3">
+                  <label className="form-label">Lead Type</label>
+                  <select
+                    onChange={(e) =>
+                      setFilter({ ...filter, leadType: e.target.value })
+                    }
+                    className="form-select"
+                  >
+                    <option defaultValue={""} selected={true} disabled>
+                      Select
+                    </option>
+                    {category?.map((item) => (
+                      <option value={item?._id}>{item?.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="container d-flex justify-content-center align-items-center">
+                  <div className="col-12 col-md-2 mb-3 ">
+                    <button
+                      className="btn btn-primary"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onFilter();
+                      }}
+                    >
+                      Search
+                    </button>
+                  </div>
+                  <div className="col-12 col-md-2 mb-3">
+                    <button
+                      className="btn btn-primary"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        reset();
+                      }}
+                    >
+                      Reset
+                    </button>
+                  </div>{" "}
+                </div>
+                <div className="col-12">
+                  <label className="form-label">Search by name</label>
+                  <input
+                    className="form-control"
+                    type="search"
+                    name="date"
+                    onChange={(e) => {
+                      searchFilter(e.target.value);
+                    }}
+                  />
+                </div>
+              </form>
+            </div>
+          </div>
+          <DataTable
+            // title="Movie List"
+            columns={columns}
+            data={leads}
+            progressPending={isLoading}
+            pagination
+            actions={actionsMemo}
+          />
         </div>
       </div>
     </div>

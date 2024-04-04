@@ -7,6 +7,8 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import Modal from "react-bootstrap/Modal";
 import { CiSearch, CiWarning } from "react-icons/ci";
 import ReactQuill from "react-quill";
+import ImageUpload from "../../components/ImageUpload";
+import { images } from "../../components/Images";
 
 function MutualFund() {
   const [isLoading, setIsLoading] = useState(true);
@@ -15,6 +17,21 @@ function MutualFund() {
   const [addModal, setAddModal] = useState({ type: "", state: false });
   const [currentData, setCurrentData] = useState(null);
   const { bank,  } = useDataStore();
+  const [imageData, setImageData] = useState({
+    type: addModal.type,
+    image: "",
+  });
+
+
+  const getImage = (image) => {
+    setImageData((prev) => {
+      return { ...prev, image };
+    });
+    console.log(image, "image");
+    if (imageData.type == "edit") {
+      setCurrentData({ ...currentData, image });
+    }
+  };
 
   const columns = [
     {
@@ -31,34 +48,16 @@ function MutualFund() {
       selector: (row) => row.bank_name,
     },
     {
-      name: "	Fund Category	",
+      name: "Investment Type",
       selector: (row) => row.category_fund,
-    },
-    {
-      name: "	Return	",
-      selector: (row) => row.return,
-    },
-    {
-      name: "	Rank	",
-      // selector: (row) => row.rank,
-      cell: (row) => (
-        <div>
-          <input
-            defaultValue={row?.rank}
-            type="number"
-            className="form-control"
-            // onChange={(e) => {
-            //   let val = e.target.value;
-            //   updateRank(row?._id, val);
-            //   row.status = val;
-            // }}
-          />
-        </div>
-      ),
     },
     {
       name: "	Minimum Investment",
       selector: (row) => row.min_investment,
+    },
+    {
+      name: "Earning",
+      selector: (row) => row.earning,
     },
     {
       name: "Action",
@@ -140,7 +139,6 @@ function MutualFund() {
 
   return (
     <>
-      <div className="content-page">
         <div className="content">
           <div className="container-fluid">
             <div className="manage-bank">
@@ -179,7 +177,6 @@ function MutualFund() {
             </div>
           </div>
         </div>
-      </div>
       <Modal
         size="sm"
         show={deleteModal}
@@ -219,11 +216,9 @@ function MutualFund() {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <form className="row">
+        <form className="row">
             <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">
-                Title <span className="fs-16">*</span>
-              </label>
+              <label className="form-label">Title</label>
               <input
                 type="text"
                 className="form-control"
@@ -232,9 +227,7 @@ function MutualFund() {
               />
             </div>
             <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">
-                Choose Bank <span className="fs-16">*</span>
-              </label>
+              <label className="form-label">Choose Bank</label>
               <select
                 className="form-select"
                 required
@@ -256,7 +249,7 @@ function MutualFund() {
             </div>
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">
-                Fund Category <span className="fs-16">*</span>
+              Investment Type <span className="fs-16">*</span>
               </label>
               <input
                 type="text"
@@ -280,29 +273,19 @@ function MutualFund() {
                 }
               />
             </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">
-                Return <span className="fs-16">*</span>
-              </label>
+            <div className="col-12 col-md-4 mb-3">
+              <label className="form-label">Earning</label>
               <input
                 type="text"
                 className="form-control"
                 required
                 defaultValue={
-                  addModal.type === "edit" ? currentData.return : ""
+                  addModal.type === "edit" ? currentData.earning : ""
                 }
               />
             </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">
-                Upload Card Image <span className="fs-16">*</span>
-              </label>
-              <input type="file" className="form-control" required />
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">
-                Apply Link <span className="fs-16">*</span>
-              </label>
+            <div className="col-12 col-md-4 mb-3">
+              <label className="form-label">Apply Link</label>
               <input
                 type="url"
                 className="form-control"
@@ -312,28 +295,102 @@ function MutualFund() {
                 }
               />
             </div>
-            <div className="col-12 col-md-6 mb-3 d-flex align-items-center">
-              <div className="form-check">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="customCheck1"
-                />
-                <label className="form-check-label" for="customCheck1">
-                  Featured
-                </label>
-              </div>
+            <div className="col-12 col-md-4 mb-3 ">
+              <label className="form-label">
+                Who can apply<span className="fs-17 text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                required
+                defaultValue={
+                  addModal.type === "edit" ? currentData?.desc?.eligibility : ""
+                }
+              />
+            </div>
+            <div className="col-12 col-md-6 mb-3 ">
+              <label className="form-label">
+                Benefits<span className="fs-17 text-danger">*</span>
+              </label>
+              <textarea
+                type="text"
+                className="form-control"
+                required
+                style={{ height: "auto" }}
+                defaultValue={
+                  addModal.type === "edit"
+                    ? currentData?.desc?.features?.join("\n")
+                    : ""
+                }
+              />
+            </div>
+            <div className="col-12 col-md-6 mb-3 ">
+              <label className="form-label">
+                How to process<span className="fs-17 text-danger">*</span>
+              </label>
+              <textarea
+                type="text"
+                className="form-control"
+                required
+                defaultValue={
+                  addModal.type === "edit"
+                    ? currentData?.desc?.documents_required?.join("\n")
+                    : ""
+                }
+              />
+            </div>
+            <div className="col-12 col-md-6 mb-3 ">
+              <label className="form-label">
+                Marketing<span className="fs-17 text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                required
+                defaultValue={
+                  addModal.type === "edit" ? currentData?.marketing : ""
+                }
+              />
+            </div>
+            <div className="col-12 col-md-6 mb-3 ">
+              <label className="form-label">
+                T&C<span className="fs-17 text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                required
+                defaultValue={addModal.type === "edit" ? currentData?.t_c : ""}
+              />
             </div>
             <div className="col-12 mb-3">
-              <label className="form-label">Description</label>
-              <ReactQuill
-                theme="snow"
-                // value={description}
-                // onChange={setDescription}
-                defaultValue={addModal.type === "edit" ? currentData.desp : ""}
-              >
-                <div className="my-editing-area" />
-              </ReactQuill>
+              <label className="form-label">
+                Product Image
+                <span className="fs-17 text-danger">*</span>
+              </label>
+              {addModal.type === "add" ? (
+                <ImageUpload
+                  img={
+                    imageData.image === ""
+                      ? images.imageUpload
+                      : imageData.image
+                  }
+                  purpose={addModal.type}
+                  getImage={getImage}
+                />
+              ) : addModal.type === "edit" ? (
+                <ImageUpload
+                  img={
+                    imageData.image === ""
+                      ? currentData?.image
+                      : imageData.image
+                  }
+                  purpose={addModal.type}
+                  getImage={getImage}
+                />
+              ) : (
+                ""
+              )}
             </div>
           </form>
         </Modal.Body>

@@ -72,19 +72,20 @@ function Sidebar() {
       isActive: false,
       link: "/users",
     },
+
+    // {
+    //   icon: <FaUsers />,
+    //   category: "Account Delete",
+    //   subcategory: [],
+    //   isActive: false,
+    //   link: "/delete-account",
+    // },
     {
       icon: <FaUsers />,
-      category: "Delete",
+      category: "Notification",
       subcategory: [],
       isActive: false,
-      link: "/delete",
-    },
-    {
-      icon: <FaUsers />,
-      category: "Account Delete",
-      subcategory: [],
-      isActive: false,
-      link: '/account-delete',
+      link: "/notification",
     },
   ]);
 

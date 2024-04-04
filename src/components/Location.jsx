@@ -9,14 +9,14 @@ function Location() {
   let location = useLocation();
 
   useEffect(() => {
-    console.log(location.pathname, "location");
+    // console.log(location.pathname, "location");
     setLoading(true);
     setCurrentPath(location.pathname);
     setTimeout(() => {
       setLoading(false);
     }, 700);
   }, [location.pathname]);
-  return loading && <Loader />;
+  // return loading && <Loader />;
 }
 
 export default Location;

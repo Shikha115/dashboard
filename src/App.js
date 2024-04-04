@@ -32,28 +32,31 @@ import ManageCategory from "./screens/ManageCategory";
 import ToastComponent from "./components/ToastComponent";
 import Location from "./components/Location";
 import Loader from "./components/Loader";
-import Delete from "./screens/Delete";
-import AccountDelete from "./screens/Authentication/AccountDelete";
+
+import RemoveAccount from "./screens/RemoveAccount";
+import Notification from "./screens/Notification";
+import DeleteAccount from "./screens/DeleteAccount";
+import PrivacyPolicy from "./screens/PrivacyPolicy";
+import TermCondition from "./screens/TermCondition";
+import Landing from "./screens/Landing";
+import Dashboard from "./screens/Dashboard";
 
 function App() {
   const {
     getProfileWeb,
     loading,
     setLoading,
-    showToast,
-    setShowToast,
     defaultSidebar,
     setDefaultSidebar,
   } = useAuthStore();
-  const { getAllBank } = useDataStore();
+  const { getAllBank, getAllCategory } = useDataStore();
 
   useEffect(() => {
     getData();
-    console.log(defaultSidebar, "defaultSidebar");
+    // console.log(defaultSidebar, "defaultSidebar");
   }, []);
 
   useLayoutEffect(() => {
-    console.log(window.innerWidth, "window.innerWidth");
     if (window.innerWidth < 768) {
       setDefaultSidebar("condensed");
     }
@@ -67,36 +70,65 @@ function App() {
       await getProfileWeb(tokenVal);
     }
     getAllBank();
+    getAllCategory();
+
     setLoading(false);
   };
 
-  // if (loading) {
-  //   return <Loader />;
-  // }
   return (
     <>
       <ToastComponent />
       <BrowserRouter>
-        <section className="wrapper" id={defaultSidebar ? defaultSidebar : ""}>
+        <section
+          className={`wrapper ${loading ? "overflow-hidden" : ""}`}
+          id={defaultSidebar ? defaultSidebar : ""}
+        >
           <Location />
           <Routes>
+            <Route path="/" element={<Landing />} exact />
             <Route
-              path="/"
-              element={<ProtectedRoute Component={Home} header={true} />}
-              exact
+              path="/dashboard"
+              element={
+                <ProtectedRoute
+                  path="/dashboard"
+                  Component={Dashboard}
+                  header={true}
+                />
+              }
             />
             <Route path="/login" element={<Login />} />
-            <Route path={`/account-delete`} element={<AccountDelete />} />
+            <Route path="/delete-account" element={<RemoveAccount />} />
+            <Route path="/delete-account/:id" element={<DeleteAccount />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/logout" element={<Logout />} />
+            <Route
+              path="/privacy-policy"
+              element={
+                <ProtectedRoute
+                  path="/privacy-policy"
+                  Component={PrivacyPolicy}
+                  header={false}
+                />
+              }
+            />
+            <Route
+              path="/term-condition"
+              element={
+                <ProtectedRoute
+                  path="/term-condition"
+                  Component={TermCondition}
+                  header={false}
+                />
+              }
+            />
             <Route
               path="/manage-bank"
               element={
                 <ProtectedRoute
                   path="/manage-bank"
                   Component={ManageBank}
-                  header={false}
+                  header={true}
                 />
               }
             />
@@ -231,7 +263,6 @@ function App() {
               }
             />
             <Route path="/my-leads" element={<MyLeads />} />
-            <Route path="/delete-account" element={<MyLeads />} />
             <Route
               path="/users"
               element={
@@ -259,11 +290,11 @@ function App() {
               }
             />
             <Route
-              path="/delete"
+              path="/notification"
               element={
                 <ProtectedRoute
-                  path="/delete"
-                  Component={Delete}
+                  path="/notification"
+                  Component={Notification}
                   header={true}
                 />
               }

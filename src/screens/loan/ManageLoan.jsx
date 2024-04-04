@@ -7,6 +7,8 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import Modal from "react-bootstrap/Modal";
 import { CiSearch, CiWarning } from "react-icons/ci";
 import ReactQuill from "react-quill";
+import ImageUpload from "../../components/ImageUpload";
+import { images } from "../../components/Images";
 
 function ManageLoan() {
   const [isLoading, setIsLoading] = useState(true);
@@ -14,7 +16,22 @@ function ManageLoan() {
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState({ type: "", state: false });
   const [currentData, setCurrentData] = useState(null);
-  const { bank,  } = useDataStore();
+  const { bank } = useDataStore();
+  const [imageData, setImageData] = useState({
+    type: addModal.type,
+    image: "",
+  });
+
+  const getImage = (image) => {
+    setImageData((prev) => {
+      return { ...prev, image };
+    });
+    console.log(image, "image");
+    if (imageData.type == "edit") {
+      setCurrentData({ ...currentData, image });
+    }
+  };
+
   const columns = [
     {
       name: "#",
@@ -34,34 +51,12 @@ function ManageLoan() {
       selector: (row) => row.bank_name,
     },
     {
-      name: "Rank	",
-      // selector: (row) => row.rank,
-      cell: (row) => (
-        <div>
-          <input
-            defaultValue={row?.rank}
-            type="number"
-            className="form-control"
-            // onChange={(e) => {
-            //   let val = e.target.value;
-            //   updateRank(row?._id, val);
-            //   row.status = val;
-            // }}
-          />
-        </div>
-      ),
-    },
-    {
       name: "Interest Rate	",
       selector: (row) => row.interest_range,
     },
     {
-      name: "Processing Fee	",
-      selector: (row) => row.process_fee,
-    },
-    {
-      name: "Tenure Range",
-      selector: (row) => row.tenure_range,
+      name: "Earning",
+      selector: (row) => row.earning,
     },
     {
       name: "Status",
@@ -151,43 +146,41 @@ function ManageLoan() {
 
   return (
     <>
-      <div className="content-page">
-        <div className="content">
-          <div className="container-fluid">
-            <div className="manage-bank">
-              <div className="page-title-box">
-                <div className="page-title-right">
+      <div className="content">
+        <div className="container-fluid">
+          <div className="manage-bank">
+            <div className="page-title-box">
+              <div className="page-title-right">
                 <div className="app-search">
-                    <form>
-                      <div className="input-group">
-                        <input
-                          type="search"
-                          className="form-control"
-                          placeholder="Search..."
-                        />
-                        <span className="search-icon">
-                          <CiSearch className="text-muted" />
-                        </span>
-                      </div>
-                    </form>
-                  </div>
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => setAddModal({ type: "add", state: true })}
-                  >
-                    Add Loan
-                  </button>
+                  <form>
+                    <div className="input-group">
+                      <input
+                        type="search"
+                        className="form-control"
+                        placeholder="Search..."
+                      />
+                      <span className="search-icon">
+                        <CiSearch className="text-muted" />
+                      </span>
+                    </div>
+                  </form>
                 </div>
-                <h4 className="page-title">Manage Loan</h4>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => setAddModal({ type: "add", state: true })}
+                >
+                  Add Loan
+                </button>
               </div>
-              <DataTable
-                // title="Movie List"
-                columns={columns}
-                data={loan}
-                progressPending={isLoading}
-                pagination
-              />
+              <h4 className="page-title">Manage Loan</h4>
             </div>
+            <DataTable
+              // title="Movie List"
+              columns={columns}
+              data={loan}
+              progressPending={isLoading}
+              pagination
+            />
           </div>
         </div>
       </div>
@@ -293,33 +286,18 @@ function ManageLoan() {
                 }
               />
             </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Processing Fee</label>
+            <div className="col-12 col-md-4 mb-3">
+              <label className="form-label">Earning</label>
               <input
                 type="text"
                 className="form-control"
                 required
                 defaultValue={
-                  addModal.type === "edit" ? currentData.process_fee : ""
+                  addModal.type === "edit" ? currentData.earning : ""
                 }
               />
             </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Upload Card Image</label>
-              <input type="file" className="form-control" required />
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Tenure Range</label>
-              <input
-                type="text"
-                className="form-control"
-                required
-                defaultValue={
-                  addModal.type === "edit" ? currentData.tenure_range : ""
-                }
-              />
-            </div>
-            <div className="col-12 col-md-6 mb-3">
+            <div className="col-12 col-md-4 mb-3">
               <label className="form-label">Apply Link</label>
               <input
                 type="url"
@@ -330,28 +308,102 @@ function ManageLoan() {
                 }
               />
             </div>
-            <div className="col-12 col-md-6 mb-3">
-              <div className="form-check">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="customCheck1"
-                />
-                <label className="form-check-label" for="customCheck1">
-                  Featured
-                </label>
-              </div>
+            <div className="col-12 col-md-4 mb-3 ">
+              <label className="form-label">
+                Who can apply<span className="fs-17 text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                required
+                defaultValue={
+                  addModal.type === "edit" ? currentData?.desc?.eligibility : ""
+                }
+              />
+            </div>
+            <div className="col-12 col-md-6 mb-3 ">
+              <label className="form-label">
+                Benefits<span className="fs-17 text-danger">*</span>
+              </label>
+              <textarea
+                type="text"
+                className="form-control"
+                required
+                style={{ height: "auto" }}
+                defaultValue={
+                  addModal.type === "edit"
+                    ? currentData?.desc?.features?.join("\n")
+                    : ""
+                }
+              />
+            </div>
+            <div className="col-12 col-md-6 mb-3 ">
+              <label className="form-label">
+                How to process<span className="fs-17 text-danger">*</span>
+              </label>
+              <textarea
+                type="text"
+                className="form-control"
+                required
+                defaultValue={
+                  addModal.type === "edit"
+                    ? currentData?.desc?.documents_required?.join("\n")
+                    : ""
+                }
+              />
+            </div>
+            <div className="col-12 col-md-6 mb-3 ">
+              <label className="form-label">
+                Marketing<span className="fs-17 text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                required
+                defaultValue={
+                  addModal.type === "edit" ? currentData?.marketing : ""
+                }
+              />
+            </div>
+            <div className="col-12 col-md-6 mb-3 ">
+              <label className="form-label">
+                T&C<span className="fs-17 text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                required
+                defaultValue={addModal.type === "edit" ? currentData?.t_c : ""}
+              />
             </div>
             <div className="col-12 mb-3">
-              <label className="form-label">Description</label>
-              <ReactQuill
-                theme="snow"
-                // value={description}
-                // onChange={setDescription}
-                defaultValue={addModal.type === "edit" ? currentData.desp : ""}
-              >
-                <div className="my-editing-area" />
-              </ReactQuill>
+              <label className="form-label">
+                Product Image
+                <span className="fs-17 text-danger">*</span>
+              </label>
+              {addModal.type === "add" ? (
+                <ImageUpload
+                  img={
+                    imageData.image === ""
+                      ? images.imageUpload
+                      : imageData.image
+                  }
+                  purpose={addModal.type}
+                  getImage={getImage}
+                />
+              ) : addModal.type === "edit" ? (
+                <ImageUpload
+                  img={
+                    imageData.image === ""
+                      ? currentData?.image
+                      : imageData.image
+                  }
+                  purpose={addModal.type}
+                  getImage={getImage}
+                />
+              ) : (
+                ""
+              )}
             </div>
           </form>
         </Modal.Body>
