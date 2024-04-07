@@ -25,6 +25,8 @@ export const apis = {
 
   getCategories: `${baseURL}/category/get-all-categories`,
   updateCategory: `${baseURL}/category/update-category`,
+  deleteCategory: `${baseURL}/category/delete-category`,
+  createCategory: `${baseURL}/category/create-category`,
 
   getAllBanners: `${baseURL}/banner/get-all-banners`,
 
@@ -48,6 +50,9 @@ export const apis = {
   addBank: `${baseURL}/bank/create-bank`,
   editBank: `${baseURL}/bank/update-bank`,
   deleteBank: `${baseURL}/bank/delete-bank`,
+
+  uploadImage: `${baseURL}/upload/upload-image`,
+  updateImage: ``,
 
   multiNotification: `${baseURL}/notification/multi-notification`,
 };

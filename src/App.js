@@ -40,6 +40,7 @@ import PrivacyPolicy from "./screens/PrivacyPolicy";
 import TermCondition from "./screens/TermCondition";
 import Landing from "./screens/Landing";
 import Dashboard from "./screens/Dashboard";
+import MyOffer from "./screens/MyOffer";
 
 function App() {
   const {
@@ -49,11 +50,15 @@ function App() {
     defaultSidebar,
     setDefaultSidebar,
   } = useAuthStore();
-  const { getAllBank, getAllCategory } = useDataStore();
+  const { getAllBank, getAllCategory, category } = useDataStore();
 
   useEffect(() => {
     getData();
     // console.log(defaultSidebar, "defaultSidebar");
+  }, []);
+
+  useEffect(() => {
+    getAllCategory(category);
   }, []);
 
   useLayoutEffect(() => {
@@ -70,8 +75,6 @@ function App() {
       await getProfileWeb(tokenVal);
     }
     getAllBank();
-    getAllCategory();
-
     setLoading(false);
   };
 
@@ -152,6 +155,22 @@ function App() {
                 />
               }
             />
+
+            {category?.map((item) => {
+              return (
+                <Route
+                  path={`/offer/${item?.type_id}`}
+                  element={
+                    <ProtectedRoute
+                      path={`/offer/${item?.type_id}`}
+                      Component={MyOffer}
+                      header={true}
+                    />
+                  }
+                />
+              );
+            })}
+
             <Route
               path="/offer/credit-card/add"
               element={
@@ -202,6 +221,7 @@ function App() {
                 />
               }
             />
+
             <Route
               path="/lead"
               element={
