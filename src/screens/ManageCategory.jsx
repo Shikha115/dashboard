@@ -11,52 +11,41 @@ import { FaWindowClose } from "react-icons/fa";
 import ImageUpload from "../components/ImageUpload";
 import useToastStore from "../store/toastStore";
 
-const CAT_DATA = {
-  name: "Savings Account",
-  icon: "bank",
-  iconType: "MaterialCommunityIcons",
-  type_id: "savings_account",
-  size: 20,
-  status: true,
-  rank: 1,
-};
-
 const RequiredData = [
-  { key: "Title", required: true },
-  { key: "Bank Name", required: true },
-  { key: "Earning", required: true },
-  { key: "Product Image", required: true },
-  { key: "Apply Link", required: true },
-  { key: "Benefit", required: true },
-  { key: "Who can apply", required: true },
-  { key: "How to process", required: true },
-  { key: "Marketing", required: true },
-  { key: "T&C", required: true },
-  { key: "Rank", required: true },
-  { key: "Status", required: true },
-  { key: "Card Type", required: true },
+  { key: "Title", required: true, can_delete: false },
+  { key: "Bank Name", required: true, can_delete: false },
+  { key: "Earning", required: true, can_delete: false },
+  { key: "Product Image", required: true, can_delete: false },
+  { key: "Apply Link", required: true, can_delete: false },
+  { key: "Benefit", required: true, can_delete: false },
+  { key: "Who can apply", required: true, can_delete: false },
+  { key: "How to process", required: true, can_delete: false },
+  { key: "Marketing", required: true, can_delete: false },
+  { key: "T&C", required: true, can_delete: false },
+  { key: "Rank", required: true, can_delete: false },
+  { key: "Status", required: true, can_delete: false },
+  { key: "Card Type", required: true, can_delete: false },
 ];
 
-const addon_data = { key: "", required: false };
+const addon_data = { key: "", required: false, can_delete: true };
 
 function ManageCategory() {
-  const { bank, setBank, isLoading, category, getAllCategory } = useDataStore();
+  const { isLoading, category, getAllCategory } = useDataStore();
   const { setToastData } = useToastStore();
 
   const [deleteModal, setDeleteModal] = useState(false);
   const [categories, setCategories] = useState(category);
-  const [updateBank, setUpdateBank] = useState();
   const [addCategory, setAddCategory] = useState("");
   const [update, setUpdate] = useState(false);
   const [selectedItem, setSelectedItem] = useState();
 
   const [inputData, setInputData] = useState({
-    name: "",
-    rank: 1,
-    image: "",
-    type_id: "",
-    size: 20,
-    status: false,
+    // name: "",
+    // rank: null,
+    // image: "",
+    // type_id: "",
+    // size: 20,
+    // status: false,
   });
 
   const [addonInputData, setAddonInputData] = useState([]);
@@ -84,19 +73,25 @@ function ManageCategory() {
   }, []);
 
   const updateStatus = async (id, status) => {
-    // console.log(id, status);
     axios
       .post(apis.updateCategory, { id, status })
-      .then((e) => {})
-      .catch((err) => {});
+      .then((e) => {
+        setToastData({ message: e.data.message });
+      })
+      .catch((err) => {
+        setToastData({ message: "Failed to Update" });
+      });
   };
 
   const updateRank = async (id, rank) => {
-    // console.log(id, rank);
     axios
       .post(apis.updateCategory, { id, rank: Number(rank) })
-      .then((e) => {})
-      .catch((err) => {});
+      .then((e) => {
+        setToastData({ message: e.data.message });
+      })
+      .catch((err) => {
+        setToastData({ message: "Failed to Update" });
+      });
   };
 
   const columns = [
@@ -138,7 +133,7 @@ function ManageCategory() {
             onChange={(e) => {
               let val = e.target.value;
               updateRank(row?._id, val);
-              row.status = val;
+              row.rank = val;
             }}
           />
         </div>
@@ -155,7 +150,8 @@ function ManageCategory() {
             to="#"
             onClick={() => {
               setAddCategory("edit");
-              setUpdateBank(row);
+              setSelectedItem(row);
+              setAddonInputData(row?.offer_data);
             }}
           >
             <MdEdit className="fs-18" />
@@ -194,6 +190,7 @@ function ManageCategory() {
         console.log(e);
         setToastData({ message: e.data.message });
         getAllCategory();
+        setAddCategory("");
       })
       .catch((err) => {
         console.log(err);
@@ -201,7 +198,29 @@ function ManageCategory() {
       });
   };
 
-  const handleUpdateCategory = () => {};
+  const handleUpdateCategory = async (item) => {
+    let addonData = addonInputData?.filter((item) => item.key !== "");
+
+    const data = {
+      id: item?._id,
+      ...inputData,
+      offer_data: [...addonData],
+    };
+
+    // return;
+    await axios
+      .post(apis.updateCategory, data)
+      .then((e) => {
+        console.log(e);
+        setToastData({ message: e.data.message });
+        getAllCategory();
+        setAddCategory("");
+      })
+      .catch((err) => {
+        console.log(err);
+        setToastData({ message: "Failed to create Category" });
+      });
+  };
 
   const handleDelete = async (id) => {
     if (!id) {
@@ -248,7 +267,11 @@ function ManageCategory() {
                 <button
                   type="button"
                   className="btn btn-primary"
-                  onClick={() => setAddCategory("add")}
+                  onClick={() => {
+                    setAddCategory("add");
+                    setSelectedItem({});
+                    setInputData({});
+                  }}
                 >
                   Add Category
                 </button>
@@ -277,6 +300,9 @@ function ManageCategory() {
         addonInputData={addonInputData}
         setAddonInputData={setAddonInputData}
         handleAddCategory={handleAddCategory}
+        selectedItem={selectedItem}
+        setSelectedItem={setSelectedItem}
+        handleUpdateCategory={handleUpdateCategory}
       />
 
       <DeleteModalComp
@@ -332,13 +358,20 @@ function AddEditModalComp({
   setUpdate,
   update,
   handleAddCategory,
+  selectedItem,
+  setSelectedItem,
+  handleUpdateCategory,
 }) {
   return (
     <Modal
       size="xl"
       show={addCategory}
       centered
-      onHide={() => setAddCategory("")}
+      onHide={() => {
+        setAddCategory("");
+        setAddonInputData([]);
+        setSelectedItem({});
+      }}
     >
       <Modal.Header closeButton>
         <Modal.Title>
@@ -351,9 +384,11 @@ function AddEditModalComp({
             <label className="form-label">Category Name</label>
             <span className="fs-17 text-danger">*</span>
             <textarea
+              disabled={addCategory === "edit"}
               className="form-control"
-              type="email"
+              type="text"
               rows={1}
+              defaultValue={selectedItem?.name}
               style={{
                 height: "auto",
                 resize: "none",
@@ -375,6 +410,7 @@ function AddEditModalComp({
               className="form-control"
               type="number"
               rows={length + 1}
+              defaultValue={selectedItem?.rank}
               style={{
                 height: "auto",
                 resize: "vertical",
@@ -396,6 +432,7 @@ function AddEditModalComp({
               className="form-control"
               type="number"
               rows={length + 1}
+              defaultValue={selectedItem?.size}
               style={{
                 height: "auto",
                 resize: "vertical",
@@ -417,7 +454,7 @@ function AddEditModalComp({
               <input
                 type="checkbox"
                 className="form-check-input"
-                defaultChecked={inputData?.status}
+                defaultChecked={selectedItem?.status}
                 onChange={(e) => {
                   let val = e.target.checked;
                   setInputData({ ...inputData, status: val });
@@ -430,14 +467,13 @@ function AddEditModalComp({
               <label className="form-label">Upload Image</label>
               <span className="fs-17 text-danger">*</span>
               <ImageUpload
-                img={inputData?.image}
+                img={inputData?.image ? inputData?.image : selectedItem?.image}
                 purpose={"add"}
                 setImage={(image) => setInputData({ ...inputData, image })}
-                // getImage={handleImage}
               />
             </div>
           </div>{" "}
-          {RequiredData.map((item, index) => (
+          {RequiredData?.map((item, index) => (
             <div key={index} className="col-12 col-md-6 mb-2">
               <div className="col-12 col-md-12">
                 <label className="form-label">Required Field </label>{" "}
@@ -459,54 +495,79 @@ function AddEditModalComp({
               </div>
             </div>
           ))}
-          {addonInputData.map((item, index) => (
-            <div key={index} className="col-12 col-md-6 mb-2">
-              <div>
-                <label className="form-label">Enter Field</label>
-                <FaWindowClose
-                  onClick={(m) => {
-                    m.preventDefault();
-                    console.log(index);
-                    let arr = [...addonInputData];
-                    // console.log(arr);
-                    arr.splice(index, 1);
-                    console.log(arr);
-                    setAddonInputData(arr);
-                  }}
-                  className="fs-18 m-1"
-                  color="red"
-                />
-              </div>
+          {addCategory === "edit" &&
+            addonInputData.map((item, index) => (
+              <div key={index} className="col-12 col-md-6 mb-2">
+                <div className="col-12 col-md-12">
+                  <label className="form-label">Required Field </label>{" "}
+                  <span className="fs-17 text-danger">*</span>
+                </div>
 
-              <div>
-                <div className="col">
-                  <span>Required</span>{" "}
-                  <input
-                    type="checkbox"
-                    className="form-check-input"
-                    onChange={(b) => {
-                      item.required = b?.target.checked;
+                <div>
+                  <textarea
+                    disabled={true}
+                    className="form-control"
+                    rows={item?.key}
+                    style={{
+                      height: "auto",
+                      resize: "vertical",
+                      overflow: "hidden",
                     }}
+                    value={item?.key}
                   />
                 </div>
-                <textarea
-                  className="form-control"
-                  rows={(item?.key?.match(/\n/g) || []).length + 1}
-                  style={{
-                    height: "auto",
-                    resize: "vertical",
-                    overflow: "hidden",
-                  }}
-                  value={item?.key}
-                  onChange={(b) => {
-                    item.key = b.target.value;
-                    setUpdate(!update);
-                  }}
-                  placeholder="Enter Value Type"
-                />
               </div>
-            </div>
-          ))}
+            ))}
+          {addCategory !== "edit" &&
+            addonInputData.map((item, index) => (
+              <div key={index} className="col-12 col-md-6 mb-2">
+                <div>
+                  <label className="form-label">Enter Field</label>
+                  <FaWindowClose
+                    onClick={(m) => {
+                      m.preventDefault();
+                      // console.log(index);
+                      let arr = [...addonInputData];
+                      // console.log(arr);
+                      arr.splice(index, 1);
+                      // console.log(arr);
+                      setAddonInputData(arr);
+                    }}
+                    className="fs-18 m-1"
+                    color="red"
+                  />
+                </div>
+
+                <div>
+                  <div className="col">
+                    <span>Required</span>{" "}
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      defaultChecked={item?.required}
+                      onChange={(b) => {
+                        item.required = b?.target.checked;
+                      }}
+                    />
+                  </div>
+                  <textarea
+                    className="form-control"
+                    rows={(item?.key?.match(/\n/g) || []).length + 1}
+                    style={{
+                      height: "auto",
+                      resize: "vertical",
+                      overflow: "hidden",
+                    }}
+                    value={item?.key}
+                    onChange={(b) => {
+                      item.key = b.target.value;
+                      setUpdate(!update);
+                    }}
+                    placeholder="Enter Value Type"
+                  />
+                </div>
+              </div>
+            ))}
           <div className="container d-flex justify-content-center align-items-center">
             <div className="col-12 col-md-2 mb-3 ">
               <button
@@ -529,7 +590,14 @@ function AddEditModalComp({
         >
           Cancel
         </button>
-        <button className="btn btn-primary" onClick={handleAddCategory}>
+        <button
+          className="btn btn-primary"
+          onClick={() => {
+            addCategory === "edit"
+              ? handleUpdateCategory(selectedItem)
+              : handleAddCategory();
+          }}
+        >
           {addCategory === "edit" ? "Edit" : "Add"}
         </button>
       </Modal.Footer>

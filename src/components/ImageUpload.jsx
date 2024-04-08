@@ -35,11 +35,7 @@ function ImageUpload({ img, purpose, getImage, url, setImage }) {
         }}
       />
       <div className="update-img">
-        <img
-          src={img === "" ? images.imageUpload : img}
-          className={purpose}
-          alt=""
-        />
+        <img src={!img ? images.imageUpload : img} className={purpose} alt="" />
       </div>
     </div>
   );

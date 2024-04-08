@@ -24,6 +24,7 @@ export const apis = {
   accountDeletionRequest: `${baseURL}/auth/request-account-deletion`,
 
   getCategories: `${baseURL}/category/get-all-categories`,
+  getCategoryById: `${baseURL}/category/get-category`,
   updateCategory: `${baseURL}/category/update-category`,
   deleteCategory: `${baseURL}/category/delete-category`,
   createCategory: `${baseURL}/category/create-category`,

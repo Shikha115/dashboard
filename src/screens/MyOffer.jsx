@@ -112,7 +112,6 @@ function MyOffer() {
     },
     {
       name: "Action",
-      // selector: (row) => row.year,
       cell: (row) => (
         <div className="custom-table-btn">
           <button

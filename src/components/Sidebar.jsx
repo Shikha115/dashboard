@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { images } from "./Images";
 import { Link } from "react-router-dom";
 import {
@@ -13,81 +13,103 @@ import { GiProgression, GiTakeMyMoney } from "react-icons/gi";
 import { FaStar } from "react-icons/fa6";
 import Collapse from "react-bootstrap/Collapse";
 import useAuthStore from "../store/authStore";
+import useDataStore from "../store/dataStore";
+const Sidebar_data = [
+  {
+    icon: <FaPiggyBank />,
+    category: "Manage Bank",
+    subcategory: [],
+    isActive: false,
+    link: "/manage-bank",
+  },
+  {
+    icon: <FaPiggyBank />,
+    category: "Manage Category",
+    subcategory: [],
+    isActive: false,
+    link: "/manage-category",
+  },
 
+  // {
+  //   icon: <GiProgression />,
+  //   category: "Offers",
+  //   subcategory: [
+  //     {
+  //       category: "Credit Card",
+
+  //       link: "/offer/credit-card",
+  //     },
+  //     {
+  //       category: "Savings Account",
+
+  //       link: "/offer/saving",
+  //     },
+  //     {
+  //       category: "Loan",
+  //       link: "/offer/loan",
+  //     },
+  //     { category: "Mutual Fund", link: "/offer/mutual-fund" },
+  //     { category: "Demat", link: "/offer/demat" },
+  //     { category: "Fixed Deposit", link: "/offer/fixed-deposit" },
+  //   ],
+  //   isActive: false,
+  //   link: "#",
+  // },
+];
+
+const Sidebar_data2 = [
+  {
+    icon: <FaStar />,
+    category: "Lead Report ",
+    subcategory: [],
+    isActive: false,
+    link: "/lead",
+  },
+  {
+    icon: <FaUsers />,
+    category: "Users",
+    subcategory: [],
+    isActive: false,
+    link: "/users",
+  },
+
+  {
+    icon: <FaUsers />,
+    category: "Notification",
+    subcategory: [],
+    isActive: false,
+    link: "/notification",
+  },
+];
 function Sidebar() {
   const { currentPath } = useAuthStore();
+  const { category } = useDataStore();
+  const [data, setData] = useState();
 
-  const [data, setData] = useState([
-    {
-      icon: <FaPiggyBank />,
-      category: "Manage Bank",
-      subcategory: [],
-      isActive: false,
-      link: "/manage-bank",
-    },
-    {
-      icon: <FaPiggyBank />,
-      category: "Manage Category",
-      subcategory: [],
-      isActive: false,
-      link: "/manage-category",
-    },
-
-    {
+  const handleOffers = () => {
+    let obj = {
       icon: <GiProgression />,
       category: "Offers",
-      subcategory: [
-        {
-          category: "Credit Card",
 
-          link: "/offer/credit-card",
-        },
-        {
-          category: "Savings Account",
-
-          link: "/offer/saving",
-        },
-        {
-          category: "Loan",
-          link: "/offer/loan",
-        },
-        { category: "Mutual Fund", link: "/offer/mutual-fund" },
-        { category: "Demat", link: "/offer/demat" },
-        { category: "Fixed Deposit", link: "/offer/fixed-deposit" },
-      ],
-      isActive: false,
+      isActive: true,
       link: "#",
-    },
-    {
-      icon: <FaStar />,
-      category: "Lead Report ",
-      subcategory: [],
-      isActive: false,
-      link: "/lead",
-    },
-    {
-      icon: <FaUsers />,
-      category: "Users",
-      subcategory: [],
-      isActive: false,
-      link: "/users",
-    },
+    };
 
-    // {
-    //   icon: <FaUsers />,
-    //   category: "Account Delete",
-    //   subcategory: [],
-    //   isActive: false,
-    //   link: "/delete-account",
-    // },
-    {
-      icon: <FaUsers />,
-      category: "Notification",
-      subcategory: [],
-      isActive: false,
-      link: "/notification",
-    },
-  ]);
+    obj.subcategory = category?.map((item) => {
+      return {
+        category: item?.name,
+        link: `/offer/${item?._id}`,
+      };
+    });
+    let arr = [...Sidebar_data, obj, ...Sidebar_data2];
+    // console.log(arr);
+    setData(arr);
+    return;
+  };
+
+  useEffect(() => {
+    handleOffers();
+  }, [category]);
 
   let handleDropdown = (i) => {
     const temp = data.map((item, index) => {
@@ -99,6 +121,7 @@ function Sidebar() {
     setData([...temp]);
   };
 
+  if (!data) return;
   return (
     <div className="leftside-menu menuitem-active">
       {/* Brand Logo Light */}

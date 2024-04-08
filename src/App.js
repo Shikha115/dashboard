@@ -41,6 +41,7 @@ import TermCondition from "./screens/TermCondition";
 import Landing from "./screens/Landing";
 import Dashboard from "./screens/Dashboard";
 import MyOffer from "./screens/MyOffer";
+import NotFound from "./screens/NotFound";
 
 function App() {
   const {
@@ -57,10 +58,6 @@ function App() {
     // console.log(defaultSidebar, "defaultSidebar");
   }, []);
 
-  useEffect(() => {
-    getAllCategory(category);
-  }, []);
-
   useLayoutEffect(() => {
     if (window.innerWidth < 768) {
       setDefaultSidebar("condensed");
@@ -74,6 +71,7 @@ function App() {
     if (tokenVal) {
       await getProfileWeb(tokenVal);
     }
+    getAllCategory(category);
     getAllBank();
     setLoading(false);
   };
@@ -145,7 +143,7 @@ function App() {
                 />
               }
             />
-            <Route
+            {/* <Route
               path="/offer/credit-card"
               element={
                 <ProtectedRoute
@@ -154,15 +152,14 @@ function App() {
                   header={true}
                 />
               }
-            />
-
+            /> */}
             {category?.map((item) => {
               return (
                 <Route
-                  path={`/offer/${item?.type_id}`}
+                  path={`/offer/${item?._id}`}
                   element={
                     <ProtectedRoute
-                      path={`/offer/${item?.type_id}`}
+                      path={`/offer/${item?._id}`}
                       Component={MyOffer}
                       header={true}
                     />
@@ -170,8 +167,7 @@ function App() {
                 />
               );
             })}
-
-            <Route
+            {/* <Route
               path="/offer/credit-card/add"
               element={
                 <ProtectedRoute
@@ -180,8 +176,8 @@ function App() {
                   header={true}
                 />
               }
-            />
-            <Route
+            /> */}
+            {/* <Route
               path="/offer/saving"
               element={
                 <ProtectedRoute
@@ -222,12 +218,7 @@ function App() {
               }
             />
 
-            <Route
-              path="/lead"
-              element={
-                <ProtectedRoute path="/lead" Component={Lead} header={true} />
-              }
-            />
+          
             <Route
               path="/offer/mutual-fund"
               element={
@@ -281,7 +272,7 @@ function App() {
                   header={true}
                 />
               }
-            />
+            /> */}
             <Route path="/my-leads" element={<MyLeads />} />
             <Route
               path="/users"
@@ -297,6 +288,12 @@ function App() {
                   Component={AddUser}
                   header={true}
                 />
+              }
+            />
+            <Route
+              path="/lead"
+              element={
+                <ProtectedRoute path="/lead" Component={Lead} header={true} />
               }
             />
             <Route
@@ -319,6 +316,7 @@ function App() {
                 />
               }
             />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </section>
       </BrowserRouter>
