@@ -48,7 +48,6 @@ function MyOffer() {
     };
   }, []);
 
-
   useEffect(() => {
     if (allOffer?.length < 1) {
       return;
@@ -262,6 +261,7 @@ function MyOffer() {
               data={allOffer}
               progressPending={isLoading}
               pagination
+              paginationRowsPerPageOptions={[30, 60, 90, 120]}
             />
           </div>
         </div>

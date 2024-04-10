@@ -27,6 +27,7 @@ const useAuthStore = create((set) => ({
       })
       .catch((err) => {
         console.log(err.response.data.message);
+
         if (
           err.response.data.message === "Access denied!!!. No token provided" ||
           err.response.data.message === "Invalid token!!!!"

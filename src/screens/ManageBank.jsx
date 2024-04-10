@@ -6,27 +6,21 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import Modal from "react-bootstrap/Modal";
 import { CiSearch, CiWarning } from "react-icons/ci";
 import ImageUpload from "../components/ImageUpload";
-import { images } from "../components/Images";
+
 import axios from "axios";
 import { apis } from "../utils/URL";
 import useAuthStore from "../store/authStore";
 
 function ManageBank() {
-  const { setToastData, setShowToast } = useAuthStore();
+  const { setToastData } = useAuthStore();
 
   const { bank, isLoading, getAllBank } = useDataStore();
 
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState({ type: "", state: false });
   const [currentData, setCurrentData] = useState();
-  const [imageData, setImageData] = useState({
-    type: addModal.type,
-    image: "",
-  });
-  const [banks, setBanks] = useState(bank);
 
-  const bankRef = useRef();
-  const statusRef = useRef();
+  const [banks, setBanks] = useState(bank);
 
   useEffect(() => {
     setBanks(bank);
@@ -73,10 +67,6 @@ function ManageBank() {
             onClick={() => {
               setAddModal({ type: "edit", state: true });
               setCurrentData(row);
-              setImageData((prev) => {
-                return { ...prev, image: "" };
-              });
-              // console.log(row, "update");
             }}
           >
             <MdEdit className="fs-18" />
@@ -86,7 +76,8 @@ function ManageBank() {
             to="#"
             onClick={(e) => {
               setCurrentData(row);
-              handleDelete(e, row.id);
+              e.preventDefault();
+              setDeleteModal(!deleteModal);
             }}
           >
             <MdDelete className="fs-18" />
@@ -105,101 +96,84 @@ function ManageBank() {
     }
   };
 
-  const getImage = (e) => {
-    let image = URL.createObjectURL(e.target.files[0]);
-    setImageData((prev) => {
-      return { ...prev, image };
-    });
-    setCurrentData({ ...currentData, image, imageData: e.target.files[0] });
-    // if (imageData.type == "edit") {
-    // }
-  };
-
   const DeleteBank = async () => {
-    // console.log(currentData);
-    // return;
     axios
       .post(apis.deleteBank, { id: currentData?._id })
       .then(async (e) => {
         await getAllBank("true");
         setCurrentData({});
-        setShowToast(true);
+
         setToastData({
           color: "#00ff1e",
           message: `Bank Deleted Successfully`,
         });
         setDeleteModal(false);
-        setTimeout(() => {
-          setShowToast(false);
-        }, 2000);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setToastData({
+          color: "red",
+          message: `Failed to delete bank`,
+        });
+      });
   };
 
   const AddData = async () => {
-    // console.log(currentData.imageData, bankRef.current.value);
-    // return;
-    const data = new FormData();
-    data.append("image", currentData.imageData);
-    data.append("bank_name", bankRef.current.value);
-    data.append("isActive", statusRef.current.value);
+    const data = {
+      image: currentData?.image,
+      bank_name: currentData?.bank_name,
+      isActive: currentData?.isActive,
+    };
+
     axios
       .post(apis.addBank, data)
       .then(async (e) => {
         await getAllBank("true");
         setCurrentData({});
-        setShowToast(true);
         setToastData({
           color: "#00ff1e",
           message: `Bank Added Successfully`,
         });
         setAddModal({ ...addModal, state: false });
-        setTimeout(() => {
-          setShowToast(false);
-        }, 2000);
+        setTimeout(() => {}, 2000);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setToastData({
+          color: "red",
+          message: `Failed to update bank`,
+        });
+      });
   };
 
   const UpdateData = async () => {
-    const data = new FormData();
-    if (currentData?.imageData) {
-      data.append("image", currentData.imageData);
+    let data = {
+      bank_name: currentData?.bank_name,
+      isActive: currentData?.isActive,
+      id: currentData?._id,
+    };
+    if (currentData?.image) {
+      data["image"] = currentData?.image;
     }
-    data.append("bank_name", bankRef.current.value);
-    data.append("id", currentData?._id);
-    data.append("isActive", statusRef.current.value === "true" ? true : false);
+
     axios
       .post(apis.editBank, data)
       .then((e) => {
         getAllBank(true);
         setCurrentData({});
-        setShowToast(true);
         setToastData({
           color: "#49e45b",
           message: `Bank Updated Successfully`,
         });
         setAddModal({ ...addModal, state: false });
-        setTimeout(() => {
-          setShowToast(false);
-        }, 2000);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const handleDelete = async (e, id) => {
-    e.preventDefault();
-
-    await axios
-      .post(apis.deleteBank)
-      .then((e) => {
-        // console.log(e);
       })
       .catch((err) => {
         console.log(err);
+        setToastData({
+          color: "red",
+          message: `Failed to update bank`,
+        });
       });
-
-    setDeleteModal(!deleteModal);
   };
 
   const search = (val) => {
@@ -247,9 +221,6 @@ function ManageBank() {
                   onClick={() => {
                     setCurrentData({});
                     setAddModal({ type: "add", state: true });
-                    setImageData((prev) => {
-                      return { ...prev, image: "" };
-                    });
                   }}
                 >
                   Add Bank Name
@@ -258,12 +229,13 @@ function ManageBank() {
               <h4 className="page-title">Manage Bank</h4>
             </div>
             <DataTable
-              // title="Movie List"
               columns={columns}
               data={banks}
               progressPending={isLoading}
               pagination
-              key={(e) => e._id}
+              paginationRowsPerPageOptions={[50, 100, 150, 200]}
+              paginationPerPage={50}
+              key={(e, index) => e._id + index}
             />
           </div>
         </div>
@@ -288,31 +260,38 @@ function ManageBank() {
             <div className="col-12 col-md-12 mb-2">
               <label className="form-label">Bank Name</label>
               <input
-                ref={bankRef}
                 className="form-control"
                 type="email"
                 required=""
                 defaultValue={currentData?.bank_name ?? ""}
+                onChange={(e) => {
+                  setCurrentData({ ...currentData, bank_name: e.target.value });
+                }}
               />
             </div>{" "}
-            <div className="col-12 col-md-12 mb-2">
-              <label className="form-label">Satus</label>
-              <input
-                ref={statusRef}
-                className="form-control"
-                type="email"
-                required=""
-                defaultValue={currentData?.isActive ?? ""}
-              />
-            </div>
+            <div className="col-12 col-md-6 mb-2">
+              <label className="form-label">Status</label>
+              <span className="fs-17 text-danger">*</span>
+              <div className="form-check form-switch">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  defaultChecked={currentData?.isActive}
+                  onChange={(e) => {
+                    let val = e.target.checked;
+                    setCurrentData({ ...currentData, isActive: val });
+                  }}
+                />
+              </div>
+            </div>{" "}
             <div className="col-12 col-md-12">
               <label className="form-label">Upload Image</label>
 
               <ImageUpload
-                img={currentData?.imageData}
+                img={currentData?.image}
                 purpose={addModal.type}
                 setImage={(image) =>
-                  setCurrentData({ ...currentData, imageData: image })
+                  setCurrentData({ ...currentData, image: image })
                 }
               />
             </div>
