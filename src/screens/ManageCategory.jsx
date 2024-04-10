@@ -22,9 +22,9 @@ const RequiredData = [
   { key: "How to process", required: true, can_delete: false },
   { key: "Marketing", required: true, can_delete: false },
   { key: "T&C", required: true, can_delete: false },
-  { key: "Rank", required: true, can_delete: false },
+  // { key: "Rank", required: true, can_delete: false },
   { key: "Status", required: true, can_delete: false },
-  { key: "Card Type", required: true, can_delete: false },
+  // { key: "Card Type", required: true, can_delete: false },
 ];
 
 const addon_data = { key: "", required: false, can_delete: true };
@@ -77,6 +77,7 @@ function ManageCategory() {
       .post(apis.updateCategory, { id, status })
       .then((e) => {
         setToastData({ message: e.data.message });
+        getAllCategory();
       })
       .catch((err) => {
         setToastData({ message: "Failed to Update" });
@@ -237,7 +238,7 @@ function ManageCategory() {
       })
       .catch((err) => {
         console.log(err);
-        setToastData({ message: "Failed to delete" });
+        setToastData({ message: "Failed to delete", color: "red" });
         setDeleteModal(false);
       });
   };
@@ -473,6 +474,9 @@ function AddEditModalComp({
               />
             </div>
           </div>{" "}
+        </form>{" "}
+        <h4>Add details for offer here</h4>
+        <form action="#" className="row">
           {RequiredData?.map((item, index) => (
             <div key={index} className="col-12 col-md-6 mb-2">
               <div className="col-12 col-md-12">

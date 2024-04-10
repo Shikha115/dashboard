@@ -42,6 +42,7 @@ export const apis = {
   updateOffer: `${baseURL}/offers/update-offer`,
   updateOfferStatus: `${baseURL}/offers/update-offer-status`,
   getOfferWeb: `${baseURL}/offers/get-offer-web`,
+  updateOfferRank: `${baseURL}/offers/update-offer-rank`,
 
   createLead: `${baseURL}/lead/create-lead`,
   getAllLeads: `${baseURL}/lead/get-all-leads`,

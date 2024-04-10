@@ -27,6 +27,7 @@ function Notification() {
       name: "Image",
       cell: (row) => (
         <img
+          alt=""
           src={row.image}
           className="img-fluid"
           style={{ height: "50px", objectFit: "contain", width: "auto" }}
@@ -78,46 +79,55 @@ function Notification() {
 
   return (
     <>
-        <div className="content">
-          <div className="container-fluid">
-            <div className="manage-bank">
-              <div className="page-title-box">
-                <div className="page-title-right">
-                  <div className="app-search">
-                    <form>
-                      <div className="input-group">
-                        <input
-                          type="search"
-                          className="form-control"
-                          placeholder="Search..."
-                        />
-                        <span className="search-icon">
-                          <CiSearch className="text-muted" />
-                        </span>
-                      </div>
-                    </form>
-                  </div>
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => {
-                      setCurrentRow({});
-                      setAddModal({ type: "add", state: true });
-                    }}
-                  >
-                    Add
-                  </button>
+      <div className="content">
+        <div className="container-fluid">
+          <div className="manage-bank">
+            <div className="page-title-box">
+              <div className="page-title-right">
+                <div className="app-search">
+                  <form>
+                    <div className="input-group">
+                      <input
+                        type="search"
+                        className="form-control"
+                        placeholder="Search..."
+                      />
+                      <span className="search-icon">
+                        <CiSearch className="text-muted" />
+                      </span>
+                    </div>
+                  </form>
                 </div>
-                <h4 className="page-title">Notification</h4>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => {
+                    setCurrentRow({});
+                    setAddModal({ type: "add", state: true });
+                  }}
+                >
+                  Add Template
+                </button>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => {
+                    setCurrentRow({});
+                    setAddModal({ type: "add", state: true });
+                  }}
+                >
+                  Create Template
+                </button>
               </div>
-              <DataTable
-                columns={columns}
-                data={NOTIFICATION_DATA}
-                progressPending={isLoading}
-                pagination
-              />
+              <h4 className="page-title">Notification</h4>
             </div>
+            <DataTable
+              columns={columns}
+              data={NOTIFICATION_DATA}
+              progressPending={isLoading}
+              pagination
+            />
           </div>
         </div>
+      </div>
       <Modal
         size="lg"
         scrollable

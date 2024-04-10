@@ -309,9 +309,11 @@ function ManageBank() {
               <label className="form-label">Upload Image</label>
 
               <ImageUpload
-                img={currentData?.image ?? imageData?.image}
+                img={currentData?.imageData}
                 purpose={addModal.type}
-                getImage={getImage}
+                setImage={(image) =>
+                  setCurrentData({ ...currentData, imageData: image })
+                }
               />
             </div>
           </form>

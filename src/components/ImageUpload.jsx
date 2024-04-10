@@ -4,7 +4,7 @@ import axios from "axios";
 import { apis } from "../utils/URL";
 import useToastStore from "../store/toastStore";
 
-function ImageUpload({ img, purpose, getImage, url, setImage }) {
+function ImageUpload({ img, purpose, setImage }) {
   const { setToastData } = useToastStore();
   const uploadImage = async (e) => {
     const formData = new FormData();

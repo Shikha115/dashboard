@@ -14,6 +14,7 @@ import { FaStar } from "react-icons/fa6";
 import Collapse from "react-bootstrap/Collapse";
 import useAuthStore from "../store/authStore";
 import useDataStore from "../store/dataStore";
+
 const Sidebar_data = [
   {
     icon: <FaPiggyBank />,
@@ -29,32 +30,6 @@ const Sidebar_data = [
     isActive: false,
     link: "/manage-category",
   },
-
-  // {
-  //   icon: <GiProgression />,
-  //   category: "Offers",
-  //   subcategory: [
-  //     {
-  //       category: "Credit Card",
-
-  //       link: "/offer/credit-card",
-  //     },
-  //     {
-  //       category: "Savings Account",
-
-  //       link: "/offer/saving",
-  //     },
-  //     {
-  //       category: "Loan",
-  //       link: "/offer/loan",
-  //     },
-  //     { category: "Mutual Fund", link: "/offer/mutual-fund" },
-  //     { category: "Demat", link: "/offer/demat" },
-  //     { category: "Fixed Deposit", link: "/offer/fixed-deposit" },
-  //   ],
-  //   isActive: false,
-  //   link: "#",
-  // },
 ];
 
 const Sidebar_data2 = [
@@ -95,12 +70,17 @@ function Sidebar() {
       link: "#",
     };
 
-    obj.subcategory = category?.map((item) => {
-      return {
-        category: item?.name,
-        link: `/offer/${item?._id}`,
-      };
-    });
+    obj.subcategory = category
+      ?.filter((item) => item?.status === true)
+      .map((item) => {
+        if (!item?.status) {
+          return;
+        }
+        return {
+          category: item?.name,
+          link: `/offer/${item?._id}`,
+        };
+      });
     let arr = [...Sidebar_data, obj, ...Sidebar_data2];
     // console.log(arr);
     setData(arr);
