@@ -22,8 +22,8 @@ const RequiredData = [
   { key: "How to process", required: true, can_delete: false },
   { key: "Marketing", required: true, can_delete: false },
   { key: "T&C", required: true, can_delete: false },
-  // { key: "Rank", required: true, can_delete: false },
   { key: "Status", required: true, can_delete: false },
+  // { key: "Rank", required: true, can_delete: false },
   // { key: "Card Type", required: true, can_delete: false },
 ];
 
@@ -39,14 +39,7 @@ function ManageCategory() {
   const [update, setUpdate] = useState(false);
   const [selectedItem, setSelectedItem] = useState();
 
-  const [inputData, setInputData] = useState({
-    // name: "",
-    // rank: null,
-    // image: "",
-    // type_id: "",
-    // size: 20,
-    // status: false,
-  });
+  const [inputData, setInputData] = useState({});
 
   const [addonInputData, setAddonInputData] = useState([]);
 
@@ -130,7 +123,7 @@ function ManageCategory() {
             defaultValue={row?.rank}
             type="number"
             className="form-control"
-            style={{ width: "50%" }}
+            style={{ width: 70 }}
             onChange={(e) => {
               let val = e.target.value;
               updateRank(row?._id, val);
@@ -153,6 +146,7 @@ function ManageCategory() {
               setAddCategory("edit");
               setSelectedItem(row);
               setAddonInputData(row?.offer_data);
+              // console.log(row?.offer_data);
             }}
           >
             <MdEdit className="fs-18" />
@@ -285,6 +279,7 @@ function ManageCategory() {
               progressPending={isLoading}
               pagination
               paginationRowsPerPageOptions={[50, 100, 150, 200]}
+              paginationPerPage={50}
             />
           </div>
         </div>
@@ -385,7 +380,7 @@ function AddEditModalComp({
             <label className="form-label">Category Name</label>
             <span className="fs-17 text-danger">*</span>
             <textarea
-              disabled={addCategory === "edit"}
+              // disabled={addCategory === "edit"}
               className="form-control"
               type="text"
               rows={1}
@@ -475,32 +470,10 @@ function AddEditModalComp({
             </div>
           </div>{" "}
         </form>{" "}
-        <h4>Add details for offer here</h4>
+        <h4>Add details for particular offer</h4>
         <form action="#" className="row">
-          {RequiredData?.map((item, index) => (
-            <div key={index} className="col-12 col-md-6 mb-2">
-              <div className="col-12 col-md-12">
-                <label className="form-label">Required Field </label>{" "}
-                <span className="fs-17 text-danger">*</span>
-              </div>
-
-              <div>
-                <textarea
-                  disabled={true}
-                  className="form-control"
-                  rows={item?.key}
-                  style={{
-                    height: "auto",
-                    resize: "vertical",
-                    overflow: "hidden",
-                  }}
-                  value={item?.key}
-                />
-              </div>
-            </div>
-          ))}
-          {addCategory === "edit" &&
-            addonInputData.map((item, index) => (
+          {addCategory !== "edit" &&
+            RequiredData?.map((item, index) => (
               <div key={index} className="col-12 col-md-6 mb-2">
                 <div className="col-12 col-md-12">
                   <label className="form-label">Required Field </label>{" "}
@@ -522,29 +495,55 @@ function AddEditModalComp({
                 </div>
               </div>
             ))}
-          {addCategory !== "edit" &&
+          {/* {addCategory === "edit" &&
             addonInputData.map((item, index) => (
               <div key={index} className="col-12 col-md-6 mb-2">
+                <div className="col-12 col-md-12">
+                  <label className="form-label">Required Field </label>{" "}
+                  <span className="fs-17 text-danger">*</span>
+                </div>
+
                 <div>
-                  <label className="form-label">Enter Field</label>
+                  <textarea
+                    // disabled={true}
+                    className="form-control"
+                    rows={item?.key}
+                    style={{
+                      height: "auto",
+                      resize: "vertical",
+                      overflow: "hidden",
+                    }}
+                    value={item?.key}
+                  />
+                </div>
+              </div>
+            ))} */}
+          {addonInputData.map((item, index) => (
+            <div key={index} className="col-12 col-md-6 mb-2">
+              <div>
+                <label className="form-label">
+                  {!item?.can_delete ? "Required Field" : "Field"}
+                </label>
+                {item?.can_delete ? (
                   <FaWindowClose
                     onClick={(m) => {
                       m.preventDefault();
-                      // console.log(index);
                       let arr = [...addonInputData];
-                      // console.log(arr);
                       arr.splice(index, 1);
-                      // console.log(arr);
                       setAddonInputData(arr);
                     }}
                     className="fs-18 m-1"
                     color="red"
                   />
-                </div>
+                ) : (
+                  <span className="fs-17 text-danger">*</span>
+                )}
+              </div>
 
-                <div>
-                  <div className="col">
-                    <span>Required</span>{" "}
+              <div>
+                <div className="col">
+                  <span>Required</span>{" "}
+                  {item?.can_delete ? (
                     <input
                       type="checkbox"
                       className="form-check-input"
@@ -553,25 +552,27 @@ function AddEditModalComp({
                         item.required = b?.target.checked;
                       }}
                     />
-                  </div>
-                  <textarea
-                    className="form-control"
-                    rows={(item?.key?.match(/\n/g) || []).length + 1}
-                    style={{
-                      height: "auto",
-                      resize: "vertical",
-                      overflow: "hidden",
-                    }}
-                    value={item?.key}
-                    onChange={(b) => {
-                      item.key = b.target.value;
-                      setUpdate(!update);
-                    }}
-                    placeholder="Enter Value Type"
-                  />
+                  ) : null}
                 </div>
+                <textarea
+                  disabled={!item?.can_delete}
+                  className="form-control"
+                  rows={(item?.key?.match(/\n/g) || []).length + 1}
+                  style={{
+                    height: "auto",
+                    resize: "vertical",
+                    overflow: "hidden",
+                  }}
+                  value={item?.key}
+                  onChange={(b) => {
+                    item.key = b.target.value;
+                    setUpdate(!update);
+                  }}
+                  placeholder="Enter Value Type"
+                />
               </div>
-            ))}
+            </div>
+          ))}
           <div className="container d-flex justify-content-center align-items-center">
             <div className="col-12 col-md-2 mb-3 ">
               <button

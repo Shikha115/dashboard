@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import useDataStore from "../store/dataStore";
 import { MdDelete, MdEdit } from "react-icons/md";
@@ -262,6 +262,7 @@ function MyOffer() {
               progressPending={isLoading}
               pagination
               paginationRowsPerPageOptions={[30, 60, 90, 120]}
+              paginationPerPage={30}
             />
           </div>
         </div>

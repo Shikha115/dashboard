@@ -55,6 +55,13 @@ const Sidebar_data2 = [
     isActive: false,
     link: "/notification",
   },
+  {
+    icon: <FaUsers />,
+    category: "Banner",
+    subcategory: [],
+    isActive: false,
+    link: "/manage-banner",
+  },
 ];
 function Sidebar() {
   const { currentPath } = useAuthStore();

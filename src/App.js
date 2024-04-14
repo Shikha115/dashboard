@@ -30,6 +30,7 @@ import Landing from "./screens/Landing";
 import Dashboard from "./screens/Dashboard";
 import MyOffer from "./screens/MyOffer";
 import NotFound from "./screens/NotFound";
+import ManageBanner from "./screens/Banner";
 
 function App() {
   const {
@@ -127,6 +128,16 @@ function App() {
                 <ProtectedRoute
                   path="/manage-category"
                   Component={ManageCategory}
+                  header={true}
+                />
+              }
+            />
+            <Route
+              path="/manage-banner"
+              element={
+                <ProtectedRoute
+                  path="/manage-banner"
+                  Component={ManageBanner}
                   header={true}
                 />
               }
