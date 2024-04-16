@@ -16,6 +16,7 @@ const useDataStore = create((set, getState) => ({
   users: [],
   category: [],
   isLoading: true,
+  banner: [],
 
   setIsLoading: (data) => set({ isLoading: data }),
 
@@ -61,6 +62,10 @@ const useDataStore = create((set, getState) => ({
   getAlLeads: async () => {
     const res = await axios.get(apis.getAllLeads);
     set({ lead: res.data?.data });
+  },
+  getAllBanners: async () => {
+    const res = await axios.post(apis.getAllBanners);
+    set({ banner: res.data?.data });
   },
 
   setUsers: (data) => set({ users: data }),

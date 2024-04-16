@@ -30,6 +30,9 @@ export const apis = {
   createCategory: `${baseURL}/category/create-category`,
 
   getAllBanners: `${baseURL}/banner/get-all-banners`,
+  addBanner: `${baseURL}/banner/add-banner`,
+  editBanner: `${baseURL}/banner/edit-banner`,
+  deletBanner: `${baseURL}/banner/delete-banner`,
 
   getProfileWeb: `${baseURL}/profile/get-profile-web`,
 

@@ -14,17 +14,42 @@ import useAuthStore from "../store/authStore";
 function ManageBanner() {
   const { setToastData } = useAuthStore();
 
-  const { bank, isLoading, getAllBank } = useDataStore();
+  const { banner, isLoading, getAllBanners } = useDataStore();
 
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState({ type: "", state: false });
   const [currentData, setCurrentData] = useState();
 
-  const [banks, setBanks] = useState(bank);
+  const [banners, setBanner] = useState(banner);
+  useEffect(() => {
+    getAllBanners();
+  }, []);
 
   useEffect(() => {
-    setBanks(bank);
-  }, [bank]);
+    setBanner(banner);
+  }, [banner]);
+
+  const updateRank = async (id, rank) => {
+    axios
+      .post(apis.editBanner, { id, rank: Number(rank) })
+      .then((e) => {
+        setToastData({ message: e.data.message });
+      })
+      .catch((err) => {
+        setToastData({ message: "Failed to Update" });
+      });
+  };
+
+  const updateStatus = async (id, status) => {
+    axios
+      .post(apis.editBanner, { id, status })
+      .then((e) => {
+        setToastData({ message: e.data.message });
+      })
+      .catch((err) => {
+        setToastData({ message: "Failed to Update" });
+      });
+  };
 
   const columns = [
     {
@@ -54,7 +79,38 @@ function ManageBanner() {
     },
     {
       name: "Status",
-      selector: (row) => (row?.isActive ? "Active" : "Inactive"),
+      cell: (row) => (
+        <div className="form-check form-switch">
+          <input
+            type="checkbox"
+            className="form-check-input"
+            defaultChecked={row?.isActive}
+            onChange={(e) => {
+              let val = e.target.checked;
+              updateStatus(row?._id, val);
+              row.status = val;
+            }}
+          />
+        </div>
+      ),
+    },
+    {
+      name: "Rank",
+      cell: (row) => (
+        <div>
+          <input
+            defaultValue={row?.rank}
+            type="number"
+            className="form-control"
+            style={{ width: 70 }}
+            onChange={(e) => {
+              let val = e.target.value;
+              updateRank(row?._id, val);
+              row.rank = val;
+            }}
+          />
+        </div>
+      ),
     },
 
     {
@@ -98,11 +154,10 @@ function ManageBanner() {
 
   const DeleteBank = async () => {
     axios
-      .post(apis.deleteBank, { id: currentData?._id })
+      .post(apis.deletBanner, { id: currentData?._id })
       .then(async (e) => {
-        await getAllBank("true");
+        await getAllBanners();
         setCurrentData({});
-
         setToastData({
           color: "#00ff1e",
           message: `Bank Deleted Successfully`,
@@ -121,14 +176,14 @@ function ManageBanner() {
   const AddData = async () => {
     const data = {
       image: currentData?.image,
-      bank_name: currentData?.bank_name,
+      title: currentData?.bank_name,
       isActive: currentData?.isActive,
     };
 
     axios
       .post(apis.addBank, data)
       .then(async (e) => {
-        await getAllBank("true");
+        await getAllBanners("true");
         setCurrentData({});
         setToastData({
           color: "#00ff1e",
@@ -159,7 +214,7 @@ function ManageBanner() {
     axios
       .post(apis.editBank, data)
       .then((e) => {
-        getAllBank(true);
+        getAllBanners(true);
         setCurrentData({});
         setToastData({
           color: "#49e45b",
@@ -177,17 +232,17 @@ function ManageBanner() {
   };
 
   const search = (val) => {
-    let arr = banks.filter((e) => {
+    let arr = banners.filter((e) => {
       return (
         e?.bank_name.toLowerCase().includes(val) ||
         e?.isActive?.toString()?.toLowerCase()?.includes(val)
       );
     });
     if (!val) {
-      setBanks(bank);
+      setBanner(banner);
       return;
     }
-    setBanks(arr);
+    setBanner(arr);
   };
 
   return (
@@ -223,14 +278,14 @@ function ManageBanner() {
                     setAddModal({ type: "add", state: true });
                   }}
                 >
-                  Add Bank Name
+                  Add Banner Name
                 </button>
               </div>
-              <h4 className="page-title">Manage Bank</h4>
+              <h4 className="page-title">Manage Banners</h4>
             </div>
             <DataTable
               columns={columns}
-              data={banks}
+              data={banners}
               progressPending={isLoading}
               pagination
               paginationRowsPerPageOptions={[50, 100, 150, 200]}
@@ -252,20 +307,20 @@ function ManageBanner() {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            {addModal.type === "add" ? "Add" : "Edit"} Bank Name
+            {addModal.type === "add" ? "Add" : "Edit"} Banner
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form action="#" className="row">
             <div className="col-12 col-md-12 mb-2">
-              <label className="form-label">Bank Name</label>
+              <label className="form-label">Name</label>
               <input
                 className="form-control"
-                type="email"
+                type="text"
                 required=""
-                defaultValue={currentData?.bank_name ?? ""}
+                defaultValue={currentData?.title ?? ""}
                 onChange={(e) => {
-                  setCurrentData({ ...currentData, bank_name: e.target.value });
+                  setCurrentData({ ...currentData, title: e.target.value });
                 }}
               />
             </div>{" "}
