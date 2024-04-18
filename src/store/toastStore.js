@@ -1,5 +1,5 @@
 import { create } from "zustand";
-const DATA = { color: "#33b0e0", message: "Welcome" };
+const DATA = { color: "#33b0e0", message: "" };
 const useToastStore = create((set) => ({
   showToast: false,
   setShowToast: (data) => set({ showToast: data }),

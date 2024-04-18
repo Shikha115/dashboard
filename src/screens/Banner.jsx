@@ -9,25 +9,64 @@ import ImageUpload from "../components/ImageUpload";
 
 import axios from "axios";
 import { apis } from "../utils/URL";
-import useAuthStore from "../store/authStore";
+
+import useToastStore from "../store/toastStore";
+
+const static_pages = [
+  {
+    _id: "",
+    mobile_data: { title: "none", product_image: "" },
+    category_info: { name: "none" },
+  },
+  {
+    _id: "",
+    mobile_data: { title: "Profile", product_image: "" },
+    category_info: { name: "App Screen" },
+  },
+
+  {
+    _id: "",
+    mobile_data: { title: "Home", product_image: "" },
+    category_info: { name: "App Screen" },
+  },
+  {
+    _id: "",
+    mobile_data: { title: "Leads", product_image: "" },
+    category_info: { name: "App Screen" },
+  },
+  {
+    _id: "",
+    mobile_data: { title: "Earnings", product_image: "" },
+    category_info: { name: "App Screen" },
+  },
+];
 
 function ManageBanner() {
-  const { setToastData } = useAuthStore();
+  const { setToastData } = useToastStore();
 
-  const { banner, isLoading, getAllBanners } = useDataStore();
+  const { banner, isLoading, getAllBanners, allOffer, getAllOffer } =
+    useDataStore();
 
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState({ type: "", state: false });
   const [currentData, setCurrentData] = useState();
+  const [UpdatedData, setUpdatedData] = useState({});
+
+  const [Pages, setPages] = useState([...static_pages]);
 
   const [banners, setBanner] = useState(banner);
   useEffect(() => {
     getAllBanners();
+    getAllOffer(true);
   }, []);
 
   useEffect(() => {
     setBanner(banner);
   }, [banner]);
+
+  useEffect(() => {
+    setPages([...static_pages, ...allOffer]);
+  }, [allOffer]);
 
   const updateRank = async (id, rank) => {
     axios
@@ -40,9 +79,9 @@ function ManageBanner() {
       });
   };
 
-  const updateStatus = async (id, status) => {
+  const updateStatus = async (id, isActive) => {
     axios
-      .post(apis.editBanner, { id, status })
+      .post(apis.editBanner, { id, isActive })
       .then((e) => {
         setToastData({ message: e.data.message });
       })
@@ -51,13 +90,129 @@ function ManageBanner() {
       });
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (addModal.type === "add") {
+      AddData();
+    } else {
+      UpdateData();
+    }
+  };
+
+  const DeleteBank = async () => {
+    axios
+      .post(apis.deletBanner, { id: currentData?._id })
+      .then(async (e) => {
+        await getAllBanners();
+        setCurrentData({});
+        setToastData({
+          color: "#00ff1e",
+          message: `Bank Deleted Successfully`,
+        });
+        setDeleteModal(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setToastData({
+          color: "red",
+          message: `Failed to delete bank`,
+        });
+      });
+  };
+
+  const AddData = async () => {
+    const {
+      isActive = false,
+      route = "",
+      route_id = "",
+      title = "",
+    } = UpdatedData;
+
+    if (!isActive || !route || !route_id || !title) {
+      setToastData({
+        color: "red",
+        message: "All details are required",
+      });
+      return;
+    }
+
+    let data = {
+      ...UpdatedData,
+    };
+
+    axios
+      .post(apis.addBanner, data)
+      .then(async (e) => {
+        setCurrentData({});
+        setUpdatedData({});
+        setToastData({
+          color: "#00ff1e",
+          message: `Banner Added Successfully`,
+        });
+        await getAllBanners();
+
+        setAddModal({ ...addModal, state: false });
+        setTimeout(() => {}, 2000);
+      })
+      .catch((err) => {
+        console.log(err);
+        setToastData({
+          color: "red",
+          message: `Failed to update Banner`,
+        });
+      });
+  };
+
+  const UpdateData = async () => {
+    let data = {
+      id: currentData._id,
+      ...UpdatedData,
+    };
+
+    axios
+      .post(apis.editBanner, data)
+      .then(async (e) => {
+        setCurrentData({});
+        setUpdatedData({});
+        await getAllBanners();
+        setToastData({
+          color: "#49e45b",
+          message: `Banner Updated Successfully`,
+        });
+        setAddModal({ ...addModal, state: false });
+      })
+      .catch((err) => {
+        console.log(err);
+        setToastData({
+          color: "red",
+          message: `Failed to update Banner`,
+        });
+      });
+  };
+
+  const search = (val) => {
+    let arr = banners.filter((e) => {
+      return (
+        e?.bank_name.toLowerCase().includes(val) ||
+        e?.isActive?.toString()?.toLowerCase()?.includes(val)
+      );
+    });
+    if (!val) {
+      setBanner(banner);
+      return;
+    }
+    setBanner(arr);
+  };
+
   const columns = [
     {
       name: "S.No",
       selector: (row, id) => id + 1,
+      width: "70px",
     },
     {
       name: "Image",
+      minWidth: "140px",
       selector: (row) => (
         <img
           alt=""
@@ -66,19 +221,18 @@ function ManageBanner() {
             justifyContent: "center",
             width: 80,
             aspectRatio: 1,
-            borderWidth: 1,
-            borderStyle: "solid",
-            borderRadius: 100,
+            borderRadius: 10,
           }}
         />
       ),
     },
     {
       name: "Banner Name",
-      selector: (row) => row.bank_name,
+      selector: (row) => row.title,
     },
     {
       name: "Status",
+      style: { width: 1000 },
       cell: (row) => (
         <div className="form-check form-switch">
           <input
@@ -88,7 +242,7 @@ function ManageBanner() {
             onChange={(e) => {
               let val = e.target.checked;
               updateStatus(row?._id, val);
-              row.status = val;
+              row.isActive = val;
             }}
           />
         </div>
@@ -143,108 +297,6 @@ function ManageBanner() {
     },
   ];
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (addModal.type === "add") {
-      AddData();
-    } else {
-      UpdateData();
-    }
-  };
-
-  const DeleteBank = async () => {
-    axios
-      .post(apis.deletBanner, { id: currentData?._id })
-      .then(async (e) => {
-        await getAllBanners();
-        setCurrentData({});
-        setToastData({
-          color: "#00ff1e",
-          message: `Bank Deleted Successfully`,
-        });
-        setDeleteModal(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setToastData({
-          color: "red",
-          message: `Failed to delete bank`,
-        });
-      });
-  };
-
-  const AddData = async () => {
-    const data = {
-      image: currentData?.image,
-      title: currentData?.bank_name,
-      isActive: currentData?.isActive,
-    };
-
-    axios
-      .post(apis.addBank, data)
-      .then(async (e) => {
-        await getAllBanners("true");
-        setCurrentData({});
-        setToastData({
-          color: "#00ff1e",
-          message: `Bank Added Successfully`,
-        });
-        setAddModal({ ...addModal, state: false });
-        setTimeout(() => {}, 2000);
-      })
-      .catch((err) => {
-        console.log(err);
-        setToastData({
-          color: "red",
-          message: `Failed to update bank`,
-        });
-      });
-  };
-
-  const UpdateData = async () => {
-    let data = {
-      bank_name: currentData?.bank_name,
-      isActive: currentData?.isActive,
-      id: currentData?._id,
-    };
-    if (currentData?.image) {
-      data["image"] = currentData?.image;
-    }
-
-    axios
-      .post(apis.editBank, data)
-      .then((e) => {
-        getAllBanners(true);
-        setCurrentData({});
-        setToastData({
-          color: "#49e45b",
-          message: `Bank Updated Successfully`,
-        });
-        setAddModal({ ...addModal, state: false });
-      })
-      .catch((err) => {
-        console.log(err);
-        setToastData({
-          color: "red",
-          message: `Failed to update bank`,
-        });
-      });
-  };
-
-  const search = (val) => {
-    let arr = banners.filter((e) => {
-      return (
-        e?.bank_name.toLowerCase().includes(val) ||
-        e?.isActive?.toString()?.toLowerCase()?.includes(val)
-      );
-    });
-    if (!val) {
-      setBanner(banner);
-      return;
-    }
-    setBanner(arr);
-  };
-
   return (
     <>
       <div className="content">
@@ -260,7 +312,6 @@ function ManageBanner() {
                         className="form-control"
                         placeholder="Search..."
                         onChange={(e) => {
-                          // console.log(e.target.value);
                           search(e?.target?.value);
                         }}
                       />
@@ -275,10 +326,11 @@ function ManageBanner() {
                   className="btn btn-primary"
                   onClick={() => {
                     setCurrentData({});
+                    setUpdatedData({});
                     setAddModal({ type: "add", state: true });
                   }}
                 >
-                  Add Banner Name
+                  Add Banner
                 </button>
               </div>
               <h4 className="page-title">Manage Banners</h4>
@@ -290,7 +342,7 @@ function ManageBanner() {
               pagination
               paginationRowsPerPageOptions={[50, 100, 150, 200]}
               paginationPerPage={50}
-              key={(e, index) => e._id + index}
+              key={(e) => e?._id}
             />
           </div>
         </div>
@@ -299,11 +351,13 @@ function ManageBanner() {
         size="sm"
         show={addModal.state}
         centered
-        onHide={() =>
+        onHide={() => {
+          setUpdatedData({});
+          setCurrentData({});
           setAddModal((prev) => {
             return { ...prev, state: false };
-          })
-        }
+          });
+        }}
       >
         <Modal.Header closeButton>
           <Modal.Title>
@@ -320,10 +374,49 @@ function ManageBanner() {
                 required=""
                 defaultValue={currentData?.title ?? ""}
                 onChange={(e) => {
-                  setCurrentData({ ...currentData, title: e.target.value });
+                  setUpdatedData({ ...UpdatedData, title: e.target.value });
                 }}
               />
             </div>{" "}
+            <div className="col-12 col-md-6 mb-3">
+              <label className="form-label">
+                Redirect to <span className="fs-17 text-danger">*</span>
+              </label>
+              <select
+                className="form-select"
+                required
+                onChange={(e) => {
+                  const selectedPage = Pages[e.target.selectedIndex];
+                  // console.log(selectedPage);
+                  let obj = {};
+                  if (selectedPage.category_info?.name === "App Screen") {
+                    obj.route = selectedPage.mobile_data?.title;
+                    obj.route_id = "";
+                  } else {
+                    obj.route = "SingleOffer";
+                  }
+
+                  if (selectedPage._id) {
+                    obj.route_id = selectedPage?._id;
+                  }
+
+                  setUpdatedData({
+                    ...UpdatedData,
+                    ...obj,
+                  });
+                }}
+                defaultValue={""}
+              >
+                {Pages &&
+                  Pages?.map((val, index) => {
+                    return (
+                      <option key={index} defaultValue={val?._id}>
+                        {val?.mobile_data?.title} - {val?.category_info?.name}
+                      </option>
+                    );
+                  })}
+              </select>
+            </div>
             <div className="col-12 col-md-6 mb-2">
               <label className="form-label">Status</label>
               <span className="fs-17 text-danger">*</span>
@@ -334,7 +427,7 @@ function ManageBanner() {
                   defaultChecked={currentData?.isActive}
                   onChange={(e) => {
                     let val = e.target.checked;
-                    setCurrentData({ ...currentData, isActive: val });
+                    setUpdatedData({ ...UpdatedData, isActive: val });
                   }}
                 />
               </div>
@@ -345,9 +438,10 @@ function ManageBanner() {
               <ImageUpload
                 img={currentData?.image}
                 purpose={addModal.type}
-                setImage={(image) =>
-                  setCurrentData({ ...currentData, image: image })
-                }
+                setImage={(image) => {
+                  setUpdatedData({ ...UpdatedData, image });
+                  setCurrentData({ ...currentData, image });
+                }}
               />
             </div>
           </form>
@@ -355,11 +449,12 @@ function ManageBanner() {
         <Modal.Footer>
           <button
             className="btn btn-secondary"
-            onClick={() =>
+            onClick={() => {
+              setUpdatedData({});
               setAddModal((prev) => {
                 return { ...prev, state: false };
-              })
-            }
+              });
+            }}
           >
             Cancel
           </button>

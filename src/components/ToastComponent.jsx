@@ -8,13 +8,15 @@ function ToastComponent() {
   const { toastData, showToast, setShowToast } = useToastStore();
 
   useEffect(() => {
-    setShowToast(true);
-    let timer = setTimeout(() => {
-      setShowToast(false);
-    }, 2000);
-    return () => {
-      clearTimeout(timer);
-    };
+    if (toastData.message) {
+      setShowToast(true);
+      let timer = setTimeout(() => {
+        setShowToast(false);
+      }, 2000);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
   }, [toastData]);
 
   return (

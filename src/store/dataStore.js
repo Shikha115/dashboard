@@ -17,6 +17,7 @@ const useDataStore = create((set, getState) => ({
   category: [],
   isLoading: true,
   banner: [],
+  templates: [],
 
   setIsLoading: (data) => set({ isLoading: data }),
 
@@ -27,6 +28,11 @@ const useDataStore = create((set, getState) => ({
     }
     const res = await axios.get(apis.getAllBanks);
     set({ bank: res.data?.data, isLoading: false });
+  },
+
+  getTemplates: async () => {
+    const res = await axios.get(apis.getAllTemplates);
+    set({ templates: res.data?.data });
   },
 
   getBanks: async () => {
@@ -46,9 +52,13 @@ const useDataStore = create((set, getState) => ({
     return res.data.data;
   },
 
-  getAllOffer: async () => {
+  getAllOffer: async (status = false) => {
     const res = await axios.get(apis.getallOffers);
-    set({ allOffer: res.data?.data });
+    let data = res?.data?.data;
+    if (status) {
+      data = data.filter((e) => e.status);
+    }
+    set({ allOffer: data });
   },
 
   getOfferbyId: async (id) => {

@@ -360,7 +360,25 @@ function MyOffer() {
                   return (
                     <div key={index} className="col-12 col-md-6 mb-2">
                       <div className="col-12 col-md-12">
-                        <label className="form-label">Upload Image</label>
+                        <label className="form-label">Product Image</label>
+                        <span className="fs-17 text-danger">*</span>
+                        <ImageUpload
+                          img={item?.value}
+                          purpose={"add"}
+                          setImage={(e) => {
+                            item.value = e;
+                            setCurrentData([...currentData]);
+                          }}
+                        />
+                      </div>
+                    </div>
+                  );
+                }
+                if (item?.key === "Product Image Web") {
+                  return (
+                    <div key={index} className="col-12 col-md-6 mb-2">
+                      <div className="col-12 col-md-12">
+                        <label className="form-label">Product Image Web</label>
                         <span className="fs-17 text-danger">*</span>
                         <ImageUpload
                           img={item?.value}

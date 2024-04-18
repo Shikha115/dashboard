@@ -1,6 +1,6 @@
 export const AppInfo = {
-  baseUrlAPI: "http://localhost:5001", // Rojgar Dev
-  // baseUrlAPI: "https://api.dev.rojgarapp.in", // Rojgar Dev
+  // baseUrlAPI: "http://localhost:5001", // Rojgar Dev
+  baseUrlAPI: "https://api.dev.rojgarapp.in", // Rojgar Dev
   // baseUrlAPI: "https://api.prod.rojgarapp.in", // Rojgar Prod
   apiVersion: "api/v1",
 };
@@ -60,4 +60,10 @@ export const apis = {
   updateImage: ``,
 
   multiNotification: `${baseURL}/notification/multi-notification`,
+  singleNotification: `${baseURL}/notification/single-notification`,
+
+  getAllTemplates: `${baseURL}/template/get-all-templates`,
+  createTemplate: `${baseURL}/template/create-template`,
+  updateTemplate: `${baseURL}/template/update-template`,
+  deleteTemplate: `${baseURL}/template/delete-template`,
 };

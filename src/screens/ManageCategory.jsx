@@ -16,6 +16,7 @@ const RequiredData = [
   { key: "Bank Name", required: true, can_delete: false },
   { key: "Earning", required: true, can_delete: false },
   { key: "Product Image", required: true, can_delete: false },
+  { key: "Product Image Web", required: true, can_delete: false },
   { key: "Apply Link", required: true, can_delete: false },
   { key: "Benefit", required: true, can_delete: false },
   { key: "Who can apply", required: true, can_delete: false },
@@ -81,10 +82,10 @@ function ManageCategory() {
     axios
       .post(apis.updateCategory, { id, rank: Number(rank) })
       .then((e) => {
-        setToastData({ message: e.data.message });
+        setToastData({ message: "Rank updated sucessfully" });
       })
       .catch((err) => {
-        setToastData({ message: "Failed to Update" });
+        setToastData({ message: "Failed to Update rank" });
       });
   };
 
@@ -421,7 +422,7 @@ function AddEditModalComp({
               placeholder="Enter rank"
             />
           </div>{" "}
-          <div className="col-12 col-md-6 mb-2">
+          {/* <div className="col-12 col-md-6 mb-2">
             <label className="form-label">Size</label>
             <span className="fs-17 text-danger">*</span>
             <input
@@ -442,7 +443,7 @@ function AddEditModalComp({
               }
               placeholder="Enter size"
             />
-          </div>{" "}
+          </div>{" "} */}
           <div className="col-12 col-md-6 mb-2">
             <label className="form-label">Status</label>
             <span className="fs-17 text-danger">*</span>
