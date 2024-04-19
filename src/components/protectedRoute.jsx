@@ -9,6 +9,7 @@ import useAuthStore from "../store/authStore";
 function ProtectedRoute({ Component, header, path }) {
   const navigate = useNavigate();
   const { loading } = useAuthStore();
+  
 
   useEffect(() => {
     let token = localStorage.getItem("token");
