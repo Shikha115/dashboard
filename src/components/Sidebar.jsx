@@ -72,7 +72,7 @@ function Sidebar() {
     let obj = {
       icon: <GiProgression />,
       category: "Offers",
-
+      subcategory: [],
       isActive: true,
       link: "#",
     };

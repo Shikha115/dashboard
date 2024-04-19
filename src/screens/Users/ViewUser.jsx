@@ -61,7 +61,7 @@ function ViewUser() {
         </div>
         <div className="col-sm-12">
           <div className="card p-0">
-            <div className="row">
+            <div className="row gy-3">
               {selectedUser?.bank_details?.map((item, index) => (
                 <div key={index} className="col-12 col-md-6">
                   <div className="card-body">

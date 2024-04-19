@@ -56,6 +56,8 @@ function Users() {
       name: "Notification",
       cell: (row) => (
         <Link
+          className="btn btn-soft-danger btn-sm"
+          style={{ textWrap: "nowrap" }}
           onClick={() => {
             setCurrentData(row);
             setNotificationModal(true);
@@ -69,7 +71,10 @@ function Users() {
       name: "Settlement",
       cell: (row) =>
         row?.lead_settlement.length > 0 ? (
-          <Link className="btn btn-info" onClick={() => setSelectedUser(row)}>
+          <Link
+            className="btn btn-soft-info btn-sm"
+            onClick={() => setSelectedUser(row)}
+          >
             Settle
           </Link>
         ) : null,
@@ -78,9 +83,18 @@ function Users() {
       name: "Approved",
       cell: (row) =>
         row?.isProfileVerified ? (
-          <h4>Verification</h4>
+          <button
+            className="btn btn-soft-primary btn-sm"
+            style={{ textWrap: "nowrap" }}
+          >
+            Verification
+          </button>
         ) : (
-          <Link className="btn btn-info" onClick={() => setSelectedUser(row)}>
+          <Link
+            className="btn btn-soft-warning btn-sm"
+            style={{ lineHeight: "17px" }}
+            onClick={() => setSelectedUser(row)}
+          >
             Approve Advisor
           </Link>
         ),
@@ -182,6 +196,7 @@ function Users() {
       {/* view */}
       <Modal
         size="xl"
+        scrollable
         show={viewModal}
         centered
         onHide={() => setViewModal(false)}
@@ -451,7 +466,7 @@ function NotificationModal(props) {
       </Modal.Header>
       <Modal.Body>
         <form action="#" className="row">
-          <div className="col-12 col-md-6 mb-3">
+          <div className="col-12 mb-2">
             <label className="form-label">
               Select a Template <span className="fs-17 text-danger">*</span>
             </label>
@@ -479,18 +494,22 @@ function NotificationModal(props) {
                 })}
             </select>
           </div>
-          <div className="col-12 col-md-12">
-            <label className="form-label">Upload Image</label>
-
-            <ImageUpload img={SelectedTemplate?.image} purpose={"add"} />
-          </div>
-          <div className="col-12 col-md-12 mb-2">
+          <div className="col-12 col-md-6 mb-2">
             <label className="form-label">Title</label>
             <input
               className="form-control"
               type="text"
               required=""
               defaultValue={SelectedTemplate?.title ?? ""}
+            />
+          </div>{" "}
+          <div className="col-12 col-md-6 mb-2">
+            <label className="form-label">Type</label>
+            <input
+              className="form-control"
+              type="text"
+              required=""
+              defaultValue={SelectedTemplate?.type ?? ""}
             />
           </div>{" "}
           {SelectedTemplate?.subject ? (
@@ -513,15 +532,10 @@ function NotificationModal(props) {
               defaultValue={SelectedTemplate?.message ?? ""}
             />
           </div>{" "}
-          <div className="col-12 col-md-12 mb-2">
-            <label className="form-label">Type</label>
-            <input
-              className="form-control"
-              type="text"
-              required=""
-              defaultValue={SelectedTemplate?.type ?? ""}
-            />
-          </div>{" "}
+          <div className="col-12 col-md-12">
+            <label className="form-label">Upload Image</label>
+            <ImageUpload img={SelectedTemplate?.image} purpose={"add"} />
+          </div>
         </form>
       </Modal.Body>
       <Modal.Footer>

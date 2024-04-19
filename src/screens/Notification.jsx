@@ -239,33 +239,24 @@ function Notification() {
         <Modal.Body>
           <form className="row">
             <div className="col-12 col-lg-6 mb-2">
-              <div className="col-12 col-lg-6 mb-2">
-                <label className="form-label">Upload Image</label>
-                <ImageUpload
-                  img={currentRow.image}
-                  setImage={(image) => {
-                    setCurrentRow({ ...currentRow, image });
-                  }}
-                />
-              </div>
-              <div className="col-12 col-lg-6 mb-2">
-                <label className="form-label">Type</label>
-                <select
-                  className="form-select"
-                  onChange={(e) => {
-                    console.log(e.target.value);
-                    setCurrentRow({ ...currentRow, type: e.target.value });
-                  }}
-                  defaultValue={currentRow?.type}
-                >
-                  {" "}
-                  <option disabled value={""} selected={true}>
-                    Select Type
-                  </option>
-                  <option value="notification">Notification</option>
-                  <option value="email">Email</option>
-                </select>
-              </div>
+              <label className="form-label">Type</label>
+              <select
+                className="form-select"
+                onChange={(e) => {
+                  console.log(e.target.value);
+                  setCurrentRow({ ...currentRow, type: e.target.value });
+                }}
+                defaultValue={currentRow?.type}
+              >
+                {" "}
+                <option disabled value={""} selected={true}>
+                  Select Type
+                </option>
+                <option value="notification">Notification</option>
+                <option value="email">Email</option>
+              </select>
+            </div>
+            <div className="col-12 col-lg-6 mb-2">
               <label className="form-label">Title</label>
               <input
                 type="text"
@@ -275,9 +266,9 @@ function Notification() {
                   setCurrentRow({ ...currentRow, title: e.target.value });
                 }}
               />
-            </div>{" "}
+            </div>
             {currentRow?.type === "email" ? (
-              <div className="col-12 mb-2">
+              <div className="col-12 col-lg-6 mb-2">
                 <label className="form-label">Subject</label>
                 <input
                   type="text"
@@ -289,7 +280,11 @@ function Notification() {
                 />
               </div>
             ) : null}
-            <div className="col-12 mb-2">
+            <div
+              className={`col-12 mb-2 ${
+                currentRow?.type === "email" ? "col-md-6" : ""
+              }`}
+            >
               <label className="form-label">Message</label>
               <input
                 type="text"
@@ -297,6 +292,15 @@ function Notification() {
                 defaultValue={currentRow.message}
                 onChange={(e) => {
                   setCurrentRow({ ...currentRow, message: e.target.value });
+                }}
+              />
+            </div>
+            <div className="col-12 col-lg-6">
+              <label className="form-label">Upload Image</label>
+              <ImageUpload
+                img={currentRow.image}
+                setImage={(image) => {
+                  setCurrentRow({ ...currentRow, image });
                 }}
               />
             </div>

@@ -252,7 +252,7 @@ function ManageBank() {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            {addModal.type === "add" ? "Add" : "Edit"} Bank Name
+            {addModal.type === "add" ? "Add" : "Edit"} Bank
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -269,6 +269,17 @@ function ManageBank() {
                 }}
               />
             </div>{" "}
+            <div className="col-12 col-md-6">
+              <label className="form-label">Upload Image</label>
+
+              <ImageUpload
+                img={currentData?.image}
+                purpose={addModal.type}
+                setImage={(image) =>
+                  setCurrentData({ ...currentData, image: image })
+                }
+              />
+            </div>
             <div className="col-12 col-md-6 mb-2">
               <label className="form-label">Status</label>
               <span className="fs-17 text-danger">*</span>
@@ -284,17 +295,6 @@ function ManageBank() {
                 />
               </div>
             </div>{" "}
-            <div className="col-12 col-md-12">
-              <label className="form-label">Upload Image</label>
-
-              <ImageUpload
-                img={currentData?.image}
-                purpose={addModal.type}
-                setImage={(image) =>
-                  setCurrentData({ ...currentData, image: image })
-                }
-              />
-            </div>
           </form>
         </Modal.Body>
         <Modal.Footer>

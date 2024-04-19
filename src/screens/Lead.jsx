@@ -155,23 +155,30 @@ function Lead() {
   };
 
   const Import = ({ onImport }) => (
-    <>
-      <div>
-        <input
-          type="file"
-          accept=".xlsx, .xls"
-          onChange={handleFileUpload}
-          style={{ display: "none" }}
-          ref={fileInputRef}
-        />
-        <button
-          className="btn btn-primary"
-          onClick={() => fileInputRef.current.click()}
-        >
-          Upload Leads
-        </button>
-      </div>
-    </>
+    <div className="d-flex align-items-center justify-content-end w-100 gap-2">
+      <input
+        type="file"
+        accept=".xlsx, .xls"
+        onChange={handleFileUpload}
+        style={{ display: "none" }}
+        ref={fileInputRef}
+      />
+      <input
+      className="form-control w-50"
+      type="search"
+      name="Search by name"
+      placeholder="Search by name"
+      onChange={(e) => {
+        searchFilter(e.target.value);
+      }}
+    />
+      <button
+        className="btn btn-primary"
+        onClick={() => fileInputRef.current.click()}
+      >
+        Upload Leads
+      </button>
+    </div>
   );
 
   const actionsMemo = React.useMemo(() => <Import />, []);
@@ -230,15 +237,16 @@ function Lead() {
                     }}
                   />
                 </div>
-                <div className="col-12 col-md-6 mb-3">
+                <div className="col-12 col-md-3 mb-3">
                   <label className="form-label">Bank Name</label>
                   <select
                     onChange={(e) =>
                       setFilter({ ...filter, bank: e.target.value })
                     }
                     className="form-select"
+                    defaultValue='Select'
                   >
-                    <option defaultValue={""} selected={true} disabled>
+                    <option hidden disabled>
                       Select
                     </option>
                     {bank?.map((e) => (
@@ -248,24 +256,25 @@ function Lead() {
                     ))}
                   </select>
                 </div>
-                <div className="col-12 col-md-6 mb-3">
+                <div className="col-12 col-md-3 mb-3">
                   <label className="form-label">Lead Type</label>
                   <select
                     onChange={(e) =>
                       setFilter({ ...filter, leadType: e.target.value })
                     }
                     className="form-select"
+                    defaultValue='Select'
                   >
-                    <option defaultValue={""} selected={true} disabled>
+                    <option hidden disabled>
                       Select
                     </option>
-                    {category?.map((item) => (
-                      <option value={item?._id}>{item?.name}</option>
+                    {category?.map((item,i) => (
+                      <option key={i} value={item?._id}>{item?.name}</option>
                     ))}
                   </select>
                 </div>
-                <div className="container d-flex justify-content-center align-items-center">
-                  <div className="col-12 col-md-2 mb-3 ">
+                <div className="col-12">
+                  <div className="d-flex align-items-center gap-2">
                     <button
                       className="btn btn-primary"
                       onClick={(e) => {
@@ -275,8 +284,6 @@ function Lead() {
                     >
                       Search
                     </button>
-                  </div>
-                  <div className="col-12 col-md-2 mb-3">
                     <button
                       className="btn btn-primary"
                       onClick={(e) => {
@@ -286,14 +293,21 @@ function Lead() {
                     >
                       Reset
                     </button>
-                  </div>{" "}
+                  </div>
                 </div>
+              </form>
+            </div>
+          </div>
+          {/* <div className="card">
+            <div className="card-body">
+              <form action="#" className="row">
                 <div className="col-12">
                   <label className="form-label">Search by name</label>
                   <input
                     className="form-control"
                     type="search"
-                    name="date"
+                    name="Search by name"
+                    placeholder="Search by name"
                     onChange={(e) => {
                       searchFilter(e.target.value);
                     }}
@@ -301,7 +315,7 @@ function Lead() {
                 </div>
               </form>
             </div>
-          </div>
+          </div> */}
           <DataTable
             // title="Movie List"
             columns={columns}

@@ -378,18 +378,20 @@ function AddEditModalComp({
       <Modal.Body>
         <form action="#" className="row">
           <div className="col-12 col-md-6 mb-2">
-            <label className="form-label">Category Name</label>
-            <span className="fs-17 text-danger">*</span>
-            <textarea
+            <label className="form-label">
+              Category Name <span className="fs-17 text-danger">*</span>
+            </label>
+
+            <input
               // disabled={addCategory === "edit"}
               className="form-control"
               type="text"
-              rows={1}
+              // rows={1}
               defaultValue={selectedItem?.name}
-              style={{
-                height: "auto",
-                resize: "none",
-              }}
+              // style={{
+              //   height: "auto",
+              //   resize: "none",
+              // }}
               required=""
               placeholder="Enter category name"
               onChange={(e) => {
@@ -401,8 +403,10 @@ function AddEditModalComp({
             />
           </div>{" "}
           <div className="col-12 col-md-6 mb-2">
-            <label className="form-label">Rank</label>
-            <span className="fs-17 text-danger">*</span>
+            <label className="form-label">
+              Rank <span className="fs-17 text-danger">*</span>
+            </label>
+
             <input
               className="form-control"
               type="number"
@@ -477,21 +481,19 @@ function AddEditModalComp({
             RequiredData?.map((item, index) => (
               <div key={index} className="col-12 col-md-6 mb-2">
                 <div className="col-12 col-md-12">
-                  <label className="form-label">Required Field </label>{" "}
-                  <span className="fs-17 text-danger">*</span>
-                </div>
-
-                <div>
+                  <label className="form-label">
+                    {item?.key} <span className="fs-17 text-danger">*</span>
+                  </label>{" "}
                   <textarea
-                    disabled={true}
+                    // disabled={true}
                     className="form-control"
-                    rows={item?.key}
+                    rows="1"
                     style={{
                       height: "auto",
                       resize: "vertical",
                       overflow: "hidden",
                     }}
-                    value={item?.key}
+                    // value={item?.key}
                   />
                 </div>
               </div>
@@ -520,11 +522,8 @@ function AddEditModalComp({
               </div>
             ))} */}
           {addonInputData.map((item, index) => (
-            <div key={index} className="col-12 col-md-6 mb-2">
-              <div>
-                <label className="form-label">
-                  {!item?.can_delete ? "Required Field" : "Field"}
-                </label>
+            <div key={index} className="col-12 col-md-6 mb-2 position-relative">
+              <div className="delete-icon">
                 {item?.can_delete ? (
                   <FaWindowClose
                     onClick={(m) => {
@@ -533,8 +532,8 @@ function AddEditModalComp({
                       arr.splice(index, 1);
                       setAddonInputData(arr);
                     }}
-                    className="fs-18 m-1"
-                    color="red"
+                    className="fs-18"
+                    color="#d03f3f"
                   />
                 ) : (
                   <span className="fs-17 text-danger">*</span>
@@ -542,8 +541,8 @@ function AddEditModalComp({
               </div>
 
               <div>
-                <div className="col">
-                  <span>Required</span>{" "}
+                <label className="form-label">
+                  Required{" "}
                   {item?.can_delete ? (
                     <input
                       type="checkbox"
@@ -554,7 +553,7 @@ function AddEditModalComp({
                       }}
                     />
                   ) : null}
-                </div>
+                </label>
                 <textarea
                   disabled={!item?.can_delete}
                   className="form-control"
@@ -574,18 +573,16 @@ function AddEditModalComp({
               </div>
             </div>
           ))}
-          <div className="container d-flex justify-content-center align-items-center">
-            <div className="col-12 col-md-2 mb-3 ">
-              <button
-                className="btn btn-primary"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setAddonInputData([...addonInputData, { ...addon_data }]);
-                }}
-              >
-                Add More
-              </button>
-            </div>
+          <div className="col-12 text-center">
+            <button
+              className="btn btn-primary"
+              onClick={(e) => {
+                e.preventDefault();
+                setAddonInputData([...addonInputData, { ...addon_data }]);
+              }}
+            >
+              Add More
+            </button>
           </div>
         </form>
       </Modal.Body>

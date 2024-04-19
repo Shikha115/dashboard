@@ -185,9 +185,11 @@ function MyOffer() {
     {
       name: "Rank",
       cell: (row) => (
-        <div className="form-check form-switch">
+        <div>
           <input
             type="number"
+            className="form-control"
+            style={{ width: 70 }}
             defaultValue={row?.rank}
             onChange={(e) => {
               let val = e.target.value;
@@ -302,7 +304,7 @@ function MyOffer() {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            {addModal.type === "add" ? "Add" : "Edit"} Credit Card
+            {addModal.type === "add" ? "Add" : "Edit"} {currentCategory?.name}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -360,8 +362,11 @@ function MyOffer() {
                   return (
                     <div key={index} className="col-12 col-md-6 mb-2">
                       <div className="col-12 col-md-12">
-                        <label className="form-label">Product Image</label>
-                        <span className="fs-17 text-danger">*</span>
+                        <label className="form-label">
+                          Product Image{" "}
+                          <span className="fs-17 text-danger">*</span>
+                        </label>
+
                         <ImageUpload
                           img={item?.value}
                           purpose={"add"}
@@ -378,8 +383,11 @@ function MyOffer() {
                   return (
                     <div key={index} className="col-12 col-md-6 mb-2">
                       <div className="col-12 col-md-12">
-                        <label className="form-label">Product Image Web</label>
-                        <span className="fs-17 text-danger">*</span>
+                        <label className="form-label">
+                          Product Image Web{" "}
+                          <span className="fs-17 text-danger">*</span>
+                        </label>
+
                         <ImageUpload
                           img={item?.value}
                           purpose={"add"}

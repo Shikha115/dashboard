@@ -8,3 +8,7 @@ const useToastStore = create((set) => ({
 }));
 
 export default useToastStore;
+
+// red = #d03f3f
+//green = #47ad77
+//yellow = #edc755

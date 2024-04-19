@@ -106,7 +106,7 @@ function ManageBanner() {
         await getAllBanners();
         setCurrentData({});
         setToastData({
-          color: "#00ff1e",
+          color: "#47ad77",
           message: `Bank Deleted Successfully`,
         });
         setDeleteModal(false);
@@ -114,7 +114,7 @@ function ManageBanner() {
       .catch((err) => {
         console.log(err);
         setToastData({
-          color: "red",
+          color: "#d03f3f",
           message: `Failed to delete bank`,
         });
       });
@@ -208,20 +208,20 @@ function ManageBanner() {
     {
       name: "S.No",
       selector: (row, id) => id + 1,
-      width: "70px",
+      // width: "70px",
     },
     {
       name: "Image",
-      minWidth: "140px",
+      // width: "100px",
       selector: (row) => (
         <img
           alt=""
           src={row?.image}
           style={{
-            justifyContent: "center",
-            width: 80,
+            width: "100px",
             aspectRatio: 1,
             borderRadius: 10,
+            objectFit: "cover",
           }}
         />
       ),
@@ -232,7 +232,7 @@ function ManageBanner() {
     },
     {
       name: "Status",
-      style: { width: 1000 },
+      // style: { width: 1000 },
       cell: (row) => (
         <div className="form-check form-switch">
           <input
@@ -378,7 +378,7 @@ function ManageBanner() {
                 }}
               />
             </div>{" "}
-            <div className="col-12 col-md-6 mb-3">
+            <div className="col-12 col-md-12 mb-3">
               <label className="form-label">
                 Redirect to <span className="fs-17 text-danger">*</span>
               </label>
@@ -417,7 +417,19 @@ function ManageBanner() {
                   })}
               </select>
             </div>
-            <div className="col-12 col-md-6 mb-2">
+            <div className="col-12 col-md-6">
+              <label className="form-label">Upload Image</label>
+
+              <ImageUpload
+                img={currentData?.image}
+                purpose={addModal.type}
+                setImage={(image) => {
+                  setUpdatedData({ ...UpdatedData, image });
+                  setCurrentData({ ...currentData, image });
+                }}
+              />
+            </div>
+            <div className="col-12 col-md-6">
               <label className="form-label">Status</label>
               <span className="fs-17 text-danger">*</span>
               <div className="form-check form-switch">
@@ -432,18 +444,6 @@ function ManageBanner() {
                 />
               </div>
             </div>{" "}
-            <div className="col-12 col-md-12">
-              <label className="form-label">Upload Image</label>
-
-              <ImageUpload
-                img={currentData?.image}
-                purpose={addModal.type}
-                setImage={(image) => {
-                  setUpdatedData({ ...UpdatedData, image });
-                  setCurrentData({ ...currentData, image });
-                }}
-              />
-            </div>
           </form>
         </Modal.Body>
         <Modal.Footer>
