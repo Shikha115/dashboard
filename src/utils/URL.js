@@ -1,7 +1,7 @@
 export const AppInfo = {
   // baseUrlAPI: "http://localhost:5001", // Rojgar Dev
-  baseUrlAPI: "https://api.dev.rojgar.new-india-consultants.com", // Rojgar Dev
-  // baseUrlAPI: "https://api.prod.rojgar.new-india-consultants.com", // Rojgar Prod
+  baseUrlAPI: "https://api.dev.rojgarapp.in", // Rojgar Dev
+  // baseUrlAPI: "https://api.prod.rojgarapp.in", // Rojgar Prod
   apiVersion: "api/v1",
 };
 
@@ -24,9 +24,15 @@ export const apis = {
   accountDeletionRequest: `${baseURL}/auth/request-account-deletion`,
 
   getCategories: `${baseURL}/category/get-all-categories`,
+  getCategoryById: `${baseURL}/category/get-category`,
   updateCategory: `${baseURL}/category/update-category`,
+  deleteCategory: `${baseURL}/category/delete-category`,
+  createCategory: `${baseURL}/category/create-category`,
 
   getAllBanners: `${baseURL}/banner/get-all-banners`,
+  addBanner: `${baseURL}/banner/add-banner`,
+  editBanner: `${baseURL}/banner/edit-banner`,
+  deletBanner: `${baseURL}/banner/delete-banner`,
 
   getProfileWeb: `${baseURL}/profile/get-profile-web`,
 
@@ -39,12 +45,25 @@ export const apis = {
   updateOffer: `${baseURL}/offers/update-offer`,
   updateOfferStatus: `${baseURL}/offers/update-offer-status`,
   getOfferWeb: `${baseURL}/offers/get-offer-web`,
+  updateOfferRank: `${baseURL}/offers/update-offer-rank`,
 
   createLead: `${baseURL}/lead/create-lead`,
   getAllLeads: `${baseURL}/lead/get-all-leads`,
   settleLeads: `${baseURL}/lead/settle-leads`,
 
   getAllBanks: `${baseURL}/bank/get-all-banks`,
+  addBank: `${baseURL}/bank/create-bank`,
+  editBank: `${baseURL}/bank/update-bank`,
+  deleteBank: `${baseURL}/bank/delete-bank`,
+
+  uploadImage: `${baseURL}/upload/upload-image`,
+  updateImage: ``,
 
   multiNotification: `${baseURL}/notification/multi-notification`,
+  singleNotification: `${baseURL}/notification/single-notification`,
+
+  getAllTemplates: `${baseURL}/template/get-all-templates`,
+  createTemplate: `${baseURL}/template/create-template`,
+  updateTemplate: `${baseURL}/template/update-template`,
+  deleteTemplate: `${baseURL}/template/delete-template`,
 };

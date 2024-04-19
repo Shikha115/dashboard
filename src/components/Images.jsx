@@ -18,14 +18,22 @@ import bg_profile from "../assets/images/bg-profile.jpg";
 import shield from "../assets/images/svg/shield.gif";
 import loader from "../assets/images/loader.gif";
 import imageUpload from "../assets/images/imageUpload.png";
+import play_store from "../assets/images/play-store.png";
+import Screenshot_1 from "../assets/images/Screenshot1.png";
+import Screenshot_2 from "../assets/images/Screenshot2.png";
+import Frame_1 from "../assets/images/Frame_1.png";
+import download_apk from "../assets/images/DownloadApk.png";
 
 export const images = {
   logo_dark,
   bg_profile,
-  logo_sm,loader,
+  logo_sm,
+  loader,
   flag_italy,
-  auth_img,imageUpload,
-  flag_us,shield,
+  auth_img,
+  imageUpload,
+  flag_us,
+  shield,
   flag_spain,
   logo,
   flag_germany,
@@ -37,4 +45,9 @@ export const images = {
   avatar_5,
   avatar_6,
   avatar_7,
+  play_store,
+  Frame_1,
+  Screenshot_1,
+  Screenshot_2,
+  download_apk,
 };

@@ -1,10 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Toast from "react-bootstrap/Toast";
 import ToastContainer from "react-bootstrap/ToastContainer";
 import useAuthStore from "../store/authStore";
+import useToastStore from "../store/toastStore";
 
 function ToastComponent() {
-  const { toastData, showToast, setShowToast } = useAuthStore();
+  const { toastData, showToast, setShowToast } = useToastStore();
+
+  useEffect(() => {
+    if (toastData.message) {
+      setShowToast(true);
+      let timer = setTimeout(() => {
+        setShowToast(false);
+      }, 2000);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [toastData]);
+
   return (
     <ToastContainer position="top-end" className="position-fixed">
       <Toast

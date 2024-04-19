@@ -15,7 +15,8 @@ function ProtectedRoute({ Component, header, path }) {
     let token = localStorage.getItem("token");
     // localStorage.removeItem("token");
     if (!token) {
-      navigate(`/login?path=${path}`);
+      // navigate(`/login?path=${path}`);
+      navigate(`/login`);
     }
   }, []);
 

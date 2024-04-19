@@ -6,20 +6,25 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import Modal from "react-bootstrap/Modal";
 import { CiSearch, CiWarning } from "react-icons/ci";
 import ImageUpload from "../components/ImageUpload";
-import { images } from "../components/Images";
+
+import axios from "axios";
+import { apis } from "../utils/URL";
+import useAuthStore from "../store/authStore";
 
 function ManageBank() {
-  const { bank, setBank, isLoading, setIsLoading } = useDataStore();
+  const { setToastData } = useAuthStore();
+
+  const { bank, isLoading, getAllBank } = useDataStore();
 
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState({ type: "", state: false });
-  const [currentData, setCurrentData] = useState(null);
-  const [imageData, setImageData] = useState({
-    type: addModal.type,
-    image: "",
-  });
-  const addBankValue = useRef();
-  const updateBankValue = useRef();
+  const [currentData, setCurrentData] = useState();
+
+  const [banks, setBanks] = useState(bank);
+
+  useEffect(() => {
+    setBanks(bank);
+  }, [bank]);
 
   const columns = [
     {
@@ -30,7 +35,8 @@ function ManageBank() {
       name: "Image",
       selector: (row) => (
         <img
-          src={row?.image?.replace("http://192.168.1.8:", "http://localhost:")}
+          alt=""
+          src={row?.image}
           style={{
             justifyContent: "center",
             width: 80,
@@ -46,6 +52,10 @@ function ManageBank() {
       name: "Bank Name",
       selector: (row) => row.bank_name,
     },
+    {
+      name: "Status",
+      selector: (row) => (row?.isActive ? "Active" : "Inactive"),
+    },
 
     {
       // selector: (row) => row.year,
@@ -57,10 +67,6 @@ function ManageBank() {
             onClick={() => {
               setAddModal({ type: "edit", state: true });
               setCurrentData(row);
-              setImageData((prev) => {
-                return { ...prev, image: "" };
-              });
-              console.log(row, "update");
             }}
           >
             <MdEdit className="fs-18" />
@@ -68,7 +74,11 @@ function ManageBank() {
           <Link
             className="btn btn-pink"
             to="#"
-            onClick={(e) => handleDelete(e, row.id)}
+            onClick={(e) => {
+              setCurrentData(row);
+              e.preventDefault();
+              setDeleteModal(!deleteModal);
+            }}
           >
             <MdDelete className="fs-18" />
           </Link>
@@ -86,48 +96,98 @@ function ManageBank() {
     }
   };
 
-  const getImage = (image) => {
-    setImageData((prev) => {
-      return { ...prev, image };
-    });
-    console.log(image, "image");
-    if (imageData.type == "edit") {
-      setCurrentData({ ...currentData, image });
-    }
-  };
-  const AddData = async () => {
-    // setAddBank(false);
-    // const index = bank.length + 1;
-    // const val = addBankValue.current.value;
-    // // console.log(index, val, "info");
-    // setBank([...bank, { id: index, bank: val }]);
-  };
-  const UpdateData = async () => {
-    // console.log(
-    //   updateBank.currentData,
-    //   "editing",
-    //   updateBankValue.current.value
-    // );
-    // const currentData = updateBank.currentData;
-    // const val = updateBankValue.current.value;
-    // setUpdateBank((prev) => {
-    //   return { ...prev, state: false };
-    // });
-    // const temp = bank.map((item, i) => {
-    //   if (item.id === currentData) {
-    //     item.bank = val;
-    //   }
-    //   return item;
-    // });
-    // setBank([...temp]);
+  const DeleteBank = async () => {
+    axios
+      .post(apis.deleteBank, { id: currentData?._id })
+      .then(async (e) => {
+        await getAllBank("true");
+        setCurrentData({});
+
+        setToastData({
+          color: "#00ff1e",
+          message: `Bank Deleted Successfully`,
+        });
+        setDeleteModal(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setToastData({
+          color: "red",
+          message: `Failed to delete bank`,
+        });
+      });
   };
 
-  const handleDelete = (e, id) => {
-    e.preventDefault();
-    setDeleteModal(true);
-    // const item = bank.filter((item) => item.id === id);
-    // const index = bank.findIndex(item);
-    // console.log(index, "csjdkm");
+  const AddData = async () => {
+    const data = {
+      image: currentData?.image,
+      bank_name: currentData?.bank_name,
+      isActive: currentData?.isActive,
+    };
+
+    axios
+      .post(apis.addBank, data)
+      .then(async (e) => {
+        await getAllBank("true");
+        setCurrentData({});
+        setToastData({
+          color: "#00ff1e",
+          message: `Bank Added Successfully`,
+        });
+        setAddModal({ ...addModal, state: false });
+        setTimeout(() => {}, 2000);
+      })
+      .catch((err) => {
+        console.log(err);
+        setToastData({
+          color: "red",
+          message: `Failed to update bank`,
+        });
+      });
+  };
+
+  const UpdateData = async () => {
+    let data = {
+      bank_name: currentData?.bank_name,
+      isActive: currentData?.isActive,
+      id: currentData?._id,
+    };
+    if (currentData?.image) {
+      data["image"] = currentData?.image;
+    }
+
+    axios
+      .post(apis.editBank, data)
+      .then((e) => {
+        getAllBank(true);
+        setCurrentData({});
+        setToastData({
+          color: "#49e45b",
+          message: `Bank Updated Successfully`,
+        });
+        setAddModal({ ...addModal, state: false });
+      })
+      .catch((err) => {
+        console.log(err);
+        setToastData({
+          color: "red",
+          message: `Failed to update bank`,
+        });
+      });
+  };
+
+  const search = (val) => {
+    let arr = banks.filter((e) => {
+      return (
+        e?.bank_name.toLowerCase().includes(val) ||
+        e?.isActive?.toString()?.toLowerCase()?.includes(val)
+      );
+    });
+    if (!val) {
+      setBanks(bank);
+      return;
+    }
+    setBanks(arr);
   };
 
   return (
@@ -144,6 +204,10 @@ function ManageBank() {
                         type="search"
                         className="form-control"
                         placeholder="Search..."
+                        onChange={(e) => {
+                          // console.log(e.target.value);
+                          search(e?.target?.value);
+                        }}
                       />
                       <span className="search-icon">
                         <CiSearch className="text-muted" />
@@ -157,9 +221,6 @@ function ManageBank() {
                   onClick={() => {
                     setCurrentData({});
                     setAddModal({ type: "add", state: true });
-                    setImageData((prev) => {
-                      return { ...prev, image: "" };
-                    });
                   }}
                 >
                   Add Bank Name
@@ -168,11 +229,13 @@ function ManageBank() {
               <h4 className="page-title">Manage Bank</h4>
             </div>
             <DataTable
-              // title="Movie List"
               columns={columns}
-              data={bank}
+              data={banks}
               progressPending={isLoading}
               pagination
+              paginationRowsPerPageOptions={[50, 100, 150, 200]}
+              paginationPerPage={50}
+              key={(e, index) => e._id + index}
             />
           </div>
         </div>
@@ -200,37 +263,37 @@ function ManageBank() {
                 className="form-control"
                 type="email"
                 required=""
-                defaultValue={
-                  addModal.type === "edit" ? currentData?.bank_name : ""
-                }
+                defaultValue={currentData?.bank_name ?? ""}
+                onChange={(e) => {
+                  setCurrentData({ ...currentData, bank_name: e.target.value });
+                }}
               />
-            </div>
+            </div>{" "}
+            <div className="col-12 col-md-6 mb-2">
+              <label className="form-label">Status</label>
+              <span className="fs-17 text-danger">*</span>
+              <div className="form-check form-switch">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  defaultChecked={currentData?.isActive}
+                  onChange={(e) => {
+                    let val = e.target.checked;
+                    setCurrentData({ ...currentData, isActive: val });
+                  }}
+                />
+              </div>
+            </div>{" "}
             <div className="col-12 col-md-12">
               <label className="form-label">Upload Image</label>
-              {addModal.type === "add" ? (
-                <ImageUpload
-                  img={
-                    imageData.image === ""
-                      ? images.imageUpload
-                      : imageData.image
-                  }
-                  purpose={addModal.type}
-                  getImage={getImage}
-                />
-              ) : addModal.type === "edit" ? (
-                <ImageUpload
-                  img={
-                    imageData.image === ""
-                      ? currentData?.image
-                      : imageData.image
-                  }
-                  purpose={addModal.type}
-                  getImage={getImage}
-                />
-              ) : (
-                ""
-              )}
-              <img src={imageData.image} alt="" />
+
+              <ImageUpload
+                img={currentData?.image}
+                purpose={addModal.type}
+                setImage={(image) =>
+                  setCurrentData({ ...currentData, image: image })
+                }
+              />
             </div>
           </form>
         </Modal.Body>
@@ -267,7 +330,7 @@ function ManageBank() {
           <button
             type="button"
             className="btn btn-danger my-2"
-            onClick={() => setDeleteModal(false)}
+            onClick={DeleteBank}
           >
             Continue
           </button>

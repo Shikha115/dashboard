@@ -1,9 +1,7 @@
-import React, { createRef, useEffect, useRef, useState } from "react";
-import { images } from "../components/Images";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { apis } from "../utils/URL";
-import { Alert } from "react-bootstrap";
 import moment from "moment";
 
 function MyLeads() {
@@ -17,6 +15,8 @@ function MyLeads() {
   const offerId = queryParams.get("oid");
   const userId = queryParams.get("uid");
   const affiliateId = queryParams.get("afid");
+
+  console.log(offer, offerId, userId, affiliateId);
 
   const getOffer = async () => {
     setLoading(true);
@@ -58,7 +58,7 @@ function MyLeads() {
     let mil = moment().milliseconds();
     let date =
       mil.toString().slice(-2) + moment(now).format("smHDM").toString();
-    let click_id = `${offer?.apply_link}&sub_aff_id=${affiliateId}_${date}`;
+    let click_id = `${offer?.mobile_data?.apply_link}&sub_aff_id=${affiliateId}_${date}`;
 
     const data = {
       offer_id: offerId,
@@ -66,7 +66,7 @@ function MyLeads() {
       bank_id: offer?.bank_info?._id,
       category_id: offer?.category_info?._id,
       click_id: date,
-      affiliate_id:affiliateId,
+      affiliate_id: affiliateId,
       customer_url: window?.location?.href,
       apply_link: offer?.apply_link,
       link_with_click_id: click_id,

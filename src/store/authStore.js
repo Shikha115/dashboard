@@ -7,13 +7,13 @@ const useAuthStore = create((set) => ({
   setToken: (data) => set({ token: data }),
   showToast: false,
   setShowToast: (data) => set({ showToast: data }),
-  toastData: { color: "#33b0e0", message: "Default message" },
+  toastData: { color: "#33b0e0", message: "Welcome" },
   setToastData: (data) => set({ toastData: data }),
   loading: true,
   setLoading: (data) => set({ loading: data }),
-  currentPath: '',
+  currentPath: "",
   setCurrentPath: (data) => set({ currentPath: data }),
-  defaultSidebar: 'default',
+  defaultSidebar: "default",
   setDefaultSidebar: (data) => set({ defaultSidebar: data }),
   profile: {},
   getProfileWeb: async () => {
@@ -27,6 +27,7 @@ const useAuthStore = create((set) => ({
       })
       .catch((err) => {
         console.log(err.response.data.message);
+
         if (
           err.response.data.message === "Access denied!!!. No token provided" ||
           err.response.data.message === "Invalid token!!!!"

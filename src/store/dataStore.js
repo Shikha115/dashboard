@@ -16,6 +16,9 @@ const useDataStore = create((set, getState) => ({
   users: [],
   category: [],
   isLoading: true,
+  banner: [],
+  templates: [],
+
   setIsLoading: (data) => set({ isLoading: data }),
 
   setBank: (data) => set({ bank: data }),
@@ -27,44 +30,54 @@ const useDataStore = create((set, getState) => ({
     set({ bank: res.data?.data, isLoading: false });
   },
 
+  getTemplates: async () => {
+    const res = await axios.get(apis.getAllTemplates);
+    set({ templates: res.data?.data });
+  },
+
+  getBanks: async () => {
+    const res = await axios.get(apis.getAllBanks);
+    set({ bank: res.data?.data, isLoading: false });
+  },
+
   setCategory: (data) => set({ category: data }),
   getAllCategory: async () => {
     const res = await axios.get(apis.getCategories);
+    res?.data?.data.sort((a, b) => a?.rank - b?.rank);
     set({ category: res.data?.data });
   },
 
-  getAllOffer: async () => {
+  getCategory: async (id) => {
+    const res = await axios.get(apis.getCategoryById + "/" + id);
+    return res.data.data;
+  },
+
+  getAllOffer: async (status = false) => {
     const res = await axios.get(apis.getallOffers);
+    let data = res?.data?.data;
+    if (status) {
+      data = data.filter((e) => e.status);
+    }
+    set({ allOffer: data });
+  },
+
+  getOfferbyId: async (id) => {
+    const res = await axios.post(apis.getSpecificOffer, {
+      id,
+    });
     set({ allOffer: res.data?.data });
   },
-
-  getCredit: async () => {
-    const res = await axios.post(apis.getSpecificOffer, {
-      id: "65c4bb05058cfc0846d4685c",
-    });
-    set({ credit: res.data?.data });
-  },
-  setCredit: (data) => set({ credit: data }),
-
-  getSaving: async () => {
-    const res = await axios.post(apis.getSpecificOffer, {
-      id: "65c4bb05058cfc0846d4685d",
-    });
-    set({ saving: res.data?.data });
-  },
-  setSaving: (data) => set({ saving: data }),
-
-  setLoan: (data) => set({ loan: data }),
 
   setLead: (data) => set({ lead: data }),
   getAlLeads: async () => {
     const res = await axios.get(apis.getAllLeads);
     set({ lead: res.data?.data });
   },
+  getAllBanners: async () => {
+    const res = await axios.post(apis.getAllBanners);
+    set({ banner: res.data?.data });
+  },
 
-  setMutualFund: (data) => set({ mutualFund: data }),
-  setDemat: (data) => set({ demat: data }),
-  setFixedDeposit: (data) => set({ fixedDeposit: data }),
   setUsers: (data) => set({ users: data }),
   getAllUsers: async () => {
     const res = await axios.get(apis.getAllLUsers);
