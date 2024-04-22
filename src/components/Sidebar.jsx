@@ -16,12 +16,19 @@ import useAuthStore from "../store/authStore";
 import useDataStore from "../store/dataStore";
 
 const Sidebar_data = [
+  // {
+  //   icon: <FaPiggyBank />,
+  //   category: "Manage Bank",
+  //   subcategory: [],
+  //   isActive: false,
+  //   link: "/manage-bank",
+  // },
   {
-    icon: <FaPiggyBank />,
-    category: "Manage Bank",
+    icon: <FaUsers />,
+    category: "Users",
     subcategory: [],
     isActive: false,
-    link: "/manage-bank",
+    link: "/users",
   },
   {
     icon: <FaPiggyBank />,

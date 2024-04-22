@@ -4,7 +4,7 @@ import axios from "axios";
 import { apis } from "../utils/URL";
 import useToastStore from "../store/toastStore";
 
-function ImageUpload({ img, purpose, setImage }) {
+function ImageUpload({ img, purpose, setImage, disabled }) {
   const { setToastData } = useToastStore();
   const uploadImage = async (e) => {
     const formData = new FormData();
@@ -22,6 +22,7 @@ function ImageUpload({ img, purpose, setImage }) {
   return (
     <div className="img-upload">
       <input
+        disabled={disabled}
         className="form-control"
         type="file"
         required=""

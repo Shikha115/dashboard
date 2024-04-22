@@ -13,7 +13,7 @@ import useToastStore from "../store/toastStore";
 
 const RequiredData = [
   { key: "Title", required: true, can_delete: false },
-  { key: "Bank Name", required: true, can_delete: false },
+  // { key: "Bank Name", required: true, can_delete: false },
   { key: "Earning", required: true, can_delete: false },
   { key: "Product Image", required: true, can_delete: false },
   { key: "Product Image Web", required: true, can_delete: false },
@@ -183,7 +183,7 @@ function ManageCategory() {
     await axios
       .post(apis.createCategory, data)
       .then((e) => {
-        console.log(e);
+        // console.log(e);
         setToastData({ message: e.data.message });
         getAllCategory();
         setAddCategory("");
@@ -475,7 +475,7 @@ function AddEditModalComp({
             </div>
           </div>{" "}
         </form>{" "}
-        <h4>Add details for particular offer</h4>
+        <h4>Pre-Existing details for particular offer</h4>
         <form action="#" className="row">
           {addCategory !== "edit" &&
             RequiredData?.map((item, index) => (
@@ -485,7 +485,7 @@ function AddEditModalComp({
                     {item?.key} <span className="fs-17 text-danger">*</span>
                   </label>{" "}
                   <textarea
-                    // disabled={true}
+                    disabled={true}
                     className="form-control"
                     rows="1"
                     style={{
@@ -521,6 +521,9 @@ function AddEditModalComp({
                 </div>
               </div>
             ))} */}
+          {addonInputData?.length > 0 ? (
+            <h4>Add details for particular offer</h4>
+          ) : null}
           {addonInputData.map((item, index) => (
             <div key={index} className="col-12 col-md-6 mb-2 position-relative">
               <div className="delete-icon">

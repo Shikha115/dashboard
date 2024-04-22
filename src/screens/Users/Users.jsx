@@ -3,7 +3,6 @@ import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
 import useDataStore from "../../store/dataStore";
 import { MdDelete, MdEdit } from "react-icons/md";
-import { USER_DATA } from "../../store/staticData";
 import { FaEye } from "react-icons/fa";
 import Modal from "react-bootstrap/Modal";
 import { CiSearch, CiWarning } from "react-icons/ci";
@@ -32,18 +31,12 @@ function Users() {
       name: "Name",
       selector: (row) => row.name,
     },
-    // {
-    //   name: "Email",
-    //   selector: (row) => row.email,
-    // },
+
     {
       name: "Contact No.",
       selector: (row) => row.phone,
     },
-    // {
-    //   name: "DOB",
-    //   selector: (row) => row.dob,
-    // },
+
     {
       name: "Type",
       selector: (row) => row.type,
@@ -497,6 +490,7 @@ function NotificationModal(props) {
           <div className="col-12 col-md-6 mb-2">
             <label className="form-label">Title</label>
             <input
+              disabled
               className="form-control"
               type="text"
               required=""
@@ -506,6 +500,7 @@ function NotificationModal(props) {
           <div className="col-12 col-md-6 mb-2">
             <label className="form-label">Type</label>
             <input
+              disabled
               className="form-control"
               type="text"
               required=""
@@ -516,6 +511,7 @@ function NotificationModal(props) {
             <div className="col-12 col-md-12 mb-2">
               <label className="form-label">Subject</label>
               <input
+                disabled
                 className="form-control"
                 type="text"
                 required=""
@@ -526,6 +522,7 @@ function NotificationModal(props) {
           <div className="col-12 col-md-12 mb-2">
             <label className="form-label">Message</label>
             <input
+              disabled
               className="form-control"
               type="text"
               required=""
@@ -534,7 +531,11 @@ function NotificationModal(props) {
           </div>{" "}
           <div className="col-12 col-md-12">
             <label className="form-label">Upload Image</label>
-            <ImageUpload img={SelectedTemplate?.image} purpose={"add"} />
+            <ImageUpload
+              img={SelectedTemplate?.image}
+              purpose={"add"}
+              disabled={true}
+            />
           </div>
         </form>
       </Modal.Body>

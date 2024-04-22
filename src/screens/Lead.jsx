@@ -5,13 +5,16 @@ import moment from "moment";
 import * as XLSX from "xlsx";
 import axios from "axios";
 import { apis } from "../utils/URL";
+import { Modal } from "react-bootstrap";
+import useToastStore from "../store/toastStore";
 
 function Lead() {
-  const { lead, setLead, getAlLeads, bank, category } = useDataStore();
+  const { lead, getAlLeads, category } = useDataStore();
   const [isLoading, setIsLoading] = useState(true);
   const [filter, setFilter] = useState({ bank: "", leadType: "" });
   const [leads, setleads] = useState(lead);
-  const fileInputRef = useRef(null);
+  const [LeadModal, setLeadModal] = useState(false);
+
   useEffect(() => {
     setleads(lead);
   }, [lead]);
@@ -31,7 +34,7 @@ function Lead() {
       name: "Title",
       selector: (row) => {
         // console.log(row);
-        return row?.offer_info?.title;
+        return row?.offer_info?.mobile_data?.title;
       },
     },
     {
@@ -53,10 +56,10 @@ function Lead() {
       name: "Mobile	",
       selector: (row) => row?.phone,
     },
-    {
-      name: "Bank Name",
-      selector: (row) => row?.bank_info?.bank_name,
-    },
+    // {
+    //   name: "Bank Name",
+    //   selector: (row) => row?.bank_info?.bank_name,
+    // },
     {
       name: "Email",
       selector: (row) => row.email,
@@ -82,10 +85,10 @@ function Lead() {
       return dateRange.from <= itemDate && dateRange.to >= itemDate;
     });
     let arr2;
-    if (filter?.bank) {
-      arr2 = arr?.filter((e) => e?.bank_id === filter?.bank);
-    }
-    if (filter?.bank) {
+    // if (filter?.bank) {
+    //   arr2 = arr?.filter((e) => e?.bank_id === filter?.bank);
+    // }
+    if (filter?.leadType) {
       arr2 = arr?.filter((e) => e?.category_id === filter?.leadType);
     }
     if (!arr2) {
@@ -104,18 +107,30 @@ function Lead() {
       setleads(lead);
       return;
     }
-    const value = val?.toLowerCase()?.trim();
+    const value = val?.toLowerCase()?.replace(" ", "");
     const arr = lead.filter((e) => {
       return (
-        e?.offer_info?.title?.toLowerCase()?.trim()?.includes(value) ||
-        e?.bank_info?.bank_name?.toLowerCase()?.trim()?.includes(value) ||
-        e?.category_info?.name?.toLowerCase()?.trim()?.includes(value)
+        e?.offer_info?.title
+          ?.toLowerCase()
+          ?.replace(" ", "")
+          ?.includes(value) ||
+        e?.name?.toLowerCase()?.replace(" ", "")?.includes(value) ||
+        e?.category_info?.name
+          ?.toLowerCase()
+          ?.replace(" ", "")
+          ?.includes(value) ||
+        e?.offer_info?.mobile_data?.title
+          .toLowerCase()
+          ?.replace(" ", "")
+          ?.includes(value)
       );
     });
     setleads(arr);
   };
 
   const handleFileUpload = (event) => {
+    // affiliate_id,offer_name,status
+
     const file = event.target.files[0];
     const reader = new FileReader();
 
@@ -135,10 +150,10 @@ function Lead() {
       const arrayData = objectData.slice(1).map((row) => {
         const obj = {};
         headers.forEach((header, index) => {
-          obj[header.toLowerCase()] =
+          obj[header?.toLowerCase()] =
             typeof row[index] === "number" ? String(row[index]) : row[index];
 
-          if (header.toLowerCase() === "affiliate_id") {
+          if (header?.toLowerCase() === "affiliate_id") {
             obj["refferal_id"] = obj?.affiliate_id?.split("_")[0];
             obj["click_id"] = obj?.affiliate_id?.split("_")[1];
             delete obj.affiliate_id;
@@ -146,7 +161,9 @@ function Lead() {
         });
         return obj;
       });
+      console.log(headers, arrayData);
 
+      return;
       let res = await axios.post(apis.settleLeads, { data: arrayData });
       console.log(res);
     };
@@ -157,24 +174,26 @@ function Lead() {
   const Import = ({ onImport }) => (
     <div className="d-flex align-items-center justify-content-end w-100 gap-2">
       <input
+        className="form-control w-50"
+        type="search"
+        name="Search by name"
+        placeholder="Search by name"
+        onChange={(e) => {
+          searchFilter(e.target.value);
+        }}
+      />
+      <input
         type="file"
         accept=".xlsx, .xls"
         onChange={handleFileUpload}
         style={{ display: "none" }}
-        ref={fileInputRef}
       />
-      <input
-      className="form-control w-50"
-      type="search"
-      name="Search by name"
-      placeholder="Search by name"
-      onChange={(e) => {
-        searchFilter(e.target.value);
-      }}
-    />
       <button
         className="btn btn-primary"
-        onClick={() => fileInputRef.current.click()}
+        onClick={() => {
+          // fileInputRef.current.click();
+          setLeadModal(true);
+        }}
       >
         Upload Leads
       </button>
@@ -199,11 +218,6 @@ function Lead() {
       <div className="container-fluid">
         <div className="manage-bank">
           <div className="page-title-box">
-            {/* <div className="page-title-right">
-              <Link className="btn btn-primary" to="/offer/loan/add">
-               Lead
-              </Link>
-            </div> */}
             <h4 className="page-title">Lead</h4>
           </div>
           <div className="card">
@@ -238,38 +252,21 @@ function Lead() {
                   />
                 </div>
                 <div className="col-12 col-md-3 mb-3">
-                  <label className="form-label">Bank Name</label>
-                  <select
-                    onChange={(e) =>
-                      setFilter({ ...filter, bank: e.target.value })
-                    }
-                    className="form-select"
-                    defaultValue='Select'
-                  >
-                    <option hidden disabled>
-                      Select
-                    </option>
-                    {bank?.map((e) => (
-                      <option key={e?._id} value={e?._id}>
-                        {e?.bank_name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="col-12 col-md-3 mb-3">
                   <label className="form-label">Lead Type</label>
                   <select
                     onChange={(e) =>
                       setFilter({ ...filter, leadType: e.target.value })
                     }
                     className="form-select"
-                    defaultValue='Select'
+                    defaultValue="Select"
                   >
                     <option hidden disabled>
                       Select
                     </option>
-                    {category?.map((item,i) => (
-                      <option key={i} value={item?._id}>{item?.name}</option>
+                    {category?.map((item, i) => (
+                      <option key={i} value={item?._id}>
+                        {item?.name}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -298,32 +295,15 @@ function Lead() {
               </form>
             </div>
           </div>
-          {/* <div className="card">
-            <div className="card-body">
-              <form action="#" className="row">
-                <div className="col-12">
-                  <label className="form-label">Search by name</label>
-                  <input
-                    className="form-control"
-                    type="search"
-                    name="Search by name"
-                    placeholder="Search by name"
-                    onChange={(e) => {
-                      searchFilter(e.target.value);
-                    }}
-                  />
-                </div>
-              </form>
-            </div>
-          </div> */}
+
           <DataTable
-            // title="Movie List"
             columns={columns}
             data={leads}
             progressPending={isLoading}
             pagination
             actions={actionsMemo}
           />
+          <LeadModalComp LeadModal={LeadModal} setLeadModal={setLeadModal} />
         </div>
       </div>
     </div>
@@ -331,3 +311,151 @@ function Lead() {
 }
 
 export default Lead;
+
+function LeadModalComp({ LeadModal, setLeadModal }) {
+  const [SelectedOffer, setSelectedOffer] = useState();
+  const fileInputRef = useRef(null);
+  const { allOffer, getAllOffer } = useDataStore();
+  const { setToastData } = useToastStore();
+
+  useEffect(() => {
+    getAllOffer();
+  }, []);
+
+  const handleFileUpload = (event) => {
+    // affiliate_id,offer_name,status
+
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = async (e) => {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: "array" });
+
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+
+      const objectData = XLSX.utils.sheet_to_json(worksheet, {
+        header: 1,
+        raw: true,
+      });
+
+      const headers = objectData[0];
+      const arrayData = objectData.slice(1).map((row) => {
+        const obj = {};
+        headers.forEach((header, index) => {
+          obj[header?.toLowerCase()] =
+            typeof row[index] === "number" ? String(row[index]) : row[index];
+
+          obj["offer_id"] = SelectedOffer;
+          if (header?.toLowerCase() === "affiliate_id") {
+            obj["refferal_id"] = obj?.affiliate_id?.split("_")[0];
+            obj["click_id"] = obj?.affiliate_id?.split("_")[1];
+            delete obj.affiliate_id;
+          }
+        });
+        obj.status = obj.status?.toLowerCase();
+        return obj;
+      });
+      // console.log(arrayData);
+      fileInputRef.current.value = "";
+      // return;
+      let res = await axios.post(apis.settleLeads, { data: arrayData });
+      // console.log(res);
+      if (res.data.message === "Invalid offer selected") {
+        setToastData({ message: res.data.message, color: "red" });
+      } else if (res.data.message.trim() === "No documents updated") {
+        setToastData({ message: res.data.message, color: "orange" });
+      } else if (res.data.message.includes("Documents updated successfully")) {
+        setToastData({ message: res.data.message, color: "green" });
+      } else if (res.data.message.includes("Failed to update")) {
+        setToastData({ message: res.data.message, color: "red" });
+      }
+    };
+
+    reader.readAsArrayBuffer(file);
+  };
+
+  return (
+    <Modal
+      size="l"
+      show={LeadModal}
+      centered
+      scrollable
+      onHide={() => {
+        setSelectedOffer("");
+        setLeadModal(false);
+      }}
+    >
+      <Modal.Header closeButton>
+        <Modal.Title>Upload lead to settle them</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <form className="row">
+          <div className="col-12 col-md-6 mb-3">
+            <label className="form-label">Category</label>
+            <select
+              className="form-select"
+              onChange={(e) => {
+                setSelectedOffer(e.target.value);
+              }}
+            >
+              <option disabled value={""} selected={true}>
+                Select Category
+              </option>
+              {allOffer?.map((e, i) => (
+                <option index={i} value={e?._id}>
+                  {e?.mobile_data?.title}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="">
+            {" "}
+            <input
+              type="file"
+              accept=".xlsx, .xls"
+              onChange={handleFileUpload}
+              style={{ display: "none" }}
+              ref={fileInputRef}
+            />
+            <button
+              className="btn btn-primary"
+              onClick={(e) => {
+                e.preventDefault();
+                if (!SelectedOffer) {
+                  return setToastData({
+                    message: "Select any category",
+                    color: "red",
+                  });
+                }
+                fileInputRef.current.click();
+              }}
+            >
+              Upload Leads
+            </button>
+          </div>
+        </form>
+      </Modal.Body>
+      <Modal.Footer>
+        <button
+          className="btn btn-secondary"
+          onClick={() => {
+            setSelectedOffer("");
+            setLeadModal(false);
+          }}
+        >
+          Cancel
+        </button>
+        <button
+          className="btn btn-primary"
+          onClick={() => {
+            // ref.current.click();
+          }}
+        >
+          Settle Leads{" "}
+        </button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
