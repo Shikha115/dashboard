@@ -16,7 +16,7 @@ function MyLeads() {
   const userId = queryParams.get("uid");
   const affiliateId = queryParams.get("afid");
 
-  console.log(offer, offerId, userId, affiliateId);
+  // console.log(offer, offerId, userId, affiliateId);
 
   const getOffer = async () => {
     setLoading(true);
