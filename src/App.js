@@ -31,6 +31,7 @@ import Dashboard from "./screens/Dashboard";
 import MyOffer from "./screens/MyOffer";
 import NotFound from "./screens/NotFound";
 import ManageBanner from "./screens/Banner";
+import Home2 from "./screens/Home2";
 
 function App() {
   const {
@@ -75,7 +76,7 @@ function App() {
         >
           <Location />
           <Routes>
-            <Route path="/" element={<Landing />} exact />
+            <Route path="/" element={<Home2 />} exact />
             <Route
               path="/dashboard"
               element={
