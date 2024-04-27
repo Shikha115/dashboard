@@ -151,11 +151,11 @@ function MyOffer() {
       selector: (row) => row?.columns?.title,
       width: "250px",
     },
-    {
-      name: "Bank Name",
-      selector: (row) => getBankById(bank, row?.columns?.bank_name).bank_name,
-      width: "180px",
-    },
+    // {
+    //   name: "Bank Name",
+    //   selector: (row) => getBankById(bank, row?.columns?.bank_name).bank_name,
+    //   width: "180px",
+    // },
     {
       name: "Card Type",
       selector: (row) => currentCategory?.name,
@@ -400,48 +400,48 @@ function MyOffer() {
                     </div>
                   );
                 }
-                if (item?.key === "Bank Name") {
-                  return (
-                    <div key={index} className="col-12 col-md-6 mb-3">
-                      <label className="form-label">
-                        Choose Bank
-                        <span className="fs-17 text-danger">*</span>
-                      </label>
-                      <select
-                        className="form-select"
-                        required
-                        onChange={(e) => {
-                          item.value = e.target.value.split(",")[1];
+                // if (item?.key === "Bank Name") {
+                //   return (
+                //     <div key={index} className="col-12 col-md-6 mb-3">
+                //       <label className="form-label">
+                //         Choose Bank
+                //         <span className="fs-17 text-danger">*</span>
+                //       </label>
+                //       <select
+                //         className="form-select"
+                //         required
+                //         onChange={(e) => {
+                //           item.value = e.target.value.split(",")[1];
 
-                          setAddonData({
-                            ...addonData,
-                            bank_id: item?.value,
-                            type_id: category_id,
-                          });
-                        }}
-                        defaultValue={
-                          bankData?.bank_name + "," + bankData?._id ??
-                          "Select a bank"
-                        }
-                      >
-                        {bank &&
-                          bank?.map((val, i) => {
-                            return (
-                              <option
-                                key={i}
-                                defaultValue={
-                                  bankData?.bank_name + "," + bankData?._id
-                                }
-                                value={`${val?.bank_name},${val?._id}`}
-                              >
-                                {val?.bank_name}
-                              </option>
-                            );
-                          })}
-                      </select>
-                    </div>
-                  );
-                }
+                //           setAddonData({
+                //             ...addonData,
+                //             bank_id: item?.value,
+                //             type_id: category_id,
+                //           });
+                //         }}
+                //         defaultValue={
+                //           bankData?.bank_name + "," + bankData?._id ??
+                //           "Select a bank"
+                //         }
+                //       >
+                //         {bank &&
+                //           bank?.map((val, i) => {
+                //             return (
+                //               <option
+                //                 key={i}
+                //                 defaultValue={
+                //                   bankData?.bank_name + "," + bankData?._id
+                //                 }
+                //                 value={`${val?.bank_name},${val?._id}`}
+                //               >
+                //                 {val?.bank_name}
+                //               </option>
+                //             );
+                //           })}
+                //       </select>
+                //     </div>
+                //   );
+                // }
                 return (
                   <div key={index} className="col-12 col-md-6 mb-2">
                     <label className="form-label">{item?.key}</label>
