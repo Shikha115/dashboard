@@ -373,6 +373,20 @@ function Navbar() {
               </Link>
             </div>
           </li> */}
+          <li>
+            <div className="switch">
+              <label htmlFor="toggle">
+                <input id="toggle" className="toggle-switch" type="checkbox" />
+                <div className="sun-moon">
+                  <div className="dots" />
+                </div>
+                <div className="background">
+                  <div className="stars1" />
+                  <div className="stars2" />
+                </div>
+              </label>
+            </div>
+          </li>
           <li className="dropdown">
             <Link
               className="nav-link arrow-none nav-user"
