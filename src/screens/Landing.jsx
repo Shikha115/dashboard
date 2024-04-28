@@ -8,12 +8,7 @@ function Landing() {
 
   return (
     <Root>
-      <AView>
-        <Text size={60}>R</Text>
-        <Text size={40}>ojgar </Text>
-        <Text size={60}>A</Text>
-        <Text size={40}>pp</Text>
-      </AView>
+      {LogoComp()}
       <Container>
         <View style={{ marginBottom: "20px" }}>
           <View style={{ marginRight: 20 }}>
@@ -76,15 +71,42 @@ function Landing() {
 
 export default Landing;
 
+export function LogoComp({ color }) {
+  return (
+    <AView>
+      <Text size={60} color={color}>
+        R
+      </Text>
+      <Text size={40} color={color}>
+        ojgar{" "}
+      </Text>
+      <Text size={60} color={color}>
+        A
+      </Text>
+      <Text size={40} color={color}>
+        pp
+      </Text>
+    </AView>
+  );
+}
+
+const Text = styled.span`
+  font-size: ${(props) => props.size}px;
+  color: ${(props) => props.color || "#481e14"};
+`;
+
+const AView = styled.div`
+  justify-content: center;
+  align-items: center;
+  // display: flex;
+  // position: absolute;
+  // left: 20px;
+  // top: 0px;
+`;
 const Root = styled.div`
   background-color: #ffedd8;
   flex: 1;
   /* height: 100vh; */
-`;
-
-const Text = styled.span`
-  font-size: ${(props) => props.size}px;
-  color: #481e14;
 `;
 
 const Image = styled.img`
@@ -113,14 +135,6 @@ const Container = styled.div`
   }
 `;
 
-const AView = styled.div`
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  position: absolute;
-  left: 20px;
-  top: 0px;
-`;
 const View = styled.div`
   justify-content: center;
   align-items: center;

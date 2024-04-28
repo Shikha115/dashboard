@@ -31,6 +31,7 @@ const Dashboard = React.lazy(() => import("./screens/Dashboard"));
 const MyOffer = React.lazy(() => import("./screens/MyOffer"));
 const NotFound = React.lazy(() => import("./screens/NotFound"));
 const ManageBanner = React.lazy(() => import("./screens/Banner"));
+const Home2 = React.lazy(() => import("./screens/Home2"));
 
 function App() {
   const {
@@ -76,7 +77,7 @@ function App() {
           <Location />
           <Suspense fallback={<div>Loading...</div>}>
             <Routes>
-              <Route path="/" element={<Landing />} exact />
+              <Route path="/" element={<Home2 />} exact />
               <Route
                 path="/dashboard"
                 element={
