@@ -5,7 +5,6 @@ import {
   FaFacebookF,
   FaInstagram,
   FaTwitter,
-  FaPlus,
   FaSearch,
   FaDownload,
   FaYoutube,
