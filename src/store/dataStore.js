@@ -17,6 +17,7 @@ const useDataStore = create((set, getState) => ({
   category: [],
   isLoading: true,
   banner: [],
+  sponsor: [],
   templates: [],
 
   setIsLoading: (data) => set({ isLoading: data }),
@@ -35,10 +36,10 @@ const useDataStore = create((set, getState) => ({
     set({ templates: res.data?.data });
   },
 
-  getBanks: async () => {
-    const res = await axios.get(apis.getAllBanks);
-    set({ bank: res.data?.data, isLoading: false });
-  },
+  // getBanks: async () => {
+  //   const res = await axios.get(apis.getAllBanks);
+  //   set({ bank: res.data?.data, isLoading: false });
+  // },
 
   setCategory: (data) => set({ category: data }),
   getAllCategory: async () => {
@@ -58,7 +59,7 @@ const useDataStore = create((set, getState) => ({
     if (status) {
       data = data.filter((e) => e.status);
     }
-    set({ allOffer: data });
+    set({ allOffer: data, isLoading: false });
   },
 
   getOfferbyId: async (id) => {
@@ -74,8 +75,13 @@ const useDataStore = create((set, getState) => ({
     set({ lead: res.data?.data });
   },
   getAllBanners: async () => {
-    const res = await axios.post(apis.getAllBanners);
+    const res = await axios.get(apis.getAllBanners);
     set({ banner: res.data?.data });
+  },
+
+  getAllSponsors: async () => {
+    const res = await axios.get(apis.getAllSponsor);
+    set({ sponsor: res.data?.data });
   },
 
   setUsers: (data) => set({ users: data }),

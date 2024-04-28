@@ -69,6 +69,13 @@ const Sidebar_data2 = [
     isActive: false,
     link: "/manage-banner",
   },
+  {
+    icon: <FaUsers />,
+    category: "Sponsor Ad",
+    subcategory: [],
+    isActive: false,
+    link: "/manage-sponsor",
+  },
 ];
 function Sidebar() {
   const { currentPath } = useAuthStore();

@@ -26,11 +26,12 @@ const Notification = React.lazy(() => import("./screens/Notification"));
 const DeleteAccount = React.lazy(() => import("./screens/DeleteAccount"));
 const PrivacyPolicy = React.lazy(() => import("./screens/PrivacyPolicy"));
 const TermCondition = React.lazy(() => import("./screens/TermCondition"));
-const Landing = React.lazy(() => import("./screens/Landing"));
+// const Landing = React.lazy(() => import("./screens/Landing"));
 const Dashboard = React.lazy(() => import("./screens/Dashboard"));
 const MyOffer = React.lazy(() => import("./screens/MyOffer"));
 const NotFound = React.lazy(() => import("./screens/NotFound"));
 const ManageBanner = React.lazy(() => import("./screens/Banner"));
+const ManageSponsor = React.lazy(() => import("./screens/sponsor/Sponsor"));
 const Home2 = React.lazy(() => import("./screens/Home2"));
 
 function App() {
@@ -143,8 +144,17 @@ function App() {
                     header={true}
                   />
                 }
+              />{" "}
+              <Route
+                path="/manage-sponsor"
+                element={
+                  <ProtectedRoute
+                    path="/manage-sponsor"
+                    Component={ManageSponsor}
+                    header={true}
+                  />
+                }
               />
-
               {category?.map((item, index) => {
                 if (!item?.status) {
                   return null;
@@ -163,7 +173,6 @@ function App() {
                   />
                 );
               })}
-
               <Route path="/my-leads" element={<MyLeads />} />
               <Route
                 path="/users"
@@ -175,7 +184,6 @@ function App() {
                   />
                 }
               />
-
               <Route
                 path="/lead"
                 element={
