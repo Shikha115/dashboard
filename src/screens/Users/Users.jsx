@@ -5,7 +5,7 @@ import useDataStore from "../../store/dataStore";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
 import Modal from "react-bootstrap/Modal";
-import { CiSearch, CiWarning } from "react-icons/ci";
+import { CiSearch, CiSquareCheck, CiWarning } from "react-icons/ci";
 import ViewUser from "./ViewUser";
 import ImageUpload from "../../components/ImageUpload";
 import axios from "axios";
@@ -17,6 +17,7 @@ function Users() {
   const [isLoading, setIsLoading] = useState(true);
   const [deleteModal, setDeleteModal] = useState(false);
   const [viewModal, setViewModal] = useState(false);
+  const [ApproveModal, setApproveModal] = useState(false);
   const [notificationModal, setNotificationModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [currentData, setCurrentData] = useState(null);
@@ -24,29 +25,40 @@ function Users() {
   const columns = [
     {
       name: "#",
-      selector: (row, i) => i + 1,
-      width: "60px",
+      cell: (row, index) => <div>{index + 1}</div>,
+      width: "50px",
+      center: true,
     },
     {
       name: "Name",
       selector: (row) => row.name,
+      center: true,
+      width: "auto",
     },
 
     {
       name: "Contact No.",
       selector: (row) => row.phone,
+      center: true,
+      width: "120px",
     },
 
     {
       name: "Type",
       selector: (row) => row.type,
+      center: true,
+      width: "80px",
     },
     {
       name: "Wallet",
       selector: (row) => row.wallet,
+      center: true,
+      width: "80px",
     },
     {
       name: "Notification",
+      center: true,
+      width: "120px",
       cell: (row) => (
         <Link
           className="btn btn-soft-danger btn-sm"
@@ -62,6 +74,8 @@ function Users() {
     },
     {
       name: "Settlement",
+      center: true,
+      width: "120px",
       cell: (row) =>
         row?.lead_settlement.length > 0 ? (
           <Link
@@ -74,27 +88,42 @@ function Users() {
     },
     {
       name: "Approved",
+      center: true,
+      width: "auto",
+      width: "auto",
       cell: (row) =>
         row?.isProfileVerified ? (
           <button
             className="btn btn-soft-primary btn-sm"
             style={{ textWrap: "nowrap" }}
           >
-            Verification
+            Verified
           </button>
-        ) : (
+        ) : row?.isProfileComplete ? (
           <Link
             className="btn btn-soft-warning btn-sm"
             style={{ lineHeight: "17px" }}
-            onClick={() => setSelectedUser(row)}
+            onClick={() => {
+              setCurrentData(row);
+              setApproveModal(true);
+            }}
           >
             Approve Advisor
           </Link>
+        ) : (
+          <button
+            className="btn btn-soft-primary btn-sm"
+            style={{ textWrap: "nowrap" }}
+          >
+            Profile Incomplete
+          </button>
         ),
     },
 
     {
       name: "Action",
+      center: true,
+      width: "auto",
       cell: (row) => (
         <div className="custom-table-btn">
           <button
@@ -102,7 +131,7 @@ function Users() {
             onClick={() => {
               setEditModal(true);
               setCurrentData(row);
-              console.log(row, "row");
+              // console.log(row, "row");
             }}
           >
             <MdEdit className="fs-18" />
@@ -185,7 +214,6 @@ function Users() {
           </div>
         </div>
       </div>
-
       {/* view */}
       <Modal
         size="xl"
@@ -201,7 +229,6 @@ function Users() {
           <ViewUser />
         </Modal.Body>
       </Modal>
-
       {/* update */}
       <Modal
         size="lg"
@@ -373,7 +400,6 @@ function Users() {
           </button>
         </Modal.Footer>
       </Modal>
-
       {/* delete */}
       <Modal
         size="sm"
@@ -396,8 +422,34 @@ function Users() {
             Continue
           </button>
         </Modal.Body>
+      </Modal>{" "}
+      <Modal
+        size="sm"
+        show={ApproveModal}
+        centered
+        onHide={() => setApproveModal(false)}
+      >
+        <Modal.Body className="text-center p-4">
+          <CiSquareCheck className="fs-48 text-success" />
+          <h4 className="mt-2">Approve advisor </h4>
+          <h5 className="mt-2">{currentData?.name}</h5>
+          <p className="mt-3"></p>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => setApproveModal(false)}
+          >
+            Approve
+          </button>{" "}
+          <button
+            type="button"
+            className="btn btn-danger"
+            onClick={() => setApproveModal(false)}
+          >
+            Reject
+          </button>
+        </Modal.Body>
       </Modal>
-
       <NotificationModal
         notificationModal={notificationModal}
         setNotificationModal={setNotificationModal}

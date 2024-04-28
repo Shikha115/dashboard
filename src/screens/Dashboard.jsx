@@ -16,7 +16,7 @@ export const LogoComp = () => {
 
 function Dashboard() {
   const navigate = useNavigate();
-
+  return;
   return (
     <Root>
       <LogoComp />

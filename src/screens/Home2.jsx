@@ -87,6 +87,7 @@ const Home2 = () => {
             <Link to="/">
               <img src="assets/img/logo.png" alt="img" />
             </Link>
+            {/* <LogoComp color={"black"} /> */}
           </div>
           <div className="nav-right-part nav-right-part-mobile">
             <span className="search-bar-btn" onClick={searchActive}>
@@ -150,7 +151,7 @@ const Home2 = () => {
                   data-aos="fade-right"
                   data-aos-delay="300"
                   data-aos-duration="1500"
-                  to="/about"
+                  to="https://rojgarapp.in/app-release.apk"
                 >
                   Download App <FaDownload />
                 </Link>
@@ -160,7 +161,7 @@ const Home2 = () => {
                   data-aos="fade-right"
                   data-aos-delay="300"
                   data-aos-duration="1500"
-                  to="/about"
+                  to="/dashboard"
                 >
                   Continue on Web <FaChevronRight />
                 </Link>
@@ -733,6 +734,7 @@ const Home2 = () => {
               <div className="widget widget_about">
                 <div className="thumb">
                   <img src="assets/img/logo2.png" alt="img" />
+                  {/* <LogoComp color={"white"} /> */}
                 </div>
                 <div className="details">
                   <p>

@@ -34,6 +34,10 @@ export const apis = {
   editBanner: `${baseURL}/banner/edit-banner`,
   deletBanner: `${baseURL}/banner/delete-banner`,
 
+  getAllSponsor: `${baseURL}/sponsor/get-all-sponsors`,
+  addSponsor: `${baseURL}/sponsor/add-sponsor`,
+  editSponsor: `${baseURL}/sponsor/edit-sponsor`,
+  deletSponsor: `${baseURL}/sponsor/delete-sponsor`,
   getProfileWeb: `${baseURL}/profile/get-profile-web`,
 
   updateProfile: `${baseURL}/profile/update-profile`,

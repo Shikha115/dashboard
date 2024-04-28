@@ -1,13 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import axios from "axios";
 import { images } from "../../components/Images";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import useAuthStore from "../../store/authStore";
+
+import useToastStore from "../../store/toastStore";
 import { apis } from "../../utils/URL";
 
 function Login() {
   const navigate = useNavigate();
-  const { setToastData, setShowToast } = useAuthStore();
+  const { setToastData, setShowToast } = useToastStore();
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -34,7 +35,8 @@ function Login() {
       .then((e) => {
         localStorage.setItem("token", e?.data?.token);
         localStorage.setItem("id", e?.data?._id);
-        navigate(`${path ? path : "/manage-bank"}`);
+
+        navigate(`${path ? path : "/manage-category"}`);
         setToastData({
           color: "#33b0e0",
           message: `Login Successfully`,
