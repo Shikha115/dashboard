@@ -20,9 +20,9 @@ html {
   box-sizing: border-box;
   outline: none;
   -moz-osx-font-smoothing: grayscale;
-  /* Firefox */
+
   -webkit-font-smoothing: antialiased;
-  /* WebKit */
+ 
 }
 body {
   margin: 0;

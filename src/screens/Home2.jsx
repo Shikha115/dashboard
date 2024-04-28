@@ -12,7 +12,7 @@ import {
   FaCheckCircle,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import "../assets/css/home2.css";
+// import "../assets/css/home2.css";
 import { LogoComp } from "./Landing";
 
 // Control sidebar navigation
