@@ -1,6 +1,6 @@
 export const AppInfo = {
-  baseUrlAPI: "http://localhost:5001", // Rojgar Dev
-  // baseUrlAPI: "https://api.dev.rojgarapp.in", // Rojgar Dev
+  // baseUrlAPI: "http://localhost:5001", // Rojgar Dev
+  baseUrlAPI: "https://api.dev.rojgarapp.in", // Rojgar Dev
   // baseUrlAPI: "https://api.prod.rojgarapp.in", // Rojgar Prod
   apiVersion: "api/v1",
 };
