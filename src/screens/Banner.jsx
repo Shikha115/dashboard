@@ -208,11 +208,12 @@ function ManageBanner() {
     {
       name: "S.No",
       selector: (row, id) => id + 1,
-      // width: "70px",
+      width: "70px",
     },
     {
       name: "Image",
-      // width: "100px",
+      center: true,
+      width: "auto",
       selector: (row) => (
         <img
           alt=""
@@ -228,10 +229,14 @@ function ManageBanner() {
     },
     {
       name: "Banner Name",
+      center: true,
+      width: "auto",
       selector: (row) => row.title,
     },
     {
       name: "Status",
+      center: true,
+      width: "auto",
       // style: { width: 1000 },
       cell: (row) => (
         <div className="form-check form-switch">
@@ -250,6 +255,8 @@ function ManageBanner() {
     },
     {
       name: "Rank",
+      center: true,
+      width: "auto",
       cell: (row) => (
         <div>
           <input
@@ -270,6 +277,8 @@ function ManageBanner() {
     {
       // selector: (row) => row.year,
       name: "Action",
+      center: true,
+      width: "auto",
       cell: (row) => (
         <div className="custom-table-btn">
           <button

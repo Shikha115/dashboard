@@ -23,13 +23,13 @@ const Sidebar_data = [
   //   isActive: false,
   //   link: "/manage-bank",
   // },
-  {
-    icon: <FaUsers />,
-    category: "Users",
-    subcategory: [],
-    isActive: false,
-    link: "/users",
-  },
+  // {
+  //   icon: <FaUsers />,
+  //   category: "Users",
+  //   subcategory: [],
+  //   isActive: false,
+  //   link: "/users",
+  // },
   {
     icon: <FaPiggyBank />,
     category: "Manage Category",

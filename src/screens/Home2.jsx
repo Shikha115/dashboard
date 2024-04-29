@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import Carousel from "react-bootstrap/Carousel";
 import "../assets/css/home2.css";
 import { images } from "../components/Images";
+import { LogoComp } from "./Landing";
 
 // Control sidebar navigation
 let items = document.querySelectorAll(".menu-item-has-children > a");
@@ -84,7 +85,8 @@ const Home2 = () => {
           </div>
           <div className="logo">
             <Link to="/">
-              <img src="assets/img/logo.png" alt="img" />
+              {/* <img src="assets/img/logo.png" alt="img" /> */}
+              <LogoComp color={"black"} />
             </Link>
             {/* <LogoComp color={"black"} /> */}
           </div>
@@ -150,7 +152,7 @@ const Home2 = () => {
                   data-aos="fade-right"
                   data-aos-delay="300"
                   data-aos-duration="1500"
-                  to="https://rojgarapp.in/app-release.apk"
+                  to="https://rojgarapp.in/rojgarApp.apk"
                 >
                   Download App <FaDownload />
                 </Link>
@@ -732,8 +734,8 @@ const Home2 = () => {
             <div className="col-xl-3 col-lg-4 col-md-6">
               <div className="widget widget_about">
                 <div className="thumb">
-                  <img src="assets/img/logo2.png" alt="img" />
-                  {/* <LogoComp color={"white"} /> */}
+                  {/* <img src="assets/img/logo2.png" alt="img" /> */}
+                  <LogoComp color={"white"} />
                 </div>
                 <div className="details">
                   <p>

@@ -32,6 +32,8 @@ function Lead() {
     },
     {
       name: "Title",
+      center: true,
+      width: "auto",
       selector: (row) => {
         // console.log(row);
         return row?.offer_info?.mobile_data?.title;
@@ -39,6 +41,8 @@ function Lead() {
     },
     {
       name: "Date",
+      center: true,
+      width: "auto",
       selector: (row) => {
         return row?.created
           ? moment(row?.created).format("YYYY-MM-DD") +
@@ -50,10 +54,14 @@ function Lead() {
 
     {
       name: "Name	",
+      center: true,
+      width: "auto",
       selector: (row) => row.name,
     },
     {
       name: "Mobile	",
+      center: true,
+      width: "auto",
       selector: (row) => row?.phone,
     },
     // {
@@ -62,19 +70,27 @@ function Lead() {
     // },
     {
       name: "Email",
+      center: true,
+      width: "auto",
       selector: (row) => row.email,
     },
     {
       name: "Income	",
+      center: true,
+      width: "auto",
       selector: (row) => row?.user_info?.income,
     },
     {
-      name: "Pan	",
+      name: "Pan",
+      center: true,
+      width: "auto",
       selector: (row) => row?.user_info?.pan_no,
     },
 
     {
-      name: "Lead Type	",
+      name: "Lead Type",
+      center: true,
+      width: "auto",
       selector: (row) => row.category_info?.name,
     },
   ];
@@ -405,7 +421,7 @@ function LeadModalComp({ LeadModal, setLeadModal }) {
               </option>
               {allOffer?.map((e, i) => (
                 <option index={i} value={e?._id}>
-                  {e?.mobile_data?.title}
+                  {e?.mobile_data?.title} - {e?.mobile_data?.earning}
                 </option>
               ))}
             </select>

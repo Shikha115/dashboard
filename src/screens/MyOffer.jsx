@@ -149,7 +149,8 @@ function MyOffer() {
     {
       name: "Title",
       selector: (row) => row?.columns?.title,
-      width: "250px",
+      center: true,
+      width: "auto",
     },
     // {
     //   name: "Bank Name",
@@ -159,14 +160,19 @@ function MyOffer() {
     {
       name: "Card Type",
       selector: (row) => currentCategory?.name,
-      width: "150px",
+      center: true,
+      width: "auto",
     },
     {
       name: "Earning",
       selector: (row) => row?.columns?.earning,
+      center: true,
+      width: "auto",
     },
     {
       name: "Status",
+      center: true,
+      width: "auto",
       cell: (row) => (
         <div className="form-check form-switch">
           <input
@@ -184,6 +190,8 @@ function MyOffer() {
     },
     {
       name: "Rank",
+      center: true,
+      width: "auto",
       cell: (row) => (
         <div>
           <input
@@ -203,6 +211,8 @@ function MyOffer() {
     },
     {
       name: "Action",
+      center: true,
+      width: "auto",
       cell: (row) => (
         <div className="custom-table-btn">
           <button

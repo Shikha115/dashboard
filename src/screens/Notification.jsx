@@ -26,10 +26,14 @@ function Notification() {
     },
     {
       name: "Title",
+      center: true,
+      width: "auto",
       selector: (row) => row?.title,
     },
     {
       name: "Image",
+      center: true,
+      width: "auto",
       cell: (row) => (
         <img
           alt=""
@@ -41,15 +45,21 @@ function Notification() {
     },
     {
       name: "Message",
+      center: true,
+      width: "auto",
       selector: (row) => row?.message,
     },
 
     {
       name: "Type",
+      center: true,
+      width: "auto",
       selector: (row) => row?.type,
     },
     {
       name: "Subject",
+      center: true,
+      width: "auto",
       selector: (row) => row?.subject,
     },
     // {
@@ -69,6 +79,8 @@ function Notification() {
     {
       // selector: (row) => row.year,
       name: "Action",
+      center: true,
+      width: "auto",
       cell: (row) => (
         <div className="custom-table-btn">
           <button

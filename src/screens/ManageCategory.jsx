@@ -93,13 +93,19 @@ function ManageCategory() {
     {
       name: "S.No",
       selector: (row, id) => id + 1,
+      center: true,
+      width: "70px",
     },
     {
       name: "Category",
       selector: (row) => row?.name,
+      center: true,
+      width: "auto",
     },
     {
       name: "Status",
+      center: true,
+      width: "80px",
       cell: (row) => (
         <div className="form-check form-switch">
           <input
@@ -118,6 +124,8 @@ function ManageCategory() {
 
     {
       name: "Rank",
+      center: true,
+      width: "auto",
       cell: (row) => (
         <div>
           <input
@@ -138,6 +146,8 @@ function ManageCategory() {
     {
       // selector: (row) => row.year,
       name: "Action",
+      center: true,
+      width: "auto",
       cell: (row) => (
         <div className="custom-table-btn">
           <Link
