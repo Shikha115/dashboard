@@ -25,7 +25,7 @@ function MyOffer() {
   const [currentData, setCurrentData] = useState([]);
   const [addonData, setAddonData] = useState();
   const [bankData, setbankData] = useState();
-
+  const [password, setpassword] = useState();
   const [Data, setData] = useState();
 
   const [currentCategory, setCurrentCategory] = useState();
@@ -140,6 +140,24 @@ function MyOffer() {
       });
   };
 
+  const deleteData = async () => {
+    if (password !== "hp38g3119") {
+      setToastData({ message: "Incorrect password", color: "red" });
+      return;
+    }
+
+    axios
+      .post(apis.deleteOffer, { id: Data?._id })
+      .then((res) => {
+        getOfferbyId(category_id);
+        setToastData({ message: res.data.message });
+      })
+      .catch((error) => {
+        setToastData({ message: "Failed to delete offer", color: "red" });
+      });
+    setDeleteModal(false);
+  };
+
   const columns = [
     {
       name: "#",
@@ -152,14 +170,9 @@ function MyOffer() {
       center: true,
       width: "auto",
     },
-    // {
-    //   name: "Bank Name",
-    //   selector: (row) => getBankById(bank, row?.columns?.bank_name).bank_name,
-    //   width: "180px",
-    // },
     {
       name: "Card Type",
-      selector: (row) => currentCategory?.name,
+      selector: (row) => row?.category_info?.name,
       center: true,
       width: "auto",
     },
@@ -227,13 +240,20 @@ function MyOffer() {
           >
             <MdEdit className="fs-18" />
           </button>
-          <button className="btn btn-pink" onClick={() => setDeleteModal(true)}>
+          <button
+            className="btn btn-pink"
+            onClick={() => {
+              setData(row);
+              setDeleteModal(true);
+            }}
+          >
             <MdDelete className="fs-18" />
           </button>
         </div>
       ),
     },
   ];
+
   return (
     <>
       <div className="content">
@@ -255,15 +275,17 @@ function MyOffer() {
                     </div>
                   </form>
                 </div>
-                <button
-                  className="btn btn-primary"
-                  onClick={() => {
-                    setCurrentData(currentCategory?.offer_data);
-                    setAddModal({ type: "add", state: true });
-                  }}
-                >
-                  Add {currentCategory?.name}
-                </button>
+                {currentCategory?.name === "All" ? null : (
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => {
+                      setCurrentData(currentCategory?.offer_data);
+                      setAddModal({ type: "add", state: true });
+                    }}
+                  >
+                    Add {currentCategory?.name}
+                  </button>
+                )}
               </div>
               <h4 className="page-title">Manage {currentCategory?.name}</h4>
             </div>
@@ -292,12 +314,19 @@ function MyOffer() {
             Warning: You are about to delete this item. This action cannot be
             undone. Are you sure you want to proceed with the deletion?
           </p>
+          <h5 className="mt-3">Enter password to delete</h5>
+          <input
+            type="search"
+            className="form-control"
+            placeholder="Enter password"
+            onChange={(e) => setpassword(e.target.value)}
+          />
           <button
             type="button"
             className="btn btn-danger my-2"
-            onClick={() => setDeleteModal(false)}
+            onClick={deleteData}
           >
-            Continue
+            Delete
           </button>
         </Modal.Body>
       </Modal>

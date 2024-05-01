@@ -64,10 +64,7 @@ function Lead() {
       width: "auto",
       selector: (row) => row?.phone,
     },
-    // {
-    //   name: "Bank Name",
-    //   selector: (row) => row?.bank_info?.bank_name,
-    // },
+
     {
       name: "Email",
       center: true,
@@ -75,16 +72,16 @@ function Lead() {
       selector: (row) => row.email,
     },
     {
-      name: "Income	",
+      name: "Referal ID",
       center: true,
       width: "auto",
-      selector: (row) => row?.user_info?.income,
+      selector: (row) => row?.affiliate_id,
     },
     {
-      name: "Pan",
+      name: "Click ID",
       center: true,
       width: "auto",
-      selector: (row) => row?.user_info?.pan_no,
+      selector: (row) => row?.affiliate_id + "_" + row?.click_id,
     },
 
     {
@@ -94,6 +91,40 @@ function Lead() {
       selector: (row) => row.category_info?.name,
     },
   ];
+  const exportExcel = () => {
+    if (leads?.length < 1) {
+      return;
+    }
+    let data = [...leads];
+    data = data?.map((item) => {
+      const { category_info, offer_info, user_info, ...rest } = item;
+      rest.click_id = item?.affiliate_id + "_" + item?.click_id;
+      return rest;
+    });
+
+    // Get all keys from the data
+    const keys = Object.keys(
+      data.reduce((acc, obj) => Object.assign(acc, obj), {})
+    );
+
+    // Convert array of objects to array of arrays
+    const dataArray = data.map((obj) =>
+      keys.map((key) => (obj[key] !== undefined ? obj[key] : ""))
+    );
+
+    // Add headers as the first row
+    dataArray.unshift(keys);
+
+    // Create a new workbook
+    const wb = XLSX.utils.book_new();
+    // Convert data array to worksheet
+    const ws = XLSX.utils.aoa_to_sheet(dataArray);
+    // Add worksheet to workbook
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
+    // Export the workbook to Excel file
+    XLSX.writeFile(wb, "export.xlsx");
+  };
 
   const onFilter = () => {
     const arr = lead.filter((e) => {
@@ -177,7 +208,7 @@ function Lead() {
         });
         return obj;
       });
-      console.log(headers, arrayData);
+      // console.log(headers, arrayData);
 
       return;
       let res = await axios.post(apis.settleLeads, { data: arrayData });
@@ -212,6 +243,14 @@ function Lead() {
         }}
       >
         Upload Leads
+      </button>{" "}
+      <button
+        className="btn btn-primary"
+        onClick={() => {
+          exportExcel();
+        }}
+      >
+        Export Leads
       </button>
     </div>
   );

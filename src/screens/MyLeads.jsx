@@ -87,7 +87,7 @@ function MyLeads() {
       })
       .catch((err) => console.log(err));
   };
-
+  console.log(offer);
   return (
     <section className="authentication-bg position-relative">
       <div className="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5 position-relative">
@@ -96,11 +96,13 @@ function MyLeads() {
             <div className="row align-items-center">
               <div className="col-12 col-md-6 col-lg-5 col-xl-4">
                 <div className="left-outer">
-                  <img src={offer?.bank_info?.image} alt="" />
+                  <img src={offer?.mobile_data?.product_image_web} alt="" />
                   <h4 className="text-primary mb-3">
                     {offer?.bank_info?.bank_name}
                   </h4>
-                  <h5 className="title fw-medium">{offer?.title}</h5>
+                  <h5 className="title fw-medium">
+                    {offer?.mobile_data?.title}
+                  </h5>
                   <ul>
                     {offer?.desc?.Features?.map((item, i) => {
                       return <li key={i}>{item}</li>;
