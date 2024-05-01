@@ -93,8 +93,8 @@ function MyLeads() {
       <div className="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5 position-relative">
         <div className="container">
           <div className="lead-card">
-            <div className="row align-items-center">
-              <div className="col-12 col-md-6 col-lg-5 col-xl-4">
+            <div className="row align-items-center w-100 col-12 col-lg-10 gap-3">
+              <div className="col-12">
                 <div className="left-outer">
                   <img src={offer?.mobile_data?.product_image_web} alt="" />
                   <h4 className="text-primary mb-3">
@@ -110,10 +110,10 @@ function MyLeads() {
                   </ul>
                 </div>
               </div>
-              <div className="col-12 col-md-6 col-lg-7 col-xl-8">
+              <div className="col-12">
                 <div className="lead-card-data">
                   <form action="#" className="row">
-                    <div className="col-12 col-lg-6 mb-3">
+                    <div className="col-12 col-lg-4 mb-3">
                       <label className="form-label">Full Name</label>
                       <input
                         value={userDetails?.name}
@@ -127,7 +127,7 @@ function MyLeads() {
                         }}
                       />
                     </div>
-                    <div className="col-12 col-lg-6 mb-3">
+                    <div className="col-12 col-lg-4 mb-3">
                       <label className="form-label">Phone no.</label>
                       <input
                         value={userDetails?.phone}
@@ -143,7 +143,7 @@ function MyLeads() {
                         }}
                       />
                     </div>
-                    <div className="col-12 col-lg-6 mb-3">
+                    <div className="col-12 col-lg-4 mb-3">
                       <label className="form-label">Email</label>
                       <input
                         type="email"
