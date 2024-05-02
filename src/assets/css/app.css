@@ -21768,7 +21768,7 @@ span.flatpickr-weekday,
 }
 
 .lead-card .left-outer img {
-  width: 100%;
+  width: auto;
   height: 250px;
   object-fit: cover;
   filter: drop-shadow(2px 4px 6px #ffffff80);
@@ -21780,18 +21780,20 @@ span.flatpickr-weekday,
   margin-top: 0;
   margin-bottom: 10px;
 }
-
-@media (width <= 768px) {
-
   .lead-card .left-outer {
   border-bottom: 1px solid #00000040;
   padding-bottom: 1pc;
   margin-bottom: 1pc;
   }
-  
-  .lead-card>.row{
-    flex-direction: column-reverse;
+
+@media (width <= 768px) {
+  .lead-card .left-outer img{
+    height:auto;
+    width: 100%;
   }
+
+
+
 
 
   .lead-card-data .btn {

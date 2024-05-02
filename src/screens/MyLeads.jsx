@@ -92,10 +92,22 @@ function MyLeads() {
     <section className="authentication-bg position-relative">
       <div className="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5 position-relative">
         <div className="container">
-          <div className="w-100 d-flex justify-content-center col-12 col-lg-10 gap-3">
-            <div className="lead-card">
-              <div className="row align-items-center gx-md-5">
-                <div className="col-12 col-md-6">
+          <div className="d-flex justify-content-center">
+            <div className="lead-card col-12 col-lg-6">
+              <div className="row align-items-center">
+              <div className="col-12">
+                  <div className="left-outer">
+                    <img src={offer?.mobile_data?.product_image_web} alt="" />
+                    <h4 className="text-primary mt-3 mb-1">
+                      {offer?.bank_info?.bank_name}
+                    </h4>
+                    {/* <h5 className="title fw-medium mb-1">
+                      {offer?.mobile_data?.title}
+                    </h5> */}
+                    <p className="mb-0">abc@gmail.com<b className="fw-bold text-primary"> | </b>9856534523</p>
+                  </div>
+                </div>
+                <div className="col-12">
                   <div className="lead-card-data">
                   <h1 className="title text-dark">
                      My Leads
@@ -156,18 +168,7 @@ function MyLeads() {
                     </form>
                   </div>
                 </div>
-                <div className="col-12 col-md-6">
-                  <div className="left-outer">
-                    <img src={offer?.mobile_data?.product_image_web} alt="" />
-                    <h4 className="text-primary mt-3 mb-1">
-                      {offer?.bank_info?.bank_name}
-                    </h4>
-                    {/* <h5 className="title fw-medium mb-1">
-                      {offer?.mobile_data?.title}
-                    </h5> */}
-                    <p className="mb-0">abc@gmail.com<b className="fw-bold text-primary"> | </b>9856534523</p>
-                  </div>
-                </div>
+               
               </div>
             </div>
           </div>
