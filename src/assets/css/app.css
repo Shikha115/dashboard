@@ -21769,7 +21769,7 @@ span.flatpickr-weekday,
 
 .lead-card .left-outer img {
   width: 100%;
-  height: 250px;
+  /* height: 250px; */
   object-fit: cover;
   filter: drop-shadow(2px 4px 6px #ffffff80);
 }

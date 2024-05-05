@@ -9,14 +9,25 @@ import useToastStore from "../store/toastStore";
 import { CiSearch, CiWarning } from "react-icons/ci";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { static_pages } from "../utils/extraData";
 
 function Notification() {
-  const { getTemplates, templates } = useDataStore();
+  const { getTemplates, templates, allOffer, getAllOffer } = useDataStore();
   const { setToastData } = useToastStore();
   const [addModal, setAddModal] = useState({ type: "", state: false });
   const [isLoading, setIsLoading] = useState(true);
   const [currentRow, setCurrentRow] = useState({});
   const [deleteModal, setDeleteModal] = useState(false);
+  const [filteredTemplate, setFilteredTemplate] = useState();
+  const [Pages, setPages] = useState([...static_pages]);
+
+  useEffect(() => {
+    setPages([...static_pages, ...allOffer]);
+  }, [allOffer]);
+
+  useEffect(() => {
+    setFilteredTemplate(templates);
+  }, [templates]);
 
   const columns = [
     {
@@ -62,22 +73,8 @@ function Notification() {
       width: "auto",
       selector: (row) => row?.subject,
     },
-    // {
-    //   name: "Edit",
-    //   cell: (row) => (
-    //     <button
-    //       className="btn btn-info"
-    //       onClick={() => {
-    //         setAddModal({ type: "edit", state: true });
-    //         setCurrentRow(row);
-    //       }}
-    //     >
-    //       Edit
-    //     </button>
-    //   ),
-    // },
+
     {
-      // selector: (row) => row.year,
       name: "Action",
       center: true,
       width: "auto",
@@ -96,8 +93,8 @@ function Notification() {
             className="btn btn-pink"
             to="#"
             onClick={(e) => {
-              setCurrentRow(row);
               e.preventDefault();
+              setCurrentRow(row);
               setDeleteModal(!deleteModal);
             }}
           >
@@ -111,6 +108,7 @@ function Notification() {
   useEffect(() => {
     setIsLoading(true);
     let timer = setTimeout(() => {
+      getAllOffer();
       getTemplates();
       setIsLoading(false);
     }, 200);
@@ -151,7 +149,7 @@ function Notification() {
 
   const UpdateData = async () => {
     const { _id, ...rest } = currentRow;
-
+    // console.log(currentRow);
     await axios
       .post(apis.updateTemplate, { id: _id, ...rest })
       .then(async (e) => {
@@ -187,6 +185,63 @@ function Notification() {
       });
   };
 
+  const search = (val) => {
+    let value = val?.toLowerCase();
+    let arr = filteredTemplate?.filter((e) => {
+      return (
+        e?.title?.toLowerCase().includes(value) ||
+        e?.type?.toString()?.toLowerCase()?.includes(value) ||
+        e?.message?.toString()?.toLowerCase()?.includes(value)
+      );
+    });
+    if (!val) {
+      setFilteredTemplate(templates);
+      return;
+    }
+    setFilteredTemplate(arr);
+  };
+
+  const BulkNotification = () => {
+    const { _id, ...rest } = currentRow;
+
+    axios
+      .post(apis.bulkNotification, { ...rest, body: rest.message })
+      .then(async (e) => {
+        setCurrentRow({});
+        setToastData({
+          color: "#00ff1e",
+          message: `Bulk notification sent Successfully`,
+        });
+        setAddModal(false);
+      })
+      .catch((err) => {
+        setToastData({
+          color: "red",
+          message: `Failed to send notification`,
+        });
+      });
+  };
+
+  const BulkEmail = () => {
+    axios
+      .post(apis.deleteTemplate, { id: currentRow?._id })
+      .then(async (e) => {
+        await getTemplates();
+        setCurrentRow({});
+
+        setToastData({
+          color: "#00ff1e",
+          message: `Template Deleted Successfully`,
+        });
+        setDeleteModal(false);
+      })
+      .catch((err) => {
+        setToastData({
+          color: "red",
+          message: `Failed to delete template`,
+        });
+      });
+  };
   return (
     <>
       <div className="content">
@@ -201,6 +256,9 @@ function Notification() {
                         type="search"
                         className="form-control"
                         placeholder="Search..."
+                        onChange={(e) => {
+                          search(e?.target?.value);
+                        }}
                       />
                       <span className="search-icon">
                         <CiSearch className="text-muted" />
@@ -222,8 +280,8 @@ function Notification() {
               <h4 className="page-title">Notification</h4>
             </div>
             <DataTable
-              columns={columns}
-              data={templates}
+              columns={columns.length > 0 ? columns : []}
+              data={filteredTemplate}
               progressPending={isLoading}
               pagination
             />
@@ -307,6 +365,45 @@ function Notification() {
                 }}
               />
             </div>
+            <div className="col-12 col-md-12 mb-3">
+              <label className="form-label">
+                Redirect to <span className="fs-17 text-danger">*</span>
+              </label>
+              <select
+                className="form-select"
+                required
+                onChange={(e) => {
+                  const selectedPage = Pages[e.target.selectedIndex];
+                  // console.log(selectedPage);
+                  let obj = {};
+                  if (selectedPage.category_info?.name === "App Screen") {
+                    obj.route = selectedPage.mobile_data?.title;
+                    obj.route_id = "";
+                  } else {
+                    obj.route = "SingleOffer";
+                  }
+
+                  if (selectedPage._id) {
+                    obj.route_id = selectedPage?._id;
+                  }
+
+                  setCurrentRow({
+                    ...currentRow,
+                    ...obj,
+                  });
+                }}
+                defaultValue={""}
+              >
+                {Pages &&
+                  Pages?.map((val, index) => {
+                    return (
+                      <option key={index} defaultValue={val?._id}>
+                        {val?.mobile_data?.title} - {val?.category_info?.name}
+                      </option>
+                    );
+                  })}
+              </select>
+            </div>
             <div className="col-12 col-lg-6">
               <label className="form-label">Upload Image</label>
               <ImageUpload
@@ -319,6 +416,13 @@ function Notification() {
           </form>
         </Modal.Body>
         <Modal.Footer>
+          <button
+            type="submit"
+            className="btn btn-dark"
+            onClick={BulkNotification}
+          >
+            Bulk Notification
+          </button>
           <button
             className="btn btn-secondary"
             onClick={() =>

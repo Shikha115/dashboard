@@ -3,11 +3,12 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { apis } from "../utils/URL";
 import moment from "moment";
+import useToastStore from "../store/toastStore";
 
 function MyLeads() {
   const [loading, setLoading] = useState();
   const [offer, setOffer] = useState();
-
+  const { setToastData } = useToastStore();
   const [userDetails, setUserDetails] = useState();
 
   const location = useLocation();
@@ -40,7 +41,7 @@ function MyLeads() {
     e.preventDefault();
 
     if (!userDetails?.name) {
-      alert("First name cannot be empty");
+      alert("Name cannot be empty");
       return;
     } else if (!userDetails?.phone) {
       alert("Phone cannot be empty");
@@ -52,7 +53,7 @@ function MyLeads() {
       alert("Phone number should be of 10 digits");
       return;
     }
-
+    setLoading(true);
     let now = Date.now();
 
     let mil = moment().milliseconds();
@@ -77,17 +78,23 @@ function MyLeads() {
 
       earning: 0,
     };
-    // console.log(data);
-    // return;
+
     axios
       .post(apis.createLead, data)
       .then((e) => {
         console.log(e);
+        setToastData({ message: "Successfull" });
         window.location.href = click_id;
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setToastData({ message: "Unknown error occured", color: "red" });
+      });
   };
-  console.log(offer);
+
+  if (!offer) {
+    return <h1>Invalid Offer</h1>;
+  }
   return (
     <section className="authentication-bg position-relative">
       <div className="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5 position-relative">
@@ -97,9 +104,6 @@ function MyLeads() {
               <div className="row align-items-center gx-md-5">
                 <div className="col-12 col-md-6">
                   <div className="lead-card-data">
-                  <h1 className="title text-dark">
-                     My Leads
-                    </h1>
                     <form action="#" className="row">
                       <div className="col-12 mb-3">
                         <label className="form-label">Full Name</label>
@@ -157,15 +161,23 @@ function MyLeads() {
                   </div>
                 </div>
                 <div className="col-12 col-md-6">
+                  <h4 className="title text-dark">
+                    {offer?.mobile_data?.title}
+                  </h4>
                   <div className="left-outer">
-                    <img src={offer?.mobile_data?.product_image_web} alt="" />
-                    <h4 className="text-primary mt-3 mb-1">
+                    <img
+                      src={offer?.mobile_data?.product_image_web}
+                      alt=""
+                      style={{ objectFit: "inherit" }}
+                    />
+                    {/* <h4 className="text-primary mt-3 mb-1">
                       {offer?.bank_info?.bank_name}
-                    </h4>
-                    {/* <h5 className="title fw-medium mb-1">
-                      {offer?.mobile_data?.title}
-                    </h5> */}
-                    <p className="mb-0">abc@gmail.com<b className="fw-bold text-primary"> | </b>9856534523</p>
+                    </h4> */}
+                    {/* <h3 className="title fw-medium mb-1">'jhgfg'</h3> */}
+                    {/* <p className="mb-0">
+                      abc@gmail.com<b className="fw-bold text-primary"> | </b>
+                      9856534523
+                    </p> */}
                   </div>
                 </div>
               </div>

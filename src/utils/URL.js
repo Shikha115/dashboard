@@ -42,6 +42,7 @@ export const apis = {
 
   updateProfile: `${baseURL}/profile/update-profile`,
   getAllLUsers: `${baseURL}/profile/get-all-profiles`,
+  approveProfile: `${baseURL}/profile/approve-profile`,
 
   getallOffers: `${baseURL}/offers/get-all-offers-web`,
   getSpecificOffer: `${baseURL}/offers/get-selected-offers-web`,
@@ -64,6 +65,7 @@ export const apis = {
   uploadImage: `${baseURL}/upload/upload-image`,
   updateImage: ``,
 
+  bulkNotification: `${baseURL}/notification/bulk-notification`,
   multiNotification: `${baseURL}/notification/multi-notification`,
   singleNotification: `${baseURL}/notification/single-notification`,
 

@@ -11,35 +11,7 @@ import axios from "axios";
 import { apis } from "../utils/URL";
 
 import useToastStore from "../store/toastStore";
-
-const static_pages = [
-  {
-    _id: "",
-    mobile_data: { title: "none", product_image: "" },
-    category_info: { name: "none" },
-  },
-  {
-    _id: "",
-    mobile_data: { title: "Profile", product_image: "" },
-    category_info: { name: "App Screen" },
-  },
-
-  {
-    _id: "",
-    mobile_data: { title: "Home", product_image: "" },
-    category_info: { name: "App Screen" },
-  },
-  {
-    _id: "",
-    mobile_data: { title: "Leads", product_image: "" },
-    category_info: { name: "App Screen" },
-  },
-  {
-    _id: "",
-    mobile_data: { title: "Earnings", product_image: "" },
-    category_info: { name: "App Screen" },
-  },
-];
+import { static_pages } from "../utils/extraData";
 
 function ManageBanner() {
   const { setToastData } = useToastStore();
@@ -193,7 +165,7 @@ function ManageBanner() {
   const search = (val) => {
     let arr = banners.filter((e) => {
       return (
-        e?.bank_name.toLowerCase().includes(val) ||
+        e?.title?.toLowerCase().includes(val?.toLowerCase()) ||
         e?.isActive?.toString()?.toLowerCase()?.includes(val)
       );
     });
@@ -346,7 +318,7 @@ function ManageBanner() {
             </div>
             <DataTable
               columns={columns}
-              data={banners}
+              data={banners.length > 0 ? banners : []}
               progressPending={isLoading}
               pagination
               paginationRowsPerPageOptions={[50, 100, 150, 200]}

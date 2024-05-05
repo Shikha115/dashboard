@@ -105,15 +105,15 @@ const Home2 = () => {
           >
             <ul className="navbar-nav menu-open text-lg-end">
               <li>
-                <a href="#">Rajgarpay Seekers</a>{" "}
+                <a href="#">RajgarApp Seekers</a>{" "}
               </li>
               <li>
                 {" "}
-                <a href="#"> Rojgarpay Providers </a>{" "}
+                <a href="#"> RojgarApp Providers</a>{" "}
               </li>
               <li>
                 {" "}
-                <a href="#"> About us </a>{" "}
+                <a href="#"> About us</a>{" "}
               </li>
             </ul>
           </div>
@@ -327,7 +327,7 @@ const Home2 = () => {
         className="counter-area bg-relative bg-cover pd-top-110 pd-bottom-100"
         style={{ backgroundImage: 'url("./assets/img/bg/10.png")' }}
       >
-        <div className="container pd-bottom-90">
+        {/* <div className="container pd-bottom-90">
           <div className="row justify-content-center">
             <div className="col-xl-6 col-lg-8">
               <div className="section-title text-center">
@@ -410,7 +410,7 @@ const Home2 = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* Contact Area Two */}
@@ -698,7 +698,7 @@ const Home2 = () => {
           <div className="row justify-content-center">
             <div className="col-xl-6 col-lg-8">
               <div className="section-title text-center">
-                <h2 className="title"> Brands we served </h2>
+                <h2 className="title"> Brands we serve </h2>
               </div>
             </div>
           </div>
