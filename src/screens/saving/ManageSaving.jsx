@@ -8,10 +8,12 @@ import { apis } from "../../utils/URL";
 import axios from "axios";
 import ImageUpload from "../../components/ImageUpload";
 import { images } from "../../components/Images";
+import useAuthStore from "../../store/authStore";
 
 function ManageSaving() {
   const [isLoading, setIsLoading] = useState(true);
   const { saving, getSaving } = useDataStore();
+  const { theme } = useAuthStore();
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState({ type: "", state: false });
   const [currentData, setCurrentData] = useState(null);
@@ -286,6 +288,7 @@ function ManageSaving() {
         </div>
       </div>
       <Modal
+        className={theme ? theme : ""}
         size="sm"
         show={deleteModal}
         centered
@@ -308,6 +311,7 @@ function ManageSaving() {
         </Modal.Body>
       </Modal>
       <Modal
+        className={theme ? theme : ""}
         size="lg"
         scrollable
         show={addModal.state}

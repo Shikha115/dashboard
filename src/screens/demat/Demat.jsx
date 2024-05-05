@@ -9,10 +9,12 @@ import { CiSearch, CiWarning } from "react-icons/ci";
 import ReactQuill from "react-quill";
 import ImageUpload from "../../components/ImageUpload";
 import { images } from "../../components/Images";
+import useAuthStore from "../../store/authStore";
 
 function Demat() {
   const [isLoading, setIsLoading] = useState(true);
   const { demat, setDemat, bank } = useDataStore();
+  const { theme } = useAuthStore();
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState({ type: "", state: false });
   const [currentData, setCurrentData] = useState(null);
@@ -20,7 +22,6 @@ function Demat() {
     type: addModal.type,
     image: "",
   });
-
 
   const columns = [
     {
@@ -185,6 +186,7 @@ function Demat() {
         </div>
       </div>
       <Modal
+        className={theme ? theme : ""}
         size="sm"
         show={deleteModal}
         centered
@@ -207,6 +209,7 @@ function Demat() {
         </Modal.Body>
       </Modal>
       <Modal
+        className={theme ? theme : ""}
         size="lg"
         scrollable
         show={addModal.state}

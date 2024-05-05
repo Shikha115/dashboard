@@ -6,6 +6,8 @@ const useAuthStore = create((set) => ({
   token: "",
   setToken: (data) => set({ token: data }),
   showToast: false,
+  setTheme: (data) => set({ theme: data }),
+  theme: "light",
   setShowToast: (data) => set({ showToast: data }),
   toastData: { color: "#33b0e0", message: "Welcome" },
   setToastData: (data) => set({ toastData: data }),

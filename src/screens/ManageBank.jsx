@@ -12,7 +12,7 @@ import { apis } from "../utils/URL";
 import useAuthStore from "../store/authStore";
 
 function ManageBank() {
-  const { setToastData } = useAuthStore();
+  const { setToastData, theme } = useAuthStore();
 
   const { bank, isLoading, getAllBank } = useDataStore();
 
@@ -241,6 +241,7 @@ function ManageBank() {
         </div>
       </div>
       <Modal
+        className={theme ? theme : ""}
         size="sm"
         show={addModal.state}
         centered
@@ -315,6 +316,7 @@ function ManageBank() {
       </Modal>
 
       <Modal
+        className={theme ? theme : ""}
         size="sm"
         show={deleteModal}
         centered

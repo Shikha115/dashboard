@@ -8,10 +8,12 @@ import { apis } from "../../utils/URL";
 import axios from "axios";
 import ImageUpload from "../../components/ImageUpload";
 import { images } from "../../components/Images";
+import useAuthStore from "../../store/authStore";
 
 function ManageCredit() {
   const [isLoading, setIsLoading] = useState(true);
   const { credit, getCredit } = useDataStore();
+  const { theme } = useAuthStore();
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState({ type: "", state: false });
   const [currentData, setCurrentData] = useState(null);
@@ -276,6 +278,7 @@ function ManageCredit() {
         </div>
       </div>
       <Modal
+        className={theme ? theme : ""}
         size="sm"
         show={deleteModal}
         centered
@@ -298,6 +301,7 @@ function ManageCredit() {
         </Modal.Body>
       </Modal>
       <Modal
+        className={theme ? theme : ""}
         size="lg"
         scrollable
         show={addModal.state}
@@ -493,9 +497,7 @@ function ManageCredit() {
                 className="form-control"
                 required
                 ref={eligibility}
-                defaultValue={
-                  addModal.type === "edit" ? currentData?.t_c : ""
-                }
+                defaultValue={addModal.type === "edit" ? currentData?.t_c : ""}
               />
             </div>
             <div className="col-12 mb-3">

@@ -12,9 +12,11 @@ import axios from "axios";
 import { apis } from "../../utils/URL";
 import useToastStore from "../../store/toastStore";
 import NotificationModal from "./NotificationModal";
+import useAuthStore from "../../store/authStore";
 
 function Users() {
   const { users, getAllUsers, setSelectedUser } = useDataStore();
+  const { theme } = useAuthStore();
   const [isLoading, setIsLoading] = useState(true);
   const [Page, setPage] = useState(1);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -222,6 +224,7 @@ function Users() {
       </div>
       {/* view */}
       <Modal
+        className={theme ? theme : ""}
         size="xl"
         scrollable
         show={viewModal}
@@ -237,6 +240,7 @@ function Users() {
       </Modal>
       {/* update */}
       <Modal
+        className={theme ? theme : ""}
         size="lg"
         scrollable
         show={editModal}
@@ -408,6 +412,7 @@ function Users() {
       </Modal>
       {/* delete */}
       <Modal
+        className={theme ? theme : ""}
         size="sm"
         show={deleteModal}
         centered
@@ -430,6 +435,7 @@ function Users() {
         </Modal.Body>
       </Modal>{" "}
       <Modal
+        className={theme ? theme : ""}
         size="sm"
         show={ApproveModal}
         centered

@@ -10,10 +10,12 @@ import ImageUpload from "../components/ImageUpload";
 import { useLocation } from "react-router-dom";
 import useToastStore from "../store/toastStore";
 import { getBankById } from "../utils/helperfunctions";
+import useAuthStore from "../store/authStore";
 
 function MyOffer() {
   const location = useLocation();
   const { setToastData } = useToastStore();
+  const { theme } = useAuthStore();
 
   const currentUrl = location.pathname;
   let category_id = currentUrl.split("/offer/")[1];
@@ -302,6 +304,7 @@ function MyOffer() {
         </div>
       </div>
       <Modal
+        className={theme ? theme : ""}
         size="sm"
         show={deleteModal}
         centered
@@ -331,6 +334,7 @@ function MyOffer() {
         </Modal.Body>
       </Modal>
       <Modal
+        className={theme ? theme : ""}
         size="lg"
         scrollable
         show={addModal.state}
