@@ -22173,3 +22173,35 @@ span.flatpickr-weekday,
   border: 0.25rem solid #78c1d5;
   background: linear-gradient(to right, #78c1d5 0%, #bbe7f5 100%);
 }
+
+.leads-box img {
+  height: 250px;
+  object-fit: cover;
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+
+.leads-box {
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 0 20px 4px #00000020;
+  transition: 0.5s linear;
+}
+
+.leads-box:hover {
+  transition: 0.5s linear;
+  scale: 0.98;
+}
+
+.leads-box > p {
+  position: absolute;
+  top: -5%;
+  right: 5%;
+  color: #fff;
+  padding: 10px 1pc;
+  border: 1px solid #fff;
+  font-weight: 600;
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+}
