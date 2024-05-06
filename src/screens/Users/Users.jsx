@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
 import useDataStore from "../../store/dataStore";
@@ -17,6 +17,7 @@ function Users() {
   const [isLoading, setIsLoading] = useState(true);
   const [Page, setPage] = useState(0);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [settleModal, setSettleModal] = useState(false);
   const [viewModal, setViewModal] = useState(false);
   const [ApproveModal, setApproveModal] = useState(false);
   const [notificationModal, setNotificationModal] = useState(false);
@@ -80,15 +81,20 @@ function Users() {
       name: "Settlement",
       center: true,
       width: "120px",
-      cell: (row) =>
-        row?.lead_settlement.length > 0 ? (
+      cell: (row) => {
+        console.log(row?.lead_settlement);
+        return row?.lead_settlement.length > 0 ? (
           <Link
             className="btn btn-soft-info btn-sm"
-            onClick={() => setSelectedUser(row)}
+            onClick={() => {
+              setSelectedUser(row);
+              setSettleModal(true);
+            }}
           >
             Settle
           </Link>
-        ) : null,
+        ) : null;
+      },
     },
     {
       name: "Approved",
@@ -448,6 +454,11 @@ function Users() {
           </button>
         </Modal.Body>
       </Modal>
+      <SettleModalComp
+        settleModal={settleModal}
+        setSettleModal={setSettleModal}
+        currentData={currentData}
+      />
       <ApproveModalComp
         setApproveModal={setApproveModal}
         currentData={currentData}
@@ -465,6 +476,115 @@ function Users() {
 
 export default Users;
 
+const SettleModalComp = ({ settleModal, setSettleModal, currentData }) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [Page, setPage] = useState(1);
+  const column = [
+    {
+      name: "#",
+      cell: (row, index) => (
+        <div>{Page > 0 ? Page * 10 + index + 1 : index + 1}</div>
+      ),
+      width: "50px",
+      center: true,
+    },
+    {
+      name: "Name",
+      selector: (row) => row.name,
+      center: true,
+      width: "auto",
+    },
+
+    {
+      name: "Contact No.",
+      selector: (row) => row.phone,
+      center: true,
+      width: "120px",
+    },
+
+    {
+      name: "Type",
+      selector: (row) => row.type,
+      center: true,
+      width: "80px",
+    },
+    {
+      name: "Wallet",
+      selector: (row) => row.wallet,
+      center: true,
+      width: "80px",
+    },
+    // {
+    //   name: "Notification",
+    //   center: true,
+    //   width: "120px",
+    //   cell: (row) => (
+    //     <Link
+    //       className="btn btn-soft-danger btn-sm"
+    //       style={{ textWrap: "nowrap" }}
+    //       onClick={() => {
+    //         setCurrentData(row);
+    //         setNotificationModal(true);
+    //       }}
+    //     >
+    //       Notification
+    //     </Link>
+    //   ),
+    // },
+    // {
+    //   name: "Settlement",
+    //   center: true,
+    //   width: "120px",
+    //   cell: (row) => {
+    //     console.log(row?.lead_settlement);
+    //     return row?.lead_settlement.length > 0 ? (
+    //       <Link
+    //         className="btn btn-soft-info btn-sm"
+    //         onClick={() => {
+    //           setSelectedUser(row);
+    //           setSettleModal(true);
+    //         }}
+    //       >
+    //         Settle
+    //       </Link>
+    //     ) : null;
+    //   },
+    // },
+  ];
+
+  return (
+    <Modal
+      size="sm"
+      show={settleModal}
+      centered
+      onHide={() => setSettleModal(false)}
+    >
+      <Modal.Body className="text-center p-4">
+        <CiWarning className="fs-48 text-danger" />
+        <h4 className="mt-2">Settle Lead Payout</h4>
+        <p className="mt-3">Select or settle all leads</p>
+        <DataTable
+          columns={column}
+          data={
+            currentData?.lead_settlement > 0 ? currentData?.lead_settlement : []
+          }
+          progressPending={isLoading}
+          pagination
+          onChangePage={(e) => {
+            setPage(e - 1);
+          }}
+        />
+        <button
+          type="button"
+          className="btn btn-danger my-2"
+          onClick={() => setSettleModal(false)}
+        >
+          Settle
+        </button>
+      </Modal.Body>
+    </Modal>
+  );
+};
 const ApproveModalComp = ({
   setApproveModal,
   currentData,

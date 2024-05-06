@@ -91,10 +91,12 @@ function Lead() {
       selector: (row) => row.category_info?.name,
     },
   ];
+
   const exportExcel = () => {
-    if (leads?.length < 1) {
-      return;
-    }
+    // if (leads?.length < 1) {
+    //   console.log("run");
+    //   return;
+    // }
     let data = [...leads];
     data = data?.map((item) => {
       const { category_info, offer_info, user_info, ...rest } = item;

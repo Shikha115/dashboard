@@ -64,12 +64,12 @@ function MyLeads() {
     const data = {
       offer_id: offerId,
       user_id: userId,
-      bank_id: offer?.bank_info?._id,
+      // bank_id: offer?.bank_info?._id,
       category_id: offer?.category_info?._id,
       click_id: date,
       affiliate_id: affiliateId,
       customer_url: window?.location?.href,
-      apply_link: offer?.apply_link,
+      apply_link: offer?.mobile_data?.apply_link,
       link_with_click_id: click_id,
 
       name: userDetails?.name,
