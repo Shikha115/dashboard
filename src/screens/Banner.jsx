@@ -11,10 +11,13 @@ import axios from "axios";
 import { apis } from "../utils/URL";
 
 import useToastStore from "../store/toastStore";
+import useAuthStore from "../store/authStore";
+
 import { static_pages } from "../utils/extraData";
 
 function ManageBanner() {
   const { setToastData } = useToastStore();
+  const { theme } = useAuthStore();
 
   const { banner, isLoading, getAllBanners, allOffer, getAllOffer } =
     useDataStore();
@@ -329,6 +332,7 @@ function ManageBanner() {
         </div>
       </div>
       <Modal
+        className={theme ? theme : ""}
         size="sm"
         show={addModal.state}
         centered
@@ -446,6 +450,7 @@ function ManageBanner() {
       </Modal>
 
       <Modal
+        className={theme ? theme : ""}
         size="sm"
         show={deleteModal}
         centered

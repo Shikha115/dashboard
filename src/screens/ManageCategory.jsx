@@ -10,6 +10,7 @@ import axios from "axios";
 import { FaWindowClose } from "react-icons/fa";
 import ImageUpload from "../components/ImageUpload";
 import useToastStore from "../store/toastStore";
+import useAuthStore from "../store/authStore";
 
 const RequiredData = [
   { key: "Title", required: true, can_delete: false },
@@ -33,7 +34,7 @@ const addon_data = { key: "", required: false, can_delete: true };
 function ManageCategory() {
   const { isLoading, category, getAllCategory } = useDataStore();
   const { setToastData } = useToastStore();
-
+  const { theme } = useAuthStore();
   const [deleteModal, setDeleteModal] = useState(false);
   const [categories, setCategories] = useState(category);
   const [addCategory, setAddCategory] = useState("");
@@ -335,9 +336,8 @@ function ManageCategory() {
   );
 }
 
-export default ManageCategory;
-
 function DeleteModalComp({ deleteModal, setDeleteModal, item, handleDelete }) {
+  const { theme } = useAuthStore();
   const [password, setpassword] = useState();
   const { setToastData } = useToastStore();
 
@@ -351,6 +351,7 @@ function DeleteModalComp({ deleteModal, setDeleteModal, item, handleDelete }) {
   };
   return (
     <Modal
+      className={theme ? theme : ""}
       size="sm"
       show={deleteModal}
       centered
@@ -393,8 +394,10 @@ function AddEditModalComp({
   setSelectedItem,
   handleUpdateCategory,
 }) {
+  const { theme } = useAuthStore();
   return (
     <Modal
+      className={theme ? theme : ""}
       size="xl"
       show={addCategory}
       centered
@@ -644,3 +647,5 @@ function AddEditModalComp({
     </Modal>
   );
 }
+
+export default ManageCategory;

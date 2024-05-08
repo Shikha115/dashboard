@@ -9,19 +9,20 @@ import { CiSearch, CiWarning } from "react-icons/ci";
 import ReactQuill from "react-quill";
 import ImageUpload from "../../components/ImageUpload";
 import { images } from "../../components/Images";
+import useAuthStore from "../../store/authStore";
 
 function MutualFund() {
   const [isLoading, setIsLoading] = useState(true);
   const { mutualFund, setMutualFund } = useDataStore();
+  const { theme } = useAuthStore();
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState({ type: "", state: false });
   const [currentData, setCurrentData] = useState(null);
-  const { bank,  } = useDataStore();
+  const { bank } = useDataStore();
   const [imageData, setImageData] = useState({
     type: addModal.type,
     image: "",
   });
-
 
   const getImage = (image) => {
     setImageData((prev) => {
@@ -139,45 +140,46 @@ function MutualFund() {
 
   return (
     <>
-        <div className="content">
-          <div className="container-fluid">
-            <div className="manage-bank">
-              <div className="page-title-box">
-                <div className="page-title-right">
+      <div className="content">
+        <div className="container-fluid">
+          <div className="manage-bank">
+            <div className="page-title-box">
+              <div className="page-title-right">
                 <div className="app-search">
-                    <form>
-                      <div className="input-group">
-                        <input
-                          type="search"
-                          className="form-control"
-                          placeholder="Search..."
-                        />
-                        <span className="search-icon">
-                          <CiSearch className="text-muted" />
-                        </span>
-                      </div>
-                    </form>
-                  </div>
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => setAddModal({ type: "add", state: true })}
-                  >
-                    Add Mutual Fund
-                  </button>
+                  <form>
+                    <div className="input-group">
+                      <input
+                        type="search"
+                        className="form-control"
+                        placeholder="Search..."
+                      />
+                      <span className="search-icon">
+                        <CiSearch className="text-muted" />
+                      </span>
+                    </div>
+                  </form>
                 </div>
-                <h4 className="page-title">Mutual Fund</h4>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => setAddModal({ type: "add", state: true })}
+                >
+                  Add Mutual Fund
+                </button>
               </div>
-              <DataTable
-                // title="Movie List"
-                columns={columns}
-                data={mutualFund}
-                progressPending={isLoading}
-                pagination
-              />
+              <h4 className="page-title">Mutual Fund</h4>
             </div>
+            <DataTable
+              // title="Movie List"
+              columns={columns}
+              data={mutualFund}
+              progressPending={isLoading}
+              pagination
+            />
           </div>
         </div>
+      </div>
       <Modal
+        className={theme ? theme : ""}
         size="sm"
         show={deleteModal}
         centered
@@ -200,6 +202,7 @@ function MutualFund() {
         </Modal.Body>
       </Modal>
       <Modal
+        className={theme ? theme : ""}
         size="lg"
         scrollable
         show={addModal.state}
@@ -216,7 +219,7 @@ function MutualFund() {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <form className="row">
+          <form className="row">
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">Title</label>
               <input
@@ -249,7 +252,7 @@ function MutualFund() {
             </div>
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">
-              Investment Type <span className="fs-16">*</span>
+                Investment Type <span className="fs-16">*</span>
               </label>
               <input
                 type="text"

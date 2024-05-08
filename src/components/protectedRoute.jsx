@@ -9,7 +9,6 @@ import useAuthStore from "../store/authStore";
 function ProtectedRoute({ Component, header, path }) {
   const navigate = useNavigate();
   const { loading } = useAuthStore();
-  
 
   useEffect(() => {
     let token = localStorage.getItem("token");
@@ -27,7 +26,7 @@ function ProtectedRoute({ Component, header, path }) {
     <>
       {header && <Sidebar />}
       {header && <Navbar />}
-      <div className={`${header ? "content-page" : ""}`}>
+      <div className={`${header && "content-page"}`}>
         {loading ? (
           <Loader />
         ) : (

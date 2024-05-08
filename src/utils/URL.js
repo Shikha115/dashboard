@@ -1,6 +1,6 @@
 export const AppInfo = {
-  // baseUrlAPI: "http://localhost:5001", // Rojgar Dev
-  baseUrlAPI: "https://api.dev.rojgarapp.in", // Rojgar Dev
+  baseUrlAPI: "http://localhost:5001", // Rojgar Dev
+  // baseUrlAPI: "https://api.dev.rojgarapp.in", // Rojgar Dev
   // baseUrlAPI: "https://api.prod.rojgarapp.in", // Rojgar Prod
   apiVersion: "api/v1",
 };
@@ -57,13 +57,14 @@ export const apis = {
   getAllLeads: `${baseURL}/lead/get-all-leads`,
   settleLeads: `${baseURL}/lead/settle-leads`,
 
+  getSelectedOrders: `${baseURL}/order/get-selected-orders`,
+
   getAllBanks: `${baseURL}/bank/get-all-banks`,
   addBank: `${baseURL}/bank/create-bank`,
   editBank: `${baseURL}/bank/update-bank`,
   deleteBank: `${baseURL}/bank/delete-bank`,
 
   uploadImage: `${baseURL}/upload/upload-image`,
-  updateImage: ``,
 
   bulkNotification: `${baseURL}/notification/bulk-notification`,
   multiNotification: `${baseURL}/notification/multi-notification`,

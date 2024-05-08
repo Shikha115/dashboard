@@ -9,10 +9,12 @@ import { CiSearch, CiWarning } from "react-icons/ci";
 import ReactQuill from "react-quill";
 import ImageUpload from "../../components/ImageUpload";
 import { images } from "../../components/Images";
+import useAuthStore from "../../store/authStore";
 
 function FixedDeposit() {
   const [isLoading, setIsLoading] = useState(true);
   const { fixedDeposit, setFixedDeposit } = useDataStore();
+  const { theme } = useAuthStore();
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState({ type: "", state: false });
   const [currentData, setCurrentData] = useState(null);
@@ -182,6 +184,7 @@ function FixedDeposit() {
       </div>
 
       <Modal
+        className={theme ? theme : ""}
         size="sm"
         show={deleteModal}
         centered
@@ -204,6 +207,7 @@ function FixedDeposit() {
         </Modal.Body>
       </Modal>
       <Modal
+        className={theme ? theme : ""}
         size="lg"
         scrollable
         show={addModal.state}

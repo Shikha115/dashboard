@@ -41,6 +41,7 @@ function App() {
     setLoading,
     defaultSidebar,
     setDefaultSidebar,
+    theme,
   } = useAuthStore();
   const { getAllBank, getAllCategory, category } = useDataStore();
 
@@ -73,7 +74,8 @@ function App() {
       <BrowserRouter>
         <section
           className={`wrapper ${loading ? "overflow-hidden" : ""}`}
-          id={defaultSidebar ? defaultSidebar : ""}
+          id={`${defaultSidebar ? defaultSidebar : ""} `}
+          mode={theme ? theme : ""}
         >
           <Location />
           <Suspense fallback={<div>Loading...</div>}>

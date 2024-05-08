@@ -9,11 +9,13 @@ import useToastStore from "../store/toastStore";
 import { CiSearch, CiWarning } from "react-icons/ci";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { Link } from "react-router-dom";
+import useAuthStore from "../store/authStore";
 import { static_pages } from "../utils/extraData";
 
 function Notification() {
   const { getTemplates, templates, allOffer, getAllOffer } = useDataStore();
   const { setToastData } = useToastStore();
+  const { theme } = useAuthStore();
   const [addModal, setAddModal] = useState({ type: "", state: false });
   const [isLoading, setIsLoading] = useState(true);
   const [currentRow, setCurrentRow] = useState({});
@@ -289,6 +291,7 @@ function Notification() {
         </div>
       </div>
       <Modal
+        className={theme ? theme : ""}
         size="lg"
         scrollable
         show={addModal.state}
@@ -443,6 +446,7 @@ function Notification() {
         </Modal.Footer>
       </Modal>{" "}
       <Modal
+        className={theme ? theme : ""}
         size="sm"
         show={deleteModal}
         centered

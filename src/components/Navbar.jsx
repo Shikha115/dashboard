@@ -10,7 +10,7 @@ import useAuthStore from "../store/authStore";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
-  const { defaultSidebar, setDefaultSidebar } = useAuthStore();
+  const { defaultSidebar, setDefaultSidebar, setTheme } = useAuthStore();
 
   const handleToggle = () => {
     const val = defaultSidebar == "default" ? "condensed" : "default";
@@ -376,7 +376,17 @@ function Navbar() {
           <li>
             <div className="switch">
               <label htmlFor="toggle">
-                <input id="toggle" className="toggle-switch" type="checkbox" />
+                {/* true = light mode
+                false = dark mode */}
+                <input
+                  id="toggle"
+                  className="toggle-switch"
+                  type="checkbox"
+                  defaultChecked={true}
+                  onChange={(e) =>
+                    setTheme(e.target.checked ? "light" : "dark")
+                  }
+                />
                 <div className="sun-moon">
                   <div className="dots" />
                 </div>

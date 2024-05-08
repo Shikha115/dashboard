@@ -5,10 +5,12 @@ import axios from "axios";
 import { apis } from "../../utils/URL";
 import useToastStore from "../../store/toastStore";
 import useDataStore from "../../store/dataStore";
+import useAuthStore from "../../store/authStore";
 
 function NotificationModal(props) {
   const { getTemplates, templates } = useDataStore();
   const { setToastData } = useToastStore();
+  const { theme } = useAuthStore();
 
   const [SelectedTemplate, setSelectedTemplate] = useState();
 
@@ -74,6 +76,7 @@ function NotificationModal(props) {
 
   return (
     <Modal
+      className={theme ? theme : ""}
       size="md"
       show={props.notificationModal}
       centered

@@ -78,7 +78,7 @@ const Sidebar_data2 = [
   },
 ];
 function Sidebar() {
-  const { currentPath } = useAuthStore();
+  const { currentPath,theme } = useAuthStore();
   const { category } = useDataStore();
   const [data, setData] = useState();
 
@@ -124,7 +124,7 @@ function Sidebar() {
 
   if (!data) return;
   return (
-    <div className="leftside-menu menuitem-active">
+    <div className="leftside-menu menuitem-active" mode={theme ? theme : ""}>
       {/* Brand Logo Light */}
       <Link to="/" className="logo logo-light">
         <span className="logo-lg">
