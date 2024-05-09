@@ -99,7 +99,65 @@ function MyLeads() {
     <section className="authentication-bg position-relative">
       <div className="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5 position-relative">
         <div className="container">
-          <div className="d-flex justify-content-center">
+          <div className="row justify-content-center align-items-start gx-lg-5">
+            <div className="col-12 col-lg-6">
+              <div className="row gy-3">
+                <div className="col-12">
+                  <div className="leads-box position-relative">
+                    <img
+                      src={offer?.mobile_data?.product_image_web}
+                      alt=""
+                      className="w-100"
+                    />
+                    <p className="mb-0 bg-pink">Axis Credit card</p>
+                    <div className="d-flex">
+                      <button className="btn btn-purple rounded-0 flex-fill">
+                        Apply
+                      </button>
+                      <button className="btn btn-info rounded-0 flex-fill">
+                        Share
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-12">
+                  <div className="leads-box position-relative">
+                    <img
+                      src={offer?.mobile_data?.product_image_web}
+                      alt=""
+                      className="w-100"
+                    />
+                    <p className="mb-0 bg-pink">Axis Credit card</p>
+                    <div className="d-flex">
+                      <button className="btn btn-purple rounded-0 flex-fill">
+                        Apply
+                      </button>
+                      <button className="btn btn-info rounded-0 flex-fill">
+                        Share
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-12">
+                  <div className="leads-box position-relative">
+                    <img
+                      src={offer?.mobile_data?.product_image_web}
+                      alt=""
+                      className="w-100"
+                    />
+                    <p className="mb-0 bg-pink">Axis Credit card</p>
+                    <div className="d-flex">
+                      <button className="btn btn-purple rounded-0 flex-fill">
+                        Apply
+                      </button>
+                      <button className="btn btn-info rounded-0 flex-fill">
+                        Share
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div className="lead-card col-12 col-lg-6">
               <div className="row align-items-center">
                 <div className="col-12">
@@ -115,10 +173,15 @@ function MyLeads() {
                       abc@gmail.com<b className="fw-bold text-primary"> | </b>
                       9856534523
                     </p>
+                    <p className="mb-0">
+                      abc@gmail.com<b className="fw-bold text-primary"> | </b>
+                      9856534523
+                    </p>
                   </div>
                 </div>
                 <div className="col-12">
                   <div className="lead-card-data">
+                    <h1 className="title text-dark">My Leads</h1>
                     <form action="#" className="row">
                       <div className="col-12 mb-3">
                         <label className="form-label">Full Name</label>
