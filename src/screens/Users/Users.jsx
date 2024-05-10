@@ -495,8 +495,7 @@ function Users() {
           getAllUsers={getAllUsers}
         />
       )}
-      {notificationModal &
-      (
+      {notificationModal && (
         <NotificationModal
           notificationModal={notificationModal}
           setNotificationModal={setNotificationModal}

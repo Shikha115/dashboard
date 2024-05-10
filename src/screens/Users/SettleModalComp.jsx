@@ -103,7 +103,7 @@ const SettleModalComp = ({ settleModal, setSettleModal, currentData }) => {
 
   const settleOrders = async () => {
     if (FetchedLeads?.length < 1) {
-      setToastData({ message: "No OIrders to process" });
+      setToastData({ message: "No Orders to process" });
       return;
     }
 
