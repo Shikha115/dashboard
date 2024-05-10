@@ -52,7 +52,7 @@ const SettleModalComp = ({ settleModal, setSettleModal, currentData }) => {
       width: "auto",
     },
     {
-      name: "Notification",
+      name: "Payment",
       center: true,
       width: "auto",
       cell: (row) => (
