@@ -6,8 +6,8 @@ function TermCondition() {
     <div className="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5 position-relative">
       <div className="container">
         <div className="card overflow-hidden bg-opacity-25">
-          <div className="card-body">
-            <h4 className="fs-20">Term & Condition</h4>
+          <div className="card-body policy">
+            <h4 className="fs-20 text-dark"><u>Term & Condition</u></h4>
             <p>
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industry. Lorem Ipsum has been the industry's standard dummy

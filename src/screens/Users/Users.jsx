@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
 import useDataStore from "../../store/dataStore";
@@ -7,24 +7,26 @@ import { FaEye } from "react-icons/fa";
 import Modal from "react-bootstrap/Modal";
 import { CiSearch, CiSquareCheck, CiWarning } from "react-icons/ci";
 import ViewUser from "./ViewUser";
-import ImageUpload from "../../components/ImageUpload";
+import NotificationModal from "./NotificationModal";
 import axios from "axios";
 import { apis } from "../../utils/URL";
 import useToastStore from "../../store/toastStore";
-import NotificationModal from "./NotificationModal";
 import useAuthStore from "../../store/authStore";
+import SettleModalComp from "./SettleModalComp";
 
 function Users() {
   const { users, getAllUsers, setSelectedUser } = useDataStore();
   const { theme } = useAuthStore();
   const [isLoading, setIsLoading] = useState(true);
-  const [Page, setPage] = useState(1);
+  const [Page, setPage] = useState(0);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [settleModal, setSettleModal] = useState(false);
   const [viewModal, setViewModal] = useState(false);
   const [ApproveModal, setApproveModal] = useState(false);
   const [notificationModal, setNotificationModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [currentData, setCurrentData] = useState(null);
+  const [Users, setUsers] = useState(null);
 
   const columns = [
     {
@@ -82,15 +84,19 @@ function Users() {
       name: "Settlement",
       center: true,
       width: "120px",
-      cell: (row) =>
-        row?.lead_settlement.length > 0 ? (
+      cell: (row) => {
+        return row?.order_settlement?.length > 0 ? (
           <Link
             className="btn btn-soft-info btn-sm"
-            onClick={() => setSelectedUser(row)}
+            onClick={() => {
+              setCurrentData(row);
+              setSettleModal(true);
+            }}
           >
             Settle
           </Link>
-        ) : null,
+        ) : null;
+      },
     },
     {
       name: "Approved",
@@ -101,6 +107,10 @@ function Users() {
           <button
             className="btn btn-soft-primary btn-sm"
             style={{ textWrap: "nowrap" }}
+            onClick={() => {
+              setCurrentData(row);
+              setApproveModal(true);
+            }}
           >
             Verified
           </button>
@@ -136,7 +146,6 @@ function Users() {
             onClick={() => {
               setEditModal(true);
               setCurrentData(row);
-              // console.log(row, "row");
             }}
           >
             <MdEdit className="fs-18" />
@@ -165,11 +174,15 @@ function Users() {
   ];
 
   useEffect(() => {
+    setUsers(users);
+  }, [users]);
+
+  useEffect(() => {
     setIsLoading(true);
     let timer = setTimeout(() => {
       getAllUsers();
       setIsLoading(false);
-    }, 200);
+    }, 0);
     return () => {
       clearTimeout(timer);
     };
@@ -177,6 +190,21 @@ function Users() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+  };
+  const search = (val) => {
+    let value = val?.toLowerCase();
+    let arr = users?.filter((e) => {
+      return (
+        e?.name?.toLowerCase().includes(value) ||
+        e?.phone?.toString()?.toLowerCase()?.includes(value) ||
+        e?.type?.toString()?.toLowerCase()?.includes(value)
+      );
+    });
+    if (!val) {
+      setUsers(users);
+      return;
+    }
+    setUsers(arr);
   };
 
   return (
@@ -193,6 +221,9 @@ function Users() {
                         type="search"
                         className="form-control"
                         placeholder="Search..."
+                        onChange={(e) => {
+                          search(e?.target?.value);
+                        }}
                       />
                       <span className="search-icon">
                         <CiSearch className="text-muted" />
@@ -200,19 +231,13 @@ function Users() {
                     </div>
                   </form>
                 </div>
-                {/* <Link
-                    // to="/users/add"
-                    onClick={() => setViewModal(true)}
-                    className="btn btn-primary"
-                  >
-                    Add User
-                  </Link> */}
               </div>
               <h4 className="page-title">Users</h4>
             </div>
+
             <DataTable
               columns={columns}
-              data={users}
+              data={Users?.length > 0 ? Users : []}
               progressPending={isLoading}
               pagination
               onChangePage={(e) => {
@@ -224,7 +249,7 @@ function Users() {
       </div>
       {/* view */}
       <Modal
-        className={theme ? theme : ""}
+        className={theme && theme}
         size="xl"
         scrollable
         show={viewModal}
@@ -240,7 +265,7 @@ function Users() {
       </Modal>
       {/* update */}
       <Modal
-        className={theme ? theme : ""}
+        className={theme && theme}
         size="lg"
         scrollable
         show={editModal}
@@ -250,7 +275,7 @@ function Users() {
         <Modal.Header closeButton>
           <Modal.Title>Edit User</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body key={currentData?._id}>
           <form className="row">
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">Name</label>
@@ -462,13 +487,94 @@ function Users() {
           </button>
         </Modal.Body>
       </Modal>
-      <NotificationModal
-        notificationModal={notificationModal}
-        setNotificationModal={setNotificationModal}
-        currentData={currentData}
-      />
+      {ApproveModal && (
+        <ApproveModalComp
+          setApproveModal={setApproveModal}
+          currentData={currentData}
+          ApproveModal={ApproveModal}
+          getAllUsers={getAllUsers}
+        />
+      )}
+      {notificationModal &
+      (
+        <NotificationModal
+          notificationModal={notificationModal}
+          setNotificationModal={setNotificationModal}
+          currentData={currentData}
+        />
+      )}
+      {settleModal && (
+        <SettleModalComp
+          settleModal={settleModal}
+          setSettleModal={setSettleModal}
+          currentData={currentData}
+          setCurrentData={setCurrentData}
+        />
+      )}
     </>
   );
 }
 
 export default Users;
+
+const ApproveModalComp = ({
+  setApproveModal,
+  currentData,
+  ApproveModal,
+  getAllUsers,
+}) => {
+  const { theme } = useAuthStore();
+
+  const { setToastData } = useToastStore();
+  const approve = () => {
+    axios
+      .post(apis.approveProfile, { id: currentData?._id, value: "approved" })
+      .then((e) => {
+        console.log(e);
+        setToastData({ message: e.data?.message });
+        getAllUsers();
+        setApproveModal(false);
+      })
+      .catch((err) => {
+        setToastData({ message: "Failed to update user" });
+        setApproveModal(false);
+      });
+  };
+  const reject = () => {
+    axios
+      .post(apis.approveProfile, { id: currentData?._id, value: "rejected" })
+      .then((e) => {
+        console.log(e);
+        setToastData({ message: e.data?.message });
+        getAllUsers();
+        setApproveModal(false);
+      })
+      .catch((err) => {
+        setToastData({ message: "Failed to update user" });
+        setApproveModal(false);
+      });
+  };
+
+  return (
+    <Modal
+      className={theme ? theme : ""}
+      size="sm"
+      show={ApproveModal}
+      centered
+      onHide={() => setApproveModal(false)}
+    >
+      <Modal.Body className="text-center p-4">
+        <CiSquareCheck className="fs-48 text-success" />
+        <h4 className="mt-2">Approve advisor </h4>
+        <h5 className="mt-2">{currentData?.name}</h5>
+        <p className="mt-3"></p>
+        <button type="button" className="btn btn-primary" onClick={approve}>
+          Approve
+        </button>{" "}
+        <button type="button" className="btn btn-danger" onClick={reject}>
+          Reject
+        </button>
+      </Modal.Body>
+    </Modal>
+  );
+};

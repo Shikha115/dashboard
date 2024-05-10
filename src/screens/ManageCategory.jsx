@@ -104,6 +104,19 @@ function ManageCategory() {
       width: "auto",
     },
     {
+      name: "Image",
+      center: true,
+      width: "auto",
+      cell: (row) => (
+        <img
+          alt=""
+          src={row.image}
+          className="img-fluid"
+          style={{ height: "50px", objectFit: "contain", width: "auto" }}
+        />
+      ),
+    },
+    {
       name: "Status",
       center: true,
       width: "80px",
@@ -323,13 +336,22 @@ function ManageCategory() {
   );
 }
 
-
-
 function DeleteModalComp({ deleteModal, setDeleteModal, item, handleDelete }) {
   const { theme } = useAuthStore();
+  const [password, setpassword] = useState();
+  const { setToastData } = useToastStore();
+
+  const verify = () => {
+    if (password !== "hp38g3119") {
+      setToastData({ message: "Incorrect password", color: "red" });
+      return;
+    }
+    setpassword("");
+    handleDelete(item?._id);
+  };
   return (
     <Modal
-    className={theme ? theme : ""}
+      className={theme ? theme : ""}
       size="sm"
       show={deleteModal}
       centered
@@ -342,14 +364,14 @@ function DeleteModalComp({ deleteModal, setDeleteModal, item, handleDelete }) {
           Warning: You are about to delete this item. This action cannot be
           undone. Are you sure you want to proceed with the deletion?
         </p>
-        <button
-          type="button"
-          className="btn btn-danger my-2"
-          onClick={() => {
-            // console.log(item);
-            handleDelete(item?._id);
-          }}
-        >
+        <input
+          type="search"
+          className="form-control"
+          placeholder="Enter password"
+          onChange={(e) => setpassword(e.target.value)}
+        />
+
+        <button type="button" className="btn btn-danger my-2" onClick={verify}>
           Delete
         </button>
       </Modal.Body>
@@ -375,7 +397,7 @@ function AddEditModalComp({
   const { theme } = useAuthStore();
   return (
     <Modal
-    className={theme ? theme : ""}
+      className={theme ? theme : ""}
       size="xl"
       show={addCategory}
       centered

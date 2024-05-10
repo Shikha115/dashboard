@@ -97,11 +97,35 @@ function MyOffer() {
 
   const AddData = async () => {
     let obj = {};
+    let isOk = false;
     [...currentData].forEach((e) => {
       obj[e?.key?.toLowerCase()?.split(" ")?.join("_")] = e?.value;
+      if (e?.key !== "status") {
+        if (e?.required && !e?.value) {
+          isOk = true;
+        } else {
+          isOk = false;
+        }
+      } else {
+        isOk = false;
+      }
     });
-    let data = { ...addonData, offer_data: currentData, mobile_data: obj };
 
+    let data = {
+      ...addonData,
+      offer_data: currentData,
+      type_id: currentCategory?._id,
+      mobile_data: { ...obj, card_type: currentCategory?._id },
+    };
+    console.log(data);
+    if (isOk) {
+      setToastData({
+        message: "Values marked by * are important",
+        color: "red",
+      });
+      return;
+    }
+    // return;
     axios
       .post(apis.createOffer, data)
       .then((res) => {
@@ -147,7 +171,7 @@ function MyOffer() {
       setToastData({ message: "Incorrect password", color: "red" });
       return;
     }
-
+    setpassword("");
     axios
       .post(apis.deleteOffer, { id: Data?._id })
       .then((res) => {
@@ -171,6 +195,19 @@ function MyOffer() {
       selector: (row) => row?.columns?.title,
       center: true,
       width: "auto",
+    },
+    {
+      name: "Image",
+      center: true,
+      width: "auto",
+      cell: (row) => (
+        <img
+          alt=""
+          src={row?.mobile_data?.product_image}
+          className="img-fluid"
+          style={{ height: "50px", objectFit: "contain", width: "auto" }}
+        />
+      ),
     },
     {
       name: "Card Type",
@@ -256,6 +293,7 @@ function MyOffer() {
     },
   ];
 
+  // console.log(currentData);
   return (
     <>
       <div className="content">
@@ -292,7 +330,6 @@ function MyOffer() {
               <h4 className="page-title">Manage {currentCategory?.name}</h4>
             </div>
             <DataTable
-              // title="Movie List"
               columns={columns}
               data={allOffer}
               progressPending={isLoading}
@@ -400,6 +437,9 @@ function MyOffer() {
                       </div>
                     </div>
                   );
+                }
+                if (item?.key === "Card Type") {
+                  return null;
                 }
                 if (item?.key === "Product Image") {
                   return (

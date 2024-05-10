@@ -15,6 +15,7 @@ function Navbar() {
   const handleToggle = () => {
     const val = defaultSidebar == "default" ? "condensed" : "default";
     setDefaultSidebar(val);
+    console.log(defaultSidebar,'defaultSidebar');
   };
 
   return (
@@ -43,8 +44,8 @@ function Navbar() {
             </Link>
           </div>
           {/* Sidebar Menu Toggle Button */}
-          <button className="button-toggle-menu" onClick={handleToggle}>
-            <FaBars />
+          <button className="button-toggle-menu" >
+            <FaBars onClick={handleToggle} />
           </button>
           {/* Topbar Search Form */}
           <div className="app-search d-none d-lg-block">

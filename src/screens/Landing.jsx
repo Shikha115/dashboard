@@ -78,7 +78,7 @@ export function LogoComp({ color }) {
         R
       </Text>
       <Text size={40} color={color}>
-        ojgar{" "}
+        ojgar
       </Text>
       <Text size={60} color={color}>
         A

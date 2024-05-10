@@ -6,8 +6,8 @@ const useAuthStore = create((set) => ({
   token: "",
   setToken: (data) => set({ token: data }),
   showToast: false,
-  setTheme: (data) => set({ theme: data }),
   theme: "light",
+  setTheme: (data) => set({ theme: data }),
   setShowToast: (data) => set({ showToast: data }),
   toastData: { color: "#33b0e0", message: "Welcome" },
   setToastData: (data) => set({ toastData: data }),
@@ -19,8 +19,8 @@ const useAuthStore = create((set) => ({
   setDefaultSidebar: (data) => set({ defaultSidebar: data }),
   profile: {},
   getProfileWeb: async () => {
-    let token = await localStorage.getItem("token");
-    let id = await localStorage.getItem("id");
+    let token = localStorage.getItem("token");
+    let id = localStorage.getItem("id");
 
     axios
       .post(apis.getProfileWeb, { id }, config(token))

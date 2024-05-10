@@ -7,6 +7,7 @@ import axios from "axios";
 import { apis } from "../utils/URL";
 import { Modal } from "react-bootstrap";
 import useToastStore from "../store/toastStore";
+import useAuthStore from "../store/authStore";
 
 function Lead() {
   const { lead, getAlLeads, category } = useDataStore();
@@ -91,10 +92,12 @@ function Lead() {
       selector: (row) => row.category_info?.name,
     },
   ];
+
   const exportExcel = () => {
-    if (leads?.length < 1) {
-      return;
-    }
+    // if (leads?.length < 1) {
+    //   console.log("run");
+    //   return;
+    // }
     let data = [...leads];
     data = data?.map((item) => {
       const { category_info, offer_info, user_info, ...rest } = item;
@@ -219,7 +222,7 @@ function Lead() {
   };
 
   const Import = ({ onImport }) => (
-    <div className="d-flex align-items-center justify-content-end w-100 gap-2">
+    <div className="d-flex align-items-center justify-content-end w-100 gap-2 ">
       <input
         className="form-control w-50"
         type="search"
@@ -350,13 +353,13 @@ function Lead() {
               </form>
             </div>
           </div>
-
+          <Import />
           <DataTable
             columns={columns}
             data={leads}
             progressPending={isLoading}
             pagination
-            actions={actionsMemo}
+            // actions={actionsMemo}
           />
           <LeadModalComp LeadModal={LeadModal} setLeadModal={setLeadModal} />
         </div>
@@ -372,6 +375,7 @@ function LeadModalComp({ LeadModal, setLeadModal }) {
   const fileInputRef = useRef(null);
   const { allOffer, getAllOffer } = useDataStore();
   const { setToastData } = useToastStore();
+  const { theme } = useAuthStore();
 
   useEffect(() => {
     getAllOffer();
@@ -433,6 +437,7 @@ function LeadModalComp({ LeadModal, setLeadModal }) {
 
   return (
     <Modal
+      className={theme ? theme : ""}
       size="l"
       show={LeadModal}
       centered

@@ -1,5 +1,4 @@
 import "./assets/css/app.css";
-
 import React, { Suspense, useEffect, useLayoutEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import useAuthStore from "./store/authStore";
