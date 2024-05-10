@@ -22195,7 +22195,7 @@ span.flatpickr-weekday,
 }
 
 .leads-box img {
-  height: 250px;
+  height: 200px;
   object-fit: cover;
   border-top-left-radius: inherit;
   border-top-right-radius: inherit;
@@ -22204,7 +22204,7 @@ span.flatpickr-weekday,
 .leads-box {
   background: #fff;
   border-radius: 10px;
-  padding: 10px;
+  padding: 5px;
   box-shadow: 0 0 20px 4px #00000020;
   transition: 0.5s linear;
 }

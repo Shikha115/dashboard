@@ -58,6 +58,7 @@ export const apis = {
   settleLeads: `${baseURL}/lead/settle-leads`,
 
   getSelectedOrders: `${baseURL}/order/get-selected-orders`,
+  approveOrders: `${baseURL}/order/approve-orders`,
 
   getAllBanks: `${baseURL}/bank/get-all-banks`,
   addBank: `${baseURL}/bank/create-bank`,

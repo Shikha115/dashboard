@@ -6,18 +6,15 @@ import { apis } from "../../utils/URL";
 import { CiWarning } from "react-icons/ci";
 import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
+import useToastStore from "../../store/toastStore";
 
-const SettleModalComp = ({
-  settleModal,
-  setSettleModal,
-  currentData,
-  setCurrentData,
-}) => {
+const SettleModalComp = ({ settleModal, setSettleModal, currentData }) => {
   const { theme } = useAuthStore();
 
   const [isLoading, setIsLoading] = useState(true);
   const [Page, setPage] = useState(0);
   const [FetchedLeads, setFetchedLeads] = useState([]);
+  const { setToastData } = useToastStore();
 
   const column = [
     {
@@ -55,7 +52,7 @@ const SettleModalComp = ({
       width: "auto",
     },
     {
-      name: "Notification",
+      name: "Payment",
       center: true,
       width: "auto",
       cell: (row) => (
@@ -88,20 +85,42 @@ const SettleModalComp = ({
     //   },
     // },
   ];
-  //   console.log("====================================");
-  //   console.log(FetchedLeads);
-  //   console.log("====================================");
 
   const getSelectedLeads = async (data) => {
     axios
       .post(apis.getSelectedOrders, { ids: data })
       .then((e) => {
         setFetchedLeads(e?.data?.data);
-        setIsLoading(false);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1000);
       })
       .catch((err) => {
         console.log(err);
         setIsLoading(false);
+      });
+  };
+
+  const settleOrders = async () => {
+    if (FetchedLeads?.length < 1) {
+      setToastData({ message: "No OIrders to process" });
+      return;
+    }
+
+    const ids = [...FetchedLeads]?.map((e) => e?._id);
+
+    axios
+      .post(apis.approveOrders, { ids })
+      .then((e) => {
+        setTimeout(() => {
+          setIsLoading(false);
+          setSettleModal(false);
+        }, 200);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+        setSettleModal(false);
       });
   };
 
@@ -138,7 +157,7 @@ const SettleModalComp = ({
         <button
           type="button"
           className="btn btn-danger my-2"
-          onClick={() => setSettleModal(false)}
+          onClick={settleOrders}
         >
           Settle All
         </button>

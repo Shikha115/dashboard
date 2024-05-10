@@ -258,8 +258,6 @@ function Lead() {
     </div>
   );
 
-  const actionsMemo = React.useMemo(() => <Import />, []);
-
   useEffect(() => {
     setIsLoading(true);
     let timer = setTimeout(() => {
