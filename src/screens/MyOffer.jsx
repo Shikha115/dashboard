@@ -75,6 +75,17 @@ function MyOffer() {
       });
   };
 
+  const updateIfFeatured = async (id, featured) => {
+    axios
+      .post(apis.updateIfFeatured, { id, featured })
+      .then((e) => {
+        setToastData({ message: e.data.message });
+      })
+      .catch((err) => {
+        setToastData({ message: "Failed to update status", color: "red" });
+      });
+  };
+
   const updateRank = async (id, rank) => {
     axios
       .post(apis.updateOfferRank, { id, rank: Number(rank) })
@@ -235,6 +246,25 @@ function MyOffer() {
               let val = e.target.checked;
               updateStatus(row?._id, val);
               row.status = val;
+            }}
+          />
+        </div>
+      ),
+    },
+    {
+      name: "Featured",
+      center: true,
+      width: "auto",
+      cell: (row) => (
+        <div className="form-check form-switch">
+          <input
+            type="checkbox"
+            className="form-check-input"
+            defaultChecked={row?.featured}
+            onChange={(e) => {
+              let val = e.target.checked;
+              updateIfFeatured(row?._id, val);
+              row.featured = val;
             }}
           />
         </div>

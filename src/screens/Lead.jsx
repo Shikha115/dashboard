@@ -490,7 +490,7 @@ function LeadModalComp({ LeadModal, setLeadModal }) {
                 fileInputRef.current.click();
               }}
             >
-              Upload Leads
+              Upload Leads and settle
             </button>
           </div>
         </form>
@@ -508,10 +508,11 @@ function LeadModalComp({ LeadModal, setLeadModal }) {
         <button
           className="btn btn-primary"
           onClick={() => {
+            setLeadModal(false);
             // ref.current.click();
           }}
         >
-          Settle Leads{" "}
+          Done{" "}
         </button>
       </Modal.Footer>
     </Modal>

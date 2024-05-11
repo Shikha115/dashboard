@@ -51,20 +51,20 @@ const SettleModalComp = ({ settleModal, setSettleModal, currentData }) => {
       center: true,
       width: "auto",
     },
-    {
-      name: "Payment",
-      center: true,
-      width: "auto",
-      cell: (row) => (
-        <Link
-          className="btn btn-soft-info btn-sm"
-          style={{ textWrap: "nowrap" }}
-          onClick={() => {}}
-        >
-          Settle
-        </Link>
-      ),
-    },
+    // {
+    //   name: "Payment",
+    //   center: true,
+    //   width: "auto",
+    //   cell: (row) => (
+    //     <Link
+    //       className="btn btn-soft-info btn-sm"
+    //       style={{ textWrap: "nowrap" }}
+    //       onClick={() => {}}
+    //     >
+    //       Settle
+    //     </Link>
+    //   ),
+    // },
     // {
     //   name: "Settlement",
     //   center: true,
