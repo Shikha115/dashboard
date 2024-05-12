@@ -173,7 +173,7 @@ const Home2 = () => {
 
       {/* ================== BannerFive Start ==================*/}
       <div
-        className="banner-area bg-relative banner-area-2 pb-0 bg-cover"
+        className="banner-area bg-relative banner-area-1 pb-0 bg-cover"
         style={{ backgroundImage: 'url("./assets/img/banner-5/5.png")' }}
       >
         <div className="container">
