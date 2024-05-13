@@ -159,14 +159,14 @@ const Home2 = () => {
               </li>
             </ul>
           </div>
-          <div className="nav-right-part nav-right-part-desktop align-self-center">
+          {/* <div className="nav-right-part nav-right-part-desktop align-self-center">
             <a
               className="btn btn-base-color border-radius-5 d-flex align-items-center"
               href="#home2-about"
             >
               Get a quote <FaArrowRight className="mt-0" />
             </a>
-          </div>
+          </div> */}
         </div>
       </nav>
       {/* ==================== Navbar Two end ====================*/}

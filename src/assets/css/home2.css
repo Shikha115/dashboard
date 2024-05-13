@@ -2805,6 +2805,11 @@ ol,
 #home2 .banner-area-1 {
   padding-top: 180px;
 }
+#home2 .banner-area-1 img.main-img {
+  height: 500px;
+  object-fit: cover;
+  width: 100%;
+}
 #home2 .banner-area-1 .animate-img-1 {
   position: absolute;
   left: 80px;
