@@ -210,7 +210,9 @@ function MyLeads() {
             </div>
           </div>
           <div className="row gy-4">
-            <h2 className="">Featured Offers</h2>
+            {allFeaturedOffers?.length > 0 ? (
+              <h2 className="">Featured Offers</h2>
+            ) : null}
             {allFeaturedOffers?.length > 0 &&
               allFeaturedOffers?.map((item, i) => (
                 <CardItem
