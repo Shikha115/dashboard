@@ -23,3 +23,12 @@ export const getBankById = (bank, id) => {
   //   console.log(val);
   return val;
 };
+
+export const isEmptyObject = (obj) => {
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      return false;
+    }
+  }
+  return true;
+};

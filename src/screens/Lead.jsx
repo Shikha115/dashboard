@@ -46,9 +46,7 @@ function Lead() {
       width: "auto",
       selector: (row) => {
         return row?.created
-          ? moment(row?.created).format("YYYY-MM-DD") +
-              "\n" +
-              moment(row?.created).format(" HH:mm:ss")
+          ? moment(row?.created).format("YYYY-MM-DD  HH:mm:ss")
           : row?.created;
       },
     },
@@ -100,9 +98,40 @@ function Lead() {
     // }
     let data = [...leads];
     data = data?.map((item) => {
-      const { category_info, offer_info, user_info, ...rest } = item;
+      let {
+        category_info,
+        offer_info,
+        user_info,
+        _id,
+        offer_id,
+        category_id,
+        user_id,
+        status,
+        __v,
+        created,
+        updated,
+        isComplete,
+        apply_link,
+        ...rest
+      } = item;
       rest.click_id = item?.affiliate_id + "_" + item?.click_id;
-      return rest;
+
+      created = moment(created).format("YYYY-MM-DD HH:mm:ss");
+      updated = moment(updated).format("YYYY-MM-DD HH:mm:ss");
+
+      return {
+        category: category_info?.name,
+        offer: offer_info?.mobile_data?.title,
+        status: isComplete,
+        earning: offer_info?.mobile_data?.earning,
+        created,
+        updated,
+        apply_link: offer_info?.mobile_data?.apply_link,
+        ...rest,
+        offer_id,
+        category_id,
+        user_id,
+      };
     });
 
     // Get all keys from the data

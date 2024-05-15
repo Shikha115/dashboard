@@ -11,6 +11,8 @@ import { FaWindowClose } from "react-icons/fa";
 import ImageUpload from "../components/ImageUpload";
 import useToastStore from "../store/toastStore";
 import useAuthStore from "../store/authStore";
+import { isEmptyObject } from "../utils/helperfunctions";
+import _ from "lodash";
 
 const RequiredData = [
   { key: "Title", required: true, can_delete: false },
@@ -40,9 +42,7 @@ function ManageCategory() {
   const [addCategory, setAddCategory] = useState("");
   const [update, setUpdate] = useState(false);
   const [selectedItem, setSelectedItem] = useState();
-
   const [inputData, setInputData] = useState({});
-
   const [addonInputData, setAddonInputData] = useState([]);
 
   const search = (val) => {
@@ -58,7 +58,6 @@ function ManageCategory() {
     }
     setCategories(arr);
   };
-
   useEffect(() => {
     setCategories(category);
   }, [category]);
@@ -171,7 +170,6 @@ function ManageCategory() {
               setAddCategory("edit");
               setSelectedItem(row);
               setAddonInputData(row?.offer_data);
-              // console.log(row?.offer_data);
             }}
           >
             <MdEdit className="fs-18" />
@@ -227,7 +225,6 @@ function ManageCategory() {
       offer_data: [...addonData],
     };
 
-    // return;
     await axios
       .post(apis.updateCategory, data)
       .then((e) => {
@@ -394,7 +391,20 @@ function AddEditModalComp({
   setSelectedItem,
   handleUpdateCategory,
 }) {
+  const [changed, setChanged] = useState(false);
   const { theme } = useAuthStore();
+
+  useEffect(() => {
+    let obj1 = { ...selectedItem, ...inputData };
+    let obj2 = { ...selectedItem };
+    let verify = _.isEqual(obj1, obj2);
+    if (!verify) {
+      setChanged(true);
+      return;
+    }
+    setChanged(false);
+  }, [inputData]);
+
   return (
     <Modal
       className={theme ? theme : ""}
@@ -404,7 +414,9 @@ function AddEditModalComp({
       onHide={() => {
         setAddCategory("");
         setAddonInputData([]);
+        setInputData({});
         setSelectedItem({});
+        setChanged(false);
       }}
     >
       <Modal.Header closeButton>
@@ -439,7 +451,7 @@ function AddEditModalComp({
               }}
             />
           </div>{" "}
-          <div className="col-12 col-md-6 mb-2">
+          {/* <div className="col-12 col-md-6 mb-2">
             <label className="form-label">
               Rank <span className="fs-17 text-danger">*</span>
             </label>
@@ -462,7 +474,7 @@ function AddEditModalComp({
               }
               placeholder="Enter rank"
             />
-          </div>{" "}
+          </div>{" "} */}
           {/* <div className="col-12 col-md-6 mb-2">
             <label className="form-label">Size</label>
             <span className="fs-17 text-danger">*</span>
@@ -641,7 +653,7 @@ function AddEditModalComp({
               : handleAddCategory();
           }}
         >
-          {addCategory === "edit" ? "Edit" : "Add"}
+          {addCategory === "edit" ? (changed ? "Save" : "Edit") : "Add"}
         </button>
       </Modal.Footer>
     </Modal>
