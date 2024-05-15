@@ -2616,6 +2616,12 @@ ol,
   left: 0;
   top: 0;
 }
+#home2 .about-area .left-img {
+  background-image: url("../../../public/assets/img/banner-3/3.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
 #home2 .about-area .about-thumb-inner .main-img {
   position: relative;
   z-index: 1;
@@ -2805,10 +2811,36 @@ ol,
 #home2 .banner-area-1 {
   padding-top: 180px;
 }
+#home2 .banner-area-1 a.btn.btn-border-base-2:hover {
+  color: #fff;
+}
+
+#home2 .banner-area-1 a.btn.btn-base-color {
+  border: 1px solid #50af9b;
+}
 #home2 .banner-area-1 img.main-img {
   height: 500px;
   object-fit: cover;
   width: 100%;
+}
+#home2 .banner-area-1 .three-name {
+  display: flex;
+  align-items: flex-end;
+  width: max-content;
+  justify-content: center;
+}
+
+#home2 .banner-area-1 .three-name img:nth-child(1),
+#home2 .banner-area-1 .three-name img:nth-child(3) {
+  height: 450px;
+}
+
+#home2 .banner-area-1 .main-img-wrap {
+  margin: 0 !important;
+}
+
+#home2 .banner-area-1 .three-name img:nth-child(2) {
+  width: 300px;
 }
 #home2 .banner-area-1 .animate-img-1 {
   position: absolute;
@@ -5255,6 +5287,59 @@ ol,
 
 #home2 .service-area .service-middle-section img {
   height: 637px;
+  width: 100%;
+  object-fit: cover;
+}
+
+#home2 .mobile-container {
+  display: grid;
+  transform: scale(1.5);
+
+  background: #121212;
+
+  height: 450px;
+  width: 200px;
+  transform: rotateX(51deg) rotateZ(-43deg) scale(1.5);
+  transform-style: preserve-3d;
+  border-radius: 30px;
+  box-shadow: -1px 0 28px 0 rgba(34, 33, 81, 0.01),
+    28px 28px 28px 0 rgba(34, 33, 81, 0.25);
+  transition: 0.4s ease-in-out transform, 0.4s ease-in-out box-shadow;
+}
+
+#home2 .mobile-container .inner {
+  background: #121212;
+  border-radius: 30px;
+  height: 450px;
+  width: 200px;
+  margin: -5px;
+  transform: translate(10px);
+  transition: 0.4s ease-in-out transform, 0.4s ease-in-out box-shadow;
+}
+
+#home2 .mobile-container .screen {
+  background: #444444;
+  height: 450px;
+  width: 200px;
+  border-radius: 30px;
+  transform: translate(10px, -10px);
+
+  transition: 0.4s ease-in-out transform, 0.4s ease-in-out box-shadow;
+}
+
+#home2 .mobile-container .screen .screen-img {
+  background: red;
+  height: 430px;
+  width: 180px;
+  position: relative;
+  left: 10px;
+  top: 10px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+#home2 .mobile-container .screen .screen-img img {
+  height: inherit;
   width: 100%;
   object-fit: cover;
 }

@@ -16,6 +16,8 @@ import {
   FaPhoneAlt,
   FaEnvelope,
   FaRegCalendarAlt,
+  FaAngleRight,
+  FaAngleLeft,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Carousel from "react-bootstrap/Carousel";
@@ -73,15 +75,63 @@ const Home2 = () => {
     }
   }
 
-  const settings = {
+  const brandSettings = {
     dots: true,
     infinite: true,
-    speed: 500,
+    speed: 2000,
     slidesToShow: 5,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2500,
     cssEase: "linear",
+  };
+
+  function SampleNextArrow(props) {
+    const { className, onClick } = props;
+    return <FaAngleRight className={className} onClick={onClick} />;
+  }
+  function SamplePrevArrow(props) {
+    const { className, onClick } = props;
+    return <FaAngleLeft className={className} onClick={onClick} />;
+  }
+  const settings = {
+    dots: false,
+    arrows: true,
+    infinite: true,
+    speed: 1000,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    initialSlide: 0,
+    nextArrow: <SampleNextArrow />,
+    prevArrow: <SamplePrevArrow />,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 992,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2,
+          arrows: false,
+        },
+      },
+      {
+        breakpoint: 575,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          arrows: false,
+        },
+      },
+    ],
   };
 
   return (
@@ -239,8 +289,10 @@ const Home2 = () => {
                     src="assets/img/banner-5/3.png"
                     alt="img"
                   />
-                  <div>
+                  <div className="three-name">
                     <img className="main-img" src={images.app_7} alt="img" />
+                    <img className="main-img" src={images.app_3} alt="img" />
+                    <img className="main-img" src={images.app_4} alt="img" />
                   </div>
                 </div>
               </div>
@@ -251,8 +303,107 @@ const Home2 = () => {
 
       {/* ================== BannerFive End ==================*/}
 
+      {/*==================== Work Process Three start ====================*/}
+      <div className="work-process-area bg-position-right pd-top-120 pd-bottom-90">
+        {/* style={{ backgroundImage: 'url("./assets/img/bg/16.png")' }} */}
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-lg-6">
+              <div className="section-title text-center pb-5">
+                <h6 className="sub-title-sky-blue">WORK PROCESS</h6>
+                <h2 className="title">Start earning with easy steps</h2>
+              </div>
+            </div>
+          </div>
+          <div className="work-process-area-inner-2">
+            <div className="row">
+              <div className="col-lg-3 col-md-6">
+                <div className="single-work-process-inner style-2 text-center">
+                  <img
+                    className="line-img"
+                    src="assets/img/about/29.png"
+                    alt="img"
+                  />
+                  <div className="thumb mb-3">
+                    <img src="assets/img/icon/36.svg" alt="img" />
+                  </div>
+                  <div className="details">
+                    <h5 className="mb-3">Install Rojgar App</h5>
+                    <p className="content">
+                      Research ipsum dolor sit consec tetur sed diam in the
+                      aliquam tempor
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="col-lg-3 col-md-6">
+                <div className="single-work-process-inner style-2 text-center">
+                  <img
+                    className="line-img"
+                    src="assets/img/about/30.png"
+                    alt="img"
+                  />
+                  <div className="thumb mb-3">
+                    <img src="assets/img/icon/37.svg" alt="img" />
+                  </div>
+                  <div className="details">
+                    <h5 className="mb-3">Register Yourself</h5>
+                    <p className="content">
+                      Create ipsum dolor sit consec tetur sed diam in the
+                      aliquam tempor
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="col-lg-3 col-md-6">
+                <div className="single-work-process-inner style-2 text-center">
+                  <img
+                    className="line-img"
+                    src="assets/img/about/29.png"
+                    alt="img"
+                  />
+                  <div className="thumb mb-3">
+                    <img src="assets/img/icon/38.svg" alt="img" />
+                  </div>
+                  <div className="details">
+                    <h5 className="mb-3">
+                      Attend trainings and share financial product links
+                    </h5>
+                    <p className="content">
+                      Develope ipsum dolor sit consec tetur sed diam in the
+                      aliquam tempor
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="col-lg-3 col-md-6">
+                <div className="single-work-process-inner style-2 text-center">
+                  <div className="thumb mb-3">
+                    <img src="assets/img/icon/39.svg" alt="img" />
+                  </div>
+                  <div className="details">
+                    <h5 className="mb-3">
+                      Start earning more than ₹1 Lakh every month
+                    </h5>
+                    <p className="content">
+                      Shop ipsum dolor sit consec tetur Malesuada sed diam in
+                      the
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ==================== Work Process Three end ====================*/}
+
       {/* =============== About Area Five End ===============*/}
-      <div className="about-area pd-top-120 pd-bottom-120" id="home2-about">
+      <div
+        className="about-area bg-gradient-gray pd-top-100 pd-bottom-100"
+        id="home2-about"
+      >
         <div className="container">
           <div className="row">
             <div
@@ -261,13 +412,24 @@ const Home2 = () => {
               data-aos-delay="200"
               data-aos-duration="1500"
             >
-              <div className="about-thumb-inner">
+              {/* <div className="about-thumb-inner">
                 <img
                   className="animate-img-3 z-index-2 top_image_bounce"
                   src={images.logo}
                   alt="img"
                 />
                 <img className="main-img" src={images.app_4} alt="img" />
+              </div> */}
+              <div className="d-flex justify-content-center left-img">
+                <div class="mobile-container">
+                  <div class="inner">
+                    <div class="screen">
+                      <div class="screen-img">
+                        <img src={images.app_4} alt="wallpaper" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div
@@ -277,20 +439,19 @@ const Home2 = () => {
               data-aos-duration="1500"
             >
               <div className="section-title mb-0 ps-xl-5">
-                <h6 className="sub-title-sky-blue">ABOUT COMPANY</h6>
-                <h2 className="title">
-                  Experience intelligence like never before
-                </h2>
+                <h6 className="sub-title-sky-blue">ABOUT Our App</h6>
+                <h2 className="title">Download the App Now</h2>
                 <p className="content mb-4">
-                  You can access SaaS applications through a web browser or
-                  mobile app, as long as you have an internet connection.
+                  In Order To Make A Business, Brand Advertising And Marketing
+                  Plays An Important Role. Similarly, In Making Cultivation
+                  Business Are Necessary..Over 8 lakh gig workers have chosen us
+                  for sales work and earned in lakhs. Check out why?
                 </p>
                 <div className="row">
                   <div className="col-md-6">
                     <ul className="single-list-inner style-check style-heading style-check mb-3">
                       <li>
-                        <FaCheckCircle className="sky" /> Mistakes To Avoid to
-                        the
+                        <FaCheckCircle className="sky" /> Easy to login
                       </li>
                       <li>
                         <FaCheckCircle className="sky" /> Your Startup industry
@@ -319,12 +480,6 @@ const Home2 = () => {
                       className="play-store h-100"
                     />
                   </Link>
-                  <Link
-                    className="btn btn-base-color border-radius-5 mt-0"
-                    to="#"
-                  >
-                    Discover More <FaArrowRight />
-                  </Link>
                 </div>
               </div>
             </div>
@@ -335,8 +490,14 @@ const Home2 = () => {
       {/* =============== About Area Five End ===============*/}
 
       {/*=================== service area five start ===================*/}
-      <div className="service-area bg-gray bg-relative pd-top-120 pd-bottom-120">
-        <div className="container">
+      <div
+        className="service-area bg-gray bg-relative pd-top-120 pd-bottom-120"
+        style={{
+          backgroundImage: "url('./assets/img/bg/10.png')",
+          backgroundSize: "cover",
+        }}
+      >
+        <div className="container pd-bottom-90">
           <div className="row justify-content-center">
             <div className="col-lg-6">
               <div className="section-title text-center">
@@ -458,160 +619,8 @@ const Home2 = () => {
 
       {/* =================== service area end ===================*/}
 
-      {/*==================== Work Process Three start ====================*/}
-      <div
-        className="work-process-area bg-position-right pd-top-120 pd-bottom-90"
-        style={{ backgroundImage: 'url("./assets/img/bg/16.png")' }}
-      >
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-lg-6">
-              <div className="section-title text-center pb-5">
-                <h6 className="sub-title-sky-blue">WORK PROCESS</h6>
-                <h2 className="title">Start earning with easy steps</h2>
-              </div>
-            </div>
-          </div>
-          <div className="work-process-area-inner-2">
-            <div className="row">
-              <div className="col-lg-3 col-md-6">
-                <div className="single-work-process-inner style-2 text-center">
-                  <img
-                    className="line-img"
-                    src="assets/img/about/29.png"
-                    alt="img"
-                  />
-                  <div className="thumb mb-3">
-                    <img src="assets/img/icon/36.svg" alt="img" />
-                  </div>
-                  <div className="details">
-                    <h5 className="mb-3">Install Rojgar App</h5>
-                    <p className="content">
-                      Research ipsum dolor sit consec tetur sed diam in the
-                      aliquam tempor
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-3 col-md-6">
-                <div className="single-work-process-inner style-2 text-center">
-                  <img
-                    className="line-img"
-                    src="assets/img/about/30.png"
-                    alt="img"
-                  />
-                  <div className="thumb mb-3">
-                    <img src="assets/img/icon/37.svg" alt="img" />
-                  </div>
-                  <div className="details">
-                    <h5 className="mb-3">Register Yourself</h5>
-                    <p className="content">
-                      Create ipsum dolor sit consec tetur sed diam in the
-                      aliquam tempor
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-3 col-md-6">
-                <div className="single-work-process-inner style-2 text-center">
-                  <img
-                    className="line-img"
-                    src="assets/img/about/29.png"
-                    alt="img"
-                  />
-                  <div className="thumb mb-3">
-                    <img src="assets/img/icon/38.svg" alt="img" />
-                  </div>
-                  <div className="details">
-                    <h5 className="mb-3">
-                      Attend trainings and share financial product links
-                    </h5>
-                    <p className="content">
-                      Develope ipsum dolor sit consec tetur sed diam in the
-                      aliquam tempor
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-3 col-md-6">
-                <div className="single-work-process-inner style-2 text-center">
-                  <div className="thumb mb-3">
-                    <img src="assets/img/icon/39.svg" alt="img" />
-                  </div>
-                  <div className="details">
-                    <h5 className="mb-3">
-                      Start earning more than ₹1 Lakh every month
-                    </h5>
-                    <p className="content">
-                      Shop ipsum dolor sit consec tetur Malesuada sed diam in
-                      the
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ==================== Work Process Three end ====================*/}
-      {/* Brand Area One */}
-      <div
-        className="about-area bg-relative bg-cover pd-top-110 pd-bottom-100"
-        style={{ backgroundImage: "url('./assets/img/bg/10.png')" }}
-      >
-        <div className="container pd-bottom-90">
-          <div className="row justify-content-center">
-            <div className="col-xl-6 col-lg-8">
-              <div className="section-title text-center">
-                <h2 className="title"> We are Featured In </h2>
-              </div>
-            </div>
-          </div>
-
-          <div className="client-slider">
-            <div className="slider-container">
-              <Slider {...settings}>
-                <div className="thumb">
-                  <img src={images.Bajaj_Finserv} alt="img" />
-                </div>
-                <div className="thumb">
-                  <img src={images.HDFC_SKY} alt="img" />
-                </div>
-                <div className="thumb">
-                  <img src={images.HSBC_mf} alt="img" />
-                </div>
-                <div className="thumb">
-                  <img src={images.Loot_Mogule} alt="img" />
-                </div>
-                <div className="thumb">
-                  <img src={images.money_control} alt="img" />
-                </div>
-                <div className="thumb">
-                  <img src={images.MStock} alt="img" />
-                </div>
-                <div className="thumb">
-                  <img src={images.PhonePe_Share_Market} alt="img" />
-                </div>
-                <div className="thumb">
-                  <img src={images.SBI_Logo} alt="img" />
-                </div>
-                <div className="thumb">
-                  <img src={images.tvs} alt="img" />
-                </div>
-                <div className="thumb">
-                  <img src={images.Yes_Bank} alt="img" />
-                </div>
-              </Slider>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Brand Area One end */}
-
       {/* Contact Area Two */}
-      <div className="contact-area pd-bottom-100" id="home2-contact">
+      <div className="contact-area" id="home2-contact">
         <div className="container">
           <div className="contact-inner-1">
             <img
@@ -698,6 +707,252 @@ const Home2 = () => {
 
       {/* Contact Area Two end */}
 
+      {/* =================== Testimonial One Start ===================*/}
+      <div
+        className="testimonial-area pd-top-120 pd-bottom-90"
+        style={{ backgroundImage: 'url("./assets/img/bg/11.png")' }}
+      >
+        <div className="container">
+          <div className="section-title">
+            <h2 className="title"> Client Says </h2>
+            <p className="w-75">
+              {" "}
+              We offer a diverse range of work opportunities that cater to
+              various skills and interests. Here are some of the types of work
+              that individuals can engage in on our platform:{" "}
+            </p>
+          </div>
+          <div className="testimonial-slider-1  slider-control-round slider-control-dots slider-control-right-top">
+            <Slider {...settings}>
+              <div className="item">
+                <div className="single-testimonial-inner style-1 text-center">
+                  <h5>Devon Lane</h5>
+                  <p className="designation mb-3">Marketing Coordinator</p>
+                  <div className="icon mb-2">
+                    <img src="assets/img/icon/25.png" alt="img" />
+                  </div>
+                  <p>
+                    {" "}
+                    Become a valuable asset for top-notch brands by onboarding
+                    customers. You will earn a fixed payout for every customer
+                    you successfully bring onboard. This role allows you to
+                    showcase your persuasion and networking skills while earning
+                    a rewarding income.
+                  </p>
+                  <div className="ratting-inner mt-4">
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                  </div>
+                  <div className="thumb">
+                    <img src={images.avatar_1} alt="img" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="item">
+                <div className="single-testimonial-inner style-1 text-center">
+                  <h5>Devon Lane</h5>
+                  <p className="designation mb-3">Marketing Coordinator</p>
+                  <div className="icon mb-2">
+                    <img src="assets/img/icon/25.png" alt="img" />
+                  </div>
+                  <p>
+                    {" "}
+                    Become a valuable asset for top-notch brands by onboarding
+                    customers. You will earn a fixed payout for every customer
+                    you successfully bring onboard. This role allows you to
+                    showcase your persuasion and networking skills while earning
+                    a rewarding income.
+                  </p>
+                  <div className="ratting-inner mt-4">
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                  </div>
+                  <div className="thumb">
+                    <img src={images.avatar_2} alt="img" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="item">
+                <div className="single-testimonial-inner style-1 text-center">
+                  <h5>Devon Lane</h5>
+                  <p className="designation mb-3">Marketing Coordinator</p>
+                  <div className="icon mb-2">
+                    <img src="assets/img/icon/25.png" alt="img" />
+                  </div>
+                  <p>
+                    {" "}
+                    Become a valuable asset for top-notch brands by onboarding
+                    customers. You will earn a fixed payout for every customer
+                    you successfully bring onboard. This role allows you to
+                    showcase your persuasion and networking skills while earning
+                    a rewarding income.
+                  </p>
+                  <div className="ratting-inner mt-4">
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                  </div>
+                  <div className="thumb">
+                    <img src={images.avatar_3} alt="img" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="item">
+                <div className="single-testimonial-inner style-1 text-center">
+                  <h5>Devon Lane</h5>
+                  <p className="designation mb-3">Marketing Coordinator</p>
+                  <div className="icon mb-2">
+                    <img src="assets/img/icon/25.png" alt="img" />
+                  </div>
+                  <p>
+                    {" "}
+                    Become a valuable asset for top-notch brands by onboarding
+                    customers. You will earn a fixed payout for every customer
+                    you successfully bring onboard. This role allows you to
+                    showcase your persuasion and networking skills while earning
+                    a rewarding income.
+                  </p>
+                  <div className="ratting-inner mt-4">
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                  </div>
+                  <div className="thumb">
+                    <img src={images.avatar_4} alt="img" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="item">
+                <div className="single-testimonial-inner style-1 text-center">
+                  <h5>Devon Lane</h5>
+                  <p className="designation mb-3">Marketing Coordinator</p>
+                  <div className="icon mb-2">
+                    <img src="assets/img/icon/25.png" alt="img" />
+                  </div>
+                  <p>
+                    {" "}
+                    Become a valuable asset for top-notch brands by onboarding
+                    customers. You will earn a fixed payout for every customer
+                    you successfully bring onboard. This role allows you to
+                    showcase your persuasion and networking skills while earning
+                    a rewarding income.
+                  </p>
+                  <div className="ratting-inner mt-4">
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                  </div>
+                  <div className="thumb">
+                    <img src={images.avatar_5} alt="img" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="item">
+                <div className="single-testimonial-inner style-1 text-center">
+                  <h5>Devon Lane</h5>
+                  <p className="designation mb-3">Marketing Coordinator</p>
+                  <div className="icon mb-2">
+                    <img src="assets/img/icon/25.png" alt="img" />
+                  </div>
+                  <p>
+                    {" "}
+                    Become a valuable asset for top-notch brands by onboarding
+                    customers. You will earn a fixed payout for every customer
+                    you successfully bring onboard. This role allows you to
+                    showcase your persuasion and networking skills while earning
+                    a rewarding income.
+                  </p>
+                  <div className="ratting-inner mt-4">
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                  </div>
+                  <div className="thumb">
+                    <img src={images.avatar_1} alt="img" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="item">
+                <div className="single-testimonial-inner style-1 text-center">
+                  <h5>Devon Lane</h5>
+                  <p className="designation mb-3">Marketing Coordinator</p>
+                  <div className="icon mb-2">
+                    <img src="assets/img/icon/25.png" alt="img" />
+                  </div>
+                  <p>
+                    {" "}
+                    Become a valuable asset for top-notch brands by onboarding
+                    customers. You will earn a fixed payout for every customer
+                    you successfully bring onboard. This role allows you to
+                    showcase your persuasion and networking skills while earning
+                    a rewarding income.
+                  </p>
+                  <div className="ratting-inner mt-4">
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                  </div>
+                  <div className="thumb">
+                    <img src={images.avatar_2} alt="img" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="item">
+                <div className="single-testimonial-inner style-1 text-center">
+                  <h5>Devon Lane</h5>
+                  <p className="designation mb-3">Marketing Coordinator</p>
+                  <div className="icon mb-2">
+                    <img src="assets/img/icon/25.png" alt="img" />
+                  </div>
+                  <p>
+                    {" "}
+                    Become a valuable asset for top-notch brands by onboarding
+                    customers. You will earn a fixed payout for every customer
+                    you successfully bring onboard. This role allows you to
+                    showcase your persuasion and networking skills while earning
+                    a rewarding income.
+                  </p>
+                  <div className="ratting-inner mt-4">
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                  </div>
+                  <div className="thumb">
+                    <img src={images.avatar_3} alt="img" />
+                  </div>
+                </div>
+              </div>
+            </Slider>
+          </div>
+        </div>
+      </div>
+      {/* =================== Testimonial One End ===================*/}
+
       {/*==================== Faq area start ====================*/}
       <div className="faq-area pd-bottom-120">
         <div className="container">
@@ -771,6 +1026,59 @@ const Home2 = () => {
 
       {/* ==================== Faq area end ====================*/}
 
+      {/* Brand Area One */}
+      <div className="about-area bg-gray pt-5 pb-5">
+        {/* style={{ backgroundImage: "url('./assets/img/bg/10.png')" }} */}
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-xl-6 col-lg-8">
+              <div className="section-title text-center">
+                <h2 className="title"> We are in the News </h2>
+              </div>
+            </div>
+          </div>
+
+          <div className="client-slider">
+            <div className="slider-container">
+              <Slider {...brandSettings}>
+                <div className="thumb">
+                  <img src={images.Bajaj_Finserv} alt="img" />
+                </div>
+                <div className="thumb">
+                  <img src={images.HDFC_SKY} alt="img" />
+                </div>
+                <div className="thumb">
+                  <img src={images.HSBC_mf} alt="img" />
+                </div>
+                <div className="thumb">
+                  <img src={images.Loot_Mogule} alt="img" />
+                </div>
+                <div className="thumb">
+                  <img src={images.money_control} alt="img" />
+                </div>
+                <div className="thumb">
+                  <img src={images.MStock} alt="img" />
+                </div>
+                <div className="thumb">
+                  <img src={images.PhonePe_Share_Market} alt="img" />
+                </div>
+                <div className="thumb">
+                  <img src={images.SBI_Logo} alt="img" />
+                </div>
+                <div className="thumb">
+                  <img src={images.tvs} alt="img" />
+                </div>
+                <div className="thumb">
+                  <img src={images.Yes_Bank} alt="img" />
+                </div>
+              </Slider>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Brand Area One end */}
+
       {/* ================== Footer Four Start ==================*/}
 
       <footer
@@ -779,20 +1087,21 @@ const Home2 = () => {
       >
         <div className="container">
           <div className="row">
-            <div className="col-lg-3 col-md-6">
+            <div className="col-lg-9 col-md-6">
               <div className="widget widget-recent-post">
                 <img src={images.logo} alt="" className="logo" />
                 <p className="text-white">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Omnis, similique temporibus adipisci quaerat odio aspernatur
-                  dolor!
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum
+                  iusto consequatur reprehenderit, saepe odit aut ex quaerat
+                  earum sapiente eos sit quidem vel facere? Tempore quisquam
+                  minima esse maiores obcaecati.
                 </p>
                 <Link to="#">
                   <img src={images.play_store} alt="" className="play-store" />
                 </Link>
               </div>
             </div>
-            <div className="col-lg-3 col-md-6 ps-xl-5">
+            {/* <div className="col-lg-3 col-md-6 ps-xl-5">
               <div className="widget widget_nav_menu">
                 <h4 className="widget-title">Products</h4>
                 <ul>
@@ -870,7 +1179,7 @@ const Home2 = () => {
                   </li>
                 </ul>
               </div>
-            </div>
+            </div> */}
             <div className="col-lg-3 col-md-6">
               <div className="widget widget-recent-post">
                 <h4 className="widget-title">Contact us</h4>
