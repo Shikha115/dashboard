@@ -194,7 +194,7 @@ const Home2 = () => {
                   data-aos-delay="250"
                   data-aos-duration="1500"
                 >
-                  Empowering Your Business With Artificial
+                  Work & Earn AnyWhere
                 </h2>
                 <p
                   className="content pe-xl-4"
@@ -203,7 +203,8 @@ const Home2 = () => {
                   data-aos-duration="1500"
                 >
                   And In Order To Make A Business, Brand Advertising And
-                  Marketing Plays An Important Role. Similarly, In
+                  Marketing Plays An Important Role. Similarly, In Making
+                  Cultivation Business Are Necessary.
                 </p>
                 <Link
                   className="btn btn-border-base-2"
@@ -212,32 +213,17 @@ const Home2 = () => {
                   data-aos-duration="1500"
                   to="/about"
                 >
-                  Discover More <FaPlus />
+                  Download App <FaPlus />
                 </Link>
-                <div
-                  className="d-inline-block align-self-center "
+                <Link
+                  className="btn btn-base-color ms-2"
                   data-aos="fade-right"
-                  data-aos-delay="350"
+                  data-aos-delay="450"
                   data-aos-duration="1500"
+                  to="/about"
                 >
-                  <a
-                    href="javascript:void(0)"
-                    onClick={() => setOpen(true)}
-                    className="video-play-btn-hover"
-                  >
-                    <img src="assets/img/video.svg" alt="img" />{" "}
-                    <h6 className="d-inline-block text-white">how we work</h6>
-                  </a>
-
-                  <div></div>
-                </div>
-                <ModalVideo
-                  channel="youtube"
-                  autoplay
-                  isOpen={isOpen}
-                  videoId="XM6kTQPzzpQ"
-                  onClose={() => setOpen(false)}
-                />
+                  Continue on Web
+                </Link>
               </div>
             </div>
             <div className="col-lg-6 col-md-9 align-self-end">
