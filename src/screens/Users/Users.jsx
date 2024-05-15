@@ -5,14 +5,15 @@ import useDataStore from "../../store/dataStore";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
 import Modal from "react-bootstrap/Modal";
-import { CiSearch, CiSquareCheck, CiWarning } from "react-icons/ci";
+import { CiSearch, CiWarning } from "react-icons/ci";
 import ViewUser from "./ViewUser";
 import NotificationModal from "./NotificationModal";
-import axios from "axios";
-import { apis } from "../../utils/URL";
-import useToastStore from "../../store/toastStore";
+
 import useAuthStore from "../../store/authStore";
 import SettleModalComp from "./SettleModalComp";
+import ApproveModalComp from "./ApproveModalComp";
+import DeleteModalComp from "./DeleteModalComp";
+import PayModalComp from "./PayModalComp";
 
 function Users() {
   const { users, getAllUsers, setSelectedUser } = useDataStore();
@@ -25,6 +26,7 @@ function Users() {
   const [ApproveModal, setApproveModal] = useState(false);
   const [notificationModal, setNotificationModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
+  const [PayModal, setPayModal] = useState(false);
   const [currentData, setCurrentData] = useState(null);
   const [Users, setUsers] = useState(null);
 
@@ -83,19 +85,35 @@ function Users() {
     {
       name: "Settlement",
       center: true,
-      width: "120px",
+      // width: "120px",
       cell: (row) => {
-        return row?.order_settlement?.length > 0 ? (
-          <Link
-            className="btn btn-soft-info btn-sm"
-            onClick={() => {
-              setCurrentData(row);
-              setSettleModal(true);
-            }}
-          >
-            Settle
-          </Link>
-        ) : null;
+        return (
+          <div className="d-flex flex-column">
+            {row?.order_settlement?.length > 0 ? (
+              <Link
+                className="btn btn-soft-info btn-sm"
+                onClick={() => {
+                  setCurrentData(row);
+                  setSettleModal(true);
+                }}
+              >
+                Settle Orders
+              </Link>
+            ) : null}
+
+            {row?.redeem_wallet ? (
+              <Link
+                className="btn btn-soft-warning  btn-sm "
+                onClick={() => {
+                  setCurrentData(row);
+                  setSettleModal(true);
+                }}
+              >
+                Pay
+              </Link>
+            ) : null}
+          </div>
+        );
       },
     },
     {
@@ -436,57 +454,13 @@ function Users() {
         </Modal.Footer>
       </Modal>
       {/* delete */}
-      <Modal
-        className={theme ? theme : ""}
-        size="sm"
-        show={deleteModal}
-        centered
-        onHide={() => setDeleteModal(false)}
-      >
-        <Modal.Body className="text-center p-4">
-          <CiWarning className="fs-48 text-danger" />
-          <h4 className="mt-2">Are You Sure?</h4>
-          <p className="mt-3">
-            Warning: You are about to delete this item. This action cannot be
-            undone. Are you sure you want to proceed with the deletion?
-          </p>
-          <button
-            type="button"
-            className="btn btn-danger my-2"
-            onClick={() => setDeleteModal(false)}
-          >
-            Continue
-          </button>
-        </Modal.Body>
-      </Modal>{" "}
-      <Modal
-        className={theme ? theme : ""}
-        size="sm"
-        show={ApproveModal}
-        centered
-        onHide={() => setApproveModal(false)}
-      >
-        <Modal.Body className="text-center p-4">
-          <CiSquareCheck className="fs-48 text-success" />
-          <h4 className="mt-2">Approve advisor </h4>
-          <h5 className="mt-2">{currentData?.name}</h5>
-          <p className="mt-3"></p>
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={() => setApproveModal(false)}
-          >
-            Approve
-          </button>{" "}
-          <button
-            type="button"
-            className="btn btn-danger"
-            onClick={() => setApproveModal(false)}
-          >
-            Reject
-          </button>
-        </Modal.Body>
-      </Modal>
+      {deleteModal ? (
+        <DeleteModalComp
+          theme={theme}
+          deleteModal={deleteModal}
+          setDeleteModal={setDeleteModal}
+        />
+      ) : null}
       {ApproveModal && (
         <ApproveModalComp
           setApproveModal={setApproveModal}
@@ -510,70 +484,14 @@ function Users() {
           setCurrentData={setCurrentData}
         />
       )}
+      <PayModalComp
+        theme={theme}
+        PayModal={PayModal}
+        setPayModal={setPayModal}
+        currentData={currentData}
+      />
     </>
   );
 }
 
 export default Users;
-
-const ApproveModalComp = ({
-  setApproveModal,
-  currentData,
-  ApproveModal,
-  getAllUsers,
-}) => {
-  const { theme } = useAuthStore();
-
-  const { setToastData } = useToastStore();
-  const approve = () => {
-    axios
-      .post(apis.approveProfile, { id: currentData?._id, value: "approved" })
-      .then((e) => {
-        console.log(e);
-        setToastData({ message: e.data?.message });
-        getAllUsers();
-        setApproveModal(false);
-      })
-      .catch((err) => {
-        setToastData({ message: "Failed to update user" });
-        setApproveModal(false);
-      });
-  };
-  const reject = () => {
-    axios
-      .post(apis.approveProfile, { id: currentData?._id, value: "rejected" })
-      .then((e) => {
-        console.log(e);
-        setToastData({ message: e.data?.message });
-        getAllUsers();
-        setApproveModal(false);
-      })
-      .catch((err) => {
-        setToastData({ message: "Failed to update user" });
-        setApproveModal(false);
-      });
-  };
-
-  return (
-    <Modal
-      className={theme ? theme : ""}
-      size="sm"
-      show={ApproveModal}
-      centered
-      onHide={() => setApproveModal(false)}
-    >
-      <Modal.Body className="text-center p-4">
-        <CiSquareCheck className="fs-48 text-success" />
-        <h4 className="mt-2">Approve advisor </h4>
-        <h5 className="mt-2">{currentData?.name}</h5>
-        <p className="mt-3"></p>
-        <button type="button" className="btn btn-primary" onClick={approve}>
-          Approve
-        </button>{" "}
-        <button type="button" className="btn btn-danger" onClick={reject}>
-          Reject
-        </button>
-      </Modal.Body>
-    </Modal>
-  );
-};
