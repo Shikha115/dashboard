@@ -13,17 +13,16 @@ function Lead() {
   const { lead, getAlLeads, category } = useDataStore();
   const [isLoading, setIsLoading] = useState(true);
   const [filter, setFilter] = useState({ bank: "", leadType: "" });
-  const [leads, setleads] = useState(lead);
+  const [leads, setleads] = useState([]);
   const [LeadModal, setLeadModal] = useState(false);
-
-  useEffect(() => {
-    setleads(lead);
-  }, [lead]);
-
   const [dateRange, setDateRange] = React.useState({
     from: 0,
     to: Date.now(),
   });
+
+  useEffect(() => {
+    setleads(lead);
+  }, [lead]);
 
   const columns = [
     {
@@ -46,7 +45,7 @@ function Lead() {
       width: "auto",
       selector: (row) => {
         return row?.created
-          ? moment(row?.created).format("YYYY-MM-DD  HH:mm:ss")
+          ? moment(row?.created)?.format("YYYY-MM-DD  HH:mm:ss")
           : row?.created;
       },
     },
@@ -55,7 +54,7 @@ function Lead() {
       name: "Name	",
       center: true,
       width: "auto",
-      selector: (row) => row.name,
+      selector: (row) => row?.name,
     },
     {
       name: "Mobile	",
@@ -68,7 +67,7 @@ function Lead() {
       name: "Email",
       center: true,
       width: "auto",
-      selector: (row) => row.email,
+      selector: (row) => row?.email,
     },
     {
       name: "Referal ID",
@@ -87,7 +86,7 @@ function Lead() {
       name: "Lead Type",
       center: true,
       width: "auto",
-      selector: (row) => row.category_info?.name,
+      selector: (row) => row?.category_info?.name,
     },
   ];
 
@@ -181,30 +180,28 @@ function Lead() {
     setleads(lead);
   };
 
-  const searchFilter = (val) => {
-    if (!val) {
+  const searchFilter = async (val) => {
+    val.preventDefault();
+
+    if (!val?.target?.value || val?.target?.value === "") {
       setleads(lead);
       return;
     }
-    const value = val?.toLowerCase()?.replace(" ", "");
-    const arr = lead.filter((e) => {
-      return (
-        e?.offer_info?.title
-          ?.toLowerCase()
-          ?.replace(" ", "")
-          ?.includes(value) ||
-        e?.name?.toLowerCase()?.replace(" ", "")?.includes(value) ||
-        e?.category_info?.name
-          ?.toLowerCase()
-          ?.replace(" ", "")
-          ?.includes(value) ||
-        e?.offer_info?.mobile_data?.title
-          .toLowerCase()
-          ?.replace(" ", "")
-          ?.includes(value)
-      );
-    });
+    setIsLoading(true);
+    const value = val?.target?.value?.toLowerCase();
+
+    let arr = [...lead]?.filter(
+      (e) =>
+        e?.offer_info?.mobile_data?.title?.toLowerCase()?.includes(value) ||
+        e?.name?.toLowerCase()?.includes(value) ||
+        e?.email?.toLowerCase()?.includes(value) ||
+        e?.phone?.toLowerCase()?.includes(value) ||
+        e?.category_info?.name?.toLowerCase()?.includes(value) ||
+        e?.offer_info?.mobile_data?.title.toLowerCase()?.includes(value)
+    );
+
     setleads(arr);
+    setIsLoading(false);
   };
 
   const handleFileUpload = (event) => {
@@ -250,42 +247,10 @@ function Lead() {
     reader.readAsArrayBuffer(file);
   };
 
-  const Import = ({ onImport }) => (
-    <div className="d-flex align-items-center justify-content-end w-100 gap-2 ">
-      <input
-        className="form-control w-50"
-        type="search"
-        name="Search by name"
-        placeholder="Search by name"
-        onChange={(e) => {
-          searchFilter(e.target.value);
-        }}
-      />
-      <input
-        type="file"
-        accept=".xlsx, .xls"
-        onChange={handleFileUpload}
-        style={{ display: "none" }}
-      />
-      <button
-        className="btn btn-primary"
-        onClick={() => {
-          // fileInputRef.current.click();
-          setLeadModal(true);
-        }}
-      >
-        Upload Leads
-      </button>{" "}
-      <button
-        className="btn btn-primary"
-        onClick={() => {
-          exportExcel();
-        }}
-      >
-        Export Leads
-      </button>
-    </div>
-  );
+  // const Import = () => {
+  //   return (
+
+  // };
 
   useEffect(() => {
     setIsLoading(true);
@@ -355,7 +320,7 @@ function Lead() {
                     ))}
                   </select>
                 </div>
-                <div className="col-12">
+                <div className="col-12 col-12 col-md-3 mt-3">
                   <div className="d-flex align-items-center gap-2">
                     <button
                       className="btn btn-primary"
@@ -377,17 +342,23 @@ function Lead() {
                     </button>
                   </div>
                 </div>
+                <SearchBarComp
+                  setLeadModal={setLeadModal}
+                  exportExcel={exportExcel}
+                  searchFilter={searchFilter}
+                  handleFileUpload={handleFileUpload}
+                />
               </form>
             </div>
           </div>
-          <Import />
-          <DataTable
-            columns={columns}
-            data={leads}
-            progressPending={isLoading}
-            pagination
-            // actions={actionsMemo}
-          />
+          {leads?.length > 0 ? (
+            <DataTable
+              columns={columns}
+              data={leads}
+              progressPending={isLoading}
+              pagination
+            />
+          ) : null}
           <LeadModalComp LeadModal={LeadModal} setLeadModal={setLeadModal} />
         </div>
       </div>
@@ -545,5 +516,49 @@ function LeadModalComp({ LeadModal, setLeadModal }) {
         </button>
       </Modal.Footer>
     </Modal>
+  );
+}
+function SearchBarComp(props) {
+  return (
+    <div className="col-12 ">
+      <div className="d-flex align-items-center gap-2">
+        <div className="col-12 col-md-3 mb-3">
+          <input
+            type="file"
+            accept=".xlsx, .xls"
+            onChange={props.handleFileUpload}
+            style={{
+              display: "none",
+            }}
+          />
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Search..."
+            onChange={props.searchFilter}
+          />
+        </div>
+        <div className="col-12 col-md-6 mb-3">
+          <button
+            className="btn btn-primary"
+            onClick={(e) => {
+              // fileInputRef.current.click();
+              e.preventDefault();
+              props.setLeadModal(true);
+            }}
+          >
+            Upload Leads
+          </button>{" "}
+          <button
+            className="btn btn-primary"
+            onClick={() => {
+              props.exportExcel();
+            }}
+          >
+            Export Leads
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }

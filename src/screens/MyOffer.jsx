@@ -33,6 +33,7 @@ function MyOffer() {
   const [Data, setData] = useState();
 
   const [currentCategory, setCurrentCategory] = useState();
+  const [Offers, setOffers] = useState();
 
   useEffect(() => {
     (async function fetchData() {
@@ -56,15 +57,19 @@ function MyOffer() {
     if (allOffer?.length < 1) {
       return;
     }
-    allOffer?.map((ele) => {
-      let obj = {};
-      ele?.offer_data?.forEach((e) => {
-        obj[e?.key?.toLowerCase()?.split(" ")?.join("_")] = e?.value;
-      });
-      ele.columns = obj;
-      return ele;
-    });
+    setOffers(allOffer);
   }, [allOffer]);
+
+  const searchFilter = (e) => {
+    let filteredArr = [];
+    let value = e?.target?.value?.toLowerCase();
+    filteredArr = allOffer?.filter(
+      (item) =>
+        item?.mobile_data?.title?.toLowerCase()?.includes(value) ||
+        item?.category_info?.name?.toLowerCase()?.includes(value)
+    );
+    setOffers(filteredArr);
+  };
 
   const updateStatus = async (id, status) => {
     axios
@@ -205,7 +210,7 @@ function MyOffer() {
     },
     {
       name: "Title",
-      selector: (row) => row?.columns?.title,
+      selector: (row) => row?.mobile_data?.title,
       center: true,
       width: "auto",
     },
@@ -325,7 +330,6 @@ function MyOffer() {
     },
   ];
 
-  // console.log(currentData);
   return (
     <>
       <div className="content">
@@ -340,6 +344,7 @@ function MyOffer() {
                         type="search"
                         className="form-control"
                         placeholder="Search..."
+                        onChange={searchFilter}
                       />
                       <span className="search-icon">
                         <CiSearch className="text-muted" />
@@ -363,7 +368,7 @@ function MyOffer() {
             </div>
             <DataTable
               columns={columns}
-              data={allOffer}
+              data={Offers}
               progressPending={isLoading}
               pagination
               paginationRowsPerPageOptions={[30, 60, 90, 120]}
