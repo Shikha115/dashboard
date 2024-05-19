@@ -21,11 +21,10 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Carousel from "react-bootstrap/Carousel";
-import "../assets/css/home2.css";
+import "../assets/css/home2.scss";
 import { images } from "../components/Images";
 import { LogoComp } from "./Landing";
 import Slider from "react-slick";
-import ModalVideo from "react-modal-video";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Accordion from "react-bootstrap/Accordion";
@@ -84,6 +83,29 @@ const Home2 = () => {
     autoplay: true,
     autoplaySpeed: 2500,
     cssEase: "linear",
+    responsive: [
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        },
+      },
+    ],
   };
 
   function SampleNextArrow(props) {
@@ -124,7 +146,7 @@ const Home2 = () => {
         },
       },
       {
-        breakpoint: 575,
+        breakpoint: 765,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
@@ -181,7 +203,7 @@ const Home2 = () => {
           </div>
           <div className="logo">
             <Link to="/">
-              <img src={images.logo} alt="img" />
+              <img src="assets/img/app_logo.png" alt="img" />
             </Link>
           </div>
           <div className="nav-right-part nav-right-part-mobile">
@@ -272,11 +294,11 @@ const Home2 = () => {
                   data-aos-duration="1500"
                   to="#"
                 >
-                    <img
-                      src={images.play_store}
-                      alt=""
-                      className="play-store h-100"
-                    />
+                  <img
+                    src={images.play_store}
+                    alt=""
+                    className="play-store h-100"
+                  />
                 </Link>
               </div>
             </div>
@@ -321,7 +343,7 @@ const Home2 = () => {
           </div>
           <div className="work-process-area-inner-2">
             <div className="row">
-              <div className="col-lg-3 col-md-6">
+              <div className="col-lg-3 col-sm-6">
                 <div className="single-work-process-inner style-2 text-center">
                   <img
                     className="line-img"
@@ -340,7 +362,7 @@ const Home2 = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-lg-3 col-md-6">
+              <div className="col-lg-3 col-sm-6">
                 <div className="single-work-process-inner style-2 text-center">
                   <img
                     className="line-img"
@@ -359,7 +381,7 @@ const Home2 = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-lg-3 col-md-6">
+              <div className="col-lg-3 col-sm-6">
                 <div className="single-work-process-inner style-2 text-center">
                   <img
                     className="line-img"
@@ -380,7 +402,7 @@ const Home2 = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-lg-3 col-md-6">
+              <div className="col-lg-3 col-sm-6">
                 <div className="single-work-process-inner style-2 text-center">
                   <div className="thumb mb-3">
                     <img src="assets/img/icon/39.svg" alt="img" />
@@ -419,7 +441,7 @@ const Home2 = () => {
               {/* <div className="about-thumb-inner">
                 <img
                   className="animate-img-3 z-index-2 top_image_bounce"
-                  src={images.logo}
+                  src="assets/img/app_logo.png"
                   alt="img"
                 />
                 <img className="main-img" src={images.app_4} alt="img" />
@@ -546,7 +568,7 @@ const Home2 = () => {
                   </p>
                 </div>
               </div>
-              <div className="single-service-inner-3 single-service-inner-3-left mb-0">
+              <div className="single-service-inner-3 single-service-inner-3-left mb-lg-0">
                 <div className="thumb">
                   <div className="thumb-inner">
                     <img src="assets/img/service-icon/9.svg" alt="img" />
@@ -961,23 +983,9 @@ const Home2 = () => {
       <div className="faq-area pd-bottom-120">
         <div className="container">
           <div className="row">
-            <div className="col-xl-7 col-lg-6 col-md-8 order-lg-last">
+            <div className="col-xl-7 col-lg-6 order-lg-last">
               <div className="about-thumb-inner video-thumb">
                 <img className="main-img" src={images.app_5} alt="img" />
-                <span
-                  onClick={() => setOpen(true)}
-                  className="video-play-btn-hover"
-                >
-                  <img src="assets/img/video.svg" alt="img" />{" "}
-                  <h6 className="d-inline-block">how we work</h6>
-                </span>
-                <ModalVideo
-                  channel="youtube"
-                  autoplay
-                  isOpen={isOpen}
-                  videoId="XM6kTQPzzpQ"
-                  onClose={() => setOpen(false)}
-                />
               </div>
             </div>
             <div className="col-xl-5 col-lg-6 align-self-center">
@@ -1037,7 +1045,7 @@ const Home2 = () => {
           <div className="row justify-content-center">
             <div className="col-xl-6 col-lg-8">
               <div className="section-title text-center">
-                <h2 className="title"> We are in the News </h2>
+                <h2 className="title"> We are in the News</h2>
               </div>
             </div>
           </div>
@@ -1093,7 +1101,7 @@ const Home2 = () => {
           <div className="row">
             <div className="col-lg-9 col-md-6">
               <div className="widget widget-recent-post">
-                <img src={images.logo} alt="" className="logo" />
+                <img src="assets/img/app_logo.png" alt="" className="logo" />
                 <p className="text-white">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum
                   iusto consequatur reprehenderit, saepe odit aut ex quaerat
