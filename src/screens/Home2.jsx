@@ -266,13 +266,17 @@ const Home2 = () => {
                   Download App <FaPlus />
                 </Link>
                 <Link
-                  className="btn btn-base-color ms-2"
+                  className="ms-2"
                   data-aos="fade-right"
                   data-aos-delay="450"
                   data-aos-duration="1500"
-                  to="/about"
+                  to="#"
                 >
-                  Continue on Web
+                    <img
+                      src={images.play_store}
+                      alt=""
+                      className="play-store h-100"
+                    />
                 </Link>
               </div>
             </div>
