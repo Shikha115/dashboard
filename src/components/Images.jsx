@@ -40,13 +40,19 @@ import app_4 from "../assets/images/app/4.jpg";
 import app_5 from "../assets/images/app/5.jpg";
 import app_6 from "../assets/images/app/6.jpg";
 import app_7 from "../assets/images/app/7.jpg";
+import app_8 from "../assets/images/app/8.png";
+import app_9 from "../assets/images/app/9.png";
+import app_10 from "../assets/images/app/10.png";
 
 export const images = {
   logo_dark,
   app_2,
   bg_profile,
+  app_8,
   app_1,
+  app_9,
   logo_sm,
+  app_10,
   app_4,
   loader,
   app_3,

@@ -204,6 +204,7 @@
     max-width: 100%;
     &.play-store {
       border-radius: 5px;
+      object-fit: contain;
       width: 10pc;
       border: 1px solid #ffffff85;
       transition: all 0.5s;
@@ -2245,18 +2246,31 @@
         }
       }
     }
-    img {
-      &.main-img {
-        height: 500px;
-        object-fit: cover;
-        width: 33.33%;
-      }
-    }
+
     .three-name {
       display: flex;
-      align-items: flex-end;
-      width: max-content;
+      align-items: center;
       justify-content: center;
+      img {
+        position: relative;
+        &.main-img {
+          // height: 500px;
+          object-fit: contain;
+          width: 33.33%;
+          z-index: 2;
+        }
+        &:nth-child(1) {
+          margin-right: -2pc;
+        }
+        &:nth-child(3) {
+          margin-left: -2pc;
+        }
+        &:nth-child(1),
+        &:nth-child(3) {
+          scale: 0.9;
+          z-index: 1;
+        }
+      }
     }
     .main-img-wrap {
       margin: 0 !important;
@@ -2336,8 +2350,16 @@
       margin-bottom: 15px;
       letter-spacing: 1px;
     }
+    .btns {
+      display: flex;
+      .btn {
+        height: auto;
+        line-height: normal;
+        padding: 1pc 20px;
+      }
+    }
     .title {
-      font-size: 60px;
+      font-size: 47px;
       margin-bottom: 20px;
       font-weight: 700;
       span {
@@ -4560,10 +4582,7 @@
     li.menu-item-has-children:after {
     background: #fff;
   }
-  .banner-area-1 .three-name img:nth-child(1),
-  .banner-area-1 .three-name img:nth-child(3) {
-    height: 450px;
-  }
+
   .td-search-popup .search-form .form-group .form-control:hover,
   .td-search-popup .search-form .form-group .form-control:focus,
   .td-search-popup .search-form .form-group .form-control:active {
@@ -4965,6 +4984,28 @@
 // ========================================
 @media only screen and (max-width: 575px) {
   #home2 {
+    .banner-area-1 {
+      .logo {
+        span {
+          font-size: 2pc;
+        }
+        .sc-guDLey.kKkTQo {
+          line-height: normal;
+        }
+      }
+      .btns {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        .btn {
+          font-size: 12px;
+          padding: 10px;
+        }
+        a {
+          margin: 0 !important;
+        }
+      }
+    }
     .navbar-area {
       .nav-container {
         margin: 0px 0px;
@@ -5359,21 +5400,9 @@
 // ========================================
 @media all and (max-width: 575px) {
   #home2 {
-    .banner-area-1 {
-      .three-name {
-        justify-content: flex-start;
-        width: auto;
-        padding: 0 1pc;
-        img {
-          &.main-img {
-            height: 250px !important;
-            width: 33.33% !important;
-            &:nth-child(1),
-            &:nth-child(3) {
-              height: 200px !important;
-            }
-          }
-        }
+    .about-area{
+      .d-flex{
+        justify-content: center;
       }
     }
     .banner-thumb-2 {
@@ -5406,7 +5435,7 @@
       width: 12pc;
     }
     img.play-store {
-      width: 5pc;
+      width: 6pc;
     }
     .back-to-top {
       right: 15px;
