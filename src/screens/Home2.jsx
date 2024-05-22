@@ -1,21 +1,17 @@
 import { useEffect, useState } from "react";
 import React from "react";
 import {
-  FaChevronRight,
   FaFacebookF,
   FaInstagram,
   FaTwitter,
   FaSearch,
-  FaDownload,
   FaYoutube,
   FaStar,
-  FaArrowRight,
   FaPlus,
   FaCheckCircle,
   FaMapMarkerAlt,
   FaPhoneAlt,
   FaEnvelope,
-  FaRegCalendarAlt,
   FaAngleRight,
   FaAngleLeft,
 } from "react-icons/fa";
@@ -203,7 +199,7 @@ const Home2 = () => {
           </div>
           <div className="logo">
             <Link to="/">
-              <img src="assets/img/app_logo.png" alt="img" />
+              <LogoComp color={"white"} />
             </Link>
           </div>
           <div className="nav-right-part nav-right-part-mobile">
@@ -283,7 +279,13 @@ const Home2 = () => {
                   data-aos="fade-right"
                   data-aos-delay="450"
                   data-aos-duration="1500"
-                  to="/about"
+                  onClick={() =>
+                    window.open(
+                      "https://rojgarapp.in/rojgarApp.apk",
+                      "_blank",
+                      "noopener,noreferrer"
+                    )
+                  }
                 >
                   Download App <FaPlus />
                 </Link>
@@ -1101,7 +1103,7 @@ const Home2 = () => {
           <div className="row">
             <div className="col-lg-9 col-md-6">
               <div className="widget widget-recent-post">
-                <img src="assets/img/app_logo.png" alt="" className="logo" />
+                <LogoComp color={"white"} />
                 <p className="text-white">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum
                   iusto consequatur reprehenderit, saepe odit aut ex quaerat
