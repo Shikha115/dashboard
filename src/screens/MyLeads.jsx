@@ -50,6 +50,7 @@ function MyLeads() {
     let timer = setTimeout(() => {
       setLoading(false);
     }, 200);
+    console.log(allFeaturedOffers, "allFeaturedOffers");
     return () => {
       clearTimeout(timer);
     };
@@ -137,91 +138,91 @@ function MyLeads() {
     <section className="authentication-bg position-relative">
       <div className="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5 position-relative">
         <div className="container">
-          <div className="row justify-content-center align-items-start gx-lg-5 mb-4">
-            <div className="lead-card col-12 col-lg-6">
-              <div className="row align-items-center">
-                <div className="col-12">
-                  <div className="left-outer">
-                    <img src={offer?.mobile_data?.product_image_web} alt="" />
-                    <h2 className="text-primary mt-3 mb-1">
-                      {offer?.mobile_data?.title}
-                    </h2>
+          <div className="row justify-content-center">
+            <div className="col-12 col-lg-6 p-lg-0">
+              <div className="lead-card mb-4">
+                <div className="row align-items-center">
+                  <div className="col-12">
+                    <div className="left-outer">
+                      <img src={offer?.mobile_data?.product_image_web} alt="" />
+                      <h2 className="text-primary mt-3 mb-1">
+                        {offer?.mobile_data?.title}
+                      </h2>
+                    </div>
                   </div>
-                </div>
-                <div className="col-12">
-                  <div className="lead-card-data">
-                    <form action="#" className="row">
-                      <div className="col-12 mb-3">
-                        <label className="form-label">Full Name</label>
-                        <input
-                          value={userDetails?.name}
-                          type="text"
-                          className="form-control"
-                          onChange={(e) => {
-                            setUserDetails({
-                              ...userDetails,
-                              name: e.target.value,
-                            });
-                          }}
-                        />
-                      </div>
-                      <div className="col-12 mb-3">
-                        <label className="form-label">Phone no.</label>
-                        <input
-                          value={userDetails?.phone}
-                          minLength={10}
-                          maxLength={10}
-                          type="num-pad"
-                          className="form-control"
-                          onChange={(e) => {
-                            setUserDetails({
-                              ...userDetails,
-                              phone: e.target.value,
-                            });
-                          }}
-                        />
-                      </div>
-                      <div className="col-12 mb-3">
-                        <label className="form-label">Email</label>
-                        <input
-                          type="email"
-                          className="form-control"
-                          value={userDetails?.email}
-                          onChange={(e) => {
-                            setUserDetails({
-                              ...userDetails,
-                              email: e.target.value,
-                            });
-                          }}
-                        />
-                      </div>
-                      <div className="col-12">
-                        <button
-                          onClick={SubmitLeads}
-                          className="btn btn-purple ms-0"
-                        >
-                          Submit
-                        </button>
-                      </div>
-                    </form>
+                  <div className="col-12">
+                    <div className="lead-card-data">
+                      <form action="#" className="row">
+                        <div className="col-12 mb-3">
+                          <label className="form-label">Full Name</label>
+                          <input
+                            value={userDetails?.name}
+                            type="text"
+                            className="form-control"
+                            onChange={(e) => {
+                              setUserDetails({
+                                ...userDetails,
+                                name: e.target.value,
+                              });
+                            }}
+                          />
+                        </div>
+                        <div className="col-12 mb-3">
+                          <label className="form-label">Phone no.</label>
+                          <input
+                            value={userDetails?.phone}
+                            minLength={10}
+                            maxLength={10}
+                            type="num-pad"
+                            className="form-control"
+                            onChange={(e) => {
+                              setUserDetails({
+                                ...userDetails,
+                                phone: e.target.value,
+                              });
+                            }}
+                          />
+                        </div>
+                        <div className="col-12 mb-3">
+                          <label className="form-label">Email</label>
+                          <input
+                            type="email"
+                            className="form-control"
+                            value={userDetails?.email}
+                            onChange={(e) => {
+                              setUserDetails({
+                                ...userDetails,
+                                email: e.target.value,
+                              });
+                            }}
+                          />
+                        </div>
+                        <div className="col-12">
+                          <button
+                            onClick={SubmitLeads}
+                            className="btn btn-purple ms-0"
+                          >
+                            Submit
+                          </button>
+                        </div>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
+              <div className="lead-offers">
+                <h2 className="text-dark">Featured Offers</h2>
+                {allFeaturedOffers?.length > 0 &&
+                  allFeaturedOffers?.map((item, i) => (
+                    <CardItem
+                      key={i}
+                      applyLead={applyLead}
+                      copyLead={copyLead}
+                      offer={item}
+                    />
+                  ))}
+              </div>
             </div>
-          </div>
-          <div className="row gy-4">
-            {allFeaturedOffers?.length > 0 ? (
-              <h2 className="">Featured Offers</h2>
-            ) : null}
-            {allFeaturedOffers?.length > 0 &&
-              allFeaturedOffers?.map((item, i) => (
-                <CardItem
-                  key={i}
-                  applyLead={applyLead}
-                  copyLead={copyLead}
-                  offer={item}
-                />
-              ))}
           </div>
         </div>
       </div>
@@ -233,28 +234,26 @@ export default MyLeads;
 
 const CardItem = ({ offer, applyLead, copyLead }) => {
   return (
-    <div className="col-12 col-md-6 col-lg-4">
-      <div className="leads-box position-relative">
-        <img
-          src={offer?.mobile_data?.product_image_web}
-          alt=""
-          className="w-100"
-        />
-        <p className="mb-0 bg-pink">{offer?.mobile_data?.title}</p>
-        <div className="d-flex">
-          <button
-            className="btn btn-purple rounded-0 flex-fill"
-            onClick={() => applyLead(offer?._id)}
-          >
-            Apply
-          </button>
-          <button
-            className="btn btn-info rounded-0 flex-fill"
-            onClick={() => copyLead(offer?._id)}
-          >
-            Share
-          </button>
-        </div>
+    <div className="leads-box position-relative mb-4">
+      <img
+        src={offer?.mobile_data?.product_image_web}
+        alt=""
+        className="w-100"
+      />
+      <p className="mb-0 bg-pink">{offer?.mobile_data?.title}</p>
+      <div className="d-flex">
+        <button
+          className="btn btn-purple rounded-0 flex-fill"
+          onClick={() => applyLead(offer?._id)}
+        >
+          Apply
+        </button>
+        <button
+          className="btn btn-info rounded-0 flex-fill"
+          onClick={() => copyLead(offer?._id)}
+        >
+          Share
+        </button>
       </div>
     </div>
   );

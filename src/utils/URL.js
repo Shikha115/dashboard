@@ -38,12 +38,12 @@ export const apis = {
   getAllBanners: `${baseURL}/banner/get-all-banners`,
   addBanner: `${baseURL}/banner/add-banner`,
   editBanner: `${baseURL}/banner/edit-banner`,
-  deletBanner: `${baseURL}/banner/delete-banner`,
+  deleteBanner: `${baseURL}/banner/delete-banner`,
 
   getAllSponsor: `${baseURL}/sponsor/get-all-sponsors`,
   addSponsor: `${baseURL}/sponsor/add-sponsor`,
   editSponsor: `${baseURL}/sponsor/edit-sponsor`,
-  deletSponsor: `${baseURL}/sponsor/delete-sponsor`,
+  deleteSponsor: `${baseURL}/sponsor/delete-sponsor`,
   getProfileWeb: `${baseURL}/profile/get-profile-web`,
 
   updateProfile: `${baseURL}/profile/update-profile`,
