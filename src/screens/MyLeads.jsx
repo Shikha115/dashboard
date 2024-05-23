@@ -211,7 +211,9 @@ function MyLeads() {
                 </div>
               </div>
               <div className="lead-offers">
-                <h2 className="text-dark">Featured Offers</h2>
+                {allFeaturedOffers?.length > 0 ? (
+                  <h2 className="text-dark">Featured Offers</h2>
+                ) : null}
                 {allFeaturedOffers?.length > 0 &&
                   allFeaturedOffers?.map((item, i) => (
                     <CardItem
