@@ -59,7 +59,7 @@ function useSponsorManagement() {
 
   const DeleteBank = async () => {
     axios
-      .post(apis.deletSponsor, { id: currentData?._id })
+      .post(apis.deleteSponsor, { id: currentData?._id })
       .then(async (e) => {
         await getAllSponsors();
         setCurrentData({});

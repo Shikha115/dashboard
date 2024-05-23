@@ -96,26 +96,8 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/logout" element={<Logout />} />
-              <Route
-                path="/privacy-policy"
-                element={
-                  <ProtectedRoute
-                    path="/privacy-policy"
-                    Component={PrivacyPolicy}
-                    header={false}
-                  />
-                }
-              />
-              <Route
-                path="/term-condition"
-                element={
-                  <ProtectedRoute
-                    path="/term-condition"
-                    Component={TermCondition}
-                    header={false}
-                  />
-                }
-              />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/term-condition" element={<TermCondition />} />
               <Route
                 path="/manage-bank"
                 element={

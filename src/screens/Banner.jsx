@@ -76,7 +76,7 @@ function ManageBanner() {
 
   const DeleteBank = async () => {
     axios
-      .post(apis.deletBanner, { id: currentData?._id })
+      .post(apis.deleteBanner, { id: currentData?._id })
       .then(async (e) => {
         await getAllBanners();
         setCurrentData({});
