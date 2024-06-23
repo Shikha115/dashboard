@@ -3,13 +3,14 @@ import { Link } from "react-router-dom";
 import { images } from "../../components/Images";
 import useDataStore from "../../store/dataStore";
 import moment from "moment";
+import ImageModal from "../../components/ImageModal";
+import ButtonModal from "../../components/ButtonModal";
 
 function ViewUser() {
   const { selectedUser } = useDataStore();
-  console.log(selectedUser);
+  // console.log(selectedUser);
   return (
     <div className="view-user">
-      {/* ================================================================================== */}
       <div className="row">
         <div className="col-sm-12">
           <div className="card p-0">
@@ -17,7 +18,7 @@ function ViewUser() {
               <div className="row view-user-basic-detail">
                 <div className="col-12 col-md-3 h-100">
                   <div className="profile-user-img h-100">
-                    <img
+                    <ImageModal
                       src={selectedUser?.profile_image}
                       alt=""
                       className="img-thumbnail w-100 h-100"
@@ -27,6 +28,10 @@ function ViewUser() {
                 <div className="col-12 col-md-9 h-100">
                   <ul className="view-user-list h-100">
                     <li>
+                      <b>Name: </b>
+                      <span>{selectedUser?.name}</span>
+                    </li>{" "}
+                    <li>
                       <b>Email: </b>
                       <span>{selectedUser?.email}</span>
                     </li>
@@ -35,23 +40,25 @@ function ViewUser() {
                       <span>{selectedUser?.phone}</span>
                     </li>
                     <li>
-                      <b>Address: </b>
-                      <span>{selectedUser?.address}</span>
-                    </li>
-                    <li>
-                      <b>Gender: </b>
-                      <span>{selectedUser?.gender}</span>
+                      <b>DOB: </b>
+                      <span>
+                        {moment(Number(selectedUser?.dob)).format("DD MMM YY")}
+                      </span>
                     </li>
                     <li>
                       <b>Pan no: </b>
                       <span>{selectedUser?.pan_no}</span>
                     </li>
                     <li>
-                      <b>DOB: </b>
-                      <span>
-                        {" "}
-                        {moment(Number(selectedUser?.dob)).format("DD MMM YY")}
-                      </span>
+                      <b>Pan Image: </b>
+                      {/* <span> */}
+                      <ButtonModal
+                        src={selectedUser?.pan_image}
+                        alt=""
+                        className="img-thumbnail w-10"
+                        title=" PAN Image "
+                      />
+                      {/* </span> */}
                     </li>
                   </ul>
                 </div>
@@ -65,8 +72,18 @@ function ViewUser() {
               {selectedUser?.bank_details?.map((item, index) => (
                 <div key={index} className="col-12 col-md-6">
                   <div className="card-body">
-                    <h5 className="fs-17 text-dark">
+                    <h5 className="fs-17 text-dark flex-col">
                       Bank Information {index + 1}
+                      <span
+                        className="text-red-500"
+                        style={{
+                          flexDirection: "column",
+                          color: "red",
+                          marginLeft: 10,
+                        }}
+                      >
+                        {item?.default ? "( Active )" : null}
+                      </span>
                     </h5>
                     <ul className="view-user-list">
                       <li>
@@ -82,27 +99,24 @@ function ViewUser() {
                         <span>{item?.account_no}</span>
                       </li>
                     </ul>
-                    {item?.cancelled_check && (
+
+                    {item?.pan_image_new && (
                       <div className="user-bank-img mb-1">
-                        <button className="btn btn-primary w-100">
-                          Cancelled Check
-                        </button>
-                        <img
-                          src={item?.cancelled_check}
+                        <ButtonModal
+                          src={item?.pan_image_new}
                           alt=""
-                          className="img-thumbnail w-10"
+                          className="btn btn-primary w-100"
+                          title="Beneficiary PAN Card"
                         />
                       </div>
                     )}
-                    {item?.bank_passbook && (
+                    {item?.cancelled_check && (
                       <div className="user-bank-img mb-1">
-                        <button className="btn btn-primary w-100">
-                          Passbook
-                        </button>
-                        <img
-                          src={item?.bank_passbook}
+                        <ButtonModal
+                          src={item?.cancelled_check}
                           alt=""
-                          className="img-thumbnail w-10"
+                          className="btn btn-primary w-100"
+                          title="Bank Passbook / Cancelled Cheque"
                         />
                       </div>
                     )}

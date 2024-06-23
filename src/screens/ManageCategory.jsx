@@ -13,6 +13,7 @@ import useToastStore from "../store/toastStore";
 import useAuthStore from "../store/authStore";
 import { isEmptyObject } from "../utils/helperfunctions";
 import _ from "lodash";
+import ImageModal from "../components/ImageModal";
 
 const RequiredData = [
   { key: "Title", required: true, can_delete: false },
@@ -107,11 +108,11 @@ function ManageCategory() {
       center: true,
       width: "auto",
       cell: (row) => (
-        <img
+        <ImageModal
           alt=""
           src={row.image}
           className="img-fluid"
-          style={{ height: "50px", objectFit: "contain", width: "auto" }}
+          imgStyle={{ height: "50px", objectFit: "contain", width: "auto" }}
         />
       ),
     },

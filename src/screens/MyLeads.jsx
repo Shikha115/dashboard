@@ -23,7 +23,20 @@ function MyLeads() {
     await axios
       .post(apis.getOfferWeb, { id: offerId })
       .then((res) => {
-        setOffer(res?.data?.data);
+        let data = res?.data?.data;
+        setOffer(data);
+        document.title = data?.mobile_data?.title;
+        const link = document.querySelector("link[rel~='icon']");
+        if (link) {
+          link.href = data?.mobile_data?.product_image_web;
+          console.log(data?.mobile_data?.product_image_web);
+        } else {
+          const newLink = document.createElement("link");
+          newLink.rel = "icon";
+          newLink.href = data?.mobile_data?.product_image_web;
+          document.head.appendChild(newLink);
+          console.log(data?.mobile_data?.product_image_web);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -50,7 +63,7 @@ function MyLeads() {
     let timer = setTimeout(() => {
       setLoading(false);
     }, 200);
-    console.log(allFeaturedOffers,'allFeaturedOffers')
+    // console.log(allFeaturedOffers, "allFeaturedOffers");
     return () => {
       clearTimeout(timer);
     };

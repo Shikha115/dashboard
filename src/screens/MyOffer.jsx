@@ -13,6 +13,7 @@ import { getBankById } from "../utils/helperfunctions";
 import useAuthStore from "../store/authStore";
 import _ from "lodash";
 import AddModalComp from "./offers/AddModalComp";
+import ImageModal from "../components/ImageModal";
 
 function MyOffer() {
   const location = useLocation();
@@ -219,11 +220,11 @@ function MyOffer() {
       center: true,
       width: "auto",
       cell: (row) => (
-        <img
+        <ImageModal
           alt=""
           src={row?.mobile_data?.product_image}
           className="img-fluid"
-          style={{ height: "50px", objectFit: "contain", width: "auto" }}
+          imgStyle={{ height: "50px", objectFit: "contain", width: "auto" }}
         />
       ),
     },
@@ -235,7 +236,7 @@ function MyOffer() {
     },
     {
       name: "Earning",
-      selector: (row) => row?.columns?.earning,
+      selector: (row) => row?.mobile_data?.earning,
       center: true,
       width: "auto",
     },

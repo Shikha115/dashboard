@@ -422,16 +422,18 @@ function LeadModalComp({ LeadModal, setLeadModal }) {
       // console.log(arrayData);
       fileInputRef.current.value = "";
       // return;
-      let res = await axios.post(apis.settleLeads, { data: arrayData });
+
+      let apiArr = arrayData.filter((val) => val?.status);
+      // console.log(apiArr);
+      let res = await axios.post(apis.settleLeads, { data: apiArr });
       // console.log(res);
       if (res.data.message === "Invalid offer selected") {
         setToastData({ message: res.data.message, color: "red" });
-      } else if (res.data.message.trim() === "No documents updated") {
-        setToastData({ message: res.data.message, color: "orange" });
-      } else if (res.data.message.includes("Documents updated successfully")) {
-        setToastData({ message: res.data.message, color: "green" });
-      } else if (res.data.message.includes("Failed to update")) {
-        setToastData({ message: res.data.message, color: "red" });
+      } else {
+        setToastData({
+          message: res.data.message,
+          color: res.data.color ?? "red",
+        });
       }
     };
 

@@ -15,7 +15,7 @@ import {
   FaAngleRight,
   FaAngleLeft,
 } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Carousel from "react-bootstrap/Carousel";
 import "../assets/css/home2.scss";
 import { images } from "../components/Images";
@@ -40,6 +40,7 @@ const Home2 = () => {
   const [active, setActive] = useState(false);
   const [searchShow, setSearchShow] = useState(false);
   const [isOpen, setOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     AOS.init({
@@ -69,6 +70,15 @@ const Home2 = () => {
       };
     }
   }
+
+  useEffect(() => {
+    if (location.hash) {
+      const element = document.getElementById(location.hash.substring(1));
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [location]);
 
   const brandSettings = {
     dots: true,
@@ -296,6 +306,13 @@ const Home2 = () => {
                     data-aos-delay="450"
                     data-aos-duration="1500"
                     to="#"
+                    onClick={() =>
+                      window.open(
+                        "https://play.google.com/store/apps/details?id=com.rojgarapp.rojgar",
+                        "_blank",
+                        "noopener,noreferrer"
+                      )
+                    }
                   >
                     <img
                       src={images.play_store}
@@ -1117,7 +1134,16 @@ const Home2 = () => {
                   earum sapiente eos sit quidem vel facere? Tempore quisquam
                   minima esse maiores obcaecati.
                 </p>
-                <Link to="#">
+                <Link
+                  to="#"
+                  onClick={() =>
+                    window.open(
+                      "https://play.google.com/store/apps/details?id=com.rojgarapp.rojgar",
+                      "_blank",
+                      "noopener,noreferrer"
+                    )
+                  }
+                >
                   <img src={images.play_store} alt="" className="play-store" />
                 </Link>
               </div>
@@ -1201,7 +1227,7 @@ const Home2 = () => {
                 </ul>
               </div>
             </div> */}
-            <div className="col-lg-3 col-md-6">
+            <div id="contact" className="col-lg-3 col-md-6">
               <div className="widget widget-recent-post">
                 <h4 className="widget-title">Contact us</h4>
                 <div className="widget widget_contact">

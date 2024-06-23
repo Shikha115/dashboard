@@ -14,6 +14,7 @@ import useToastStore from "../store/toastStore";
 import useAuthStore from "../store/authStore";
 
 import { static_pages } from "../utils/extraData";
+import ImageModal from "../components/ImageModal";
 
 function ManageBanner() {
   const { setToastData } = useToastStore();
@@ -190,10 +191,10 @@ function ManageBanner() {
       center: true,
       width: "auto",
       selector: (row) => (
-        <img
+        <ImageModal
           alt=""
           src={row?.image}
-          style={{
+          imgStyle={{
             width: "100px",
             aspectRatio: 1,
             borderRadius: 10,

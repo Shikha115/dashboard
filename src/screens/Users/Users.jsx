@@ -14,9 +14,10 @@ import SettleModalComp from "./SettleModalComp";
 import ApproveModalComp from "./ApproveModalComp";
 import DeleteModalComp from "./DeleteModalComp";
 import PayModalComp from "./PayModalComp";
+import OrderModalComp from "./OrderModalComp";
 
 function Users() {
-  const { users, getAllUsers, setSelectedUser } = useDataStore();
+  const { users, getAllUsers, setSelectedUser, selectedUser } = useDataStore();
   const { theme } = useAuthStore();
   const [isLoading, setIsLoading] = useState(true);
   const [Page, setPage] = useState(0);
@@ -24,6 +25,7 @@ function Users() {
   const [settleModal, setSettleModal] = useState(false);
   const [viewModal, setViewModal] = useState(false);
   const [ApproveModal, setApproveModal] = useState(false);
+  const [OrderModal, setOrderModal] = useState(false);
   const [notificationModal, setNotificationModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [PayModal, setPayModal] = useState(false);
@@ -64,6 +66,23 @@ function Users() {
       selector: (row) => row.wallet,
       center: true,
       width: "80px",
+    },
+    {
+      name: "Orders",
+      center: true,
+      width: "80px",
+      cell: (row) => (
+        <Link
+          className="btn btn-soft-danger btn-sm"
+          style={{ textWrap: "nowrap" }}
+          onClick={() => {
+            setCurrentData(row);
+            setOrderModal(true);
+          }}
+        >
+          Orders
+        </Link>
+      ),
     },
     {
       name: "Notification",
@@ -130,22 +149,22 @@ function Users() {
               setApproveModal(true);
             }}
           >
-            Verified
+            Profile Verified
           </button>
         ) : row?.isProfileComplete ? (
           <Link
-            className="btn btn-soft-warning btn-sm"
+            className="btn btn-soft-danger btn-sm"
             style={{ lineHeight: "17px" }}
             onClick={() => {
               setCurrentData(row);
               setApproveModal(true);
             }}
           >
-            Approve Advisor
+            Approve Profile
           </Link>
         ) : (
           <button
-            className="btn btn-soft-primary btn-sm"
+            className="btn btn-soft-warning btn-sm"
             style={{ textWrap: "nowrap" }}
           >
             Profile Incomplete
@@ -275,7 +294,39 @@ function Users() {
         onHide={() => setViewModal(false)}
       >
         <Modal.Header closeButton>
-          <Modal.Title>View Profile</Modal.Title>
+          <Modal.Title className="justify-between">
+            Profile{" "}
+            {selectedUser?.isProfileVerified ? (
+              <button
+                className="btn btn-soft-primary btn-sm"
+                style={{ textWrap: "nowrap" }}
+                onClick={() => {
+                  setCurrentData(selectedUser);
+                  setApproveModal(true);
+                }}
+              >
+                Profile Verified
+              </button>
+            ) : selectedUser?.isProfileComplete ? (
+              <Link
+                className="btn btn-soft-danger btn-sm"
+                style={{ lineHeight: "17px" }}
+                onClick={() => {
+                  setCurrentData(selectedUser);
+                  setApproveModal(true);
+                }}
+              >
+                Approve Profile
+              </Link>
+            ) : (
+              <button
+                className="btn btn-soft-warning btn-sm"
+                style={{ textWrap: "nowrap" }}
+              >
+                Profile Incomplete
+              </button>
+            )}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <ViewUser />
@@ -467,6 +518,14 @@ function Users() {
           currentData={currentData}
           ApproveModal={ApproveModal}
           getAllUsers={getAllUsers}
+        />
+      )}
+      {OrderModal && (
+        <OrderModalComp
+          currentData={currentData}
+          setOrderModal={setOrderModal}
+          OrderModal={OrderModal}
+          setCurrentData={setCurrentData}
         />
       )}
       {notificationModal && (

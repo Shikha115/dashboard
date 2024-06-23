@@ -11,6 +11,7 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import { Link } from "react-router-dom";
 import useAuthStore from "../store/authStore";
 import { static_pages } from "../utils/extraData";
+import ImageModal from "../components/ImageModal";
 
 function Notification() {
   const { getTemplates, templates, allOffer, getAllOffer } = useDataStore();
@@ -48,11 +49,11 @@ function Notification() {
       center: true,
       width: "auto",
       cell: (row) => (
-        <img
+        <ImageModal
           alt=""
           src={row.image}
           className="img-fluid"
-          style={{ height: "50px", objectFit: "contain", width: "auto" }}
+          imgStyle={{ height: "50px", objectFit: "contain", width: "auto" }}
         />
       ),
     },
