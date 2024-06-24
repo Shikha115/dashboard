@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import ImageUpload from "../../components/ImageUpload";
 import _ from "lodash";
+import TextEditor from "../../components/TextEditor";
 
 function AddModalComp(props) {
   const [changed, setChanged] = useState(false);
@@ -31,61 +32,33 @@ function AddModalComp(props) {
         <form className="row">
           {props.currentData?.length > 0 &&
             props.currentData?.map((item, index) => {
-              //   if (item?.key === "Rank") {
-              //     <div key={index} className="col-12 col-md-6 mb-2">
-              //       <label className="form-label">Rank</label>
-              //       <span className="fs-17 text-danger">*</span>
-              //       <input
-              //         className="form-control"
-              //         type="number"
-              //         defaultValue={item?.rank}
-              //         onChange={(e) => {
-              //           let val = e.target.value;
-              //           item.status = val;
-              //           setChanged(true);
-
-              //           props.setAddonData({
-              //             ...props.addonData,
-              //             bank_id: e.target.value.split(",")[1],
-              //             type_id: props.category_id,
-              //             rank: val,
-              //           });
-              //         }}
-              //         placeholder="Enter rank"
-              //       />
-              //     </div>;
-              //   }
-
-              //   if (item?.key === "Status") {
-              //     return (
-              //       <div key={index} className="col-12 col-md-6 mb-2">
-              //         <label className="form-label">Status</label>
-              //         <span className="fs-17 text-danger">*</span>
-              //         <div className="form-check form-switch">
-              //           <input
-              //             type="checkbox"
-              //             className="form-check-input"
-              //             defaultChecked={props.addonData?.status}
-              //             onChange={(e) => {
-              //               let val = e.target.checked;
-              //               item.status = val;
-              //               setChanged(true);
-
-              //               props.setAddonData({
-              //                 ...props.addonData,
-              //                 bank_id: e.target.value.split(",")[1],
-              //                 type_id: props.category_id,
-              //                 status: val,
-              //               });
-              //             }}
-              //           />
-              //         </div>
-              //       </div>
-              //     );
-              //   }
-
-              if (item?.key === "Card Type") {
+              if (item?.key === "Card Type" || item?.key === "Status") {
                 return null;
+              }
+              if (
+                item?.key === "Benefit" ||
+                item?.key === "Who can apply" ||
+                item?.key === "How to process" ||
+                item?.key === "Marketing" ||
+                item?.key === "T&C"
+              ) {
+                return (
+                  <div key={index} className="col-12 col-md-12 mb-2">
+                    <div className="col-12 col-md-12">
+                      <label className="form-label">
+                        {item?.key}
+                        <span className="fs-17 text-danger">*</span>
+                      </label>{" "}
+                      <TextEditor
+                        item={item?.value}
+                        onChange={(e) => {
+                          console.log(e);
+                          item.value = e;
+                        }}
+                      />
+                    </div>
+                  </div>
+                );
               }
 
               if (item?.key === "Product Image") {
@@ -178,6 +151,7 @@ function AddModalComp(props) {
                 <div key={index} className="col-12 col-md-6 mb-2">
                   <label className="form-label">{item?.key}</label>
                   <span className="fs-17 text-danger">*</span>
+
                   <textarea
                     className="form-control"
                     type="text"
