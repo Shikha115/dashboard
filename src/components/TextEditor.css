@@ -1,0 +1,23 @@
+.ql-editor p,
+.ql-editor h1,
+.ql-editor h2,
+.ql-editor h3,
+.ql-editor h4,
+.ql-editor h5,
+.ql-editor h6,
+.ql-editor ul,
+.ql-editor ol,
+.ql-editor blockquote,
+.ql-editor pre {
+    margin: 0;
+    padding: 0;
+}
+
+.output-container {
+    margin: 0;
+    padding: 0;
+}
+
+.post-content p>br:only-child {
+    display: none;
+}
