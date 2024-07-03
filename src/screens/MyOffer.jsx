@@ -136,7 +136,7 @@ function MyOffer() {
       type_id: currentCategory?._id,
       mobile_data: { ...obj, card_type: currentCategory?._id },
     };
-    console.log(data);
+
     if (isOk) {
       setToastData({
         message: "Values marked by * are important",
@@ -144,7 +144,7 @@ function MyOffer() {
       });
       return;
     }
-    return;
+
     axios
       .post(apis.createOffer, data)
       .then((res) => {
