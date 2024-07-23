@@ -7,7 +7,15 @@ const useAuthStore = create((set) => ({
   setToken: (data) => set({ token: data }),
   showToast: false,
   theme: "light",
-  setTheme: (data) => set({ theme: data }),
+  setTheme: (data) => {
+    localStorage.setItem("theme", JSON.stringify(data));
+    set({ theme: data });
+  },
+  getTheme: () => {
+    const items = JSON.parse(localStorage.getItem("theme"));
+    // console.log(items, "theme");
+    set({ theme: items });
+  },
   setShowToast: (data) => set({ showToast: data }),
   toastData: { color: "#33b0e0", message: "Welcome" },
   setToastData: (data) => set({ toastData: data }),

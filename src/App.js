@@ -13,7 +13,7 @@ const ForgotPassword = React.lazy(() =>
   import("./screens/Authentication/ForgotPassword")
 );
 const ManageBank = React.lazy(() => import("./screens/ManageBank"));
-const Lead = React.lazy(() => import("./screens/Lead"));
+const Lead = React.lazy(() => import("./screens/leads/Lead"));
 const MyLeads = React.lazy(() => import("./screens/MyLeads"));
 const Users = React.lazy(() => import("./screens/Users/Users"));
 
@@ -41,10 +41,12 @@ function App() {
     defaultSidebar,
     setDefaultSidebar,
     theme,
+    getTheme,
   } = useAuthStore();
   const { getAllBank, getAllCategory, category } = useDataStore();
 
   useEffect(() => {
+    getTheme();
     getData();
     // console.log(defaultSidebar, "defaultSidebar");
   }, []);

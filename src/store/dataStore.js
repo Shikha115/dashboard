@@ -73,6 +73,12 @@ const useDataStore = create((set, getState) => ({
   getAlLeads: async () => {
     const res = await axios.get(apis.getAllLeads);
     set({ lead: res.data?.data });
+    return res.data;
+  },
+  getMyLeads: async (params) => {
+    const res = await axios.get(apis.getAllLeads + "?" + params);
+    return res?.data;
+    // set({ lead: res.data?.data });
   },
   getAllBanners: async () => {
     const res = await axios.get(apis.getAllBanners);

@@ -1,0 +1,24 @@
+Category    - update api with limit/search/page
+Offers      - update api with limit/search/page/type
+LeadReport  - update api with limit/search/page/type/date -- done /upload leads /export leads
+User        - update api with limit/search-name-phone-wallet/page/c_date/
+Notification - update api with limit/search-title-message-type/
+Banner      - update api with limit/search-name
+Sponsor ad  - update api with limit/search-name
+Mark Selected Tab
+Change Logo
+Admin user type
+Profile
+Access
+Stacked Toasts
+
+In Mobile --------------
+1. banners if status true
+2. Best Payout
+3. Top Converting
+4. Popular Categories to categories
+5. Logo
+6. Deep links
+
+
+
