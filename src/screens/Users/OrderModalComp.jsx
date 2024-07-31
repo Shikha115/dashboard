@@ -3,7 +3,7 @@ import { CiWarning } from "react-icons/ci";
 import OrderComp from "../../components/OrderComp";
 
 function OrderModalComp(props) {
-  console.log(props?.currentData);
+  // console.log(props?.currentData);
   return (
     <Modal
       className={props.theme ? props.theme : ""}

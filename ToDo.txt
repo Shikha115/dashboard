@@ -5,18 +5,20 @@ User        - update api with limit/search-name-phone-wallet/page/c_date/
 Notification - update api with limit/search-title-message-type/
 Banner      - update api with limit/search-name
 Sponsor ad  - update api with limit/search-name
+Orders
 Mark Selected Tab
 Change Logo
 Admin user type
 Profile
 Access
 Stacked Toasts
+✅ Phone accepting text in creating lead
 
 In Mobile --------------
-1. banners if status true
-2. Best Payout
-3. Top Converting
-4. Popular Categories to categories
+✅ 1. banners if status true
+✅ 2. Best Payout
+✅ 3. Top Converting
+✅ 4. Popular Categories to categories
 5. Logo
 6. Deep links
 

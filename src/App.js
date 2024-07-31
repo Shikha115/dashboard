@@ -14,6 +14,7 @@ const ForgotPassword = React.lazy(() =>
 );
 const ManageBank = React.lazy(() => import("./screens/ManageBank"));
 const Lead = React.lazy(() => import("./screens/leads/Lead"));
+const Order = React.lazy(() => import("./screens/orders/Order"));
 const MyLeads = React.lazy(() => import("./screens/MyLeads"));
 const Users = React.lazy(() => import("./screens/Users/Users"));
 
@@ -65,10 +66,9 @@ function App() {
       await getProfileWeb(tokenVal);
     }
     getAllCategory(category);
-    getAllBank();
+    // getAllBank();
     setLoading(false);
   };
-
   return (
     <>
       <ToastComponent />
@@ -173,6 +173,12 @@ function App() {
                 path="/lead"
                 element={
                   <ProtectedRoute path="/lead" Component={Lead} header={true} />
+                }
+              />
+              <Route
+                path="/order"
+                element={
+                  <ProtectedRoute path="/order" Component={Order} header={true} />
                 }
               />
               <Route

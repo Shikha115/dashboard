@@ -5,9 +5,10 @@ import * as XLSX from "xlsx";
 import { apis } from "../../utils/URL";
 import axios from "axios";
 import useToastStore from "../../store/toastStore";
+import { Link } from "react-router-dom";
 
-const useHooksWithLeads = () => {
-  const { lead, getAlLeads, getMyLeads } = useDataStore();
+const useHooksWithOrders = () => {
+  const { allOrders, getAllOrders } = useDataStore();
   const { setToastData } = useToastStore();
   const [isLoading, setIsLoading] = useState(true);
   const [filter, setFilter] = useState({ bank: "", leadType: "" });
@@ -29,8 +30,8 @@ const useHooksWithLeads = () => {
   });
 
   useEffect(() => {
-    setleads(lead);
-  }, [lead]);
+    setleads(allOrders);
+  }, [allOrders]);
 
   const columns = [
     {
@@ -42,10 +43,14 @@ const useHooksWithLeads = () => {
       name: "Title",
       center: "true",
       width: "auto",
-      selector: (row) => {
-        // console.log(row);
-        return row?.offer_info?.mobile_data?.title;
-      },
+      selector: (row) => row?.offer_info?.mobile_data?.title,
+    },
+
+    {
+      name: "Amount",
+      center: "true",
+      width: "auto",
+      selector: (row) => row?.amount,
     },
     {
       name: "Date",
@@ -59,42 +64,54 @@ const useHooksWithLeads = () => {
     },
 
     {
-      name: "Name	",
+      name: "Referral ID",
       center: "true",
       width: "auto",
-      selector: (row) => row?.name,
+      selector: (row) => row?.referral_id,
     },
     {
-      name: "Mobile	",
+      name: "Referral ID",
       center: "true",
       width: "auto",
-      selector: (row) => row?.phone,
+      selector: (row) => {
+        return (
+          <Link
+            className="btn btn-soft-success btn-sm"
+            style={{ textWrap: "nowrap" }}
+            onClick={() => {
+              window?.open(row?.pdf);
+            }}
+          >
+            Order Pdf
+          </Link>
+        );
+      },
+    },
+    {
+      name: "Status	",
+      center: "true",
+      width: "auto",
+      selector: (row) => row?.status,
     },
 
     {
-      name: "Email",
+      name: "Customer Email",
       center: "true",
       width: "auto",
-      selector: (row) => row?.email,
+      selector: (row) => row?.lead_info?.email,
     },
     {
-      name: "Referal ID",
+      name: "Lead Date",
       center: "true",
       width: "auto",
-      selector: (row) => row?.affiliate_id,
+      selector: (row) => row?.lead_info?.created,
     },
     {
       name: "Click ID",
       center: "true",
       width: "auto",
-      selector: (row) => row?.affiliate_id + "_" + row?.click_id,
-    },
-
-    {
-      name: "Lead Type",
-      center: "true",
-      width: "auto",
-      selector: (row) => row?.category_info?.name,
+      selector: (row) =>
+        row?.lead_info?.affiliate_id + "_" + row?.lead_info?.click_id,
     },
   ];
 
@@ -103,10 +120,11 @@ const useHooksWithLeads = () => {
     let data = [...leads];
     let params = getParams();
 
-    const req = await axios.get(apis.downloadAllLeads + "?" + params);
+    const req = await axios.get(apis.downloadAllOrders + "?" + params);
 
     console.log(req);
 
+    return;
     data = await req?.data?.data?.map((item) => {
       let {
         category_info,
@@ -170,7 +188,6 @@ const useHooksWithLeads = () => {
   };
 
   const getParams = () => {
-    console.log(searchFilterData);
     let params = "";
     if (searchFilterData?.from) {
       if (!searchFilterData?.to) {
@@ -204,18 +221,20 @@ const useHooksWithLeads = () => {
           ? "&type=" + searchFilterData?.type
           : "type=" + searchFilterData?.type;
     }
+    if (params[0] === "&") {
+      params.replace("&");
+    }
 
     return params;
   };
 
   const onFilter = () => {
     let params = getParams();
-    // console.log(params);
     fetchWithParams(params);
   };
 
   const reset = () => {
-    setleads(lead);
+    setleads(allOrders);
     setSearchFilterData({});
     setPagination({});
   };
@@ -241,7 +260,7 @@ const useHooksWithLeads = () => {
   const fetchWithParams = async (params) => {
     setIsLoading(true);
 
-    let res = await getMyLeads(params);
+    let res = await getAllOrders(params);
     if (res?.data?.length > 0) {
       setleads(res?.data);
       setPagination(res?.pagination);
@@ -297,7 +316,7 @@ const useHooksWithLeads = () => {
     // console.log("Next page clicked, page:", page);
 
     let params = "";
-    if (searchFilterData.search) {
+    if (searchFilterData?.search) {
       params = params + "search=" + searchFilterData.search;
     }
     if (searchFilterData?.from) {
@@ -318,7 +337,7 @@ const useHooksWithLeads = () => {
   useEffect(() => {
     setIsLoading(true);
     let timer = setTimeout(() => {
-      getAlLeads().then((e) => {
+      getAllOrders(getParams()).then((e) => {
         setleads(e.data);
         setPagination(e.pagination);
         setIsLoading(false);
@@ -354,4 +373,4 @@ const useHooksWithLeads = () => {
   };
 };
 
-export default useHooksWithLeads;
+export default useHooksWithOrders;

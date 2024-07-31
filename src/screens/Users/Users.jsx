@@ -47,6 +47,12 @@ function Users() {
       center: true,
       width: "auto",
     },
+    {
+      name: "Name",
+      selector: (row) => row.referral_id,
+      center: true,
+      width: "auto",
+    },
 
     {
       name: "Contact No.",
