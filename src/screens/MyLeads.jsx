@@ -186,9 +186,17 @@ function MyLeads() {
                             value={userDetails?.phone}
                             minLength={10}
                             maxLength={10}
-                            type="num-pad"
+                            type="number"
                             className="form-control"
                             onChange={(e) => {
+                              if (e?.target?.value?.length === 11) {
+                                // setUserDetails({
+                                //   ...userDetails,
+                                //   phone: e.target.value,
+                                // });
+                                return;
+                              }
+
                               setUserDetails({
                                 ...userDetails,
                                 phone: e.target.value,

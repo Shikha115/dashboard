@@ -35,7 +35,7 @@ const RequiredData = [
 const addon_data = { key: "", required: false, can_delete: true };
 
 function ManageCategory() {
-  const { isLoading, category, getAllCategory } = useDataStore();
+  const { isLoading, category, getAllCategory, setIsLoading } = useDataStore();
   const { setToastData } = useToastStore();
   const { theme } = useAuthStore();
   const [deleteModal, setDeleteModal] = useState(false);
@@ -65,6 +65,7 @@ function ManageCategory() {
 
   useEffect(() => {
     getAllCategory();
+    setIsLoading(false);
   }, []);
 
   const updateStatus = async (id, status) => {
@@ -206,7 +207,6 @@ function ManageCategory() {
     await axios
       .post(apis.createCategory, data)
       .then((e) => {
-        // console.log(e);
         setToastData({ message: e.data.message });
         getAllCategory();
         setAddCategory("");

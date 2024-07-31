@@ -48,6 +48,13 @@ const Sidebar_data2 = [
     link: "/lead",
   },
   {
+    icon: <FaStar />,
+    category: "Order Report ",
+    subcategory: [],
+    isActive: false,
+    link: "/order",
+  },
+  {
     icon: <FaUsers />,
     category: "Users",
     subcategory: [],
@@ -78,7 +85,7 @@ const Sidebar_data2 = [
   },
 ];
 function Sidebar() {
-  const { currentPath,theme } = useAuthStore();
+  const { currentPath, theme } = useAuthStore();
   const { category } = useDataStore();
   const [data, setData] = useState();
 

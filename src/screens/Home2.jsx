@@ -308,7 +308,8 @@ const Home2 = () => {
                     to="#"
                     onClick={() =>
                       window.open(
-                        "https://play.google.com/store/apps/details?id=com.rojgarapp.rojgar",
+                        // "https://play.google.com/store/apps/details?id=com.rojgarapp.rojgar",
+                        "rojgarapp://web.dev.rojgarapp.in/app",
                         "_blank",
                         "noopener,noreferrer"
                       )

@@ -27,9 +27,18 @@ function ToastComponent() {
         style={{ backgroundColor: toastData.color }}
       >
         <Toast.Header>
-          <h2>Message!</h2>
+          <h2 style={{ color: toastData?.textColor || "white", fontSize: 20 }}>
+            {toastData.title || "Message!"}
+          </h2>
         </Toast.Header>
-        <Toast.Body>{toastData.message}</Toast.Body>
+        <Toast.Body
+          style={{
+            color: toastData?.textColor || "white",
+            fontWeight: "bold",
+          }}
+        >
+          {toastData.message}
+        </Toast.Body>
       </Toast>
     </ToastContainer>
   );

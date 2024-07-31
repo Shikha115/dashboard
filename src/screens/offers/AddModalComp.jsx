@@ -50,9 +50,13 @@ function AddModalComp(props) {
                         <span className="fs-17 text-danger">*</span>
                       </label>{" "}
                       <TextEditor
-                        item={item?.value}
+                        item={
+                          Array.isArray(item?.value)
+                            ? item.value.join("")
+                            : item?.value
+                        }
                         onChange={(e) => {
-                          console.log(e);
+                          // console.log(e);
                           item.value = e;
                         }}
                       />

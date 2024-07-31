@@ -1,21 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { images } from "./Images";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
-import { BsEnvelope } from "react-icons/bs";
-import { GoBell } from "react-icons/go";
 import { FaBars, FaChevronDown } from "react-icons/fa";
 import Collapse from "react-bootstrap/Collapse";
 import useAuthStore from "../store/authStore";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
-  const { defaultSidebar, setDefaultSidebar, setTheme } = useAuthStore();
-
+  const { defaultSidebar, setDefaultSidebar, setTheme, theme } = useAuthStore();
   const handleToggle = () => {
     const val = defaultSidebar == "default" ? "condensed" : "default";
     setDefaultSidebar(val);
-    console.log(defaultSidebar,'defaultSidebar');
+    // console.log(defaultSidebar, "defaultSidebar");
   };
 
   return (
@@ -44,18 +41,18 @@ function Navbar() {
             </Link>
           </div>
           {/* Sidebar Menu Toggle Button */}
-          <button className="button-toggle-menu" >
+          <button className="button-toggle-menu">
             <FaBars onClick={handleToggle} />
           </button>
           {/* Topbar Search Form */}
           <div className="app-search d-none d-lg-block">
             <form>
               <div className="input-group">
-                <input
+                {/* <input
                   type="search"
                   className="form-control"
                   placeholder="Search..."
-                />
+                /> */}
                 <span className="search-icon">
                   <CiSearch className="text-muted" />
                 </span>
@@ -86,307 +83,19 @@ function Navbar() {
               </form>
             </div>
           </li>
-          {/* <li className="dropdown notification-list">
-            <Link
-              className="nav-link dropdown-toggle arrow-none"
-              data-bs-toggle="dropdown"
-              to="#"
-              role="button"
-              aria-haspopup="false"
-              aria-expanded="false"
-            >
-              <i>
-                <BsEnvelope className="fs-22" />
-              </i>
-              <span className="noti-icon-badge badge text-bg-purple">4</span>
-            </Link>
-            <div className="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg py-0">
-              <div className="p-2 border-top-0 border-start-0 border-end-0 border-dashed border">
-                <div className="row align-items-center">
-                  <div className="col">
-                    <h6 className="m-0 fs-16 fw-semibold"> Messages</h6>
-                  </div>
-                  <div className="col-auto">
-                    <Link
-                      to="#"
-                      className="text-dark text-decoration-underline"
-                    >
-                      <small>Clear All</small>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-              <div style={{ maxHeight: 300 }} data-simplebar="">
-                <Link
-                  to="#"
-                  className="dropdown-item p-0 notify-item read-noti card m-0 shadow-none"
-                >
-                  <div className="card-body">
-                    <div className="d-flex align-items-center">
-                      <div className="flex-shrink-0">
-                        <div className="notify-icon">
-                          <img
-                            src={images.avatar_1}
-                            className="img-fluid rounded-circle"
-                            alt=""
-                          />
-                        </div>
-                      </div>
-                      <div className="flex-grow-1 text-truncate ms-2">
-                        <h5 className="noti-item-title fw-semibold fs-14">
-                          Cristina Pride{" "}
-                          <small className="fw-normal text-muted float-end ms-1">
-                            1 day ago
-                          </small>
-                        </h5>
-                        <small className="noti-item-subtitle text-muted">
-                          Hi, How are you? What about our next meeting
-                        </small>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
 
-                <Link
-                  to="#"
-                  className="dropdown-item p-0 notify-item read-noti card m-0 shadow-none"
-                >
-                  <div className="card-body">
-                    <div className="d-flex align-items-center">
-                      <div className="flex-shrink-0">
-                        <div className="notify-icon">
-                          <img
-                            src={images.avatar_2}
-                            className="img-fluid rounded-circle"
-                            alt=""
-                          />
-                        </div>
-                      </div>
-                      <div className="flex-grow-1 text-truncate ms-2">
-                        <h5 className="noti-item-title fw-semibold fs-14">
-                          Sam Garret{" "}
-                          <small className="fw-normal text-muted float-end ms-1">
-                            2 day ago
-                          </small>
-                        </h5>
-                        <small className="noti-item-subtitle text-muted">
-                          Yeah everything is fine
-                        </small>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-
-                <Link
-                  to="#"
-                  className="dropdown-item p-0 notify-item read-noti card m-0 shadow-none"
-                >
-                  <div className="card-body">
-                    <div className="d-flex align-items-center">
-                      <div className="flex-shrink-0">
-                        <div className="notify-icon">
-                          <img
-                            src={images.avatar_3}
-                            className="img-fluid rounded-circle"
-                            alt=""
-                          />
-                        </div>
-                      </div>
-                      <div className="flex-grow-1 text-truncate ms-2">
-                        <h5 className="noti-item-title fw-semibold fs-14">
-                          Karen Robinson{" "}
-                          <small className="fw-normal text-muted float-end ms-1">
-                            2 day ago
-                          </small>
-                        </h5>
-                        <small className="noti-item-subtitle text-muted">
-                          Wow that's great
-                        </small>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-
-                <Link
-                  to="#"
-                  className="dropdown-item p-0 notify-item read-noti card m-0 shadow-none"
-                >
-                  <div className="card-body">
-                    <div className="d-flex align-items-center">
-                      <div className="flex-shrink-0">
-                        <div className="notify-icon">
-                          <img
-                            src={images.avatar_4}
-                            className="img-fluid rounded-circle"
-                            alt=""
-                          />
-                        </div>
-                      </div>
-                      <div className="flex-grow-1 text-truncate ms-2">
-                        <h5 className="noti-item-title fw-semibold fs-14">
-                          Sherry Marshall{" "}
-                          <small className="fw-normal text-muted float-end ms-1">
-                            3 day ago
-                          </small>
-                        </h5>
-                        <small className="noti-item-subtitle text-muted">
-                          Hi, How are you? What about our next meeting
-                        </small>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-
-                <Link
-                  to="#"
-                  className="dropdown-item p-0 notify-item read-noti card m-0 shadow-none"
-                >
-                  <div className="card-body">
-                    <div className="d-flex align-items-center">
-                      <div className="flex-shrink-0">
-                        <div className="notify-icon">
-                          <img
-                            src={images.avatar_5}
-                            className="img-fluid rounded-circle"
-                            alt=""
-                          />
-                        </div>
-                      </div>
-                      <div className="flex-grow-1 text-truncate ms-2">
-                        <h5 className="noti-item-title fw-semibold fs-14">
-                          Shawn Millard{" "}
-                          <small className="fw-normal text-muted float-end ms-1">
-                            4 day ago
-                          </small>
-                        </h5>
-                        <small className="noti-item-subtitle text-muted">
-                          Yeah everything is fine
-                        </small>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </div>
-              <Link
-                to="#"
-                className="dropdown-item text-center text-primary text-decoration-underline fw-bold notify-item border-top border-light py-2"
-              >
-                View All
-              </Link>
-            </div>
-          </li> */}
-          {/* <li className="dropdown notification-list">
-            <Link
-              className="nav-link dropdown-toggle arrow-none"
-              data-bs-toggle="dropdown"
-              to="#"
-              role="button"
-              aria-haspopup="false"
-              aria-expanded="false"
-            >
-              <i>
-                <GoBell className="fs-22" />
-              </i>
-              <span className="noti-icon-badge badge text-bg-pink">3</span>
-            </Link>
-            <div className="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg py-0">
-              <div className="p-2 border-top-0 border-start-0 border-end-0 border-dashed border">
-                <div className="row align-items-center">
-                  <div className="col">
-                    <h6 className="m-0 fs-16 fw-semibold"> Notification</h6>
-                  </div>
-                  <div className="col-auto">
-                    <Link
-                      to="#"
-                      className="text-dark text-decoration-underline"
-                    >
-                      <small>Clear All</small>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-              <div style={{ maxHeight: 300 }} data-simplebar="">
-                <Link to="#" className="dropdown-item notify-item">
-                  <div className="notify-icon bg-primary-subtle">
-                    <i className="mdi mdi-comment-account-outline text-primary" />
-                  </div>
-                  <p className="notify-details">
-                    Caleb Flakelar commented on Admin
-                    <small className="noti-time">1 min ago</small>
-                  </p>
-                </Link>
-
-                <Link to="#" className="dropdown-item notify-item">
-                  <div className="notify-icon bg-warning-subtle">
-                    <i className="mdi mdi-account-plus text-warning" />
-                  </div>
-                  <p className="notify-details">
-                    New user registered.
-                    <small className="noti-time">5 hours ago</small>
-                  </p>
-                </Link>
-
-                <Link to="#" className="dropdown-item notify-item">
-                  <div className="notify-icon bg-danger-subtle">
-                    <i className="mdi mdi-heart text-danger" />
-                  </div>
-                  <p className="notify-details">
-                    Carlos Crouch liked
-                    <small className="noti-time">3 days ago</small>
-                  </p>
-                </Link>
-
-                <Link to="#" className="dropdown-item notify-item">
-                  <div className="notify-icon bg-pink-subtle">
-                    <i className="mdi mdi-comment-account-outline text-pink" />
-                  </div>
-                  <p className="notify-details">
-                    Caleb Flakelar commented on Admi
-                    <small className="noti-time">4 days ago</small>
-                  </p>
-                </Link>
-
-                <Link to="#" className="dropdown-item notify-item">
-                  <div className="notify-icon bg-purple-subtle">
-                    <i className="mdi mdi-account-plus text-purple" />
-                  </div>
-                  <p className="notify-details">
-                    New user registered.
-                    <small className="noti-time">7 days ago</small>
-                  </p>
-                </Link>
-
-                <Link to="#" className="dropdown-item notify-item">
-                  <div className="notify-icon bg-success-subtle">
-                    <i className="mdi mdi-heart text-success" />
-                  </div>
-                  <p className="notify-details">
-                    Carlos Crouch liked <b>Admin</b>.
-                    <small className="noti-time">Carlos Crouch liked</small>
-                  </p>
-                </Link>
-              </div>
-              <Link
-                to="#"
-                className="dropdown-item text-center text-primary text-decoration-underline fw-bold notify-item border-top border-light py-2"
-              >
-                View All
-              </Link>
-            </div>
-          </li> */}
           <li>
             <div className="switch">
               <label htmlFor="toggle">
-                {/* true = light mode
-                false = dark mode */}
                 <input
                   id="toggle"
                   className="toggle-switch"
                   type="checkbox"
-                  defaultChecked={true}
-                  onChange={(e) =>
-                    setTheme(e.target.checked ? "light" : "dark")
-                  }
+                  checked={theme === "light" ? true : false}
+                  onChange={(e) => {
+                    console.log(typeof e.target.checked);
+                    setTheme(e.target.checked ? "light" : "dark");
+                  }}
                 />
                 <div className="sun-moon">
                   <div className="dots" />

@@ -93,6 +93,16 @@ function MyOffer() {
         setToastData({ message: "Failed to update status", color: "red" });
       });
   };
+  const updateConverting = async (id, converting) => {
+    axios
+      .post(apis.updateIfConverting, { id, converting })
+      .then((e) => {
+        setToastData({ message: e.data.message });
+      })
+      .catch((err) => {
+        setToastData({ message: "Failed to update status", color: "red" });
+      });
+  };
 
   const updateRank = async (id, rank) => {
     axios
@@ -136,7 +146,7 @@ function MyOffer() {
       type_id: currentCategory?._id,
       mobile_data: { ...obj, card_type: currentCategory?._id },
     };
-    console.log(data);
+
     if (isOk) {
       setToastData({
         message: "Values marked by * are important",
@@ -144,7 +154,7 @@ function MyOffer() {
       });
       return;
     }
-    return;
+
     axios
       .post(apis.createOffer, data)
       .then((res) => {
@@ -272,6 +282,25 @@ function MyOffer() {
             onChange={(e) => {
               let val = e.target.checked;
               updateIfFeatured(row?._id, val);
+              row.featured = val;
+            }}
+          />
+        </div>
+      ),
+    },
+    {
+      name: "Top Converting",
+      center: true,
+      width: "auto",
+      cell: (row) => (
+        <div className="form-check form-switch">
+          <input
+            type="checkbox"
+            className="form-check-input"
+            defaultChecked={row?.converting}
+            onChange={(e) => {
+              let val = e.target.checked;
+              updateConverting(row?._id, val);
               row.featured = val;
             }}
           />
