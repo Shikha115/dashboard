@@ -1,0 +1,16 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.rojgarapp.rojgar",
+      "sha256_cert_fingerprints": [
+        "FA:C6:17:45:DC:09:03:78:6F:B9:ED:E6:2A:96:2B:39:9F:73:48:F0:BB:6F:89:9B:83:32:66:75:91:03:3B:9C",
+        "18:25:7A:F7:C5:32:6A:D0:43:0D:B2:10:36:51:8A:34:D0:10:2D:D3:BD:A1:B5:4D:21:93:3D:4F:06:05:AB:A8",
+        "FA:C6:17:45:DC:09:03:78:6F:B9:ED:E6:2A:96:2B:39:9F:73:48:F0:BB:6F:89:9B:83:32:66:75:91:03:3B:9C",
+        "44:CC:9F:D2:00:8E:D6:11:BD:29:C4:C4:5C:35:C0:03:16:AE:44:D4:0D:BE:3C:C5:BF:6C:FF:0B:69:59:A0:2F",
+        "18:25:7A:F7:C5:32:6A:D0:43:0D:B2:10:36:51:8A:34:D0:10:2D:D3:BD:A1:B5:4D:21:93:3D:4F:06:05:AB:A8"
+      ]
+    }
+  }
+]
