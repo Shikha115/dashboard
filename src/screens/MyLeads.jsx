@@ -152,12 +152,21 @@ function MyLeads() {
       <div className="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5 position-relative">
         <div className="container">
           <div className="row justify-content-center">
-            <div className="col-12 col-lg-6 p-lg-0">
+            <div className="col-12 col-lg-8 p-lg-0">
               <div className="lead-card mb-4">
                 <div className="row align-items-center">
                   <div className="col-12">
                     <div className="left-outer">
-                      <img src={offer?.mobile_data?.product_image_web} alt="" />
+                      <img
+                        src={offer?.mobile_data?.product_image_web}
+                        alt=""
+                        style={{
+                          width: "100%",
+                          height: "80%",
+                          objectFit: "contain",
+                          alignSelf: "center",
+                        }}
+                      />
                       <h2 className="text-primary mt-3 mb-1">
                         {offer?.mobile_data?.title}
                       </h2>

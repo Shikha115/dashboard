@@ -82,6 +82,7 @@ function App() {
           <Suspense fallback={<div>Loading...</div>}>
             <Routes>
               <Route path="/my-leads" element={<MyLeads />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
         </section>
