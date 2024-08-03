@@ -1,20 +1,24 @@
-function ListSelector({ onChangeSelector, data, title = "" }) {
+function UserTypeSelector({
+  onChangeSelector,
+  data,
+  title = "",
+  value = "Select",
+}) {
   return (
-    <div className="col-12 col-md-3 mr-3">
+    <div className="col-12 col-md-3" style={{ marginRight: 10, width: "40%" }}>
       {title ? <label className="form-label">{title}</label> : null}
       <select
         onChange={onChangeSelector}
         className="form-select "
-        defaultValue="Select"
+        defaultValue={value}
+        value={value}
       >
-        <option hidden disabled>
-          Select
-        </option>
+        <option disabled>Select</option>
         {data?.length > 0 &&
           data?.map((item, i) => {
             return (
               <option key={item?._id} value={item?._id}>
-                {item?.mobile_data?.title}
+                {item?.type}
               </option>
             );
           })}
@@ -23,4 +27,4 @@ function ListSelector({ onChangeSelector, data, title = "" }) {
   );
 }
 
-export default ListSelector;
+export default UserTypeSelector;

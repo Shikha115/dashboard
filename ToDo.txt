@@ -14,6 +14,25 @@ Access
 Stacked Toasts
 ✅ Phone accepting text in creating lead
 
+If Rejected No Action allowed
+Payment Process Change Settlement and Payment direct
+User Page to be modified
+
+✅ * Status will be of four types [pending = new Profile, approved = approved profile, rejected = rejected profile, updated=updated profile]
+
+✅ Filter to be added in Users
+
+✅ Notification Trigger with action on Profile complete on approve - Welcome
+
+✅ Notification with action On creation of new offer a notification Trigger - New Offer
+
+✅ Notification with action On Payout change of any type on status true - Payout Change Alert
+Money Making campagne
+
+Campai text color white in dark black in light
+
+
+
 In Mobile --------------
 ✅ 1. banners if status true
 ✅ 2. Best Payout
@@ -21,6 +40,6 @@ In Mobile --------------
 ✅ 4. Popular Categories to categories
 5. Logo
 6. Deep links
-
+7. If rejected profile then offers cant be applied but new joinee can create leads?
 
 

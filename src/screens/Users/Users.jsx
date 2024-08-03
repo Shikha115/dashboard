@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
-import useDataStore from "../../store/dataStore";
-import { MdDelete, MdEdit } from "react-icons/md";
-import { FaEye } from "react-icons/fa";
+
 import Modal from "react-bootstrap/Modal";
-import { CiSearch, CiWarning } from "react-icons/ci";
+import { CiSearch } from "react-icons/ci";
 import ViewUser from "./ViewUser";
 import NotificationModal from "./NotificationModal";
 
@@ -15,240 +13,46 @@ import ApproveModalComp from "./ApproveModalComp";
 import DeleteModalComp from "./DeleteModalComp";
 import PayModalComp from "./PayModalComp";
 import OrderModalComp from "./OrderModalComp";
+import useUserManagementHook from "./useUserManagementHook";
+import ListSelector from "../../components/ListSelector";
+import UserTypeSelector from "./UserSelector";
+import { FaX } from "react-icons/fa6";
+import NoDataComponent from "../../components/NoDataComp";
 
 function Users() {
-  const { users, getAllUsers, setSelectedUser, selectedUser } = useDataStore();
   const { theme } = useAuthStore();
-  const [isLoading, setIsLoading] = useState(true);
-  const [Page, setPage] = useState(0);
-  const [deleteModal, setDeleteModal] = useState(false);
-  const [settleModal, setSettleModal] = useState(false);
-  const [viewModal, setViewModal] = useState(false);
-  const [ApproveModal, setApproveModal] = useState(false);
-  const [OrderModal, setOrderModal] = useState(false);
-  const [notificationModal, setNotificationModal] = useState(false);
-  const [editModal, setEditModal] = useState(false);
-  const [PayModal, setPayModal] = useState(false);
-  const [currentData, setCurrentData] = useState(null);
-  const [Users, setUsers] = useState(null);
 
-  const columns = [
-    {
-      name: "#",
-      cell: (row, index) => (
-        <div>{Page > 0 ? Page * 10 + index + 1 : index + 1}</div>
-      ),
-      width: "50px",
-      center: true,
-    },
-    {
-      name: "Name",
-      selector: (row) => row.name,
-      center: true,
-      width: "auto",
-    },
-    {
-      name: "Name",
-      selector: (row) => row.referral_id,
-      center: true,
-      width: "auto",
-    },
-
-    {
-      name: "Contact No.",
-      selector: (row) => row.phone,
-      center: true,
-      width: "120px",
-    },
-
-    {
-      name: "Type",
-      selector: (row) => row.type,
-      center: true,
-      width: "80px",
-    },
-    {
-      name: "Wallet",
-      selector: (row) => row.wallet,
-      center: true,
-      width: "80px",
-    },
-    {
-      name: "Orders",
-      center: true,
-      width: "80px",
-      cell: (row) => (
-        <Link
-          className="btn btn-soft-danger btn-sm"
-          style={{ textWrap: "nowrap" }}
-          onClick={() => {
-            setCurrentData(row);
-            setOrderModal(true);
-          }}
-        >
-          Orders
-        </Link>
-      ),
-    },
-    {
-      name: "Notification",
-      center: true,
-      width: "120px",
-      cell: (row) => (
-        <Link
-          className="btn btn-soft-danger btn-sm"
-          style={{ textWrap: "nowrap" }}
-          onClick={() => {
-            setCurrentData(row);
-            setNotificationModal(true);
-          }}
-        >
-          Notification
-        </Link>
-      ),
-    },
-    {
-      name: "Settlement",
-      center: true,
-      // width: "120px",
-      cell: (row) => {
-        return (
-          <div className="d-flex flex-column">
-            {row?.order_settlement?.length > 0 ? (
-              <Link
-                className="btn btn-soft-info btn-sm"
-                onClick={() => {
-                  setCurrentData(row);
-                  setSettleModal(true);
-                }}
-              >
-                Settle Orders
-              </Link>
-            ) : null}
-
-            {row?.redeem_wallet ? (
-              <Link
-                className="btn btn-soft-warning  btn-sm "
-                onClick={() => {
-                  setCurrentData(row);
-                  setSettleModal(true);
-                }}
-              >
-                Pay
-              </Link>
-            ) : null}
-          </div>
-        );
-      },
-    },
-    {
-      name: "Approved",
-      center: true,
-      width: "auto",
-      cell: (row) =>
-        row?.isProfileVerified ? (
-          <button
-            className="btn btn-soft-primary btn-sm"
-            style={{ textWrap: "nowrap" }}
-            onClick={() => {
-              setCurrentData(row);
-              setApproveModal(true);
-            }}
-          >
-            Profile Verified
-          </button>
-        ) : row?.isProfileComplete ? (
-          <Link
-            className="btn btn-soft-danger btn-sm"
-            style={{ lineHeight: "17px" }}
-            onClick={() => {
-              setCurrentData(row);
-              setApproveModal(true);
-            }}
-          >
-            Approve Profile
-          </Link>
-        ) : (
-          <button
-            className="btn btn-soft-warning btn-sm"
-            style={{ textWrap: "nowrap" }}
-          >
-            Profile Incomplete
-          </button>
-        ),
-    },
-
-    {
-      name: "Action",
-      center: true,
-      width: "auto",
-      cell: (row) => (
-        <div className="custom-table-btn">
-          <button
-            className="btn btn-purple"
-            onClick={() => {
-              setEditModal(true);
-              setCurrentData(row);
-            }}
-          >
-            <MdEdit className="fs-18" />
-          </button>
-          <Link
-            className="btn btn-warning"
-            // to="/users/view"
-            // onClick={() => setSelectedUser(row)}
-            onClick={() => {
-              setSelectedUser(row);
-              setViewModal(true);
-            }}
-          >
-            <FaEye className="fs-18" />
-          </Link>
-          <Link
-            className="btn btn-pink"
-            to="#"
-            onClick={() => setDeleteModal(true)}
-          >
-            <MdDelete className="fs-18" />
-          </Link>
-        </div>
-      ),
-    },
-  ];
-
-  useEffect(() => {
-    setUsers(users);
-  }, [users]);
-
-  useEffect(() => {
-    setIsLoading(true);
-    let timer = setTimeout(() => {
-      getAllUsers();
-      setIsLoading(false);
-    }, 0);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
-  const search = (val) => {
-    let value = val?.toLowerCase();
-    let arr = users?.filter((e) => {
-      return (
-        e?.name?.toLowerCase().includes(value) ||
-        e?.phone?.toString()?.toLowerCase()?.includes(value) ||
-        e?.type?.toString()?.toLowerCase()?.includes(value)
-      );
-    });
-    if (!val) {
-      setUsers(users);
-      return;
-    }
-    setUsers(arr);
-  };
+  const {
+    isLoading,
+    columns,
+    handleSubmit,
+    search,
+    setPage,
+    deleteModal,
+    setDeleteModal,
+    settleModal,
+    setSettleModal,
+    viewModal,
+    setViewModal,
+    setApproveModal,
+    setOrderModal,
+    notificationModal,
+    setNotificationModal,
+    editModal,
+    setEditModal,
+    setPayModal,
+    currentData,
+    setCurrentData,
+    selectedUser,
+    ApproveModal,
+    OrderModal,
+    PayModal,
+    Users,
+    getAllUsers,
+    filter,
+    onNextPageClick,
+    setFilter,
+  } = useUserManagementHook();
 
   return (
     <>
@@ -258,13 +62,39 @@ function Users() {
             <div className="page-title-box">
               <div className="page-title-right">
                 <div className="app-search">
-                  <form>
+                  <form className="column">
+                    {!filter?.type || filter?.type === "Select" ? null : (
+                      <Link
+                        className="btn btn-soft-danger btn-sm mr-2"
+                        style={{ textWrap: "nowrap", marginRight: 10 }}
+                        onClick={() => {
+                          setFilter({ ...filter, type: "Select" });
+                        }}
+                      >
+                        {filter?.type} <FaX size={10} />
+                      </Link>
+                    )}
+                    <UserTypeSelector
+                      value={filter?.type}
+                      title={false}
+                      data={[
+                        { type: "approved", id: 1 },
+                        { type: "rejected", id: 2 },
+                        { type: "pending", id: 3 },
+                        { type: "updated", id: 4 },
+                      ]}
+                      onChangeSelector={(e) => {
+                        setFilter({ ...filter, type: e?.target?.value });
+                        console.log(e?.target.value);
+                      }}
+                    />
                     <div className="input-group">
                       <input
                         type="search"
                         className="form-control"
                         placeholder="Search..."
                         onChange={(e) => {
+                          setFilter({ ...filter, search: e?.target?.value });
                           search(e?.target?.value);
                         }}
                       />
@@ -281,11 +111,21 @@ function Users() {
             <DataTable
               columns={columns}
               data={Users?.length > 0 ? Users : []}
+              noDataComponent={NoDataComponent}
+              paginationPerPage={filter?.limit || 10}
+              paginationDefaultPage={filter?.currentPage}
+              paginationServer
               progressPending={isLoading}
+              paginationTotalRows={filter?.totalDocuments}
+              paginationComponentOptions={{
+                noRowsPerPage: true,
+              }}
               pagination
               onChangePage={(e) => {
                 setPage(e - 1);
               }}
+              onChangePage={onNextPageClick}
+
             />
           </div>
         </div>

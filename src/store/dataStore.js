@@ -99,6 +99,7 @@ const useDataStore = create((set, getState) => ({
   },
 
   setUsers: (data) => set({ users: data }),
+  
   getAllUsers: async () => {
     const res = await axios.get(apis.getAllLUsers);
     set({ users: res.data?.data });

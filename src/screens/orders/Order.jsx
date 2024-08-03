@@ -4,6 +4,7 @@ import DataTable from "react-data-table-component";
 import FilterCard from "./FilterCard";
 import useHooksWithOrders from "./useHooksWithOrders";
 import OrderModalComp from "../Users/OrderModalComp";
+import NoDataComponent from "../../components/NoDataComp";
 
 function Order() {
   const {
@@ -27,13 +28,6 @@ function Order() {
     setSearchFilterData,
   } = useHooksWithOrders();
 
-  const NoDataComponent = () => {
-    return (
-      <div style={{ padding: "20px", textAlign: "center" }}>
-        No data available
-      </div>
-    );
-  };
   return (
     <div className="content">
       <div className="container-fluid">
