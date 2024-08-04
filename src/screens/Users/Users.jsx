@@ -14,7 +14,6 @@ import DeleteModalComp from "./DeleteModalComp";
 import PayModalComp from "./PayModalComp";
 import OrderModalComp from "./OrderModalComp";
 import useUserManagementHook from "./useUserManagementHook";
-import ListSelector from "../../components/ListSelector";
 import UserTypeSelector from "./UserSelector";
 import { FaX } from "react-icons/fa6";
 import NoDataComponent from "../../components/NoDataComp";
@@ -27,7 +26,6 @@ function Users() {
     columns,
     handleSubmit,
     search,
-    setPage,
     deleteModal,
     setDeleteModal,
     settleModal,
@@ -121,16 +119,12 @@ function Users() {
                 noRowsPerPage: true,
               }}
               pagination
-              onChangePage={(e) => {
-                setPage(e - 1);
-              }}
               onChangePage={onNextPageClick}
-
             />
           </div>
         </div>
       </div>
-      {/* view */}
+
       <Modal
         className={theme && theme}
         size="xl"
@@ -140,8 +134,15 @@ function Users() {
         onHide={() => setViewModal(false)}
       >
         <Modal.Header closeButton>
-          <Modal.Title className="justify-between">
-            Profile{" "}
+          <Modal.Title
+            className="justify-between"
+            style={{
+              alignItems: "center",
+              display: "flex",
+              justifyContent: "center",
+              width: "100%",
+            }}
+          >
             {selectedUser?.isProfileVerified ? (
               <button
                 className="btn btn-soft-primary btn-sm"
@@ -175,7 +176,7 @@ function Users() {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <ViewUser />
+          <ViewUser  />
         </Modal.Body>
       </Modal>
       {/* update */}

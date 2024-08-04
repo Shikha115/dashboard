@@ -43,8 +43,6 @@ const ApproveModalComp = ({
       });
   };
 
-  
-
   return (
     <Modal
       className={theme ? theme : ""}
