@@ -166,7 +166,10 @@ function Lead() {
     // if (filter?.bank) {
     //   arr2 = arr?.filter((e) => e?.bank_id === filter?.bank);
     // }
-    if (filter?.leadType) {
+
+    if (filter?.leadType === "6617742141652c98b6277bb8") {
+      arr2 = arr;
+    } else if (filter?.leadType) {
       arr2 = arr?.filter((e) => e?.category_id === filter?.leadType);
     }
     if (!arr2) {
@@ -313,11 +316,13 @@ function Lead() {
                     <option hidden disabled>
                       Select
                     </option>
-                    {category?.map((item, i) => (
-                      <option key={i} value={item?._id}>
-                        {item?.name}
-                      </option>
-                    ))}
+                    {category?.map((item, i) => {
+                      return (
+                        <option key={i} value={item?._id}>
+                          {item?.name}
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
                 <div className="col-12 col-12 col-md-3 mt-3">

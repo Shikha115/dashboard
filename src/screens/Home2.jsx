@@ -1,31 +1,26 @@
 import { useEffect, useState } from "react";
 import React from "react";
 import {
-  FaChevronRight,
   FaFacebookF,
   FaInstagram,
   FaTwitter,
   FaSearch,
-  FaDownload,
   FaYoutube,
   FaStar,
-  FaArrowRight,
   FaPlus,
   FaCheckCircle,
   FaMapMarkerAlt,
   FaPhoneAlt,
   FaEnvelope,
-  FaRegCalendarAlt,
   FaAngleRight,
   FaAngleLeft,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Carousel from "react-bootstrap/Carousel";
-import "../assets/css/home2.css";
+import "../assets/css/home2.scss";
 import { images } from "../components/Images";
 import { LogoComp } from "./Landing";
 import Slider from "react-slick";
-import ModalVideo from "react-modal-video";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Accordion from "react-bootstrap/Accordion";
@@ -84,6 +79,29 @@ const Home2 = () => {
     autoplay: true,
     autoplaySpeed: 2500,
     cssEase: "linear",
+    responsive: [
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        },
+      },
+    ],
   };
 
   function SampleNextArrow(props) {
@@ -124,7 +142,7 @@ const Home2 = () => {
         },
       },
       {
-        breakpoint: 575,
+        breakpoint: 765,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
@@ -137,7 +155,7 @@ const Home2 = () => {
   return (
     <main id="home2">
       {/* search popup start*/}
-      <div
+      {/* <div
         className={searchShow ? "td-search-popup active" : "td-search-popup "}
         id="td-search-popup"
       >
@@ -153,15 +171,15 @@ const Home2 = () => {
             <FaSearch />
           </button>
         </form>
-      </div>
+      </div> */}
       {/* search popup end*/}
-      <div
+      {/* <div
         onClick={searchActive}
         className={searchShow ? "body-overlay active" : "body-overlay"}
         id="body-overlay"
-      ></div>
+      ></div> */}
       {/* ==================== Navbar Two Start ====================*/}
-      <nav className="navbar navbar-area navbar-area-3 navbar-expand-lg">
+      {/* <nav className="navbar navbar-area navbar-area-3 navbar-expand-lg">
         <div className="container nav-container custom-container">
           <div className="responsive-mobile-menu">
             <button
@@ -181,7 +199,7 @@ const Home2 = () => {
           </div>
           <div className="logo">
             <Link to="/">
-              <img src={images.logo} alt="img" />
+              <LogoComp color={"white"} />
             </Link>
           </div>
           <div className="nav-right-part nav-right-part-mobile">
@@ -209,29 +227,29 @@ const Home2 = () => {
               </li>
             </ul>
           </div>
-          {/* <div className="nav-right-part nav-right-part-desktop align-self-center">
-            <a
-              className="btn btn-base-color border-radius-5 d-flex align-items-center"
-              href="#home2-about"
-            >
-              Get a quote <FaArrowRight className="mt-0" />
-            </a>
-          </div> */}
         </div>
-      </nav>
-      {/* ==================== Navbar Two end ====================*/}
+      </nav> */}
+      {/* ==================== Navbar Two end ==================== */}
 
       {/* ================== BannerFive Start ==================*/}
       <div
-        className="banner-area bg-relative banner-area-1 pb-0 bg-cover"
-        style={{ backgroundImage: 'url("./assets/img/banner-5/5.png")' }}
+        className="banner-area bg-relative banner-area-1 bg-cover pt-2 m-0"
+        style={{ backgroundImage: 'url("./assets/img/banner/0.png")' }}
       >
         <div className="container">
-          <div className="row">
+          <div
+            className="logo text-start position-relative"
+            style={{ filter: "invert(1)" }}
+          >
+            <Link to="/">
+              <LogoComp color={"white"} />
+            </Link>
+          </div>
+          <div className="row pt-4 pb-5">
             <div className="col-lg-6 align-self-center">
-              <div className="banner-inner pe-xl-4 pb-3">
+              <div className="banner-inner pe-xl-4">
                 <h6
-                  className="bg-base-2 text-white subtitle"
+                  className="bg-base-2 text-white subtitle fs-11 mb-1"
                   data-aos="fade-right"
                   data-aos-delay="100"
                   data-aos-duration="1500"
@@ -239,7 +257,7 @@ const Home2 = () => {
                   Designing for the future
                 </h6>
                 <h2
-                  className="title text-white"
+                  className="title"
                   data-aos="fade-right"
                   data-aos-delay="250"
                   data-aos-duration="1500"
@@ -256,34 +274,42 @@ const Home2 = () => {
                   Marketing Plays An Important Role. Similarly, In Making
                   Cultivation Business Are Necessary.
                 </p>
-                <Link
-                  className="btn btn-border-base-2"
-                  data-aos="fade-right"
-                  data-aos-delay="450"
-                  data-aos-duration="1500"
-                  to="/about"
-                >
-                  Download App <FaPlus />
-                </Link>
-                <Link
-                  className="ms-2"
-                  data-aos="fade-right"
-                  data-aos-delay="450"
-                  data-aos-duration="1500"
-                  to="#"
-                >
+                <div className="btns">
+                  <Link
+                    className="btn btn-border-base-2 rounded-2"
+                    data-aos="fade-right"
+                    data-aos-delay="450"
+                    data-aos-duration="1500"
+                    onClick={() =>
+                      window.open(
+                        "https://rojgarapp.in/rojgarApp.apk",
+                        "_blank",
+                        "noopener,noreferrer"
+                      )
+                    }
+                  >
+                    Download App
+                  </Link>
+                  <Link
+                    className="ms-2"
+                    data-aos="fade-right"
+                    data-aos-delay="450"
+                    data-aos-duration="1500"
+                    to="#"
+                  >
                     <img
                       src={images.play_store}
                       alt=""
                       className="play-store h-100"
                     />
-                </Link>
+                  </Link>
+                </div>
               </div>
             </div>
             <div className="col-lg-6 col-md-9 align-self-end">
               <div className="banner-thumb-2 mt-4 mt-lg-0">
                 <div className="main-img-wrap">
-                  <img
+                  {/* <img
                     className="banner-animate-img banner-animate-img-1 left_image_bounce"
                     src="assets/img/banner-5/4.png"
                     alt="img"
@@ -292,11 +318,11 @@ const Home2 = () => {
                     className="banner-animate-img banner-animate-img-3 top_image_bounce"
                     src="assets/img/banner-5/3.png"
                     alt="img"
-                  />
+                  /> */}
                   <div className="three-name">
-                    <img className="main-img" src={images.app_7} alt="img" />
-                    <img className="main-img" src={images.app_3} alt="img" />
-                    <img className="main-img" src={images.app_4} alt="img" />
+                    <img className="main-img" src={images.app_8} alt="img" />
+                    <img className="main-img" src={images.app_9} alt="img" />
+                    <img className="main-img" src={images.app_10} alt="img" />
                   </div>
                 </div>
               </div>
@@ -321,7 +347,7 @@ const Home2 = () => {
           </div>
           <div className="work-process-area-inner-2">
             <div className="row">
-              <div className="col-lg-3 col-md-6">
+              <div className="col-lg-3 col-sm-6">
                 <div className="single-work-process-inner style-2 text-center">
                   <img
                     className="line-img"
@@ -340,7 +366,7 @@ const Home2 = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-lg-3 col-md-6">
+              <div className="col-lg-3 col-sm-6">
                 <div className="single-work-process-inner style-2 text-center">
                   <img
                     className="line-img"
@@ -359,7 +385,7 @@ const Home2 = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-lg-3 col-md-6">
+              <div className="col-lg-3 col-sm-6">
                 <div className="single-work-process-inner style-2 text-center">
                   <img
                     className="line-img"
@@ -380,8 +406,13 @@ const Home2 = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-lg-3 col-md-6">
+              <div className="col-lg-3 col-sm-6">
                 <div className="single-work-process-inner style-2 text-center">
+                  <img
+                    className="line-img"
+                    src="assets/img/about/29.png"
+                    alt="img"
+                  />
                   <div className="thumb mb-3">
                     <img src="assets/img/icon/39.svg" alt="img" />
                   </div>
@@ -419,7 +450,7 @@ const Home2 = () => {
               {/* <div className="about-thumb-inner">
                 <img
                   className="animate-img-3 z-index-2 top_image_bounce"
-                  src={images.logo}
+                  src="assets/img/app_logo.png"
                   alt="img"
                 />
                 <img className="main-img" src={images.app_4} alt="img" />
@@ -546,7 +577,7 @@ const Home2 = () => {
                   </p>
                 </div>
               </div>
-              <div className="single-service-inner-3 single-service-inner-3-left mb-0">
+              <div className="single-service-inner-3 single-service-inner-3-left mb-lg-0">
                 <div className="thumb">
                   <div className="thumb-inner">
                     <img src="assets/img/service-icon/9.svg" alt="img" />
@@ -958,26 +989,12 @@ const Home2 = () => {
       {/* =================== Testimonial One End ===================*/}
 
       {/*==================== Faq area start ====================*/}
-      <div className="faq-area pd-bottom-120">
+      {/* <div className="faq-area pd-bottom-120">
         <div className="container">
           <div className="row">
-            <div className="col-xl-7 col-lg-6 col-md-8 order-lg-last">
+            <div className="col-xl-7 col-lg-6 order-lg-last">
               <div className="about-thumb-inner video-thumb">
                 <img className="main-img" src={images.app_5} alt="img" />
-                <span
-                  onClick={() => setOpen(true)}
-                  className="video-play-btn-hover"
-                >
-                  <img src="assets/img/video.svg" alt="img" />{" "}
-                  <h6 className="d-inline-block">how we work</h6>
-                </span>
-                <ModalVideo
-                  channel="youtube"
-                  autoplay
-                  isOpen={isOpen}
-                  videoId="XM6kTQPzzpQ"
-                  onClose={() => setOpen(false)}
-                />
               </div>
             </div>
             <div className="col-xl-5 col-lg-6 align-self-center">
@@ -1026,7 +1043,7 @@ const Home2 = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* ==================== Faq area end ====================*/}
 
@@ -1037,7 +1054,7 @@ const Home2 = () => {
           <div className="row justify-content-center">
             <div className="col-xl-6 col-lg-8">
               <div className="section-title text-center">
-                <h2 className="title"> We are in the News </h2>
+                <h2 className="title"> We are in the News</h2>
               </div>
             </div>
           </div>
@@ -1093,7 +1110,7 @@ const Home2 = () => {
           <div className="row">
             <div className="col-lg-9 col-md-6">
               <div className="widget widget-recent-post">
-                <img src={images.logo} alt="" className="logo" />
+                <LogoComp color={"white"} />
                 <p className="text-white">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum
                   iusto consequatur reprehenderit, saepe odit aut ex quaerat
