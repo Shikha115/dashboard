@@ -73,7 +73,7 @@ function App() {
       <BrowserRouter>
         <section
           className={`wrapper ${loading ? "overflow-hidden" : ""}`}
-          id={`${defaultSidebar ? defaultSidebar : ""} `}
+          id={`${defaultSidebar ? defaultSidebar : ""}`}
           mode={theme ? theme : ""}
         >
           <Location />

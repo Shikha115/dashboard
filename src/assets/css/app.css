@@ -22206,3 +22206,34 @@ span.flatpickr-weekday,
   text-transform: capitalize;
   letter-spacing: 0.5px;
 }
+
+.modal.dark .modal-title,
+.modal.dark .form-label{
+  color: #fff;
+}
+.modal.dark .btn-close{
+ filter:invert(1)
+}
+
+.modal.dark input::placeholder {
+  color: #ffffff40;
+}
+
+input:focus::placeholder {
+  opacity: 0;
+  transition: 0 0.5s;
+}
+.modal.dark input:focus {
+  border-color: #ffffffa6 !important;
+}
+input::placeholder {
+  opacity: 1;
+  transition: 0 0.5s;
+}
+
+.modal.dark .card-body{
+  background-color: #434e5c;
+}
+.modal.dark ul.view-user-list li{
+  color: #fff;
+}
