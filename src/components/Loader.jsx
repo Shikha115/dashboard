@@ -5,9 +5,7 @@ import { images } from "./Images";
 const Loader = () => {
   return (
     <div className="loader-container">
-      <div className="loader">
-        {/* <img src={images.loader} alt="" /> */}
-      </div>
+      <div className="loader">{/* <img src={images.loader} alt="" /> */}</div>
     </div>
   );
 };

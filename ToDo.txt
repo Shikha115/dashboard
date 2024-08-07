@@ -29,7 +29,7 @@ User Page to be modified
 ✅ Notification with action On Payout change of any type on status true - Payout Change Alert
 Money Making campagne
 
-Campai text color white in dark black in light
+Campagne text color white in dark black in light
 
 
 
@@ -41,5 +41,11 @@ In Mobile --------------
 5. Logo
 6. Deep links
 7. If rejected profile then offers cant be applied but new joinee can create leads?
+8. Add credit code type community icons
+indiam map with insta linkedin ty telegram
+Made in india
+-------------
+map
+
 
 

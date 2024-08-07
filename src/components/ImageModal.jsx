@@ -19,8 +19,7 @@ function ImageModal(props) {
         alt=""
         {...rest}
         onClick={onShow}
-        // style={imgStyle}
-        style={{ width: 200, height: 200 }}
+        style={{ width: 200, height: 200, ...imgStyle }}
         className="h-[20px] w-[20px] object-contain"
       />
       <Modal

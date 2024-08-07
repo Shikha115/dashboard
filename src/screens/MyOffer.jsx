@@ -14,6 +14,7 @@ import useAuthStore from "../store/authStore";
 import _ from "lodash";
 import AddModalComp from "./offers/AddModalComp";
 import ImageModal from "../components/ImageModal";
+import Loader from "../components/Loader";
 
 function MyOffer() {
   const location = useLocation();
@@ -117,6 +118,8 @@ function MyOffer() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
+
     if (addModal.type === "add") {
       AddData();
     } else {
@@ -152,6 +155,9 @@ function MyOffer() {
         message: "Values marked by * are important",
         color: "red",
       });
+
+      setIsLoading(false);
+
       return;
     }
 
@@ -161,16 +167,19 @@ function MyOffer() {
         getOfferbyId(category_id);
         setToastData({ message: res.data.message });
         setAddModal({ ...addModal, state: false });
+        setIsLoading(false);
       })
       .catch((error) => {
         console.log(error.response.data);
         setToastData({ message: "Failed to create offer", color: "red" });
         setAddModal({ ...addModal, state: false });
+        setIsLoading(false);
       });
   };
 
   const UpdateData = async () => {
     let obj = {};
+
     [...currentData].forEach((e) => {
       obj[e?.key?.toLowerCase()?.split(" ")?.join("_")] = e?.value;
     });
@@ -188,10 +197,12 @@ function MyOffer() {
         getOfferbyId(category_id);
         setAddModal({ ...addModal, state: false });
         setToastData({ message: res.data.message });
+        setIsLoading(false);
       })
       .catch((error) => {
         setToastData({ message: "Failed to edit offer", color: "red" });
         setAddModal({ ...addModal, state: false });
+        setIsLoading(false);
       });
   };
 
@@ -396,10 +407,11 @@ function MyOffer() {
               </div>
               <h4 className="page-title">Manage {currentCategory?.name}</h4>
             </div>
+            {isLoading ? <Loader /> : null}
             <DataTable
               columns={columns}
               data={Offers}
-              progressPending={isLoading}
+              // progressPending={isLoading}
               pagination
               paginationRowsPerPageOptions={[30, 60, 90, 120]}
               paginationPerPage={30}

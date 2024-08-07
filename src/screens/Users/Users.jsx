@@ -17,10 +17,10 @@ import useUserManagementHook from "./useUserManagementHook";
 import UserTypeSelector from "./UserSelector";
 import { FaX } from "react-icons/fa6";
 import NoDataComponent from "../../components/NoDataComp";
+import Loader from "../../components/Loader";
 
 function Users() {
   const { theme } = useAuthStore();
-
   const {
     isLoading,
     columns,
@@ -105,22 +105,27 @@ function Users() {
               </div>
               <h4 className="page-title">Users</h4>
             </div>
+            {isLoading ? <Loader /> : null}
 
-            <DataTable
-              columns={columns}
-              data={Users?.length > 0 ? Users : []}
-              noDataComponent={NoDataComponent}
-              paginationPerPage={filter?.limit || 10}
-              paginationDefaultPage={filter?.currentPage}
-              paginationServer
-              progressPending={isLoading}
-              paginationTotalRows={filter?.totalDocuments}
-              paginationComponentOptions={{
-                noRowsPerPage: true,
-              }}
-              pagination
-              onChangePage={onNextPageClick}
-            />
+            {Users?.length ? (
+              <DataTable
+                columns={columns}
+                data={Users?.length > 0 ? Users : []}
+                // noDataComponent={NoDataComponent}
+                paginationPerPage={filter?.limit || 10}
+                paginationDefaultPage={filter?.currentPage}
+                paginationServer
+                // progressPending={isLoading}
+                paginationTotalRows={filter?.totalDocuments}
+                paginationComponentOptions={{
+                  noRowsPerPage: true,
+                }}
+                pagination
+                onChangePage={onNextPageClick}
+              />
+            ) : (
+              <NoDataComponent />
+            )}
           </div>
         </div>
       </div>
@@ -176,7 +181,7 @@ function Users() {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <ViewUser  />
+          <ViewUser />
         </Modal.Body>
       </Modal>
       {/* update */}

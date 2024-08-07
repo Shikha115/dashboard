@@ -4,6 +4,8 @@ import DataTable from "react-data-table-component";
 import useHooksWithLeads from "./useHooksWithLeads";
 import LeadModalComp from "./LeadModalComp";
 import FilterCard from "./FilterCard";
+import Loader from "../../components/Loader";
+import NoDataComponent from "../../components/NoDataComp";
 
 function Lead() {
   const {
@@ -27,13 +29,7 @@ function Lead() {
     setSearchFilterData,
   } = useHooksWithLeads();
 
-  const NoDataComponent = () => {
-    return (
-      <div style={{ padding: "20px", textAlign: "center" }}>
-        No data available
-      </div>
-    );
-  };
+
   return (
     <div className="content">
       <div className="container-fluid">
@@ -55,6 +51,8 @@ function Lead() {
             handleFileUpload={handleFileUpload}
             setSearchFilterData={setSearchFilterData}
           />
+          {isLoading ? <Loader /> : null}
+
           {leads?.length > 0 ? (
             <DataTable
               noDataComponent={NoDataComponent}
@@ -62,7 +60,7 @@ function Lead() {
               paginationDefaultPage={Pagination?.currentPage}
               columns={columns}
               data={leads}
-              progressPending={isLoading}
+              // progressPending={isLoading}
               pagination
               paginationServer
               paginationTotalRows={Pagination?.totalDocuments}
