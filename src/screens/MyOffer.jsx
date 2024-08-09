@@ -157,7 +157,6 @@ function MyOffer() {
       });
 
       setIsLoading(false);
-
       return;
     }
 
@@ -168,6 +167,7 @@ function MyOffer() {
         setToastData({ message: res.data.message });
         setAddModal({ ...addModal, state: false });
         setIsLoading(false);
+        setCurrentData(null);
       })
       .catch((error) => {
         console.log(error.response.data);

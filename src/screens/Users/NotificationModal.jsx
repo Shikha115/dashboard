@@ -19,6 +19,11 @@ function NotificationModal(props) {
       setToastData({ message: "Select a template to continue" });
       return;
     }
+
+    // console.log(props);
+
+    // return;
+    // console.log(SelectedTemplate);
     if (SelectedTemplate?.type === "email") {
       const params = {
         tokens: props.currentData?.fcm_token,
@@ -32,7 +37,7 @@ function NotificationModal(props) {
           ...params,
         })
         .then((e) => {
-          console.log(e);
+          // console.log(e);
           props.setNotificationModal(false);
           setToastData({ message: "Notification sent" });
         })
@@ -46,9 +51,12 @@ function NotificationModal(props) {
     } else {
       const params = {
         tokens: props.currentData?.fcm_token,
+        user_id: props?.currentData?._id,
         title: SelectedTemplate?.title,
         body: SelectedTemplate?.message,
         image: SelectedTemplate?.image,
+        route: SelectedTemplate?.route,
+        route_id: SelectedTemplate?.route_id,
       };
 
       axios
@@ -56,7 +64,15 @@ function NotificationModal(props) {
           ...params,
         })
         .then((e) => {
-          console.log(e);
+          axios
+            .post(apis.saveNotification, { ...params })
+            .then((item) => {
+              // console.log(item);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+          // console.log(e);
           props.setNotificationModal(false);
           setToastData({ message: "Notification sent" });
         })

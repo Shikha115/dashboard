@@ -396,7 +396,9 @@ function Notification() {
                     ...obj,
                   });
                 }}
-                defaultValue={""}
+                // defaultValue={Pages?.findIndex(
+                //   (obj) => obj._id === currentRow?._id
+                // )}
               >
                 {Pages &&
                   Pages?.map((val, index) => {
