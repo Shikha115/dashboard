@@ -280,7 +280,7 @@ const useUserManagementHook = () => {
     axios
       .get(apis?.getAllLUsers + params)
       .then((res) => {
-        console.log(res?.data);
+        // console.log(res?.data);
         setFilter({ ...filter, ...res?.data?.pagination });
         setUsers(res?.data?.data);
         setIsLoading(false);

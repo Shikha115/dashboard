@@ -377,17 +377,19 @@ function Notification() {
                 className="form-select"
                 required
                 onChange={(e) => {
-                  const selectedPage = Pages[e.target.selectedIndex];
+                  if (e.target.selectedIndex === 0) {
+                    return;
+                  }
+                  const selectedPage = Pages[e.target.selectedIndex - 1];
                   // console.log(selectedPage);
                   let obj = {};
                   if (selectedPage.category_info?.name === "App Screen") {
                     obj.route = selectedPage.mobile_data?.title;
-                    obj.route_id = "";
                   } else {
                     obj.route = "SingleOffer";
                   }
 
-                  if (selectedPage._id) {
+                  if (selectedPage?._id) {
                     obj.route_id = selectedPage?._id;
                   }
 
@@ -396,14 +398,28 @@ function Notification() {
                     ...obj,
                   });
                 }}
-                // defaultValue={Pages?.findIndex(
-                //   (obj) => obj._id === currentRow?._id
-                // )}
+                defaultValue={currentRow?.route_id || ""}
               >
+                <option key={-1}>
+                  {`${
+                    Pages[
+                      Pages?.findIndex(
+                        (obj) => obj._id === currentRow?.route_id
+                      )
+                    ]?.mobile_data?.title
+                  } -
+                    ${
+                      Pages[
+                        Pages?.findIndex(
+                          (obj) => obj._id === currentRow?.route_id
+                        )
+                      ]?.category_info?.name
+                    }`}
+                </option>
                 {Pages &&
                   Pages?.map((val, index) => {
                     return (
-                      <option key={index} defaultValue={val?._id}>
+                      <option key={index} defaultValue={currentRow?.route_id}>
                         {val?.mobile_data?.title} - {val?.category_info?.name}
                       </option>
                     );
