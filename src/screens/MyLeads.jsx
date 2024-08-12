@@ -69,7 +69,7 @@ function MyLeads() {
     };
   }, []);
 
-  const SubmitLeads = async (e) => {
+  const submitLeads = async (e) => {
     e.preventDefault();
 
     if (!userDetails?.name) {
@@ -96,7 +96,6 @@ function MyLeads() {
     const data = {
       offer_id: offerId,
       user_id: userId,
-      // bank_id: offer?.bank_info?._id,
       category_id: offer?.category_info?._id,
       click_id: date,
       affiliate_id: affiliateId,
@@ -220,7 +219,7 @@ function MyLeads() {
                         </div>
                         <div className="col-12">
                           <button
-                            onClick={SubmitLeads}
+                            onClick={submitLeads}
                             className="btn btn-purple ms-0"
                           >
                             Submit

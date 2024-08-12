@@ -411,7 +411,6 @@ function MyOffer() {
             <DataTable
               columns={columns}
               data={Offers}
-              // progressPending={isLoading}
               pagination
               paginationRowsPerPageOptions={[30, 60, 90, 120]}
               paginationPerPage={30}
