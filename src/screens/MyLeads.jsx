@@ -107,7 +107,7 @@ function MyLeads() {
       email: userDetails?.email,
       phone: userDetails?.phone,
 
-      earning: 0,
+      earning: offer?.mobile_data?.earning,
     };
 
     axios

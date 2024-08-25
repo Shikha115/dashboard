@@ -7,10 +7,11 @@ import { CiWarning } from "react-icons/ci";
 import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
 import useToastStore from "../../store/toastStore";
+import useUserManagementHook from "./useUserManagementHook";
 
 const SettleModalComp = ({ settleModal, setSettleModal, currentData }) => {
   const { theme } = useAuthStore();
-
+  const { fetchWithParams } = useUserManagementHook();
   const [isLoading, setIsLoading] = useState(true);
   const [Page, setPage] = useState(0);
   const [FetchedLeads, setFetchedLeads] = useState([]);
@@ -27,27 +28,27 @@ const SettleModalComp = ({ settleModal, setSettleModal, currentData }) => {
     },
     {
       name: "Offer Name",
-      selector: (row) => row?.offer_details[0]?.mobile_data?.title,
+      selector: (row) => row?.offer_details?.mobile_data?.title,
       center: true,
       width: "auto",
     },
 
     {
       name: "Payment",
-      selector: (row) => row?.amount,
+      selector: (row) => row?.earning,
       center: true,
       width: "120px",
     },
 
     {
       name: "Click Id",
-      selector: (row) => row?.referral_id + "_" + row?.click_id,
+      selector: (row) => row?.affiliate_id + "_" + row?.click_id,
       center: true,
       width: "auto",
     },
     {
       name: "Status",
-      selector: (row) => row?.status,
+      selector: (row) => row?.isComplete,
       center: true,
       width: "auto",
     },
@@ -88,8 +89,10 @@ const SettleModalComp = ({ settleModal, setSettleModal, currentData }) => {
 
   const getSelectedLeads = async (data) => {
     axios
-      .post(apis.getSelectedOrders, { ids: data })
+      .post(apis.getSelectedLeadsById, { ids: data })
       .then((e) => {
+        console.log(e);
+
         setFetchedLeads(e?.data?.data);
         setTimeout(() => {
           setIsLoading(false);
@@ -106,10 +109,42 @@ const SettleModalComp = ({ settleModal, setSettleModal, currentData }) => {
       setToastData({ message: "No Orders to process" });
       return;
     }
+    const ids = [];
+    let total = 0;
+    const orders = [...FetchedLeads]?.map((e) => {
+      const { offer_details, user_details, ...rest } = e;
+      ids.push(rest?._id);
+      total = (Number(total) + Number(rest?.earning)).toString();
+      return {
+        ...rest,
+        title: offer_details?.mobile_data?.title,
+        order_id: offer_details?._id,
+      };
+    });
 
-    const ids = [...FetchedLeads]?.map((e) => e?._id);
+    console.log(ids, orders, total, currentData?._id);
 
-    axios
+    // return;
+    await axios
+      .post(apis.createPayment, { orders, total, user_id: currentData?._id })
+      .then((e) => {
+        setTimeout(() => {
+          setIsLoading(false);
+          setSettleModal(false);
+          fetchWithParams();
+          setToastData({ message: e?.data?.message });
+          // console.log(e);
+        }, 200);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+        setSettleModal(false);
+      });
+
+    return;
+
+    await axios
       .post(apis.approveOrders, { ids })
       .then((e) => {
         setTimeout(() => {
@@ -126,7 +161,7 @@ const SettleModalComp = ({ settleModal, setSettleModal, currentData }) => {
 
   useEffect(() => {
     if (currentData?.order_settlement?.length > 0) {
-      getSelectedLeads(currentData?.order_settlement);
+      getSelectedLeads(currentData?.lead_settlement);
     }
     setIsLoading(false);
   }, []);

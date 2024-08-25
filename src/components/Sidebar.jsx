@@ -49,7 +49,7 @@ const Sidebar_data2 = [
   },
   {
     icon: <FaStar />,
-    category: "Order Report ",
+    category: "Payment Report ",
     subcategory: [],
     isActive: false,
     link: "/order",

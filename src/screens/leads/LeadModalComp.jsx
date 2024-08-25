@@ -44,24 +44,28 @@ function LeadModalComp({ LeadModal, setLeadModal }) {
           obj[header?.toLowerCase()] =
             typeof row[index] === "number" ? String(row[index]) : row[index];
 
-          obj["offer_id"] = SelectedOffer;
+          // obj["offer_id"] = SelectedOffer;
           if (header?.toLowerCase() === "affiliate_id") {
-            obj["refferal_id"] = obj?.affiliate_id?.split("_")[0];
-            obj["click_id"] = obj?.affiliate_id?.split("_")[1];
+            obj["refferal_id"] = obj?.affiliate_id?.split("_")[0].trim();
+            obj["click_id"] = obj?.affiliate_id?.split("_")[1].trim();
             delete obj.affiliate_id;
           }
         });
-        obj.status = obj.status?.toLowerCase();
+        obj.status = obj.status?.toLowerCase().trim();
         return obj;
       });
-      // console.log(arrayData);
+
       fileInputRef.current.value = "";
       // return;
 
       let apiArr = arrayData.filter((val) => val?.status);
-      // console.log(apiArr);
-      let res = await axios.post(apis.settleLeads, { data: apiArr });
-      // console.log(res);
+
+      // return;
+      let res = await axios.post(apis.settleLeads, {
+        data: apiArr,
+        offer_id: SelectedOffer,
+      });
+
       if (res.data.message === "Invalid offer selected") {
         setToastData({ message: res.data.message, color: "red" });
       } else {

@@ -15,6 +15,8 @@ const useHooksWithOrders = () => {
   const [leads, setleads] = useState([]);
   const [Pagination, setPagination] = useState({});
   const [LeadModal, setLeadModal] = useState(false);
+  const [PaymentModal, setPaymentModal] = useState(false);
+  const [PaymentModalData, setPaymentModalData] = useState(false);
 
   const [searchFilterData, setSearchFilterData] = useState({
     search: "",
@@ -36,41 +38,35 @@ const useHooksWithOrders = () => {
   const columns = [
     {
       name: "S.no",
-      selector: (row, index) => index + 1,
+      selector: (row, index) => (Pagination?.currentPage || 1) * index + 1,
       width: "60px",
     },
     {
-      name: "Title",
+      name: "Payment ID",
       center: "true",
       width: "auto",
-      selector: (row) => row?.offer_info?.mobile_data?.title,
+      selector: (row) => row?._id,
     },
 
     {
       name: "Amount",
       center: "true",
       width: "auto",
-      selector: (row) => row?.amount,
+      selector: (row) => row?.total,
     },
     {
       name: "Date",
       center: "true",
       width: "auto",
       selector: (row) => {
-        return row?.created
-          ? moment(row?.created)?.format("YYYY-MM-DD  HH:mm:ss")
-          : row?.created;
+        return row?.created_at
+          ? moment(row?.created_at)?.format("YYYY-MM-DD  HH:mm:ss")
+          : row?.created_at;
       },
     },
 
     {
-      name: "Referral ID",
-      center: "true",
-      width: "auto",
-      selector: (row) => row?.referral_id,
-    },
-    {
-      name: "Referral ID",
+      name: "Status",
       center: "true",
       width: "auto",
       selector: (row) => {
@@ -79,39 +75,49 @@ const useHooksWithOrders = () => {
             className="btn btn-soft-success btn-sm"
             style={{ textWrap: "nowrap" }}
             onClick={() => {
-              window?.open(row?.pdf);
+              setPaymentModal(true);
+              setPaymentModalData(row);
             }}
           >
-            Order Pdf
+            {row?.requested
+              ? "Redeem Request"
+              : row?.settled
+              ? "Settled"
+              : "Pending"}
           </Link>
         );
       },
     },
-    {
-      name: "Status	",
-      center: "true",
-      width: "auto",
-      selector: (row) => row?.status,
-    },
+    // {
+    //   name: "Referral ID",
+    //   center: "true",
+    //   width: "auto",
+    //   selector: (row) => {
+    //     return (
+    //       <Link
+    //         className="btn btn-soft-success btn-sm"
+    //         style={{ textWrap: "nowrap" }}
+    //         onClick={() => {
+    //           window?.open(row?.pdf);
+    //         }}
+    //       >
+    //         Order Pdf
+    //       </Link>
+    //     );
+    //   },
+    // },
 
     {
-      name: "Customer Email",
+      name: "User Name",
       center: "true",
       width: "auto",
-      selector: (row) => row?.lead_info?.email,
+      selector: (row) => row?.user_info?.name,
     },
     {
-      name: "Lead Date",
+      name: "User Phone",
       center: "true",
       width: "auto",
-      selector: (row) => row?.lead_info?.created,
-    },
-    {
-      name: "Click ID",
-      center: "true",
-      width: "auto",
-      selector: (row) =>
-        row?.lead_info?.affiliate_id + "_" + row?.lead_info?.click_id,
+      selector: (row) => row?.user_info?.phone,
     },
   ];
 
@@ -205,6 +211,7 @@ const useHooksWithOrders = () => {
             searchFilterData?.from
           : "fromDate=" + searchFilterData?.from;
     }
+
     if (searchFilterData?.to) {
       if (!searchFilterData?.from) {
         setToastData({
@@ -234,7 +241,7 @@ const useHooksWithOrders = () => {
   };
 
   const reset = () => {
-    setleads(allOrders);
+    fetchWithParams();
     setSearchFilterData({});
     setPagination({});
   };
@@ -260,10 +267,10 @@ const useHooksWithOrders = () => {
   const fetchWithParams = async (params) => {
     setIsLoading(true);
 
-    let res = await getAllOrders(params);
-    if (res?.data?.length > 0) {
-      setleads(res?.data);
-      setPagination(res?.pagination);
+    let res = await axios.get(apis.getAllPayment + "?" + params || "");
+    if (res?.data?.data?.length > 0) {
+      setleads(res?.data?.data);
+      setPagination(res?.data?.pagination);
       setIsLoading(false);
     } else {
       setleads([]);
@@ -337,11 +344,7 @@ const useHooksWithOrders = () => {
   useEffect(() => {
     setIsLoading(true);
     let timer = setTimeout(() => {
-      getAllOrders(getParams()).then((e) => {
-        setleads(e.data);
-        setPagination(e.pagination);
-        setIsLoading(false);
-      });
+      fetchWithParams();
     }, 0);
     return () => {
       clearTimeout(timer);
@@ -370,6 +373,10 @@ const useHooksWithOrders = () => {
     onNextPageClick,
     searchFilterData,
     setSearchFilterData,
+    PaymentModal,
+    setPaymentModal,
+    PaymentModalData,
+    setPaymentModalData,
   };
 };
 

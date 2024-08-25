@@ -55,12 +55,24 @@ const useDataStore = create((set, getState) => ({
   },
 
   getAllOffer: async (status = false) => {
+    set({ isLoading: true });
     const res = await axios.get(apis.getallOffers);
     let data = res?.data?.data;
     if (status) {
-      data = data.filter((e) => e.status);
+      data = await data?.sort((a, b) => {
+        if (a.status === true && b.status === false) {
+          return -1; // a comes before b
+        }
+        if (a.status === false && b.status === true) {
+          return 1; // b comes before a
+        }
+        return 0; // Keep the original order if both have the same status
+      });
     }
+    console.log(data);
+
     set({ allOffer: data, isLoading: false });
+    return data;
   },
 
   getAllOrders: async (params = "") => {
@@ -75,6 +87,7 @@ const useDataStore = create((set, getState) => ({
       id,
     });
     set({ allOffer: res.data?.data });
+    return res.data.data;
   },
 
   setLead: (data) => set({ lead: data }),
@@ -99,7 +112,7 @@ const useDataStore = create((set, getState) => ({
   },
 
   setUsers: (data) => set({ users: data }),
-  
+
   getAllUsers: async () => {
     const res = await axios.get(apis.getAllLUsers);
     set({ users: res.data?.data });

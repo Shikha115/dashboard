@@ -1,22 +1,14 @@
 import React, { useEffect, useState } from "react";
-import DataTable from "react-data-table-component";
-import useDataStore from "../store/dataStore";
 import { MdDelete, MdEdit } from "react-icons/md";
-import Modal from "react-bootstrap/Modal";
-import { CiSearch, CiWarning } from "react-icons/ci";
-import { apis } from "../utils/URL";
-import axios from "axios";
-
 import { useLocation } from "react-router-dom";
-import useToastStore from "../store/toastStore";
-import { getBankById } from "../utils/helperfunctions";
-import useAuthStore from "../store/authStore";
-import _ from "lodash";
-import AddModalComp from "./offers/AddModalComp";
-import ImageModal from "../components/ImageModal";
-import Loader from "../components/Loader";
+import useToastStore from "../../store/toastStore";
+import useAuthStore from "../../store/authStore";
+import useDataStore from "../../store/dataStore";
+import axios from "axios";
+import { apis } from "../../utils/URL";
+import ImageModal from "../../components/ImageModal";
 
-function MyOffer() {
+const useOfferHook = () => {
   const location = useLocation();
   const { setToastData } = useToastStore();
   const { theme } = useAuthStore();
@@ -25,7 +17,8 @@ function MyOffer() {
   let category_id = currentUrl.split("/offer/")[1];
 
   const [isLoading, setIsLoading] = useState(true);
-  const { allOffer, getOfferbyId, bank, getCategory } = useDataStore();
+  const { allOffer, getOfferbyId, bank, getCategory, getAllOffer } =
+    useDataStore();
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState({ type: "", state: false });
   const [currentData, setCurrentData] = useState([]);
@@ -76,8 +69,13 @@ function MyOffer() {
   const updateStatus = async (id, status) => {
     axios
       .post(apis.updateOfferStatus, { id, status })
-      .then((e) => {
+      .then(async (e) => {
         setToastData({ message: e.data.message });
+        let res = await getOfferbyId(category_id);
+        setOffers([]);
+        setTimeout(() => {
+          setOffers(res);
+        }, 100);
       })
       .catch((err) => {
         setToastData({ message: "Failed to update status", color: "red" });
@@ -351,7 +349,7 @@ function MyOffer() {
               setData(row);
               setCurrentData(row?.offer_data);
               setAddonData({ status: row?.status, rank: row?.rank });
-              setbankData(getBankById(bank, row?.bank_id));
+              //   setbankData(getBankById(bank, row?.bank_id));
               setAddModal({ type: "edit", state: true });
             }}
           >
@@ -371,98 +369,27 @@ function MyOffer() {
     },
   ];
 
-  return (
-    <>
-      <div className="content">
-        <div className="container-fluid">
-          <div className="manage-bank">
-            <div className="page-title-box">
-              <div className="page-title-right">
-                <div className="app-search">
-                  <form>
-                    <div className="input-group">
-                      <input
-                        type="search"
-                        className="form-control"
-                        placeholder="Search..."
-                        onChange={searchFilter}
-                      />
-                      <span className="search-icon">
-                        <CiSearch className="text-muted" />
-                      </span>
-                    </div>
-                  </form>
-                </div>
-                {currentCategory?.name === "All" ? null : (
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => {
-                      setCurrentData(currentCategory?.offer_data);
-                      setAddModal({ type: "add", state: true });
-                    }}
-                  >
-                    Add {currentCategory?.name}
-                  </button>
-                )}
-              </div>
-              <h4 className="page-title">Manage {currentCategory?.name}</h4>
-            </div>
-            {isLoading ? <Loader /> : null}
-            <DataTable
-              columns={columns}
-              data={Offers}
-              pagination
-              paginationRowsPerPageOptions={[30, 60, 90, 120]}
-              paginationPerPage={30}
-            />
-          </div>
-        </div>
-      </div>
-      <Modal
-        className={theme ? theme : ""}
-        size="sm"
-        show={deleteModal}
-        centered
-        onHide={() => setDeleteModal(false)}
-      >
-        <Modal.Body className="text-center p-4">
-          <CiWarning className="fs-48 text-danger" />
-          <h4 className="mt-2">Are You Sure?</h4>
-          <p className="mt-3">
-            Warning: You are about to delete this item. This action cannot be
-            undone. Are you sure you want to proceed with the deletion?
-          </p>
-          <h5 className="mt-3">Enter password to delete</h5>
-          <input
-            type="search"
-            className="form-control"
-            placeholder="Enter password"
-            onChange={(e) => setpassword(e.target.value)}
-          />
-          <button
-            type="button"
-            className="btn btn-danger my-2"
-            onClick={deleteData}
-          >
-            Delete
-          </button>
-        </Modal.Body>
-      </Modal>
-      <AddModalComp
-        theme={theme}
-        category_id={category_id}
-        addModal={addModal}
-        setAddModal={setAddModal}
-        currentData={currentData}
-        setCurrentData={setCurrentData}
-        addonData={addonData}
-        setAddonData={setAddonData}
-        currentCategory={currentCategory}
-        handleSubmit={handleSubmit}
-        Data={Data}
-      />
-    </>
-  );
-}
+  return {
+    searchFilter,
+    currentCategory,
+    setCurrentData,
+    setAddModal,
+    isLoading,
+    columns,
+    Offers,
+    theme,
+    deleteModal,
+    setDeleteModal,
+    setpassword,
+    deleteData,
+    category_id,
+    addModal,
+    currentData,
+    addonData,
+    setAddonData,
+    handleSubmit,
+    Data,
+  };
+};
 
-export default MyOffer;
+export default useOfferHook;

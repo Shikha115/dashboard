@@ -6,9 +6,12 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { apis } from "../../utils/URL";
+import useToastStore from "../../store/toastStore";
 
 let searchTimer;
 const useUserManagementHook = () => {
+  const { setToastData } = useToastStore();
+
   const { users, getAllUsers, setSelectedUser, selectedUser } = useDataStore();
   const [isLoading, setIsLoading] = useState(true);
   const [Page, setPage] = useState(0);
@@ -79,11 +82,11 @@ const useUserManagementHook = () => {
           className="btn btn-soft-danger btn-sm"
           style={{ textWrap: "nowrap" }}
           onClick={() => {
-            setCurrentData(row);
+            // setCurrentData(row);
             setOrderModal(true);
           }}
         >
-          Orders
+          Payments
         </Link>
       ),
     },
@@ -111,7 +114,7 @@ const useUserManagementHook = () => {
       cell: (row) => {
         return (
           <div className="d-flex flex-column">
-            {row?.order_settlement?.length > 0 ? (
+            {row?.lead_settlement?.length > 0 ? (
               <Link
                 className="btn btn-soft-info btn-sm"
                 onClick={() => {
@@ -119,11 +122,20 @@ const useUserManagementHook = () => {
                   setSettleModal(true);
                 }}
               >
-                Settle Orders
+                Confirm Payment
               </Link>
-            ) : null}
+            ) : (
+              <Link
+                className="btn btn-soft-info btn-sm"
+                onClick={() => {
+                  setToastData({ message: "No pending payment" });
+                }}
+              >
+                Payment Processed
+              </Link>
+            )}
 
-            {row?.redeem_wallet ? (
+            {/* {row?.redeem_wallet ? (
               <Link
                 className="btn btn-soft-warning  btn-sm "
                 onClick={() => {
@@ -133,7 +145,7 @@ const useUserManagementHook = () => {
               >
                 Pay
               </Link>
-            ) : null}
+            ) : null} */}
           </div>
         );
       },

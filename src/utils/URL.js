@@ -1,9 +1,9 @@
 export const AppInfo = {
-  // baseUrlAPI: "http://localhost:5001", // Rojgar Dev local
-  // webUrl: "http://localhost:3000",
+  baseUrlAPI: "http://localhost:5001", // Rojgar Dev local
+  webUrl: "http://localhost:3000",
 
-  baseUrlAPI: "https://api.dev.rojgarapp.in", // Rojgar Dev
-  webUrl: "https://web.dev.rojgarapp.in",
+  // baseUrlAPI: "https://api.dev.rojgarapp.in", // Rojgar Dev
+  // webUrl: "https://web.dev.rojgarapp.in",
 
   // baseUrlAPI: "https://api.prod.rojgarapp.in", // Rojgar Prod
   // webUrl: "https://bfsiportal.com",
@@ -73,12 +73,20 @@ export const apis = {
   getAllLeads: `${baseURL}/lead/get-all-leads`,
   downloadAllLeads: `${baseURL}/lead/download-all-leads`,
   settleLeads: `${baseURL}/lead/settle-leads`,
+  getSelectedLeads: `${baseURL}/lead/get-selected-leads`,
+  getSelectedLeadsById: `${baseURL}/lead/get-selected-leads-by-id`,
 
   //---------------- order ------------- //
   getSelectedOrders: `${baseURL}/order/get-selected-orders`,
   approveOrders: `${baseURL}/order/approve-orders`,
   getOrdersByUid: `${baseURL}/order/get-orders-by-uid`,
   downloadAllOrders: `${baseURL}/order/download-all-orders`,
+
+  //---------------- payment ------------- //
+  createPayment: `${baseURL}/payment/create-payment`,
+  getAllPayment: `${baseURL}/payment/get-all-payments`,
+  settlePaymentOffline: `${baseURL}/payment/settle-payment-offline`,
+  settlePaymentOnline: `${baseURL}/payment/settle-payment-online`,
 
   //---------------- bank ------------- //
   getAllBanks: `${baseURL}/bank/get-all-banks`,

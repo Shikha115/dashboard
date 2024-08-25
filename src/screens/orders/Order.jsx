@@ -5,6 +5,7 @@ import FilterCard from "./FilterCard";
 import useHooksWithOrders from "./useHooksWithOrders";
 import OrderModalComp from "../Users/OrderModalComp";
 import NoDataComponent from "../../components/NoDataComp";
+import PaymentModel from "./PaymentModel";
 
 function Order() {
   const {
@@ -26,6 +27,10 @@ function Order() {
     onNextPageClick,
     searchFilterData,
     setSearchFilterData,
+    PaymentModal,
+    setPaymentModal,
+    PaymentModalData,
+    setPaymentModalData,
   } = useHooksWithOrders();
 
   return (
@@ -69,6 +74,12 @@ function Order() {
             <NoDataComponent />
           )}
           <OrderModalComp LeadModal={LeadModal} setLeadModal={setLeadModal} />
+          <PaymentModel
+            PaymentModal={PaymentModal}
+            setPaymentModal={setPaymentModal}
+            PaymentModalData={PaymentModalData}
+            setPaymentModalData={setPaymentModalData}
+          />
         </div>
       </div>
     </div>

@@ -28,7 +28,7 @@ const PrivacyPolicy = React.lazy(() => import("./screens/PrivacyPolicy"));
 const TermCondition = React.lazy(() => import("./screens/TermCondition"));
 // const Landing = React.lazy(() => import("./screens/Landing"));
 const Dashboard = React.lazy(() => import("./screens/Dashboard"));
-const MyOffer = React.lazy(() => import("./screens/MyOffer"));
+const MyOffer = React.lazy(() => import("./screens/offers/MyOffer"));
 const NotFound = React.lazy(() => import("./screens/NotFound"));
 const ManageBanner = React.lazy(() => import("./screens/Banner"));
 const ManageSponsor = React.lazy(() => import("./screens/sponsor/Sponsor"));
@@ -178,7 +178,11 @@ function App() {
               <Route
                 path="/order"
                 element={
-                  <ProtectedRoute path="/order" Component={Order} header={true} />
+                  <ProtectedRoute
+                    path="/order"
+                    Component={Order}
+                    header={true}
+                  />
                 }
               />
               <Route

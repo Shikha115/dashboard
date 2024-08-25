@@ -5,7 +5,12 @@ import useAuthStore from "../store/authStore";
 import useToastStore from "../store/toastStore";
 
 function ToastComponent() {
-  const { toastData, showToast, setShowToast } = useToastStore();
+  const {
+    toastData,
+    showToast,
+    setShowToast,
+    loading = false,
+  } = useToastStore();
 
   useEffect(() => {
     if (toastData.message) {
@@ -18,6 +23,14 @@ function ToastComponent() {
       };
     }
   }, [toastData]);
+
+  if (loading) {
+    return (
+      <ToastContainer position="middle-center" className="position-fixed">
+        <LoaderComp />
+      </ToastContainer>
+    );
+  }
 
   return (
     <ToastContainer position="top-end" className="position-fixed">
@@ -45,3 +58,16 @@ function ToastComponent() {
 }
 
 export default ToastComponent;
+
+export const LoaderComp = () => {
+  return (
+    <div
+      className="d-flex justify-content-center align-items-center"
+      // style={{ height: "100vh" }}
+    >
+      <div className="spinner-border text-primary" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  );
+};
