@@ -243,7 +243,7 @@ const useOfferHook = () => {
           alt=""
           src={row?.mobile_data?.product_image}
           className="img-fluid"
-          imgStyle={{ height: "50px", objectFit: "contain", width: "auto" }}
+          imgStyle={{ height: "80px", objectFit: "contain", width: "80px" }}
         />
       ),
     },

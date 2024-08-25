@@ -53,7 +53,7 @@ function Notification() {
           alt=""
           src={row.image}
           className="img-fluid"
-          imgStyle={{ height: "50px", objectFit: "contain", width: "auto" }}
+          imgStyle={{ height: 100, objectFit: "stretch", width: 200 }}
         />
       ),
     },

@@ -195,10 +195,10 @@ function ManageBanner() {
           alt=""
           src={row?.image}
           imgStyle={{
-            width: "100px",
-            aspectRatio: 1,
+            width: 200,
+            height: 100,
             borderRadius: 10,
-            objectFit: "cover",
+            objectFit: "stretch",
           }}
         />
       ),

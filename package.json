@@ -27,7 +27,7 @@
     "react-slick": "^0.30.2",
     "sass": "^1.77.2",
     "styled": "^1.0.0",
-    "styled-components": "^6.1.8",
+    "styled-components": "^5.3.11",
     "web-vitals": "^2.1.4",
     "xlsx": "^0.18.5",
     "zustand": "^4.5.0"

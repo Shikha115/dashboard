@@ -58,18 +58,18 @@ const useDataStore = create((set, getState) => ({
     set({ isLoading: true });
     const res = await axios.get(apis.getallOffers);
     let data = res?.data?.data;
-    if (status) {
-      data = await data?.sort((a, b) => {
-        if (a.status === true && b.status === false) {
-          return -1; // a comes before b
-        }
-        if (a.status === false && b.status === true) {
-          return 1; // b comes before a
-        }
-        return 0; // Keep the original order if both have the same status
-      });
-    }
-    console.log(data);
+    // if (status) {
+    //   data = await data?.sort((a, b) => {
+    //     if (a.status === true && b.status === false) {
+    //       return -1; // a comes before b
+    //     }
+    //     if (a.status === false && b.status === true) {
+    //       return 1; // b comes before a
+    //     }
+    //     return 0; // Keep the original order if both have the same status
+    //   });
+    // }
+    // console.log(data);
 
     set({ allOffer: data, isLoading: false });
     return data;
