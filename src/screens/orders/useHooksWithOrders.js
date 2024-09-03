@@ -17,6 +17,8 @@ const useHooksWithOrders = () => {
   const [LeadModal, setLeadModal] = useState(false);
   const [PaymentModal, setPaymentModal] = useState(false);
   const [PaymentModalData, setPaymentModalData] = useState(false);
+  const [selection, setSelection] = useState([]);
+  const [isSelection, setIsSelection] = useState(true);
 
   const [searchFilterData, setSearchFilterData] = useState({
     search: "",
@@ -38,8 +40,47 @@ const useHooksWithOrders = () => {
   const columns = [
     {
       name: "S.no",
-      selector: (row, index) => (Pagination?.currentPage || 1) * index + 1,
-      width: "60px",
+      selector: (row, index) => {
+        return (
+          <div
+            style={{
+              justifyContent: "space-between",
+              alignItems: "center",
+              display: "flex",
+            }}
+          >
+            {isSelection && (
+              <input
+                type="checkbox"
+                checked={selection.includes(row?._id)}
+                onChange={(e) => {
+                  if (row?.settled) {
+                    setToastData({
+                      message: "Payment is already settled",
+                      color: "red",
+                    });
+                    return;
+                  }
+                  if (!e.target.checked) {
+                    const index = selection.findIndex((id) => id === row?._id);
+                    if (index !== -1) {
+                      console.log(index);
+                      setSelection(selection.filter((_, i) => i !== index));
+                    }
+                  } else {
+                    setSelection([...selection, row?._id]);
+                  }
+                }}
+                style={{ marginRight: 10 }}
+              />
+            )}
+            {Pagination?.currentPage > 1
+              ? (Pagination.currentPage - 1) * 10 + index + 1
+              : index + 1}
+          </div>
+        );
+      },
+      width: "90px",
     },
     {
       name: "Payment ID",
@@ -68,18 +109,28 @@ const useHooksWithOrders = () => {
     {
       name: "Status",
       center: "true",
-      width: "auto",
+      width: "100px",
       selector: (row) => {
         return (
           <Link
             className="btn btn-soft-success btn-sm"
-            style={{ textWrap: "nowrap" }}
+            style={{ textWrap: "wrap" }}
             onClick={() => {
+              if (row?.settled) {
+                setToastData({
+                  message: "Payment is already settled",
+                  color: "red",
+                });
+                return;
+              }
               setPaymentModal(true);
               setPaymentModalData(row);
+              setSelection([row?._id]);
             }}
           >
-            {row?.requested
+            {row?.settled && row?.requested
+              ? "Redeem Request Setted"
+              : row?.requested
               ? "Redeem Request"
               : row?.settled
               ? "Settled"
@@ -193,6 +244,11 @@ const useHooksWithOrders = () => {
     XLSX.writeFile(wb, "export.xlsx");
   };
 
+  const selectAll = () => {
+    const ids = leads.filter((item) => !item?.settled).map((item) => item._id);
+    setSelection(ids);
+  };
+
   const getParams = () => {
     let params = "";
     if (searchFilterData?.from) {
@@ -246,11 +302,34 @@ const useHooksWithOrders = () => {
     setPagination({});
   };
 
-  const searchFilter = (val) => {
+  const onRefresh = () => {
+    let params = "";
+    if (searchFilterData?.search) {
+      params = params + "search=" + searchFilterData?.search ?? "";
+    }
+    if (searchFilterData?.from) {
+      params = params + "&fromDate=" + searchFilterData?.from;
+    }
+    if (searchFilterData?.to) {
+      params = params + "&toDate=" + searchFilterData?.to;
+    }
+    if (searchFilterData.type) {
+      params = params + "&type=" + searchFilterData?.type;
+    }
+
+    fetchWithParams(params);
+  };
+
+  const searchFilter = (val, filter = false) => {
     val.preventDefault();
     const value = val?.target?.value;
     setSearchFilterData((prev) => ({ ...prev, search: value }));
-    let params = "search=" + value;
+    let params = "";
+    params = "search=";
+
+    if (!filter) {
+      params = params + value;
+    }
 
     if (searchFilterData?.from) {
       params = params + "&fromDate=" + searchFilterData?.from;
@@ -261,6 +340,29 @@ const useHooksWithOrders = () => {
     if (searchFilterData.type) {
       params = params + "&type=" + searchFilterData?.type;
     }
+    console.log(params);
+
+    fetchWithParams(params);
+  };
+
+  const typeFilter = (val) => {
+    val.preventDefault();
+    const value = val?.target?.value;
+    let params = "";
+    if (value) {
+      params = params + "type=" + value;
+    }
+    if (searchFilterData?.search) {
+      params = params + "&search=" + searchFilterData.search;
+    }
+    if (searchFilterData?.from) {
+      params = params + "&fromDate=" + searchFilterData?.from;
+    }
+    if (searchFilterData?.to) {
+      params = params + "&toDate=" + searchFilterData?.to;
+    }
+
+    console.log(params);
     fetchWithParams(params);
   };
 
@@ -333,7 +435,7 @@ const useHooksWithOrders = () => {
       params = params + "&toDate=" + searchFilterData?.to;
     }
     if (searchFilterData.type) {
-      params = params + "&type=" + searchFilterData?.to;
+      params = params + "&type=" + searchFilterData?.type;
     }
     if (page) {
       params = params + "&page=" + page;
@@ -377,6 +479,13 @@ const useHooksWithOrders = () => {
     setPaymentModal,
     PaymentModalData,
     setPaymentModalData,
+    isSelection,
+    setIsSelection,
+    selection,
+    setSelection,
+    typeFilter,
+    selectAll,
+    onRefresh,
   };
 };
 

@@ -26,11 +26,18 @@ function Order() {
     handleFileUpload,
     onNextPageClick,
     searchFilterData,
+    isSelection,
+    setIsSelection,
+    selection,
+    setSelection,
     setSearchFilterData,
+    typeFilter,
+    selectAll,
     PaymentModal,
     setPaymentModal,
     PaymentModalData,
     setPaymentModalData,
+    onRefresh,
   } = useHooksWithOrders();
 
   return (
@@ -41,6 +48,9 @@ function Order() {
             <h4 className="page-title">Orders</h4>
           </div>
           <FilterCard
+            setPaymentModal={setPaymentModal}
+            selectAll={selectAll}
+            typeFilter={typeFilter}
             filter={filter}
             setFilter={setFilter}
             setLeadModal={setLeadModal}
@@ -53,6 +63,10 @@ function Order() {
             searchFilterData={searchFilterData}
             handleFileUpload={handleFileUpload}
             setSearchFilterData={setSearchFilterData}
+            isSelection={isSelection}
+            setIsSelection={setIsSelection}
+            selection={selection}
+            setSelection={setSelection}
           />
           {leads?.length > 0 ? (
             <DataTable
@@ -75,10 +89,13 @@ function Order() {
           )}
           <OrderModalComp LeadModal={LeadModal} setLeadModal={setLeadModal} />
           <PaymentModel
+            selection={selection}
+            setSelection={setSelection}
             PaymentModal={PaymentModal}
             setPaymentModal={setPaymentModal}
             PaymentModalData={PaymentModalData}
             setPaymentModalData={setPaymentModalData}
+            onRefresh={onRefresh}
           />
         </div>
       </div>

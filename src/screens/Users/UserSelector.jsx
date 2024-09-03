@@ -5,7 +5,7 @@ function UserTypeSelector({
   value = "Select",
 }) {
   return (
-    <div className="col-12 col-md-3" style={{ marginRight: 10, width: "40%" }}>
+    <div className="col-12" style={{ marginRight: 10, width: "40%" }}>
       {title ? <label className="form-label">{title}</label> : null}
       <select
         onChange={onChangeSelector}

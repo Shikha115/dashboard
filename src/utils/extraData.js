@@ -25,3 +25,25 @@ export const static_pages = [
     category_info: { name: "App Screen" },
   },
 ];
+
+const data = {
+  status: true,
+  results: [
+    {
+      details: {
+        beneficiary_name: "RUPESH SHRIVASTAVKHJ",
+        account_no: "ANKKIKFDDSSSHJBG",
+        bank_ifsc: "SSDGVVGKHJ",
+        bank_name: "Bhhhgfdffnaansnjhk",
+        pan_no_new: "9876548787",
+        default: true,
+        invoice_no: "987675",
+        id: "hj67v67vuyvyu6",
+        total: "500",
+      },
+      status: true,
+      message: "Payment settled successfully",
+    },
+  ],
+  message: "Bulk payments processed",
+};

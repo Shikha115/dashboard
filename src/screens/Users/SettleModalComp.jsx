@@ -118,6 +118,7 @@ const SettleModalComp = ({ settleModal, setSettleModal, currentData }) => {
       return {
         ...rest,
         title: offer_details?.mobile_data?.title,
+        image: offer_details?.mobile_data?.product_image,
         order_id: offer_details?._id,
       };
     });

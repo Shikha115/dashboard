@@ -2,7 +2,7 @@ function SearchBarComp(props) {
   let searchTimer;
 
   return (
-    <div className="col-12 ">
+    <div className="col-12">
       <div className="d-flex align-items-center gap-2">
         <div className="col-12 col-md-3 mb-3">
           <input
@@ -25,27 +25,8 @@ function SearchBarComp(props) {
             }}
           />
         </div>
-        <div className="col-12 col-md-6 mb-3">
-          {/* <button
-            className="btn btn-primary"
-            onClick={(e) => {
-              // fileInputRef.current.click();
-              e.preventDefault();
-              props.setLeadModal(true);
-            }}
-          >
-            Upload Leads
-          </button>{" "} */}
-          <button
-            className="btn btn-primary"
-            onClick={(e) => {
-              props.exportExcel(e);
-            }}
-          >
-            Export Orders
-          </button>
-        </div>
       </div>
+      {props.children}
     </div>
   );
 }
