@@ -33,6 +33,7 @@ const NotFound = React.lazy(() => import("./screens/NotFound"));
 const ManageBanner = React.lazy(() => import("./screens/Banner"));
 const ManageSponsor = React.lazy(() => import("./screens/sponsor/Sponsor"));
 const Home2 = React.lazy(() => import("./screens/Home2"));
+const RedirectToApp = React.lazy(() => import("./screens/RedirectToApp"));
 
 function App() {
   const {
@@ -44,12 +45,11 @@ function App() {
     theme,
     getTheme,
   } = useAuthStore();
-  const { getAllBank, getAllCategory, category } = useDataStore();
+  const { getAllCategory, category } = useDataStore();
 
   useEffect(() => {
     getTheme();
     getData();
-    // console.log(defaultSidebar, "defaultSidebar");
   }, []);
 
   useLayoutEffect(() => {
@@ -66,7 +66,6 @@ function App() {
       await getProfileWeb(tokenVal);
     }
     getAllCategory(category);
-    // getAllBank();
     setLoading(false);
   };
   return (
@@ -93,6 +92,7 @@ function App() {
                 }
               />
               <Route path="/login" element={<Login />} />
+              <Route path="/app" element={<RedirectToApp />} />
               <Route path="/delete-account" element={<RemoveAccount />} />
               <Route path="/delete-account/:id" element={<DeleteAccount />} />
               <Route path="/register" element={<Register />} />

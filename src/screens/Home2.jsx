@@ -16,14 +16,13 @@ import {
   FaAngleLeft,
 } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
-import Carousel from "react-bootstrap/Carousel";
+
 import "../assets/css/home2.scss";
 import { images } from "../components/Images";
 import { LogoComp } from "./Landing";
 import Slider from "react-slick";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Accordion from "react-bootstrap/Accordion";
 
 // Control sidebar navigation
 let items = document.querySelectorAll(".menu-item-has-children > a");
@@ -308,8 +307,8 @@ const Home2 = () => {
                     to="#"
                     onClick={() =>
                       window.open(
-                        // "https://play.google.com/store/apps/details?id=com.rojgarapp.rojgar",
-                        "rojgarapp://web.dev.rojgarapp.in/app",
+                        "https://play.google.com/store/apps/details?id=com.rojgarapp.rojgar",
+                        // "rojgarapp://web.dev.rojgarapp.in/app",
                         "_blank",
                         "noopener,noreferrer"
                       )
