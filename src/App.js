@@ -17,6 +17,7 @@ const Lead = React.lazy(() => import("./screens/leads/Lead"));
 const Order = React.lazy(() => import("./screens/orders/Order"));
 const MyLeads = React.lazy(() => import("./screens/MyLeads"));
 const Users = React.lazy(() => import("./screens/Users/Users"));
+const AddManager = React.lazy(() => import("./screens/addManager/AddManager"));
 
 const ViewUser = React.lazy(() => import("./screens/Users/ViewUser"));
 const Logout = React.lazy(() => import("./screens/Authentication/Logout"));
@@ -118,6 +119,12 @@ function App() {
                     Component={ManageCategory}
                     header={true}
                   />
+                }
+              />
+              <Route
+                path="/add-manager"
+                element={
+                  <ProtectedRoute Component={AddManager} header={true} />
                 }
               />
               <Route

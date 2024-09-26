@@ -17,6 +17,13 @@ const SettleModalComp = ({ settleModal, setSettleModal, currentData }) => {
   const [FetchedLeads, setFetchedLeads] = useState([]);
   const { setToastData } = useToastStore();
 
+  useEffect(() => {
+    if (currentData?.lead_settlement?.length > 0) {
+      getSelectedLeads(currentData?.lead_settlement);
+    }
+    setIsLoading(false);
+  }, []);
+
   const column = [
     {
       name: "#",
@@ -88,8 +95,10 @@ const SettleModalComp = ({ settleModal, setSettleModal, currentData }) => {
   ];
 
   const getSelectedLeads = async (data) => {
+    console.log(data);
+
     axios
-      .post(apis.getSelectedLeadsById, { ids: data })
+      .post(apis.getSelectedLeadsById + "?limit=200", { ids: data })
       .then((e) => {
         console.log(e);
 
@@ -123,7 +132,7 @@ const SettleModalComp = ({ settleModal, setSettleModal, currentData }) => {
       };
     });
 
-    console.log(ids, orders, total, currentData?._id);
+    // console.log(ids, orders, total, currentData?._id);
 
     // return;
     await axios
@@ -159,13 +168,6 @@ const SettleModalComp = ({ settleModal, setSettleModal, currentData }) => {
         setSettleModal(false);
       });
   };
-
-  useEffect(() => {
-    if (currentData?.order_settlement?.length > 0) {
-      getSelectedLeads(currentData?.lead_settlement);
-    }
-    setIsLoading(false);
-  }, []);
 
   return (
     <Modal

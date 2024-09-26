@@ -387,14 +387,14 @@ function Users() {
           currentData={currentData}
         />
       )}
-      {settleModal && (
+      {settleModal ? (
         <SettleModalComp
           settleModal={settleModal}
           setSettleModal={setSettleModal}
           currentData={currentData}
           setCurrentData={setCurrentData}
         />
-      )}
+      ) : null}
       <PayModalComp
         theme={theme}
         PayModal={PayModal}

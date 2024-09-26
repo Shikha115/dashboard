@@ -5,6 +5,7 @@ import * as XLSX from "xlsx";
 import { apis } from "../../utils/URL";
 import axios from "axios";
 import useToastStore from "../../store/toastStore";
+import CustomDropdown from "../../components/CustomDropdown";
 
 const useHooksWithLeads = () => {
   const { lead, getAlLeads, getMyLeads } = useDataStore();
@@ -43,7 +44,6 @@ const useHooksWithLeads = () => {
       center: "true",
       width: "auto",
       selector: (row) => {
-        // console.log(row);
         return row?.offer_info?.mobile_data?.title;
       },
     },
@@ -89,6 +89,24 @@ const useHooksWithLeads = () => {
       width: "auto",
       selector: (row) => row?.affiliate_id + "_" + row?.click_id,
     },
+    {
+      name: "status",
+      center: "true",
+      width: "auto",
+      selector: (row) => (
+        <CustomDropdown
+          selectedOption={row?.isComplete}
+          onSelect={onSelect}
+          data={row}
+        />
+      ),
+    },
+    {
+      name: "remarks",
+      center: "true",
+      width: "auto",
+      selector: (row) => row.remarks,
+    },
 
     {
       name: "Lead Type",
@@ -97,6 +115,29 @@ const useHooksWithLeads = () => {
       selector: (row) => row?.category_info?.name,
     },
   ];
+
+  const onSelect = async (value, data) => {
+    const isConfirmed = window.confirm(
+      "Are you sure you want to update this item?"
+    );
+    if (!isConfirmed) {
+      return;
+    }
+    axios.post(apis.rejectLead, { id: data?._id, status: value }).then((e) => {
+      let params = "search=" + "";
+
+      if (searchFilterData?.from) {
+        params = params + "&fromDate=" + searchFilterData?.from;
+      }
+      if (searchFilterData?.to) {
+        params = params + "&toDate=" + searchFilterData?.to;
+      }
+      if (searchFilterData.type) {
+        params = params + "&type=" + searchFilterData?.type;
+      }
+      fetchWithParams(params);
+    });
+  };
 
   const exportExcel = async (e) => {
     e.preventDefault();
@@ -170,7 +211,7 @@ const useHooksWithLeads = () => {
   };
 
   const getParams = () => {
-    console.log(searchFilterData);
+    // console.log(searchFilterData);
     let params = "";
     if (searchFilterData?.from) {
       if (!searchFilterData?.to) {
