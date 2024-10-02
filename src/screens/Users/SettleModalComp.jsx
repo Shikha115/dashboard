@@ -42,7 +42,7 @@ const SettleModalComp = ({ settleModal, setSettleModal, currentData }) => {
 
     {
       name: "Payment",
-      selector: (row) => row?.earning,
+      selector: (row) => row?.offer_details?.mobile_data?.earning,
       center: true,
       width: "120px",
     },
@@ -123,7 +123,9 @@ const SettleModalComp = ({ settleModal, setSettleModal, currentData }) => {
     const orders = [...FetchedLeads]?.map((e) => {
       const { offer_details, user_details, ...rest } = e;
       ids.push(rest?._id);
-      total = (Number(total) + Number(rest?.earning)).toString();
+      total = (
+        Number(total) + Number(offer_details?.mobile_data?.earning)
+      ).toString();
       return {
         ...rest,
         title: offer_details?.mobile_data?.title,

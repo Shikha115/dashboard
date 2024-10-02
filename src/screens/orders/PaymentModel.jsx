@@ -36,9 +36,9 @@ const PaymentModel = ({
           message: "Payment Settled Succesfully",
           color: "green",
         });
-        onRefresh();
         setSelection([]);
         generateExcel(e.data.results);
+        onRefresh();
       })
       .catch((err) => {
         console.log(err);
