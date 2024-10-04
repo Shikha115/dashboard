@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import useDataStore from "../../store/dataStore";
 import ImageModal from "../../components/ImageModal";
 import ButtonModal from "../../components/ButtonModal";
+import { images } from "../../components/Images";
 
 function ViewUser() {
   const { selectedUser } = useDataStore();
@@ -17,7 +18,7 @@ function ViewUser() {
                 <div className="col-12 col-md-3">
                   <div className="profile-user-img w-[50px] h-[50px]">
                     <ImageModal
-                      src={selectedUser?.profile_image}
+                      src={selectedUser?.profile_image?selectedUser?.profile_image:images.avatar_1}
                       alt=""
                       // className="img-thumbnail w-100 h-100"
                     />
@@ -49,15 +50,22 @@ function ViewUser() {
                     </li>
                     <li>
                       <b>Pan Image: </b>
-                      <span>
+                      <div className="user-bank-img mb-1">
                         <ButtonModal
-                          image={false}
-                          src={selectedUser?.pan_image}
-                          alt=""
-                          className="img-thumbnail w-10"
+                          image={true}
+                          src={selectedUser?.pan_image?selectedUser?.pan_image:images.imageUpload}
+                          alt={selectedUser?.pan_image}
+                          className="btn btn-primary w-100"
                           title=" PAN Image "
+                          noModal
+                          imgStyle={{
+                            height: "100px",
+                            width: "100%",
+                            left: "0",
+                            transform: "none",
+                          }}
                         />
-                      </span>
+                      </div>
                     </li>
                   </ul>
                 </div>

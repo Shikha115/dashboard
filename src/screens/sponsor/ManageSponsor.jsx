@@ -1,5 +1,6 @@
 import { Modal } from "react-bootstrap";
 import ImageUpload from "../../components/ImageUpload";
+import useAuthStore from "../../store/authStore";
 
 const ViewSponsorModal = ({
   addModal,
@@ -10,9 +11,14 @@ const ViewSponsorModal = ({
   UpdatedData,
   handleSubmit,
 }) => {
+
+  const { theme } = useAuthStore();
+
+
   return (
     <Modal
       size="sm"
+      className={theme && theme}
       show={addModal.state}
       centered
       onHide={() => {

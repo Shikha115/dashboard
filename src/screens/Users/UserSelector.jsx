@@ -3,9 +3,12 @@ function UserTypeSelector({
   data,
   title = "",
   value = "Select",
+  className,
+  style,
 }) {
   return (
-    <div className="col-12" style={{ marginRight: 10, width: "40%" }}>
+    // style={{ marginRight: 10, width: "40%" }}
+    <div className={`${className ? className : ""}`} style={style}>
       {title ? <label className="form-label">{title}</label> : null}
       <select
         onChange={onChangeSelector}

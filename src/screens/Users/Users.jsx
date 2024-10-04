@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
 
@@ -18,6 +18,8 @@ import UserTypeSelector from "./UserSelector";
 import { FaX } from "react-icons/fa6";
 import NoDataComponent from "../../components/NoDataComp";
 import Loader from "../../components/Loader";
+import ImageUpload from "../../components/ImageUpload";
+import { images } from "../../components/Images";
 
 function Users() {
   const { theme } = useAuthStore();
@@ -52,6 +54,10 @@ function Users() {
     setFilter,
   } = useUserManagementHook();
 
+  const [denyAccess, setDenyAccess] = useState(false);
+  const [inputData, setInputData] = useState({});
+  const [selectedItem, setSelectedItem] = useState();
+
   return (
     <>
       <div className="content">
@@ -60,7 +66,7 @@ function Users() {
             <div className="page-title-box">
               <div className="page-title-right">
                 <div className="app-search">
-                  <form className="column">
+                  <form className="column d-flex gap-2">
                     {!filter?.type || filter?.type === "Select" ? null : (
                       <Link
                         className="btn btn-soft-danger btn-sm mr-2"
@@ -75,6 +81,7 @@ function Users() {
                     <UserTypeSelector
                       value={filter?.type}
                       title={false}
+                      style={{ minWidth: "250px" }}
                       data={[
                         { type: "approved", id: 1 },
                         { type: "rejected", id: 2 },
@@ -203,18 +210,31 @@ function Users() {
               <input
                 type="text"
                 className="form-control"
+                disabled={denyAccess}
                 defaultValue={currentData?.name}
               />
             </div>
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">Profile Image</label>
-              <input type="file" className="form-control" />
+              <div className="user-bank-img">
+                <input
+                  type="file"
+                  className="form-control"
+                  disabled={denyAccess}
+                />
+                <img
+                  src={images.imageUpload}
+                  alt=""
+                  className="img-thumbnail w-10 object-cover"
+                />
+              </div>
             </div>
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">Email</label>
               <input
                 type="email"
                 className="form-control"
+                disabled={denyAccess}
                 defaultValue={currentData?.email}
               />
             </div>
@@ -223,6 +243,7 @@ function Users() {
               <input
                 type="number"
                 className="form-control"
+                disabled={denyAccess}
                 defaultValue={currentData?.phone}
               />
             </div>
@@ -231,6 +252,7 @@ function Users() {
               <input
                 type="text"
                 className="form-control"
+                disabled={denyAccess}
                 defaultValue={currentData?.address}
               />
             </div>
@@ -239,12 +261,17 @@ function Users() {
               <input
                 type="date"
                 className="form-control"
+                disabled={denyAccess}
                 defaultValue={currentData?.dob}
               />
             </div>
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">Type</label>
-              <select className="form-select" defaultValue={currentData?.type}>
+              <select
+                className="form-select"
+                disabled={denyAccess}
+                defaultValue={currentData?.type}
+              >
                 <option value="1">Agent</option>
                 <option value="2">Manager</option>
               </select>
@@ -253,6 +280,7 @@ function Users() {
               <label className="form-label">Gender</label>
               <select
                 className="form-select"
+                disabled={denyAccess}
                 defaultValue={currentData?.gender}
               >
                 <option value="1">Male</option>
@@ -264,18 +292,31 @@ function Users() {
               <input
                 type="text"
                 className="form-control"
+                disabled={denyAccess}
                 defaultValue={currentData?.pan_no}
               />
             </div>
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">Pan Image</label>
-              <input type="file" className="form-control" />
+              <div className="user-bank-img">
+                <input
+                  type="file"
+                  className="form-control"
+                  disabled={denyAccess}
+                />
+                <img
+                  src={images.imageUpload}
+                  alt=""
+                  className="img-thumbnail w-10 object-cover"
+                />
+              </div>
             </div>
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">Occupation</label>
               <input
                 type="text"
                 className="form-control"
+                disabled={denyAccess}
                 defaultValue={currentData?.occupation}
               />
             </div>
@@ -284,6 +325,7 @@ function Users() {
               <input
                 type="text"
                 className="form-control"
+                disabled={denyAccess}
                 defaultValue={currentData?.work_experience}
               />
             </div>
@@ -292,6 +334,7 @@ function Users() {
               <input
                 type="text"
                 className="form-control"
+                disabled={denyAccess}
                 defaultValue={currentData?.income}
               />
             </div>
@@ -308,6 +351,7 @@ function Users() {
                     <input
                       type="text"
                       className="form-control"
+                      disabled={denyAccess}
                       defaultValue={item?.bank_name}
                     />
                   </div>
@@ -316,6 +360,7 @@ function Users() {
                     <input
                       type="text"
                       className="form-control"
+                      disabled={denyAccess}
                       defaultValue={item?.account_no}
                     />
                   </div>
@@ -324,16 +369,39 @@ function Users() {
                     <input
                       type="text"
                       className="form-control"
+                      disabled={denyAccess}
                       defaultValue={item?.bank_ifsc}
                     />
                   </div>
                   <div className="col-12 col-md-6 mb-3">
                     <label className="form-label">Cancelled Check</label>
-                    <input type="file" className="form-control" />
+                    <div className="user-bank-img">
+                      <input
+                        type="file"
+                        className="form-control"
+                        disabled={denyAccess}
+                      />
+                      <img
+                        src={images.imageUpload}
+                        alt=""
+                        className="img-thumbnail w-10 object-cover"
+                      />
+                    </div>
                   </div>
                   <div className="col-12 col-md-6 mb-3">
                     <label className="form-label">Bank Passbook</label>
-                    <input type="file" className="form-control" />
+                    <div className="user-bank-img">
+                      <input
+                        type="file"
+                        className="form-control"
+                        disabled={denyAccess}
+                      />
+                      <img
+                        src={images.imageUpload}
+                        alt=""
+                        className="img-thumbnail w-10 object-cover"
+                      />
+                    </div>
                   </div>
                 </>
               );

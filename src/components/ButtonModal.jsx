@@ -8,6 +8,9 @@ function ButtonModal(props) {
   const [imgModal, setImgModal] = useState(false);
 
   const onShow = () => {
+    if (props.noModal) {
+      return;
+    }
     setImgModal(true);
   };
   const onHide = () => {
@@ -24,6 +27,7 @@ function ButtonModal(props) {
           src={props?.src}
           alt=""
           className="img-thumbnail w-10 object-cover"
+          style={props?.imgStyle}
         />
       ) : null}
       <Modal
