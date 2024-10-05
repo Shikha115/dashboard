@@ -1,9 +1,9 @@
 export const AppInfo = {
-  // baseUrlAPI: "http://localhost:5001", // Rojgar Dev local
-  // webUrl: "http://localhost:3000",
+  baseUrlAPI: "http://localhost:5001", // Rojgar Dev local
+  webUrl: "http://localhost:3000",
 
-  baseUrlAPI: "https://api.dev.rojgarapp.in", // Rojgar Dev
-  webUrl: "https://web.dev.rojgarapp.in",
+  // baseUrlAPI: "https://api.dev.rojgarapp.in", // Rojgar Dev
+  // webUrl: "https://web.dev.rojgarapp.in",
 
   // baseUrlAPI: "https://api.prod.rojgarapp.in", // Rojgar Prod
   // webUrl: "https://bfsiportal.com",

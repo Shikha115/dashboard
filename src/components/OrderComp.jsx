@@ -16,6 +16,7 @@ function OrderComp({ id }) {
     }&search=${params?.search ?? ""}`;
     setIsLoading(true);
     // console.log(apis.getOrdersByUid + urlParams, { user_id: id });
+
     axios
       .post(apis.getAllPayment + urlParams, { user_id: id })
       .then((res) => {
