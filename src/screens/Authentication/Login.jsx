@@ -62,7 +62,7 @@ function Login() {
                     <div className="d-flex flex-column h-100">
                       <div className="auth-brand px-4 pt-4 text-center">
                         <a href="index.html" className="logo-light">
-                          <img src={images.logo_dark} alt="logo" height={22} />
+                          <img src={images.logo} alt="logo" height={22} />
                         </a>
                         <a href="index.html" className="logo-dark">
                           <img

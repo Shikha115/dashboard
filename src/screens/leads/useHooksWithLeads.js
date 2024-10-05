@@ -6,6 +6,7 @@ import { apis } from "../../utils/URL";
 import axios from "axios";
 import useToastStore from "../../store/toastStore";
 import CustomDropdown from "../../components/CustomDropdown";
+import ListSelector from "../../components/ListSelector";
 
 const useHooksWithLeads = () => {
   const { lead, getAlLeads, getMyLeads } = useDataStore();
@@ -92,13 +93,26 @@ const useHooksWithLeads = () => {
     {
       name: "status",
       center: "true",
-      width: "auto",
+      width: "150px",
       selector: (row) => (
-        <CustomDropdown
-          selectedOption={row?.isComplete}
-          onSelect={onSelect}
-          data={row}
-        />
+        // <CustomDropdown
+        //   selectedOption={row?.isComplete}
+        //   onSelect={onSelect}
+        //   data={row}
+        // />
+        <select
+          onChange={(e) => onSelect(e.target.value, row)}
+          className="form-select "
+          defaultValue={row?.isComplete || "pending"}
+        >
+          {["pending", "approved", "rejected"]?.map((item, i) => {
+            return (
+              <option key={i} value={item}>
+                {item}
+              </option>
+            );
+          })}
+        </select>
       ),
     },
     {

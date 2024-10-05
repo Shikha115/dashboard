@@ -139,7 +139,7 @@ function Users() {
 
       <Modal
         className={theme && theme}
-        size="xl"
+        size="lg"
         scrollable
         show={viewModal}
         centered
@@ -446,6 +446,7 @@ function Users() {
           setOrderModal={setOrderModal}
           OrderModal={OrderModal}
           setCurrentData={setCurrentData}
+          theme={theme}
         />
       )}
       {notificationModal && (

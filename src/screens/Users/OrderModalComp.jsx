@@ -6,8 +6,9 @@ function OrderModalComp(props) {
   console.log(props?.currentData, "fd");
   return (
     <Modal
+    
       className={props.theme ? props.theme : ""}
-      size="xl"
+      // size="xl"
       show={props.OrderModal}
       centered
       onHide={() => {

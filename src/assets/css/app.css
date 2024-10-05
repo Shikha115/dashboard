@@ -2859,19 +2859,19 @@ textarea.form-control-lg {
   appearance: none;
 }
 
-.modal.dark .form-select{
+.modal.dark .form-select {
   background-color: #313a46;
-  border-color: #fff; 
+  border-color: #fff;
   --tz-form-select-bg-img: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23aab8c5' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
 }
 
-.modal.dark .text-dark{
+.modal.dark .text-dark {
   color: #fff !important;
 }
-.modal.dark .card{
+.modal.dark .card {
   background-color: transparent !important;
 }
-.modal.dark .text-dark{
+.modal.dark .text-dark {
   color: #fff !important;
 }
 
@@ -6626,8 +6626,7 @@ fieldset:disabled .btn {
 
 .modal.dark .modal-content,
 .modal.dark .form-control,
-.modal.dark .form-select
- {
+.modal.dark .form-select {
   background-color: #313a46;
   color: #fff;
 }
@@ -15289,9 +15288,10 @@ fieldset:disabled .btn {
 }
 .logo-lg img {
   /* height: var(--tz-logo-lg-height); */
-  height: 100%;
+  height: 150px;
   width: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  padding-top: 10px;
 }
 
 .leftside-menu .logo img {
@@ -19160,16 +19160,49 @@ strong {
   border: 3px solid var(--tz-border-color);
   -webkit-box-shadow: 2px 6px 30px -15px #212529;
   box-shadow: 2px 6px 30px -15px #212529; */
-  object-fit: contain;
+  object-fit: cover;
 }
 
-.user-bank-img .btn:hover + img ,
-.user-bank-img input[type='file']:hover + img 
-{
+.wrapper[mode="dark"] .rdt_Pagination button[id*="pagination-"] svg {
+  background: #fff;
+}
+
+.modal.dark .rdt_Table {
+  background-color: #617185 !important;
+  color: #fff !important;
+}
+.modal.dark .rdt_Table .cTsUPQ {
+  background-color: inherit !important;
+  color: inherit !important;
+}
+
+.wrapper[mode="dark"] input[type="file"],
+.modal.dark input[type="file"] {
+  position: relative;
+}
+
+.wrapper[mode="dark"] input[type="file"]:before,
+.modal.dark input[type="file"]:before {
+  content: "Choose File";
+  position: absolute;
+  height: 100%;
+  width: 100px;
+  background: #3cc0c3;
+  top: 0;
+  left: 0;
+  border-radius: 5px 0 0 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.user-bank-img .btn:hover + img,
+.user-bank-img input[type="file"]:hover + img {
   display: block;
 }
 
-.user-bank-img .btn+img {
+.user-bank-img .btn + img {
   position: absolute;
   height: 200px;
   width: 50%;
@@ -19183,7 +19216,7 @@ strong {
   z-index: 999;
   margin-bottom: 5px;
 }
-.user-bank-img input[type='file']+img {
+.user-bank-img input[type="file"] + img {
   position: absolute;
   height: 120px;
   width: auto;
@@ -21902,9 +21935,12 @@ span.flatpickr-weekday,
   object-fit: cover;
 }
 
-.auth-brand img {
+.auth-brand a.logo-light img,
+.auth-brand a.logo-dark img {
+  object-fit: contain;
   width: auto;
-  height: 58px;
+  height: 150px;
+  display: none;
 }
 
 .toast-container {
@@ -22243,11 +22279,11 @@ span.flatpickr-weekday,
 }
 
 .modal.dark .modal-title,
-.modal.dark .form-label{
+.modal.dark .form-label {
   color: #fff;
 }
-.modal.dark .btn-close{
- filter:invert(1)
+.modal.dark .btn-close {
+  filter: invert(1);
 }
 
 .modal.dark input::placeholder {
@@ -22266,9 +22302,9 @@ input::placeholder {
   transition: 0 0.5s;
 }
 
-.modal.dark .card-body{
+.modal.dark .card-body {
   background-color: #434e5c;
 }
-.modal.dark ul.view-user-list li{
+.modal.dark ul.view-user-list li {
   color: #fff;
 }
