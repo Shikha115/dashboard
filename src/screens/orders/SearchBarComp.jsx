@@ -2,9 +2,8 @@ function SearchBarComp(props) {
   let searchTimer;
 
   return (
-    <div className="col-12">
-      <div className="d-flex align-items-center gap-2">
-        <div className="col-12 col-md-3 mb-3">
+    <>
+        <div>
           <input
             type="file"
             accept=".xlsx, .xls"
@@ -25,9 +24,8 @@ function SearchBarComp(props) {
             }}
           />
         </div>
-      </div>
       {props.children}
-    </div>
+    </>
   );
 }
 

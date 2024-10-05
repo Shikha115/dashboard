@@ -2858,6 +2858,23 @@ textarea.form-control-lg {
   -moz-appearance: none;
   appearance: none;
 }
+
+.modal.dark .form-select{
+  background-color: #313a46;
+  border-color: #fff; 
+  --tz-form-select-bg-img: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23aab8c5' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
+
+.modal.dark .text-dark{
+  color: #fff !important;
+}
+.modal.dark .card{
+  background-color: transparent !important;
+}
+.modal.dark .text-dark{
+  color: #fff !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .form-select {
     -webkit-transition: none;
@@ -6608,8 +6625,11 @@ fieldset:disabled .btn {
 }
 
 .modal.dark .modal-content,
-.modal.dark .form-control {
+.modal.dark .form-control,
+.modal.dark .form-select
+ {
   background-color: #313a46;
+  color: #fff;
 }
 .modal.light .modal-content,
 .modal.light .form-control {
@@ -19143,11 +19163,13 @@ strong {
   object-fit: contain;
 }
 
-.user-bank-img .btn:hover + img {
+.user-bank-img .btn:hover + img ,
+.user-bank-img input[type='file']:hover + img 
+{
   display: block;
 }
 
-.user-bank-img img {
+.user-bank-img .btn+img {
   position: absolute;
   height: 200px;
   width: 50%;
@@ -19158,8 +19180,22 @@ strong {
   transform: translateX(-50%);
   pointer-events: none;
   display: none;
-  z-index: 9;
+  z-index: 999;
   margin-bottom: 5px;
+}
+.user-bank-img input[type='file']+img {
+  position: absolute;
+  height: 120px;
+  width: auto;
+  object-fit: contain;
+  background: #fff;
+  /* bottom: 0; */
+  left: 0;
+  /* transform: translateX(-50%); */
+  pointer-events: none;
+  display: none;
+  z-index: 99;
+  margin-top: 5px;
 }
 
 .user-bank-img {

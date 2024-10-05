@@ -11,7 +11,7 @@ function FilterCard(props) {
     <div className="card">
       <div className="card-body">
         <form action="#" className="row">
-          <div className="col-12 col-md-3 mb-3">
+          <div className="col-12 col-md-4 mb-3">
             <label className="form-label">From Date</label>
             <input
               className="form-control"
@@ -25,7 +25,7 @@ function FilterCard(props) {
               }}
             />
           </div>
-          <div className="col-12 col-md-3 mb-3">
+          <div className="col-12 col-md-4 mb-3">
             <label className="form-label">To Date</label>
             <input
               className="form-control"
@@ -51,7 +51,7 @@ function FilterCard(props) {
             }}
           /> */}
 
-          <div className="col-12 col-12 col-md-3 mt-3">
+          <div className="col-12 col-12 col-md-4 mt-3">
             <div className="d-flex align-items-center gap-2">
               <button
                 className="btn btn-primary"
@@ -73,34 +73,38 @@ function FilterCard(props) {
               </button>
             </div>
           </div>
-          <SearchBarComp
-            setLeadModal={props.setLeadModal}
-            exportExcel={props.exportExcel}
-            searchFilter={props.searchFilter}
-            handleFileUpload={props.handleFileUpload}
-          ></SearchBarComp>
-          <UserTypeSelector
-            value={props.searchFilterData?.type}
-            title={false}
-            data={[
-              { type: "All", id: 1 },
-              { type: "Settled", id: 1 },
-              { type: "Pending", id: 2 },
-              { type: "Redeem Request Setted", id: 3 },
-              { type: "Redeem Request", id: 4 },
-            ]}
-            onChangeSelector={async (e) => {
-              e.preventDefault();
-              await props.setSearchFilterData((prev) => ({
-                ...prev,
-                type: e?.target?.value,
-              }));
+          <div className="col-12 col-md-4 mb-3">
+            <SearchBarComp
+              setLeadModal={props.setLeadModal}
+              exportExcel={props.exportExcel}
+              searchFilter={props.searchFilter}
+              handleFileUpload={props.handleFileUpload}
+            ></SearchBarComp>
+          </div>
+          <div className="col-12 col-md-4 mb-3">
+            <UserTypeSelector
+              value={props.searchFilterData?.type}
+              title={false}
+              data={[
+                { type: "All", id: 1 },
+                { type: "Settled", id: 1 },
+                { type: "Pending", id: 2 },
+                { type: "Redeem Request Setted", id: 3 },
+                { type: "Redeem Request", id: 4 },
+              ]}
+              onChangeSelector={async (e) => {
+                e.preventDefault();
+                await props.setSearchFilterData((prev) => ({
+                  ...prev,
+                  type: e?.target?.value,
+                }));
 
-              props.typeFilter(e);
-            }}
-          />
+                props.typeFilter(e);
+              }}
+            />
+          </div>
 
-          <div className="col-12 mt-2">
+          <div className="col-12">
             <div className="d-flex align-items-center gap-2">
               <div className="col-12 col-md-6 flex-row d-flex">
                 <button
