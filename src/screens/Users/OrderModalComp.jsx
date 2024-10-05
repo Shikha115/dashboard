@@ -3,7 +3,7 @@ import { CiWarning } from "react-icons/ci";
 import OrderComp from "../../components/OrderComp";
 
 function OrderModalComp(props) {
-  // console.log(props?.currentData);
+  console.log(props?.currentData, "fd");
   return (
     <Modal
       className={props.theme ? props.theme : ""}
@@ -12,7 +12,7 @@ function OrderModalComp(props) {
       centered
       onHide={() => {
         props.setOrderModal(false);
-        props.setCurrentData();
+        props.setCurrentData(null);
       }}
     >
       <Modal.Body className="text-center p-4">

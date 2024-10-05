@@ -74,15 +74,15 @@ const useUserManagementHook = () => {
       width: "80px",
     },
     {
-      name: "Orders",
+      name: "Payments",
       center: true,
-      width: "80px",
+      width: "100px",
       cell: (row) => (
         <Link
           className="btn btn-soft-danger btn-sm"
           style={{ textWrap: "nowrap" }}
           onClick={() => {
-            // setCurrentData(row);
+            setCurrentData(row);
             setOrderModal(true);
           }}
         >

@@ -17,7 +17,7 @@ function OrderComp({ id }) {
     setIsLoading(true);
     // console.log(apis.getOrdersByUid + urlParams, { user_id: id });
     axios
-      .post(apis.getOrdersByUid + urlParams, { user_id: id })
+      .post(apis.getAllPayment + urlParams, { user_id: id })
       .then((res) => {
         setOrders(res?.data?.data);
         setPagination(res.data.pagination);
@@ -32,7 +32,7 @@ function OrderComp({ id }) {
     getOrders(id);
   }, [id]);
 
-  console.log(Orders, Pagination);
+  // console.log(Orders, Pagination);
   const columns = [
     {
       name: "#",
@@ -47,42 +47,23 @@ function OrderComp({ id }) {
       center: true,
     },
     {
-      name: "Name",
-      selector: (row) => row.lead_info.name,
+      name: "Order No.",
+      selector: (row) => row?.invoice_no,
       center: true,
       width: "auto",
     },
 
     {
-      name: "Contact No.",
-      selector: (row) => row.lead_info.phone,
+      name: "Total",
+      selector: (row) => row?.total,
       center: true,
       width: "120px",
     },
     {
-      name: "Contact No.",
-      selector: (row) => row.lead_info.email,
+      name: "Orders",
+      selector: (row) => row?.orders?.length,
       center: true,
       width: "120px",
-    },
-
-    {
-      name: "Type",
-      selector: (row) => row.offer_info.mobile_data.title,
-      center: true,
-      width: "80px",
-    },
-    {
-      name: "Amount",
-      selector: (row) => row.amount,
-      center: true,
-      width: "80px",
-    },
-    {
-      name: "Status",
-      selector: (row) => row.status,
-      center: true,
-      width: "80px",
     },
   ];
 
