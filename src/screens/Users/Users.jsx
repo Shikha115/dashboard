@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import DataTable from "react-data-table-component";
 import { Link } from "react-router-dom";
 
@@ -247,100 +247,20 @@ function Users() {
                 defaultValue={currentData?.phone}
               />
             </div>
+
             <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Address</label>
+              <label className="form-label">OTP</label>
               <input
                 type="text"
                 className="form-control"
                 disabled={denyAccess}
-                defaultValue={currentData?.address}
+                defaultValue={currentData?.otp}
               />
             </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">DOB</label>
-              <input
-                type="date"
-                className="form-control"
-                disabled={denyAccess}
-                defaultValue={currentData?.dob}
-              />
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Type</label>
-              <select
-                className="form-select"
-                disabled={denyAccess}
-                defaultValue={currentData?.type}
-              >
-                <option value="1">Agent</option>
-                <option value="2">Manager</option>
-              </select>
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Gender</label>
-              <select
-                className="form-select"
-                disabled={denyAccess}
-                defaultValue={currentData?.gender}
-              >
-                <option value="1">Male</option>
-                <option value="2">Female</option>
-              </select>
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Pan no</label>
-              <input
-                type="text"
-                className="form-control"
-                disabled={denyAccess}
-                defaultValue={currentData?.pan_no}
-              />
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Pan Image</label>
-              <div className="user-bank-img">
-                <input
-                  type="file"
-                  className="form-control"
-                  disabled={denyAccess}
-                />
-                <img
-                  src={images.imageUpload}
-                  alt=""
-                  className="img-thumbnail w-10 object-cover"
-                />
-              </div>
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Occupation</label>
-              <input
-                type="text"
-                className="form-control"
-                disabled={denyAccess}
-                defaultValue={currentData?.occupation}
-              />
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Work Experience</label>
-              <input
-                type="text"
-                className="form-control"
-                disabled={denyAccess}
-                defaultValue={currentData?.work_experience}
-              />
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Income</label>
-              <input
-                type="text"
-                className="form-control"
-                disabled={denyAccess}
-                defaultValue={currentData?.income}
-              />
-            </div>
-            {currentData?.bank_details.map((item, i) => {
+
+            {currentData?.bank_details?.map((item, i) => {
               return (
-                <>
+                <Fragment key={item?.account_no + item?.bank_name}>
                   <div className="col-12">
                     <h5 className="border-bottom pb-2">
                       Bank Information {i + 1}
@@ -403,7 +323,7 @@ function Users() {
                       />
                     </div>
                   </div>
-                </>
+                </Fragment>
               );
             })}
           </form>
