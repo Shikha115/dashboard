@@ -15,16 +15,16 @@ function ViewUser() {
           <div className="card p-0">
             <div className="card-body">
               <div className="row view-user-basic-detail">
-                <div className="col-12 col-md-3">
-                  <div className="profile-user-img w-[50px] h-[50px]">
+                <div className="col-12 col-md-4">
+                  <div className="profile-user-img w-100 h-100">
                     <ImageModal
                       src={selectedUser?.profile_image?selectedUser?.profile_image:images.avatar_1}
                       alt=""
-                      // className="img-thumbnail w-100 h-100"
+                      className="img-thumbnail w-100 h-100"
                     />
                   </div>
                 </div>
-                <div className="col-12 col-md-6 h-100">
+                <div className="col-12 col-md-8 h-100">
                   <ul className="view-user-list ">
                     <li>
                       <b>Name: </b>
@@ -77,7 +77,7 @@ function ViewUser() {
           <div className="card p-0">
             <div className="row gy-3">
               {selectedUser?.bank_details?.map((item, index) => (
-                <div key={index} className="col-12 col-md-6">
+                <div key={index} className="col-12">
                   <div className="card-body">
                     <h5 className="fs-17 text-dark flex-col">
                       Bank Information {index + 1}

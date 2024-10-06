@@ -38,6 +38,8 @@ function FilterCard(props) {
               }}
             />
           </div>
+          <div className="col-12 col-md-3 mr-3">
+
           <ListSelector
             title="Lead Type"
             data={allOffer}
@@ -48,7 +50,8 @@ function FilterCard(props) {
                 type: e.target.value,
               }));
             }}
-          />
+            />
+            </div>
 
           <div className="col-12 col-12 col-md-3 mt-3">
             <div className="d-flex align-items-center gap-2">
