@@ -1,7 +1,31 @@
+import axios from "axios";
 import { Modal } from "react-bootstrap";
 import { CiWarning } from "react-icons/ci";
+import { apis } from "../../utils/URL";
+import useToastStore from "../../store/toastStore";
 
 function DeleteModalComp(props) {
+  const { setToastData } = useToastStore();
+
+  const deleteUser = async () => {
+    if (props?.currentData?._id) {
+      axios
+        .post(apis.deleteUser, { id: props.currentData._id })
+        .then((res) => {
+          console.log(res.data);
+
+          setToastData({ message: "User Deleted", color: "green" });
+          props.setDeleteModal(false);
+        })
+        .catch((err) => {
+          console.log(err);
+
+          setToastData({ message: "Failed to delete user", color: "red" });
+        });
+    } else {
+      setToastData({ message: "No Data Provided", color: "red" });
+    }
+  };
   return (
     <Modal
       className={props.theme ? props.theme : ""}
@@ -20,7 +44,7 @@ function DeleteModalComp(props) {
         <button
           type="button"
           className="btn btn-danger my-2"
-          onClick={() => props.setDeleteModal(false)}
+          onClick={deleteUser}
         >
           Continue
         </button>

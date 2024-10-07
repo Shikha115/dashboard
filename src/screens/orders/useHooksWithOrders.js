@@ -6,10 +6,15 @@ import { apis } from "../../utils/URL";
 import axios from "axios";
 import useToastStore from "../../store/toastStore";
 import { Link } from "react-router-dom";
+import useAuthStore from "../../store/authStore";
 
 const useHooksWithOrders = () => {
   const { allOrders, getAllOrders } = useDataStore();
   const { setToastData } = useToastStore();
+  const {
+    profile: { access },
+  } = useAuthStore();
+
   const [isLoading, setIsLoading] = useState(true);
   const [filter, setFilter] = useState({ bank: "", leadType: "" });
   const [leads, setleads] = useState([]);
@@ -116,6 +121,13 @@ const useHooksWithOrders = () => {
             className="btn btn-soft-success btn-sm"
             style={{ textWrap: "wrap" }}
             onClick={() => {
+              if (!access?.payment?.edit) {
+                setToastData({
+                  message: "You don't have edit access",
+                  color: "purple",
+                });
+                return;
+              }
               if (row?.settled) {
                 setToastData({
                   message: "Payment is already settled",
@@ -486,6 +498,7 @@ const useHooksWithOrders = () => {
     typeFilter,
     selectAll,
     onRefresh,
+    access,
   };
 };
 

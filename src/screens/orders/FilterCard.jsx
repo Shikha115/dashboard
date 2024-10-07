@@ -5,8 +5,12 @@ import ListSelector from "../../components/ListSelector";
 import useDataStore from "../../store/dataStore";
 import UserTypeSelector from "../Users/UserSelector";
 import useHooksWithOrders from "./useHooksWithOrders";
+import useAuthStore from "../../store/authStore";
 
 function FilterCard(props) {
+  const {
+    profile: { access },
+  } = useAuthStore();
   return (
     <div className="card">
       <div className="card-body">
@@ -104,50 +108,52 @@ function FilterCard(props) {
             />
           </div>
 
-          <div className="col-12">
-            <div className="d-flex align-items-center gap-2">
-              <div className="col-12 col-md-6 flex-row d-flex">
-                <button
-                  className={`btn m-1 ${
-                    props?.selection.length > 0
-                      ? "btn-primary"
-                      : "btn-secondary"
-                  }`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    props?.setPaymentModal(true);
-                    console.log(props?.isSelection);
-                  }}
-                >
-                  Settle Selected Payments - {props?.selection?.length}
-                </button>{" "}
-                <button
-                  className={`btn m-1 ${
-                    props?.selection.length > 0
-                      ? "btn-primary"
-                      : "btn-secondary"
-                  }`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    props?.setSelection([]);
-                    console.log(props?.isSelection);
-                  }}
-                >
-                  Clear All
-                </button>{" "}
-                <button
-                  className={`btn m-1 btn-primary`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    props?.selectAll();
-                    console.log(props?.isSelection);
-                  }}
-                >
-                  Select All
-                </button>
+          {access?.payment?.edit ? (
+            <div className="col-12">
+              <div className="d-flex align-items-center gap-2">
+                <div className="col-12 col-md-6 flex-row d-flex">
+                  <button
+                    className={`btn m-1 ${
+                      props?.selection.length > 0
+                        ? "btn-primary"
+                        : "btn-secondary"
+                    }`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      props?.setPaymentModal(true);
+                      console.log(props?.isSelection);
+                    }}
+                  >
+                    Settle Selected Payments - {props?.selection?.length}
+                  </button>{" "}
+                  <button
+                    className={`btn m-1 ${
+                      props?.selection.length > 0
+                        ? "btn-primary"
+                        : "btn-secondary"
+                    }`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      props?.setSelection([]);
+                      console.log(props?.isSelection);
+                    }}
+                  >
+                    Clear All
+                  </button>{" "}
+                  <button
+                    className={`btn m-1 btn-primary`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      props?.selectAll();
+                      console.log(props?.isSelection);
+                    }}
+                  >
+                    Select All
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+          ) : null}
         </form>
       </div>
     </div>

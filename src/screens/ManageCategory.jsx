@@ -11,7 +11,7 @@ import { FaWindowClose } from "react-icons/fa";
 import ImageUpload from "../components/ImageUpload";
 import useToastStore from "../store/toastStore";
 import useAuthStore from "../store/authStore";
-import { isEmptyObject } from "../utils/helperfunctions";
+import { getAccessName, isEmptyObject } from "../utils/helperfunctions";
 import _ from "lodash";
 import ImageModal from "../components/ImageModal";
 
@@ -37,7 +37,10 @@ const addon_data = { key: "", required: false, can_delete: true };
 function ManageCategory() {
   const { isLoading, category, getAllCategory, setIsLoading } = useDataStore();
   const { setToastData } = useToastStore();
-  const { theme } = useAuthStore();
+  const {
+    profile: { access },
+  } = useAuthStore();
+
   const [deleteModal, setDeleteModal] = useState(false);
   const [categories, setCategories] = useState(category);
   const [addCategory, setAddCategory] = useState("");
@@ -127,7 +130,15 @@ function ManageCategory() {
             type="checkbox"
             className="form-check-input"
             defaultChecked={row?.status}
+            disabled={!access?.category?.edit}
             onChange={(e) => {
+              if (!access?.category?.edit) {
+                setToastData({
+                  message: "You don't have access",
+                  color: "lightgreen",
+                });
+                return;
+              }
               let val = e.target.checked;
               updateStatus(row?._id, val);
               row.status = val;
@@ -146,6 +157,7 @@ function ManageCategory() {
           <input
             defaultValue={row?.rank}
             type="number"
+            disabled={!access?.category?.edit}
             className="form-control"
             style={{ width: 70 }}
             onChange={(e) => {
@@ -169,6 +181,13 @@ function ManageCategory() {
             className="btn btn-purple"
             to="#"
             onClick={() => {
+              if (!access?.category?.edit) {
+                setToastData({
+                  message: "You don't have edit access",
+                  color: "purple",
+                });
+                return;
+              }
               setAddCategory("edit");
               setSelectedItem(row);
               setAddonInputData(row?.offer_data);
@@ -180,6 +199,13 @@ function ManageCategory() {
             className="btn btn-pink"
             to="#"
             onClick={(e) => {
+              if (!access?.category?.delete) {
+                setToastData({
+                  message: "You don't have delete access",
+                  color: "red",
+                });
+                return;
+              }
               setDeleteModal(true);
               setSelectedItem(row);
             }}
@@ -264,47 +290,60 @@ function ManageCategory() {
     <>
       <div className="content">
         <div className="container-fluid">
-          <div className="manage-bank">
-            <div className="page-title-box">
-              <div className="page-title-right">
-                <div className="app-search">
-                  <form>
-                    <div className="input-group">
-                      <input
-                        type="search"
-                        className="form-control"
-                        placeholder="Search..."
-                        onChange={(e) => search(e.target.value)}
-                      />
-                      <span className="search-icon">
-                        <CiSearch className="text-muted" />
-                      </span>
-                    </div>
-                  </form>
-                </div>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={() => {
-                    setAddCategory("add");
-                    setSelectedItem({});
-                    setInputData({});
-                  }}
-                >
-                  Add Category
-                </button>
-              </div>
-              <h4 className="page-title">Manage Category</h4>
+          {!access?.category?.read ? (
+            <div
+              style={{ height: "40vh" }}
+              className="manage-bank d-flex justify-content-center align-items-center "
+            >
+              <h1 className="item">No Access Provided</h1>
             </div>
-            <DataTable
-              columns={columns}
-              data={categories}
-              progressPending={isLoading}
-              pagination
-              paginationRowsPerPageOptions={[50, 100, 150, 200]}
-              paginationPerPage={50}
-            />
-          </div>
+          ) : (
+            <div className="manage-bank ">
+              <div className="page-title-box">
+                <div className="page-title-right">
+                  <div className="app-search">
+                    <form>
+                      <div className="input-group">
+                        <input
+                          type="search"
+                          className="form-control"
+                          placeholder="Search..."
+                          onChange={(e) => search(e.target.value)}
+                        />
+                        <span className="search-icon">
+                          <CiSearch className="text-muted" />
+                        </span>
+                      </div>
+                    </form>
+                  </div>
+                  {access?.category?.edit ? (
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={() => {
+                        setAddCategory("add");
+                        setSelectedItem({});
+                        setInputData({});
+                      }}
+                    >
+                      Add Category
+                    </button>
+                  ) : null}
+                </div>
+                <h1 className="page-title">
+                  Manage Category <h4>({getAccessName(access?.category)})</h4>
+                </h1>
+              </div>
+              <DataTable
+                columns={columns}
+                data={categories}
+                progressPending={isLoading}
+                pagination
+                paginationRowsPerPageOptions={[50, 100, 150, 200]}
+                paginationPerPage={50}
+              />
+            </div>
+          )}
         </div>
       </div>
 

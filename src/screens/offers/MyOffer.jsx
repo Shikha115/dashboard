@@ -1,13 +1,11 @@
 import DataTable from "react-data-table-component";
-import Modal from "react-bootstrap/Modal";
 import { CiSearch, CiWarning } from "react-icons/ci";
 
 import AddModalComp from "./AddModalComp";
 import Loader from "../../components/Loader";
 import useOfferHook from "./useOfferHook";
 import DeleteOfferModal from "./DeleteOffer";
-
-
+import { getAccessName } from "../../utils/helperfunctions";
 
 function MyOffer() {
   const {
@@ -30,53 +28,67 @@ function MyOffer() {
     setAddonData,
     handleSubmit,
     Data,
+    access,
   } = useOfferHook();
 
   return (
     <>
       <div className="content">
         <div className="container-fluid">
-          <div className="manage-bank">
-            <div className="page-title-box">
-              <div className="page-title-right">
-                <div className="app-search">
-                  <form>
-                    <div className="input-group">
-                      <input
-                        type="search"
-                        className="form-control"
-                        placeholder="Search..."
-                        onChange={searchFilter}
-                      />
-                      <span className="search-icon">
-                        <CiSearch className="text-muted" />
-                      </span>
-                    </div>
-                  </form>
-                </div>
-                {currentCategory?.name === "All" ? null : (
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => {
-                      setCurrentData(currentCategory?.offer_data);
-                      setAddModal({ type: "add", state: true });
-                    }}
-                  >
-                    Add {currentCategory?.name}
-                  </button>
-                )}
-              </div>
-              <h4 className="page-title">Manage {currentCategory?.name}</h4>
+          {!access?.offer?.read ? (
+            <div
+              style={{ height: "40vh" }}
+              className="manage-bank d-flex justify-content-center align-items-center "
+            >
+              <h1 className="item">No Access Provided</h1>
             </div>
-            {isLoading ? <Loader /> : null}
-            <DataTable
-              columns={columns}
-              data={Offers}
-              pagination
-              paginationRowsPerPageOptions={[30, 60, 90, 120]}
-              paginationPerPage={30}
-            />
-          </div>
+          ) : (
+            <div className="manage-bank">
+              <div className="page-title-box">
+                <div className="page-title-right">
+                  <div className="app-search">
+                    <form>
+                      <div className="input-group">
+                        <input
+                          type="search"
+                          className="form-control"
+                          placeholder="Search..."
+                          onChange={searchFilter}
+                        />
+                        <span className="search-icon">
+                          <CiSearch className="text-muted" />
+                        </span>
+                      </div>
+                    </form>
+                  </div>
+                  {currentCategory?.name === "All" ||
+                  !access.offer?.edit ? null : (
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => {
+                        setCurrentData(currentCategory?.offer_data);
+                        setAddModal({ type: "add", state: true });
+                      }}
+                    >
+                      Add {currentCategory?.name}
+                    </button>
+                  )}
+                </div>
+                <h4 className="page-title">
+                  Manage {currentCategory?.name}{" "}
+                  <h4>({getAccessName(access?.offer)})</h4>
+                </h4>
+              </div>
+              {isLoading ? <Loader /> : null}
+              <DataTable
+                columns={columns}
+                data={Offers}
+                pagination
+                paginationRowsPerPageOptions={[30, 60, 90, 120]}
+                paginationPerPage={30}
+              />
+            </div>
+          )}
         </div>
       </div>
       <DeleteOfferModal

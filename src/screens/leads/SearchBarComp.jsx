@@ -1,5 +1,10 @@
+import useAuthStore from "../../store/authStore";
+
 function SearchBarComp(props) {
   let searchTimer;
+  const {
+    profile: { access },
+  } = useAuthStore();
 
   return (
     <div className="col-12 ">
@@ -25,26 +30,28 @@ function SearchBarComp(props) {
             }}
           />
         </div>
-        <div className="col-12 col-md-6 mb-3">
-          <button
-            className="btn btn-primary"
-            onClick={(e) => {
-              // fileInputRef.current.click();
-              e.preventDefault();
-              props.setLeadModal(true);
-            }}
-          >
-            Upload Leads
-          </button>{" "}
-          <button
-            className="btn btn-primary"
-            onClick={(e) => {
-              props.exportExcel(e);
-            }}
-          >
-            Export Leads
-          </button>
-        </div>
+        {!access?.lead.edit ? null : (
+          <div className="col-12 col-md-6 mb-3">
+            <button
+              className="btn btn-primary"
+              onClick={(e) => {
+                // fileInputRef.current.click();
+                e.preventDefault();
+                props.setLeadModal(true);
+              }}
+            >
+              Upload Leads
+            </button>{" "}
+            <button
+              className="btn btn-primary"
+              onClick={(e) => {
+                props.exportExcel(e);
+              }}
+            >
+              Export Leads
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

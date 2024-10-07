@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import useAuthStore from "../store/authStore";
 import { static_pages } from "../utils/extraData";
 import ImageModal from "../components/ImageModal";
+import { getAccessName } from "../utils/helperfunctions";
 
 function Notification() {
   const { getTemplates, templates, allOffer, getAllOffer } = useDataStore();
@@ -23,6 +24,9 @@ function Notification() {
   const [deleteModal, setDeleteModal] = useState(false);
   const [filteredTemplate, setFilteredTemplate] = useState();
   const [Pages, setPages] = useState([...static_pages]);
+  const {
+    profile: { access },
+  } = useAuthStore();
 
   useEffect(() => {
     setPages([...static_pages, ...allOffer]);
@@ -86,6 +90,13 @@ function Notification() {
           <button
             className="btn btn-purple"
             onClick={() => {
+              if (!access?.notification?.edit) {
+                setToastData({
+                  message: "You don't have edit access",
+                  color: "purple",
+                });
+                return;
+              }
               setAddModal({ type: "edit", state: true });
               setCurrentRow(row);
             }}
@@ -96,6 +107,13 @@ function Notification() {
             className="btn btn-pink"
             to="#"
             onClick={(e) => {
+              if (!access?.notification?.delete) {
+                setToastData({
+                  message: "You don't have delete access",
+                  color: "red",
+                });
+                return;
+              }
               e.preventDefault();
               setCurrentRow(row);
               setDeleteModal(!deleteModal);
@@ -249,46 +267,64 @@ function Notification() {
     <>
       <div className="content">
         <div className="container-fluid">
-          <div className="manage-bank">
-            <div className="page-title-box">
-              <div className="page-title-right">
-                <div className="app-search">
-                  <form>
-                    <div className="input-group">
-                      <input
-                        type="search"
-                        className="form-control"
-                        placeholder="Search..."
-                        onChange={(e) => {
-                          search(e?.target?.value);
-                        }}
-                      />
-                      <span className="search-icon">
-                        <CiSearch className="text-muted" />
-                      </span>
-                    </div>
-                  </form>
-                </div>
-
-                <button
-                  className="btn btn-primary"
-                  onClick={() => {
-                    setCurrentRow({});
-                    setAddModal({ type: "add", state: true });
-                  }}
-                >
-                  Create Template
-                </button>
-              </div>
-              <h4 className="page-title">Notification</h4>
+          {!access?.notification?.read ? (
+            <div
+              style={{ height: "40vh" }}
+              className="manage-bank d-flex justify-content-center align-items-center "
+            >
+              <h1 className="item">No Access Provided</h1>
             </div>
-            <DataTable
-              columns={columns.length > 0 ? columns : []}
-              data={filteredTemplate}
-              progressPending={isLoading}
-              pagination
-            />
-          </div>
+          ) : (
+            <div className="manage-bank">
+              <div className="page-title-box">
+                <div className="page-title-right">
+                  <div className="app-search">
+                    <form>
+                      <div className="input-group">
+                        <input
+                          type="search"
+                          className="form-control"
+                          placeholder="Search..."
+                          onChange={(e) => {
+                            search(e?.target?.value);
+                          }}
+                        />
+                        <span className="search-icon">
+                          <CiSearch className="text-muted" />
+                        </span>
+                      </div>
+                    </form>
+                  </div>
+
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => {
+                      if (!access?.notification?.edit) {
+                        setToastData({
+                          message: "You don't have edit access",
+                          color: "purple",
+                        });
+                        return;
+                      }
+                      setCurrentRow({});
+                      setAddModal({ type: "add", state: true });
+                    }}
+                  >
+                    Create Template
+                  </button>
+                </div>
+                <h4 className="page-title">
+                  Notification <h4>({getAccessName(access?.notification)})</h4>
+                </h4>
+              </div>
+              <DataTable
+                columns={columns.length > 0 ? columns : []}
+                data={filteredTemplate}
+                progressPending={isLoading}
+                pagination
+              />
+            </div>
+          )}
         </div>
       </div>
       <Modal

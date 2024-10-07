@@ -18,7 +18,6 @@ import UserTypeSelector from "./UserSelector";
 import { FaX } from "react-icons/fa6";
 import NoDataComponent from "../../components/NoDataComp";
 import Loader from "../../components/Loader";
-import ImageUpload from "../../components/ImageUpload";
 import { images } from "../../components/Images";
 
 function Users() {
@@ -52,6 +51,7 @@ function Users() {
     filter,
     onNextPageClick,
     setFilter,
+    access,
   } = useUserManagementHook();
 
   const [denyAccess, setDenyAccess] = useState(false);
@@ -62,78 +62,87 @@ function Users() {
     <>
       <div className="content">
         <div className="container-fluid">
-          <div className="manage-bank">
-            <div className="page-title-box">
-              <div className="page-title-right">
-                <div className="app-search">
-                  <form className="column d-flex gap-2">
-                    {!filter?.type || filter?.type === "Select" ? null : (
-                      <Link
-                        className="btn btn-soft-danger btn-sm mr-2"
-                        style={{ textWrap: "nowrap", marginRight: 10 }}
-                        onClick={() => {
-                          setFilter({ ...filter, type: "Select" });
-                        }}
-                      >
-                        {filter?.type} <FaX size={10} />
-                      </Link>
-                    )}
-                    <UserTypeSelector
-                      value={filter?.type}
-                      title={false}
-                      style={{ minWidth: "250px" }}
-                      data={[
-                        { type: "approved", id: 1 },
-                        { type: "rejected", id: 2 },
-                        { type: "pending", id: 3 },
-                        { type: "updated", id: 4 },
-                      ]}
-                      onChangeSelector={(e) => {
-                        setFilter({ ...filter, type: e?.target?.value });
-                        console.log(e?.target.value);
-                      }}
-                    />
-                    <div className="input-group">
-                      <input
-                        type="search"
-                        className="form-control"
-                        placeholder="Search..."
-                        onChange={(e) => {
-                          setFilter({ ...filter, search: e?.target?.value });
-                          search(e?.target?.value);
+          {!access?.user?.read ? (
+            <div
+              style={{ height: "40vh" }}
+              className="manage-bank d-flex justify-content-center align-items-center "
+            >
+              <h1 className="item">No Access Provided</h1>
+            </div>
+          ) : (
+            <div className="manage-bank">
+              <div className="page-title-box">
+                <div className="page-title-right">
+                  <div className="app-search">
+                    <form className="column d-flex gap-2">
+                      {!filter?.type || filter?.type === "Select" ? null : (
+                        <Link
+                          className="btn btn-soft-danger btn-sm mr-2"
+                          style={{ textWrap: "nowrap", marginRight: 10 }}
+                          onClick={() => {
+                            setFilter({ ...filter, type: "Select" });
+                          }}
+                        >
+                          {filter?.type} <FaX size={10} />
+                        </Link>
+                      )}
+                      <UserTypeSelector
+                        value={filter?.type}
+                        title={false}
+                        style={{ minWidth: "250px" }}
+                        data={[
+                          { type: "approved", id: 1 },
+                          { type: "rejected", id: 2 },
+                          { type: "pending", id: 3 },
+                          { type: "updated", id: 4 },
+                        ]}
+                        onChangeSelector={(e) => {
+                          setFilter({ ...filter, type: e?.target?.value });
+                          console.log(e?.target.value);
                         }}
                       />
-                      <span className="search-icon">
-                        <CiSearch className="text-muted" />
-                      </span>
-                    </div>
-                  </form>
+                      <div className="input-group">
+                        <input
+                          type="search"
+                          className="form-control"
+                          placeholder="Search..."
+                          onChange={(e) => {
+                            setFilter({ ...filter, search: e?.target?.value });
+                            search(e?.target?.value);
+                          }}
+                        />
+                        <span className="search-icon">
+                          <CiSearch className="text-muted" />
+                        </span>
+                      </div>
+                    </form>
+                  </div>
                 </div>
+                <h4 className="page-title">Users</h4>
               </div>
-              <h4 className="page-title">Users</h4>
-            </div>
-            {isLoading ? <Loader /> : null}
+              {isLoading ? <Loader /> : null}
 
-            {Users?.length ? (
-              <DataTable
-                columns={columns}
-                data={Users?.length > 0 ? Users : []}
-                // noDataComponent={NoDataComponent}
-                paginationPerPage={filter?.limit || 10}
-                paginationDefaultPage={filter?.currentPage}
-                paginationServer
-                // progressPending={isLoading}
-                paginationTotalRows={filter?.totalDocuments}
-                paginationComponentOptions={{
-                  noRowsPerPage: true,
-                }}
-                pagination
-                onChangePage={onNextPageClick}
-              />
-            ) : (
-              <NoDataComponent />
-            )}
-          </div>
+              {Users?.length ? (
+                <DataTable
+                  columns={columns}
+                  data={Users?.length > 0 ? Users : []}
+                  // noDataComponent={NoDataComponent}
+                  paginationPerPage={filter?.limit || 10}
+                  paginationDefaultPage={filter?.currentPage}
+                  paginationServer
+                  // progressPending={isLoading}
+                  paginationTotalRows={filter?.totalDocuments}
+                  paginationComponentOptions={{
+                    noRowsPerPage: true,
+                  }}
+                  pagination
+                  onChangePage={onNextPageClick}
+                />
+              ) : (
+                <NoDataComponent />
+              )}
+            </div>
+          )}
         </div>
       </div>
 
@@ -350,6 +359,7 @@ function Users() {
           theme={theme}
           deleteModal={deleteModal}
           setDeleteModal={setDeleteModal}
+          currentData={currentData}
         />
       ) : null}
       {ApproveModal && (

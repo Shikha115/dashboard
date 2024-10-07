@@ -24,56 +24,68 @@ function ManageSponsor() {
     DeleteBank,
     search,
     columns,
+    access,
   } = useSponsorManagement();
 
   return (
     <>
       <div className="content">
         <div className="container-fluid">
-          <div className="manage-bank">
-            <div className="page-title-box">
-              <div className="page-title-right">
-                <div className="app-search">
-                  <form>
-                    <div className="input-group">
-                      <input
-                        type="search"
-                        className="form-control"
-                        placeholder="Search..."
-                        onChange={(e) => {
-                          search(e?.target?.value);
-                        }}
-                      />
-                      <span className="search-icon">
-                        <CiSearch className="text-muted" />
-                      </span>
-                    </div>
-                  </form>
-                </div>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={() => {
-                    setCurrentData({});
-                    setUpdatedData({});
-                    setAddModal({ type: "add", state: true });
-                  }}
-                >
-                  Add Sponsored Ads
-                </button>
-              </div>
-              <h4 className="page-title">Manage Sponsored Ads</h4>
+          {!access?.sponsored_ad?.read ? (
+            <div
+              style={{ height: "40vh" }}
+              className="manage-bank d-flex justify-content-center align-items-center "
+            >
+              <h1 className="item">No Access Provided</h1>
             </div>
-            <DataTable
-              columns={columns}
-              data={banners}
-              progressPending={isLoading}
-              pagination
-              paginationRowsPerPageOptions={[50, 100, 150, 200]}
-              paginationPerPage={50}
-              key={(e) => e?._id}
-            />
-          </div>
+          ) : (
+            <div className="manage-bank">
+              <div className="page-title-box">
+                <div className="page-title-right">
+                  <div className="app-search">
+                    <form>
+                      <div className="input-group">
+                        <input
+                          type="search"
+                          className="form-control"
+                          placeholder="Search..."
+                          onChange={(e) => {
+                            search(e?.target?.value);
+                          }}
+                        />
+                        <span className="search-icon">
+                          <CiSearch className="text-muted" />
+                        </span>
+                      </div>
+                    </form>
+                  </div>
+                  {!access?.sponsored_ad?.edit ? null : (
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={() => {
+                        setCurrentData({});
+                        setUpdatedData({});
+                        setAddModal({ type: "add", state: true });
+                      }}
+                    >
+                      Add Sponsored Ads
+                    </button>
+                  )}
+                </div>
+                <h4 className="page-title">Manage Sponsored Ads</h4>
+              </div>
+              <DataTable
+                columns={columns}
+                data={banners}
+                progressPending={isLoading}
+                pagination
+                paginationRowsPerPageOptions={[50, 100, 150, 200]}
+                paginationPerPage={50}
+                key={(e) => e?._id}
+              />
+            </div>
+          )}
         </div>
       </div>
       <ViewSponsorModal

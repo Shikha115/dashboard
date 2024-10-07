@@ -32,3 +32,15 @@ export const isEmptyObject = (obj) => {
   }
   return true;
 };
+
+export const getAccessName = (access) => {
+  if (access?.delete) {
+    return "All Access";
+  } else if (access?.edit) {
+    return "Edit Access";
+  } else if (access.read) {
+    return "Read-Only Access";
+  } else {
+    return "No Access";
+  }
+};

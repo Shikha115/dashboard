@@ -11,7 +11,10 @@ import ImageModal from "../../components/ImageModal";
 const useOfferHook = () => {
   const location = useLocation();
   const { setToastData } = useToastStore();
-  const { theme } = useAuthStore();
+  const {
+    theme,
+    profile: { access },
+  } = useAuthStore();
 
   const currentUrl = location.pathname;
   let category_id = currentUrl.split("/offer/")[1];
@@ -19,6 +22,7 @@ const useOfferHook = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { allOffer, getOfferbyId, bank, getCategory, getAllOffer } =
     useDataStore();
+
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState({ type: "", state: false });
   const [currentData, setCurrentData] = useState([]);
@@ -269,6 +273,7 @@ const useOfferHook = () => {
             type="checkbox"
             className="form-check-input"
             defaultChecked={row?.status}
+            disabled={!access?.offer?.edit}
             onChange={(e) => {
               let val = e.target.checked;
               updateStatus(row?._id, val);
@@ -286,6 +291,7 @@ const useOfferHook = () => {
         <div className="form-check form-switch">
           <input
             type="checkbox"
+            disabled={!access?.offer?.edit}
             className="form-check-input"
             defaultChecked={row?.featured}
             onChange={(e) => {
@@ -305,6 +311,7 @@ const useOfferHook = () => {
         <div className="form-check form-switch">
           <input
             type="checkbox"
+            disabled={!access?.offer?.edit}
             className="form-check-input"
             defaultChecked={row?.converting}
             onChange={(e) => {
@@ -325,6 +332,7 @@ const useOfferHook = () => {
           <input
             type="number"
             className="form-control"
+            disabled={!access?.offer?.edit}
             style={{ width: 70 }}
             defaultValue={row?.rank}
             onChange={(e) => {
@@ -346,6 +354,13 @@ const useOfferHook = () => {
           <button
             className="btn btn-purple"
             onClick={() => {
+              if (!access?.offer?.edit) {
+                setToastData({
+                  message: "You don't have edit access",
+                  color: "purple",
+                });
+                return;
+              }
               setData(row);
               setCurrentData(row?.offer_data);
               setAddonData({ status: row?.status, rank: row?.rank });
@@ -358,6 +373,13 @@ const useOfferHook = () => {
           <button
             className="btn btn-pink"
             onClick={() => {
+              if (!access?.offer?.delete) {
+                setToastData({
+                  message: "You don't have delete access",
+                  color: "red",
+                });
+                return;
+              }
               setData(row);
               setDeleteModal(true);
             }}
@@ -389,6 +411,7 @@ const useOfferHook = () => {
     setAddonData,
     handleSubmit,
     Data,
+    access,
   };
 };
 

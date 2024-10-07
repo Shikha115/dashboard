@@ -1,9 +1,9 @@
 export const AppInfo = {
-  // baseUrlAPI: "http://localhost:5001", // Rojgar Dev local
-  // webUrl: "http://localhost:3000",
+  baseUrlAPI: "http://localhost:5001", // Rojgar Dev local
+  webUrl: "http://localhost:3000",
 
-  baseUrlAPI: "https://api.dev.rojgarapp.in", // Rojgar Dev
-  webUrl: "https://web.dev.rojgarapp.in",
+  // baseUrlAPI: "https://api.dev.rojgarapp.in", // Rojgar Dev
+  // webUrl: "https://web.dev.rojgarapp.in",
 
   // baseUrlAPI: "https://api.prod.rojgarapp.in", // Rojgar Prod
   // webUrl: "https://bfsiportal.com",
@@ -28,6 +28,7 @@ export const apis = {
   verifyOTP: `${baseURL}/auth/verify-otp`,
   login: `${baseURL}/auth/login`,
   register: `${baseURL}/auth/register`,
+  deleteUser: `${baseURL}/auth/delete-user`,
   accountDeletionRequest: `${baseURL}/auth/request-account-deletion`,
 
   //---------------- category ------------- //

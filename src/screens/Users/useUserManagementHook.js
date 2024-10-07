@@ -11,7 +11,9 @@ import useToastStore from "../../store/toastStore";
 let searchTimer;
 const useUserManagementHook = () => {
   const { setToastData } = useToastStore();
-
+  const {
+    profile: { access },
+  } = useAuthStore();
   const { users, getAllUsers, setSelectedUser, selectedUser } = useDataStore();
   const [isLoading, setIsLoading] = useState(true);
   const [Page, setPage] = useState(0);
@@ -82,6 +84,13 @@ const useUserManagementHook = () => {
           className="btn btn-soft-danger btn-sm"
           style={{ textWrap: "nowrap" }}
           onClick={() => {
+            if (!access?.user?.edit) {
+              setToastData({
+                message: "You don't have edit access",
+                color: "purple",
+              });
+              return;
+            }
             setCurrentData(row);
             setOrderModal(true);
           }}
@@ -99,6 +108,13 @@ const useUserManagementHook = () => {
           className="btn btn-soft-danger btn-sm"
           style={{ textWrap: "nowrap" }}
           onClick={() => {
+            if (!access?.user?.edit) {
+              setToastData({
+                message: "You don't have edit access",
+                color: "purple",
+              });
+              return;
+            }
             setCurrentData(row);
             setNotificationModal(true);
           }}
@@ -118,6 +134,13 @@ const useUserManagementHook = () => {
               <Link
                 className="btn btn-soft-info btn-sm"
                 onClick={() => {
+                  if (!access?.user?.edit) {
+                    setToastData({
+                      message: "You don't have edit access",
+                      color: "purple",
+                    });
+                    return;
+                  }
                   setCurrentData(row);
                   setSettleModal(true);
                 }}
@@ -128,6 +151,13 @@ const useUserManagementHook = () => {
               <Link
                 className="btn btn-soft-info btn-sm"
                 onClick={() => {
+                  if (!access?.user?.edit) {
+                    setToastData({
+                      message: "You don't have edit access",
+                      color: "purple",
+                    });
+                    return;
+                  }
                   setToastData({ message: "No pending payment" });
                 }}
               >
@@ -172,6 +202,13 @@ const useUserManagementHook = () => {
             }`}
             style={{ textWrap: "nowrap" }}
             onClick={() => {
+              if (!access?.user?.edit) {
+                setToastData({
+                  message: "You don't have edit access",
+                  color: "purple",
+                });
+                return;
+              }
               setCurrentData(row);
               setApproveModal(true);
             }}
@@ -226,6 +263,13 @@ const useUserManagementHook = () => {
           <button
             className="btn btn-purple"
             onClick={() => {
+              if (!access?.user?.edit) {
+                setToastData({
+                  message: "You don't have edit access",
+                  color: "purple",
+                });
+                return;
+              }
               setEditModal(true);
               setCurrentData(row);
             }}
@@ -237,6 +281,13 @@ const useUserManagementHook = () => {
             // to="/users/view"
             // onClick={() => setSelectedUser(row)}
             onClick={() => {
+              if (!access?.user?.read) {
+                setToastData({
+                  message: "You don't have read access",
+                  color: "purple",
+                });
+                return;
+              }
               setSelectedUser(row);
               setViewModal(true);
             }}
@@ -246,7 +297,17 @@ const useUserManagementHook = () => {
           <Link
             className="btn btn-pink"
             to="#"
-            onClick={() => setDeleteModal(true)}
+            onClick={() => {
+              if (!access?.user?.delete) {
+                setToastData({
+                  message: "You don't have delete access",
+                  color: "red",
+                });
+                return;
+              }
+              setCurrentData(row);
+              setDeleteModal(true);
+            }}
           >
             <MdDelete className="fs-18" />
           </Link>
@@ -340,6 +401,7 @@ const useUserManagementHook = () => {
     setFilter,
     fetchWithParams,
     onNextPageClick,
+    access,
   };
 };
 

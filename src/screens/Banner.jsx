@@ -19,7 +19,9 @@ import ImageModal from "../components/ImageModal";
 function ManageBanner() {
   const { setToastData } = useToastStore();
   const { theme } = useAuthStore();
-
+  const {
+    profile: { access },
+  } = useAuthStore();
   const { banner, isLoading, getAllBanners, allOffer, getAllOffer } =
     useDataStore();
 
@@ -31,6 +33,7 @@ function ManageBanner() {
   const [Pages, setPages] = useState([...static_pages]);
 
   const [banners, setBanner] = useState(banner);
+
   useEffect(() => {
     getAllBanners();
     getAllOffer(true);
@@ -260,6 +263,13 @@ function ManageBanner() {
           <button
             className="btn btn-purple"
             onClick={() => {
+              if (!access?.banner?.edit) {
+                setToastData({
+                  message: "You don't have edit access",
+                  color: "purple",
+                });
+                return;
+              }
               setAddModal({ type: "edit", state: true });
               setCurrentData(row);
             }}
@@ -270,6 +280,13 @@ function ManageBanner() {
             className="btn btn-pink"
             to="#"
             onClick={(e) => {
+              if (!access?.banner?.delete) {
+                setToastData({
+                  message: "You don't have edit access",
+                  color: "red",
+                });
+                return;
+              }
               setCurrentData(row);
               e.preventDefault();
               setDeleteModal(!deleteModal);
@@ -286,50 +303,66 @@ function ManageBanner() {
     <>
       <div className="content">
         <div className="container-fluid">
-          <div className="manage-bank">
-            <div className="page-title-box">
-              <div className="page-title-right">
-                <div className="app-search">
-                  <form>
-                    <div className="input-group">
-                      <input
-                        type="search"
-                        className="form-control"
-                        placeholder="Search..."
-                        onChange={(e) => {
-                          search(e?.target?.value);
-                        }}
-                      />
-                      <span className="search-icon">
-                        <CiSearch className="text-muted" />
-                      </span>
-                    </div>
-                  </form>
-                </div>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={() => {
-                    setCurrentData({});
-                    setUpdatedData({});
-                    setAddModal({ type: "add", state: true });
-                  }}
-                >
-                  Add Banner
-                </button>
-              </div>
-              <h4 className="page-title">Manage Banners</h4>
+          {!access?.banner?.read ? (
+            <div
+              style={{ height: "40vh" }}
+              className="manage-bank d-flex justify-content-center align-items-center "
+            >
+              <h1 className="item">No Access Provided</h1>
             </div>
-            <DataTable
-              columns={columns}
-              data={banners.length > 0 ? banners : []}
-              progressPending={isLoading}
-              pagination
-              paginationRowsPerPageOptions={[50, 100, 150, 200]}
-              paginationPerPage={50}
-              key={(e) => e?._id}
-            />
-          </div>
+          ) : (
+            <div className="manage-bank">
+              <div className="page-title-box">
+                <div className="page-title-right">
+                  <div className="app-search">
+                    <form>
+                      <div className="input-group">
+                        <input
+                          type="search"
+                          className="form-control"
+                          placeholder="Search..."
+                          onChange={(e) => {
+                            search(e?.target?.value);
+                          }}
+                        />
+                        <span className="search-icon">
+                          <CiSearch className="text-muted" />
+                        </span>
+                      </div>
+                    </form>
+                  </div>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={() => {
+                      if (!access?.banner?.edit) {
+                        setToastData({
+                          message: "You don't have edit access",
+                          color: "purple",
+                        });
+                        return;
+                      }
+                      setCurrentData({});
+                      setUpdatedData({});
+                      setAddModal({ type: "add", state: true });
+                    }}
+                  >
+                    Add Banner
+                  </button>
+                </div>
+                <h4 className="page-title">Manage Banners</h4>
+              </div>
+              <DataTable
+                columns={columns}
+                data={banners.length > 0 ? banners : []}
+                progressPending={isLoading}
+                pagination
+                paginationRowsPerPageOptions={[50, 100, 150, 200]}
+                paginationPerPage={50}
+                key={(e) => e?._id}
+              />
+            </div>
+          )}
         </div>
       </div>
       <Modal

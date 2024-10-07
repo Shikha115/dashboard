@@ -7,6 +7,7 @@ import axios from "axios";
 import useToastStore from "../../store/toastStore";
 import CustomDropdown from "../../components/CustomDropdown";
 import ListSelector from "../../components/ListSelector";
+import useAuthStore from "../../store/authStore";
 
 const useHooksWithLeads = () => {
   const { lead, getAlLeads, getMyLeads } = useDataStore();
@@ -16,6 +17,9 @@ const useHooksWithLeads = () => {
   const [leads, setleads] = useState([]);
   const [Pagination, setPagination] = useState({});
   const [LeadModal, setLeadModal] = useState(false);
+  const {
+    profile: { access },
+  } = useAuthStore();
 
   const [searchFilterData, setSearchFilterData] = useState({
     search: "",
@@ -103,6 +107,7 @@ const useHooksWithLeads = () => {
         <select
           onChange={(e) => onSelect(e.target.value, row)}
           className="form-select "
+          disabled={!access?.lead?.edit}
           defaultValue={row?.isComplete || "pending"}
         >
           {["pending", "approved", "rejected"]?.map((item, i) => {
@@ -160,7 +165,7 @@ const useHooksWithLeads = () => {
 
     const req = await axios.get(apis.downloadAllLeads + "?" + params);
 
-    console.log(req);
+    // console.log(req);
 
     data = await req?.data?.data?.map((item) => {
       let {
@@ -406,6 +411,7 @@ const useHooksWithLeads = () => {
     onNextPageClick,
     searchFilterData,
     setSearchFilterData,
+    access,
   };
 };
 

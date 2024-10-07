@@ -5,6 +5,7 @@ import axios from "axios";
 import { apis } from "../../utils/URL";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { Link } from "react-router-dom";
+import useAuthStore from "../../store/authStore";
 
 function useSponsorManagement() {
   const { setToastData } = useToastStore();
@@ -16,7 +17,9 @@ function useSponsorManagement() {
   const [UpdatedData, setUpdatedData] = useState({});
   const [banners, setBanner] = useState(sponsor);
 
-  // console.log(UpdatedData);
+  const {
+    profile: { access },
+  } = useAuthStore();
 
   useEffect(() => {
     getAllSponsors();
@@ -195,6 +198,7 @@ function useSponsorManagement() {
         <div className="form-check form-switch">
           <input
             type="checkbox"
+            disabled={!access?.sponsored_ad?.edit}
             className="form-check-input"
             defaultChecked={row?.isActive}
             onChange={(e) => {
@@ -209,10 +213,12 @@ function useSponsorManagement() {
     {
       name: "Rank",
       center: true,
+
       width: "auto",
       cell: (row) => (
         <div>
           <input
+            disabled={!access?.sponsored_ad?.edit}
             defaultValue={row?.rank}
             type="number"
             className="form-control"
@@ -237,6 +243,13 @@ function useSponsorManagement() {
           <button
             className="btn btn-purple"
             onClick={() => {
+              if (!access?.sponsored_ad?.edit) {
+                setToastData({
+                  message: "You don't have edit access",
+                  color: "purple",
+                });
+                return;
+              }
               setAddModal({ type: "edit", state: true });
               setCurrentData(row);
             }}
@@ -247,6 +260,13 @@ function useSponsorManagement() {
             className="btn btn-pink"
             to="#"
             onClick={(e) => {
+              if (!access?.sponsored_ad?.delete) {
+                setToastData({
+                  message: "You don't have delete access",
+                  color: "red",
+                });
+                return;
+              }
               setCurrentData(row);
               e.preventDefault();
               setDeleteModal(!deleteModal);
@@ -276,6 +296,7 @@ function useSponsorManagement() {
     DeleteBank,
     search,
     columns,
+    access,
   };
 }
 
