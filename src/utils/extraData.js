@@ -47,3 +47,22 @@ const data = {
   ],
   message: "Bulk payments processed",
 };
+
+export const INITIAL_DATA = {
+  name: "",
+  email: "",
+  phone: "",
+  pass: "",
+  confirm_pass: "",
+  access: {
+    category: { edit: false, delete: false, read: false },
+    offer: { edit: false, delete: false, read: false },
+    lead: { edit: false, delete: false, read: false },
+    payment: { edit: false, delete: false, read: false },
+    user: { edit: false, delete: false, read: false },
+    notification: { edit: false, delete: false, read: false },
+    banner: { edit: false, delete: false, read: false },
+    sponsored_ad: { edit: false, delete: false, read: false },
+    manager: { edit: false, delete: false, read: false },
+  },
+};

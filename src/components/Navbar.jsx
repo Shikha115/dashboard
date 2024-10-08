@@ -14,6 +14,7 @@ function Navbar() {
     setDefaultSidebar(val);
     // console.log(defaultSidebar, "defaultSidebar");
   };
+  const { profile } = useAuthStore();
 
   return (
     <div className="navbar-custom">
@@ -126,7 +127,7 @@ function Navbar() {
               </span>
               <span className="d-lg-block d-none">
                 <h5 className="my-0 fw-normal">
-                  Admin{" "}
+                  {profile?.name}{" "}
                   <FaChevronDown className="fs-10 ms-1 d-none d-sm-inline-block align-middle" />
                 </h5>
               </span>
@@ -137,12 +138,14 @@ function Navbar() {
                 className="dropdown-menu dropdown-menu-end dropdown-menu-animated profile-dropdown"
               >
                 <div className=" dropdown-header noti-title">
-                  <h6 className="text-overflow m-0">Welcome !</h6>
+                  <h6 className="text-overflow m-0">
+                    Welcome {profile?.name} !
+                  </h6>
                 </div>
 
-                <Link to="pages-profile.html" className="dropdown-item">
+                <Link to="/profile" className="dropdown-item">
                   <i className="ri-account-circle-line fs-18 align-middle me-1" />
-                  <span>My Account</span>
+                  <span>Profile</span>
                 </Link>
 
                 <Link to="pages-profile.html" className="dropdown-item">

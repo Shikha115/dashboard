@@ -29,6 +29,7 @@ export const apis = {
   login: `${baseURL}/auth/login`,
   register: `${baseURL}/auth/register`,
   deleteUser: `${baseURL}/auth/delete-user`,
+  deleteWebUser: `${baseURL}/auth/delete-web-user`,
   accountDeletionRequest: `${baseURL}/auth/request-account-deletion`,
 
   //---------------- category ------------- //
@@ -54,6 +55,7 @@ export const apis = {
   //---------------- profile ------------- //
   updateProfile: `${baseURL}/profile/update-profile`,
   getAllLUsers: `${baseURL}/profile/get-all-profiles`,
+  getAllWebUsers: `${baseURL}/profile/get-all-web-profiles`,
   approveProfile: `${baseURL}/profile/approve-profile`,
 
   //---------------- offer ------------- //

@@ -61,6 +61,13 @@ const Sidebar_data2 = [
     isActive: false,
     link: "/users",
   },
+  {
+    icon: <FaUsers />,
+    category: "Managers",
+    subcategory: [],
+    isActive: false,
+    link: "/manager",
+  },
 
   {
     icon: <FaUsers />,
@@ -88,6 +95,7 @@ function Sidebar() {
   const { currentPath, theme } = useAuthStore();
   const { category } = useDataStore();
   const [data, setData] = useState();
+  const { profile } = useAuthStore();
 
   const handleOffers = () => {
     let obj = {

@@ -6,6 +6,7 @@ import useDataStore from "./store/dataStore";
 import ToastComponent from "./components/ToastComponent";
 import Location from "./components/Location";
 import ProtectedRoute from "./components/protectedRoute";
+import Profile from "./screens/Profile";
 
 const Login = React.lazy(() => import("./screens/Authentication/Login"));
 const Register = React.lazy(() => import("./screens/Authentication/Register"));
@@ -88,6 +89,16 @@ function App() {
                   <ProtectedRoute
                     path="/dashboard"
                     Component={Dashboard}
+                    header={true}
+                  />
+                }
+              />{" "}
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute
+                    path="/profile"
+                    Component={Profile}
                     header={true}
                   />
                 }
