@@ -58,6 +58,9 @@ function Users() {
   const [inputData, setInputData] = useState({});
   const [selectedItem, setSelectedItem] = useState();
 
+  console.log('user, currentDatacurrentData', currentData);
+  
+
   return (
     <>
       <div className="content">
@@ -232,7 +235,8 @@ function Users() {
                   disabled={denyAccess}
                 />
                 <img
-                  src={images.imageUpload}
+                  // src={images.imageUpload}
+                  src={currentData?.profile_image ? currentData?.profile_image : images.imageUpload}
                   alt=""
                   className="img-thumbnail w-10 object-cover"
                 />
@@ -311,7 +315,7 @@ function Users() {
                         disabled={denyAccess}
                       />
                       <img
-                        src={images.imageUpload}
+                        src={item?.cancelled_check ? item?.cancelled_check : images.imageUpload}
                         alt=""
                         className="img-thumbnail w-10 object-cover"
                       />
@@ -326,7 +330,7 @@ function Users() {
                         disabled={denyAccess}
                       />
                       <img
-                        src={images.imageUpload}
+                        src={item?.pan_image_new ? item?.pan_image_new : images.imageUpload}
                         alt=""
                         className="img-thumbnail w-10 object-cover"
                       />
