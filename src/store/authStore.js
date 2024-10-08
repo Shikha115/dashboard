@@ -5,7 +5,13 @@ import { apis, config } from "../utils/URL";
 const useAuthStore = create((set) => ({
   token: "",
   setToken: (data) => set({ token: data }),
+
   showToast: false,
+  setShowToast: (data) => set({ showToast: data }),
+
+  toastData: { color: "#33b0e0", message: "Welcome" },
+  setToastData: (data) => set({ toastData: data }),
+
   theme: "light",
   setTheme: (data) => {
     localStorage.setItem("theme", JSON.stringify(data));
@@ -13,18 +19,18 @@ const useAuthStore = create((set) => ({
   },
   getTheme: () => {
     const items = JSON.parse(localStorage.getItem("theme"));
-    // console.log(items, "theme");
     set({ theme: items });
   },
-  setShowToast: (data) => set({ showToast: data }),
-  toastData: { color: "#33b0e0", message: "Welcome" },
-  setToastData: (data) => set({ toastData: data }),
+
   loading: true,
   setLoading: (data) => set({ loading: data }),
+
   currentPath: "",
   setCurrentPath: (data) => set({ currentPath: data }),
+
   defaultSidebar: "default",
   setDefaultSidebar: (data) => set({ defaultSidebar: data }),
+
   profile: {},
   getProfileWeb: async () => {
     let token = localStorage.getItem("token");

@@ -24,10 +24,8 @@ const useDataStore = create((set, getState) => ({
   setIsLoading: (data) => set({ isLoading: data }),
 
   setBank: (data) => set({ bank: data }),
-  getAllBank: async (override) => {
-    if (getState()?.bank.length > 1 && !override) {
-      return;
-    }
+  getAllBank: async (override = false) => {
+    if (getState().bank.length > 1 && !override) return;
     const res = await axios.get(apis.getAllBanks);
     set({ bank: res.data?.data, isLoading: false });
   },
@@ -37,11 +35,6 @@ const useDataStore = create((set, getState) => ({
     set({ templates: res.data?.data });
   },
 
-  // getBanks: async () => {
-  //   const res = await axios.get(apis.getAllBanks);
-  //   set({ bank: res.data?.data, isLoading: false });
-  // },
-
   setCategory: (data) => set({ category: data }),
   getAllCategory: async () => {
     const res = await axios.get(apis.getCategories);
@@ -50,7 +43,7 @@ const useDataStore = create((set, getState) => ({
   },
 
   getCategory: async (id) => {
-    const res = await axios.get(apis.getCategoryById + "/" + id);
+    const res = await axios.get(`${apis.getCategoryById}/${id}`);
     return res.data.data;
   },
 
@@ -58,34 +51,29 @@ const useDataStore = create((set, getState) => ({
     set({ isLoading: true });
     const res = await axios.get(apis.getallOffers);
     let data = res?.data?.data;
-    // if (status) {
-    //   data = await data?.sort((a, b) => {
-    //     if (a.status === true && b.status === false) {
-    //       return -1; // a comes before b
-    //     }
-    //     if (a.status === false && b.status === true) {
-    //       return 1; // b comes before a
-    //     }
-    //     return 0; // Keep the original order if both have the same status
-    //   });
-    // }
-    // console.log(data);
+
+    // Optional: Sort based on status
+    if (status) {
+      data = data?.sort((a, b) => {
+        if (a.status === true && b.status === false) return -1;
+        if (a.status === false && b.status === true) return 1;
+        return 0;
+      });
+    }
 
     set({ allOffer: data, isLoading: false });
     return data;
   },
 
   getAllOrders: async (params = "") => {
-    const res = await axios.post(apis.getOrdersByUid + "?" + params);
-    let data = res?.data?.data;
+    const res = await axios.post(`${apis.getOrdersByUid}?${params}`);
+    const data = res?.data?.data;
     set({ allOrders: data });
     return res?.data;
   },
 
   getOfferbyId: async (id) => {
-    const res = await axios.post(apis.getSpecificOffer, {
-      id,
-    });
+    const res = await axios.post(apis.getSpecificOffer, { id });
     set({ allOffer: res.data?.data });
     return res.data.data;
   },
@@ -96,11 +84,12 @@ const useDataStore = create((set, getState) => ({
     set({ lead: res.data?.data });
     return res.data;
   },
+
   getMyLeads: async (params) => {
-    const res = await axios.get(apis.getAllLeads + "?" + params);
+    const res = await axios.get(`${apis.getAllLeads}?${params}`);
     return res?.data;
-    // set({ lead: res.data?.data });
   },
+
   getAllBanners: async () => {
     const res = await axios.get(apis.getAllBanners);
     set({ banner: res.data?.data });
@@ -112,7 +101,6 @@ const useDataStore = create((set, getState) => ({
   },
 
   setUsers: (data) => set({ users: data }),
-
   getAllUsers: async () => {
     const res = await axios.get(apis.getAllLUsers);
     set({ users: res.data?.data });
@@ -124,5 +112,3 @@ const useDataStore = create((set, getState) => ({
 }));
 
 export default useDataStore;
-
-
