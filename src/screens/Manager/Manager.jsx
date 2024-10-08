@@ -28,12 +28,12 @@ function Manager() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (managerDetails.pass !== managerDetails.confirm_pass) {
-      setToastData({ message: "Passwords don't match" });
-      return;
-    }
+    // if (managerDetails.pass !== managerDetails.confirm_pass) {
+    //   setToastData({ message: "Passwords don't match" });
+    //   return;
+    // }
 
-    console.log(managerDetails);
+    // console.log(managerDetails);
 
     // return;
     axios
