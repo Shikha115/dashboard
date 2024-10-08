@@ -55,11 +55,6 @@ function Users() {
   } = useUserManagementHook();
 
   const [denyAccess, setDenyAccess] = useState(false);
-  const [inputData, setInputData] = useState({});
-  const [selectedItem, setSelectedItem] = useState();
-
-  console.log('user, currentDatacurrentData', currentData);
-  
 
   return (
     <>
@@ -236,7 +231,11 @@ function Users() {
                 />
                 <img
                   // src={images.imageUpload}
-                  src={currentData?.profile_image ? currentData?.profile_image : images.imageUpload}
+                  src={
+                    currentData?.profile_image
+                      ? currentData?.profile_image
+                      : images.imageUpload
+                  }
                   alt=""
                   className="img-thumbnail w-10 object-cover"
                 />
@@ -260,7 +259,15 @@ function Users() {
                 defaultValue={currentData?.phone}
               />
             </div>
-
+            <div className="col-12 col-md-6 mb-3">
+              <label className="form-label">Wallet</label>
+              <input
+                type="text"
+                className="form-control"
+                disabled={denyAccess}
+                defaultValue={currentData?.wallet}
+              />
+            </div>{" "}
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">OTP</label>
               <input
@@ -270,7 +277,6 @@ function Users() {
                 defaultValue={currentData?.otp}
               />
             </div>
-
             {currentData?.bank_details?.map((item, i) => {
               return (
                 <Fragment key={item?.account_no + item?.bank_name}>
@@ -315,7 +321,11 @@ function Users() {
                         disabled={denyAccess}
                       />
                       <img
-                        src={item?.cancelled_check ? item?.cancelled_check : images.imageUpload}
+                        src={
+                          item?.cancelled_check
+                            ? item?.cancelled_check
+                            : images.imageUpload
+                        }
                         alt=""
                         className="img-thumbnail w-10 object-cover"
                       />
@@ -330,7 +340,11 @@ function Users() {
                         disabled={denyAccess}
                       />
                       <img
-                        src={item?.pan_image_new ? item?.pan_image_new : images.imageUpload}
+                        src={
+                          item?.pan_image_new
+                            ? item?.pan_image_new
+                            : images.imageUpload
+                        }
                         alt=""
                         className="img-thumbnail w-10 object-cover"
                       />

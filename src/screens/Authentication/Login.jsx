@@ -11,7 +11,6 @@ function Login() {
   const navigate = useNavigate();
   const { setToastData, setShowToast } = useToastStore();
 
-
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const path = queryParams.get("path");
@@ -157,12 +156,12 @@ function Login() {
                               <span className="fw-bold">Log In</span>
                             </button>
                           </div>
-                          <div className="mb-0 text-start">
+                          {/* <div className="mb-0 text-start">
                             <p className="text-muted text-center mb-3">
                               Don't have an account?{" "}
                               <Link to="/register">Register here</Link>
                             </p>
-                          </div>
+                          </div> */}
                         </form>
                         {/* end form*/}
                       </div>

@@ -5,6 +5,7 @@ import { CiSearch } from "react-icons/ci";
 import { FaBars, FaChevronDown } from "react-icons/fa";
 import Collapse from "react-bootstrap/Collapse";
 import useAuthStore from "../store/authStore";
+import useDataStore from "../store/dataStore";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
@@ -157,6 +158,8 @@ function Navbar() {
                   to="/logout"
                   onClick={() => {
                     localStorage.removeItem("token");
+                    useAuthStore.getState().reset();
+                    useDataStore.getState().reset();
                   }}
                   className="dropdown-item"
                 >
