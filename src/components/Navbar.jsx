@@ -148,10 +148,10 @@ function Navbar() {
                   <span>Profile</span>
                 </Link>
 
-                <Link to="pages-profile.html" className="dropdown-item">
+                {/* <Link to="pages-profile.html" className="dropdown-item">
                   <i className="ri-settings-4-line fs-18 align-middle me-1" />
                   <span>Access</span>
-                </Link>
+                </Link> */}
 
                 <Link
                   to="/logout"

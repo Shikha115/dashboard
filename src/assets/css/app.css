@@ -15374,6 +15374,7 @@ html[data-menu-color="brand"] .logo.logo-dark,
 }
 #leftside-menu-container {
   overflow-y: scroll;
+  padding-bottom: 6pc;
 }
 #leftside-menu-container::-webkit-scrollbar {
   width: 5px;

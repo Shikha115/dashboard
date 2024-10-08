@@ -248,7 +248,7 @@ function Manager() {
 
       <Modal
         className={theme ? theme : ""}
-        size="xl"
+        size="lg"
         show={addModal.state}
         centered
         onHide={() => {
