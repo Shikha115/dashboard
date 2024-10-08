@@ -15374,6 +15374,7 @@ html[data-menu-color="brand"] .logo.logo-dark,
 }
 #leftside-menu-container {
   overflow-y: scroll;
+  padding-bottom: 6pc;
 }
 #leftside-menu-container::-webkit-scrollbar {
   width: 5px;
@@ -19219,8 +19220,8 @@ strong {
 .user-bank-img input[type="file"] + img {
   position: absolute;
   height: 120px;
-  width: auto;
-  object-fit: contain;
+  width: 120px;
+  object-fit: cover;
   background: #fff;
   /* bottom: 0; */
   left: 0;
