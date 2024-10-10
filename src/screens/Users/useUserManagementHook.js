@@ -328,8 +328,10 @@ const useUserManagementHook = () => {
   }, [filter?.type, filter?.search]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
+    fetchWithParams();
   };
+
   const search = (val) => {
     let value = val?.toLowerCase();
     if (value) {

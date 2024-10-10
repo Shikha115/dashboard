@@ -54,6 +54,7 @@ export const apis = {
 
   //---------------- profile ------------- //
   updateProfile: `${baseURL}/profile/update-profile`,
+  updateProfileWeb: `${baseURL}/profile/update-profile-web`,
   getAllLUsers: `${baseURL}/profile/get-all-profiles`,
   getAllWebUsers: `${baseURL}/profile/get-all-web-profiles`,
   approveProfile: `${baseURL}/profile/approve-profile`,

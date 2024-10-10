@@ -43,3 +43,23 @@ function ImageUpload({ img, purpose, setImage, disabled }) {
 }
 
 export default ImageUpload;
+
+export const uploadFileToServer = async (file) => {
+  const formData = new FormData();
+  formData.append("image", file); // Append file to FormData
+
+  try {
+    const response = await axios.post(apis.uploadImage, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        // Add authentication or other headers if required
+      },
+    });
+
+    console.log(response, "res");
+    return response.data.image;
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    throw error;
+  }
+};

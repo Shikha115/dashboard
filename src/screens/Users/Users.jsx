@@ -18,7 +18,7 @@ import UserTypeSelector from "./UserSelector";
 import { FaX } from "react-icons/fa6";
 import NoDataComponent from "../../components/NoDataComp";
 import Loader from "../../components/Loader";
-import { images } from "../../components/Images";
+import EditUserModal from "./EditUserModal";
 
 function Users() {
   const { theme } = useAuthStore();
@@ -199,178 +199,14 @@ function Users() {
         </Modal.Body>
       </Modal>
       {/* update */}
-      <Modal
-        className={theme && theme}
-        size="lg"
-        scrollable
-        show={editModal}
-        centered
-        onHide={() => setEditModal(false)}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Edit User</Modal.Title>
-        </Modal.Header>
-        <Modal.Body key={currentData?._id}>
-          <form className="row">
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Name</label>
-              <input
-                type="text"
-                className="form-control"
-                disabled={denyAccess}
-                defaultValue={currentData?.name}
-              />
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Profile Image</label>
-              <div className="user-bank-img">
-                <input
-                  type="file"
-                  className="form-control"
-                  disabled={denyAccess}
-                />
-                <img
-                  // src={images.imageUpload}
-                  src={
-                    currentData?.profile_image
-                      ? currentData?.profile_image
-                      : images.imageUpload
-                  }
-                  alt=""
-                  className="img-thumbnail w-10 object-cover"
-                />
-              </div>
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Email</label>
-              <input
-                type="email"
-                className="form-control"
-                disabled={denyAccess}
-                defaultValue={currentData?.email}
-              />
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Phone no.</label>
-              <input
-                type="number"
-                className="form-control"
-                disabled={denyAccess}
-                defaultValue={currentData?.phone}
-              />
-            </div>
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">Wallet</label>
-              <input
-                type="text"
-                className="form-control"
-                disabled={denyAccess}
-                defaultValue={currentData?.wallet}
-              />
-            </div>{" "}
-            <div className="col-12 col-md-6 mb-3">
-              <label className="form-label">OTP</label>
-              <input
-                type="text"
-                className="form-control"
-                disabled={denyAccess}
-                defaultValue={currentData?.otp}
-              />
-            </div>
-            {currentData?.bank_details?.map((item, i) => {
-              return (
-                <Fragment key={item?.account_no + item?.bank_name}>
-                  <div className="col-12">
-                    <h5 className="border-bottom pb-2">
-                      Bank Information {i + 1}
-                    </h5>
-                  </div>
-                  <div className="col-12 col-md-6 mb-3">
-                    <label className="form-label">Bank Name</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      disabled={denyAccess}
-                      defaultValue={item?.bank_name}
-                    />
-                  </div>
-                  <div className="col-12 col-md-6 mb-3">
-                    <label className="form-label">Account No.</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      disabled={denyAccess}
-                      defaultValue={item?.account_no}
-                    />
-                  </div>
-                  <div className="col-12 col-md-6 mb-3">
-                    <label className="form-label">IFSC Code</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      disabled={denyAccess}
-                      defaultValue={item?.bank_ifsc}
-                    />
-                  </div>
-                  <div className="col-12 col-md-6 mb-3">
-                    <label className="form-label">Cancelled Check</label>
-                    <div className="user-bank-img">
-                      <input
-                        type="file"
-                        className="form-control"
-                        disabled={denyAccess}
-                      />
-                      <img
-                        src={
-                          item?.cancelled_check
-                            ? item?.cancelled_check
-                            : images.imageUpload
-                        }
-                        alt=""
-                        className="img-thumbnail w-10 object-cover"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-12 col-md-6 mb-3">
-                    <label className="form-label">Bank Passbook</label>
-                    <div className="user-bank-img">
-                      <input
-                        type="file"
-                        className="form-control"
-                        disabled={denyAccess}
-                      />
-                      <img
-                        src={
-                          item?.pan_image_new
-                            ? item?.pan_image_new
-                            : images.imageUpload
-                        }
-                        alt=""
-                        className="img-thumbnail w-10 object-cover"
-                      />
-                    </div>
-                  </div>
-                </Fragment>
-              );
-            })}
-          </form>
-        </Modal.Body>
-        <Modal.Footer>
-          <button
-            className="btn btn-secondary"
-            onClick={() => setEditModal(false)}
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="btn btn-primary"
-            onClick={handleSubmit}
-          >
-            Edit
-          </button>
-        </Modal.Footer>
-      </Modal>
+      <EditUserModal
+        currentData={currentData}
+        theme={theme}
+        editModal={editModal}
+        setEditModal={setEditModal}
+        denyAccess={denyAccess}
+        handleSubmit={handleSubmit}
+      />
       {/* delete */}
       {deleteModal ? (
         <DeleteModalComp
