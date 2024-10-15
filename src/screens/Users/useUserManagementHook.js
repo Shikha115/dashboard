@@ -39,8 +39,12 @@ const useUserManagementHook = () => {
   const columns = [
     {
       name: "#",
-      cell: (row, index) => (
-        <div>{Page > 0 ? Page * 10 + index + 1 : index + 1}</div>
+      cell: (row, i) => (
+        <div>
+          {filter?.currentPage > 1
+            ? (filter?.currentPage - 1) * 10 + i + 1
+            : i + 1}
+        </div>
       ),
       width: "50px",
       center: true,

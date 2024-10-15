@@ -29,6 +29,8 @@ function MyOffer() {
     handleSubmit,
     Data,
     access,
+    Pagination,
+    onNextPageClick,
   } = useOfferHook();
 
   return (
@@ -84,8 +86,15 @@ function MyOffer() {
                 columns={columns}
                 data={Offers}
                 pagination
-                paginationRowsPerPageOptions={[30, 60, 90, 120]}
-                paginationPerPage={30}
+                progressPending={isLoading}
+                paginationServer
+                paginationTotalRows={Pagination?.totalDocuments}
+                paginationPerPage={Pagination?.limit ?? 10}
+                paginationDefaultPage={Pagination?.currentPage}
+                onChangePage={onNextPageClick}
+                paginationComponentOptions={{
+                  noRowsPerPage: true,
+                }}
               />
             </div>
           )}

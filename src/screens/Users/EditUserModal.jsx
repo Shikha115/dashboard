@@ -1,11 +1,11 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useRef } from "react";
 import { Modal } from "react-bootstrap";
-import { images } from "../../components/Images";
 import axios from "axios";
 import _ from "lodash";
 import { apis } from "../../utils/URL";
 import useToastStore from "../../store/toastStore";
 import { uploadFileToServer } from "../../components/ImageUpload";
+import { images } from "../../components/Images";
 
 const EditUserModal = ({
   currentData,
@@ -20,6 +20,11 @@ const EditUserModal = ({
   const [error, setError] = useState(null);
 
   const { setToastData } = useToastStore();
+
+  // Create refs for bank details inputs
+  const bankNameRefs = useRef([]);
+  const accountNoRefs = useRef([]);
+  const ifscRefs = useRef([]);
 
   useEffect(() => {
     setMyData(_.cloneDeep(currentData));
@@ -37,12 +42,10 @@ const EditUserModal = ({
     const file = e.target.files[0];
     if (file) {
       try {
-        // Upload file to server and get the file URL
         const fileUrl = await uploadFileToServer(file);
         if (!fileUrl) {
           setToastData({ message: "Failed to upload Image", color: "red" });
         }
-        // Set the file URL in the state
         setMyData({
           ...myData,
           [key]: fileUrl,
@@ -57,9 +60,7 @@ const EditUserModal = ({
     const file = e.target.files[0];
     if (file) {
       try {
-        // Upload file to server and get the file URL
         const fileUrl = await uploadFileToServer(file);
-
         if (!fileUrl) {
           setToastData({ message: "Failed to upload Image", color: "red" });
         }
@@ -81,16 +82,30 @@ const EditUserModal = ({
 
   const handleBankDetailsChange = (e, index, field) => {
     const { value } = e.target;
-    const updatedBankDetails = [...myData.bank_details];
-    updatedBankDetails[index] = {
-      ...updatedBankDetails[index],
-      [field]: value,
-    };
 
-    setMyData((prevData) => ({
-      ...prevData,
-      bank_details: updatedBankDetails,
-    }));
+    setMyData((prevData) => {
+      const updatedBankDetails = [...prevData.bank_details];
+      updatedBankDetails[index] = {
+        ...updatedBankDetails[index],
+        [field]: value,
+      };
+
+      return {
+        ...prevData,
+        bank_details: updatedBankDetails,
+      };
+    });
+
+    // Restore focus based on the field type
+    setTimeout(() => {
+      if (field === "bank_name" && bankNameRefs.current[index]) {
+        bankNameRefs.current[index].focus();
+      } else if (field === "account_no" && accountNoRefs.current[index]) {
+        accountNoRefs.current[index].focus();
+      } else if (field === "bank_ifsc" && ifscRefs.current[index]) {
+        ifscRefs.current[index].focus();
+      }
+    }, 0);
   };
 
   const isDataChanged = () => {
@@ -98,7 +113,6 @@ const EditUserModal = ({
   };
 
   const submitDataToAPI = async (data) => {
-    // return;
     try {
       setLoading(true);
       setError(null);
@@ -114,7 +128,6 @@ const EditUserModal = ({
         setToastData({ message: "User Updated Successfully", color: "green" });
       }
     } catch (err) {
-      //   console.error("Failed to update user:", err);
       setToastData({
         message: "Failed to update user details. Please try again.",
         color: "red",
@@ -217,7 +230,7 @@ const EditUserModal = ({
               value={myData?.wallet || ""}
               onChange={(e) => handleInputChange(e, "wallet")}
             />
-          </div>{" "}
+          </div>
           <div className="col-12 col-md-6 mb-3">
             <label className="form-label">OTP</label>
             <input
@@ -228,94 +241,68 @@ const EditUserModal = ({
               onChange={(e) => handleInputChange(e, "otp")}
             />
           </div>
-          {myData?.bank_details?.map((item, i) => {
-            return (
-              <Fragment key={item?.account_no + item?.bank_name}>
-                <div className="col-12">
-                  <h5 className="border-bottom pb-2">
-                    Bank Information {i + 1}
-                  </h5>
-                </div>
-                <div className="col-12 col-md-6 mb-3">
-                  <label className="form-label">Bank Name</label>
+          {myData?.bank_details?.map((item, i) => (
+            <Fragment key={i}>
+              <div className="col-12">
+                <h5 className="border-bottom pb-2">Bank Information {i + 1}</h5>
+              </div>
+              <div className="col-12 col-md-6 mb-3">
+                <label className="form-label">Bank Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  disabled={denyAccess}
+                  value={item?.bank_name || ""}
+                  onChange={(e) => handleBankDetailsChange(e, i, "bank_name")}
+                  ref={(el) => (bankNameRefs.current[i] = el)} // Attach ref here
+                />
+              </div>
+              <div className="col-12 col-md-6 mb-3">
+                <label className="form-label">Account No.</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  disabled={denyAccess}
+                  value={item?.account_no || ""}
+                  onChange={(e) => handleBankDetailsChange(e, i, "account_no")}
+                  ref={(el) => (accountNoRefs.current[i] = el)} // Attach ref here
+                />
+              </div>
+              <div className="col-12 col-md-6 mb-3">
+                <label className="form-label">IFSC Code</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  disabled={denyAccess}
+                  value={item?.bank_ifsc || ""}
+                  onChange={(e) => handleBankDetailsChange(e, i, "bank_ifsc")}
+                  ref={(el) => (ifscRefs.current[i] = el)} // Attach ref here
+                />
+              </div>
+              <div className="col-12 col-md-6 mb-3">
+                <label className="form-label">Cancelled Check</label>
+                <div className="user-bank-img">
                   <input
-                    type="text"
+                    type="file"
                     className="form-control"
                     disabled={denyAccess}
-                    value={item?.bank_name || ""}
-                    onChange={(e) => handleBankDetailsChange(e, i, "bank_name")}
-                  />
-                </div>
-                <div className="col-12 col-md-6 mb-3">
-                  <label className="form-label">Account No.</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    disabled={denyAccess}
-                    value={item?.account_no || ""}
                     onChange={(e) =>
-                      handleBankDetailsChange(e, i, "account_no")
+                      handleBankDetailsChangeImage(e, i, "cancelled_check")
                     }
                   />
-                </div>
-                <div className="col-12 col-md-6 mb-3">
-                  <label className="form-label">IFSC Code</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    disabled={denyAccess}
-                    value={item?.bank_ifsc || ""}
-                    onChange={(e) => handleBankDetailsChange(e, i, "bank_ifsc")}
+                  <img
+                    src={
+                      item?.cancelled_check
+                        ? item?.cancelled_check
+                        : images.imageUpload
+                    }
+                    alt=""
+                    className="img-thumbnail w-10 object-cover"
                   />
                 </div>
-                <div className="col-12 col-md-6 mb-3">
-                  <label className="form-label">Cancelled Check</label>
-                  <div className="user-bank-img">
-                    <input
-                      type="file"
-                      className="form-control"
-                      disabled={denyAccess}
-                      onChange={(e) =>
-                        handleBankDetailsChangeImage(e, i, "cancelled_check")
-                      }
-                    />
-                    <img
-                      src={
-                        item?.cancelled_check
-                          ? item?.cancelled_check
-                          : images.imageUpload
-                      }
-                      alt=""
-                      className="img-thumbnail w-10 object-cover"
-                    />
-                  </div>
-                </div>
-                <div className="col-12 col-md-6 mb-3">
-                  <label className="form-label">Pan Image</label>
-                  <div className="user-bank-img">
-                    <input
-                      type="file"
-                      className="form-control"
-                      disabled={denyAccess}
-                      onChange={(e) =>
-                        handleBankDetailsChangeImage(e, i, "pan_image_new")
-                      }
-                    />
-                    <img
-                      src={
-                        item?.pan_image_new
-                          ? item?.pan_image_new
-                          : images.imageUpload
-                      }
-                      alt=""
-                      className="img-thumbnail w-10 object-cover"
-                    />
-                  </div>
-                </div>
-              </Fragment>
-            );
-          })}
-          {error && <div className="text-danger">{error}</div>}
+              </div>
+            </Fragment>
+          ))}
         </form>
       </Modal.Body>
       <Modal.Footer>
@@ -330,7 +317,7 @@ const EditUserModal = ({
           type="submit"
           className="btn btn-primary"
           onClick={handleFormSubmit}
-          disabled={!isDataChanged() || loading} // Disable submit if no changes or loading
+          disabled={loading || !isDataChanged()}
         >
           {loading ? "Updating..." : "Edit"}
         </button>

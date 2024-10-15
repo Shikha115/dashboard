@@ -3,7 +3,6 @@ import useAuthStore from "../../store/authStore";
 import { CiSearch, CiWarning } from "react-icons/ci";
 import useToastStore from "../../store/toastStore";
 import DataTable from "react-data-table-component";
-import useDataStore from "../../store/dataStore";
 import { Modal } from "react-bootstrap";
 import AddManager from "./AddManager";
 import { INITIAL_DATA } from "../../utils/extraData";
@@ -19,7 +18,6 @@ function Manager() {
     profile: { access },
   } = useAuthStore();
   const { setToastData } = useToastStore();
-  const { banner, getAllBanners, allOffer, getAllOffer } = useDataStore();
   const [addModal, setAddModal] = useState({ type: "", state: false });
   const [deleteModal, setDeleteModal] = useState(false);
   const [managerDetails, setManagerDetails] = useState(INITIAL_DATA);

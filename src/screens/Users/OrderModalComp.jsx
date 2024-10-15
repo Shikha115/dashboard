@@ -4,9 +4,10 @@ import OrderComp from "../../components/OrderComp";
 
 function OrderModalComp(props) {
   console.log(props?.currentData, "fd");
+  // console.log(props);
+
   return (
     <Modal
-    
       className={props.theme ? props.theme : ""}
       // size="xl"
       show={props.OrderModal}

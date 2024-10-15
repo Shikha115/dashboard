@@ -2,45 +2,61 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { apis } from "../utils/URL";
+import useAuthStore from "../store/authStore";
 
 function OrderComp({ id }) {
+  const { theme } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
-  const [Orders, setOrders] = useState(false);
-  const [Pagination, setPagination] = useState(false);
+  const [Orders, setOrders] = useState([]);
+  const [Pagination, setPagination] = useState({
+    currentPage: 1,
+    totalPages: 1,
+    limit: 10,
+    totalDocuments: 0,
+  });
 
   const getOrders = async (id, params) => {
-    let urlParams = `?limit=${params?.limit ?? 10}&sortField=${
-      params?.sortField ?? "date"
+    let urlParams = `?limit=${params?.limit ?? Pagination.limit}&sortField=${
+      params?.sortField ?? "created_at"
     }&sortOrder=${params?.sortOrder ?? "desc"}&page=${
-      params?.page ?? 1
+      params?.page ?? Pagination.currentPage
     }&search=${params?.search ?? ""}`;
+
     setIsLoading(true);
-    // console.log(apis.getOrdersByUid + urlParams, { user_id: id });
 
     axios
-      .post(apis.getAllPayment + urlParams, { user_id: id })
+      .post(apis.getAllPayment + urlParams, { id })
       .then((res) => {
-        setOrders(res?.data?.data);
-        setPagination(res.data.pagination);
+        setOrders(res?.data?.data || []);
+        setPagination({
+          ...Pagination,
+          currentPage: res?.data?.pagination?.currentPage || 1,
+          totalPages: res?.data?.pagination?.totalPages || 1,
+          totalDocuments: res?.data?.pagination?.totalDocuments || 0,
+        });
         setIsLoading(false);
       })
       .catch((err) => {
+        console.error(err);
         setIsLoading(false);
       });
   };
 
   useEffect(() => {
-    getOrders(id);
-  }, [id]);
+    getOrders(id, { page: Pagination.currentPage });
+  }, [id, Pagination.currentPage]);
 
-  // console.log(Orders, Pagination);
+  const handlePageChange = (page) => {
+    setPagination({ ...Pagination, currentPage: page });
+  };
+
   const columns = [
     {
       name: "#",
       cell: (row, index) => (
         <div>
           {Pagination?.currentPage > 1
-            ? Pagination?.currentPage * 10 + index + 1
+            ? (Pagination?.currentPage - 1) * Pagination?.limit + index + 1
             : index + 1}
         </div>
       ),
@@ -51,9 +67,7 @@ function OrderComp({ id }) {
       name: "Order No.",
       selector: (row) => row?.invoice_no,
       center: true,
-      width: "auto",
     },
-
     {
       name: "Total",
       selector: (row) => row?.total,
@@ -72,12 +86,14 @@ function OrderComp({ id }) {
     <div>
       <DataTable
         columns={columns}
-        data={Orders?.length > 0 ? Orders : []}
+        data={Orders}
         progressPending={isLoading}
         pagination
-        // onChangePage={(e) => {
-        //   setPage(e - 1);
-        // }}
+        paginationServer
+        paginationTotalRows={Pagination.totalDocuments}
+        onChangePage={handlePageChange}
+        paginationRowsPerPageOptions={[10, 20, 30]}
+        paginationDefaultPage={Pagination.currentPage}
       />
     </div>
   );

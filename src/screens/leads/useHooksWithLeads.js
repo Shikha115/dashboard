@@ -41,7 +41,13 @@ const useHooksWithLeads = () => {
   const columns = [
     {
       name: "S.no",
-      selector: (row, index) => index + 1,
+      selector: (row, i) => (
+        <div>
+          {Pagination?.currentPage > 1
+            ? (Pagination?.currentPage - 1) * 10 + i + 1
+            : i + 1}
+        </div>
+      ),
       width: "60px",
     },
     {

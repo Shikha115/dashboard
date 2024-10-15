@@ -8,6 +8,7 @@ import axios from "axios";
 import { apis } from "../../utils/URL";
 import ImageModal from "../../components/ImageModal";
 
+let timer;
 const useOfferHook = () => {
   const location = useLocation();
   const { setToastData } = useToastStore();
@@ -17,57 +18,74 @@ const useOfferHook = () => {
   } = useAuthStore();
 
   const currentUrl = location.pathname;
-  let category_id = currentUrl.split("/offer/")[1];
-
+  let category_id = currentUrl?.split("/offer/")[1];
+  const { getCategory } = useDataStore();
   const [isLoading, setIsLoading] = useState(true);
-  const { allOffer, getOfferbyId, bank, getCategory, getAllOffer } =
-    useDataStore();
+  const { getOfferbyId } = useDataStore();
 
   const [deleteModal, setDeleteModal] = useState(false);
   const [addModal, setAddModal] = useState({ type: "", state: false });
   const [currentData, setCurrentData] = useState([]);
   const [addonData, setAddonData] = useState();
-  const [bankData, setbankData] = useState();
   const [password, setpassword] = useState();
   const [Data, setData] = useState();
 
   const [currentCategory, setCurrentCategory] = useState();
   const [Offers, setOffers] = useState();
+  const [Pagination, setPagination] = useState();
+  const [Search, setSearch] = useState();
 
   useEffect(() => {
+    getOffersViaParams();
+
     (async function fetchData() {
       let res = await getCategory(category_id);
       setCurrentCategory(res);
     })();
   }, [category_id, getCategory]);
 
-  useEffect(() => {
+  const getOffersViaParams = (params = "") => {
     setIsLoading(true);
-    getOfferbyId(category_id);
-    let timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 0);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [category_id]);
 
-  useEffect(() => {
-    if (allOffer?.length < 1) {
-      return;
+    let obj;
+    if (category_id !== "6617742141652c98b6277bb8") {
+      obj = {
+        offer_id: category_id,
+      };
     }
-    setOffers(allOffer);
-  }, [allOffer]);
+    axios
+      .post(apis.getOfferWeb + params, obj)
+      .then((res) => {
+        setOffers(res.data.data);
+        setPagination(res.data.pagination);
+      })
+      .catch((err) => {
+        console.log();
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
 
   const searchFilter = (e) => {
-    let filteredArr = [];
-    let value = e?.target?.value?.toLowerCase();
-    filteredArr = allOffer?.filter(
-      (item) =>
-        item?.mobile_data?.title?.toLowerCase()?.includes(value) ||
-        item?.category_info?.name?.toLowerCase()?.includes(value)
-    );
-    setOffers(filteredArr);
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      setSearch(e?.target?.value?.toLowerCase());
+      getOffersViaParams(`?search=${e?.target?.value?.toLowerCase()}`); // let filteredArr = [];
+    }, 400);
+  };
+
+  const onNextPageClick = (page) => {
+    let params = "";
+
+    if (page) {
+      params = params + "?page=" + page;
+    }
+    if (Search) {
+      params = params + "&search=" + Search;
+    }
+
+    getOffersViaParams(params);
   };
 
   const updateStatus = async (id, status) => {
@@ -75,11 +93,7 @@ const useOfferHook = () => {
       .post(apis.updateOfferStatus, { id, status })
       .then(async (e) => {
         setToastData({ message: e.data.message });
-        let res = await getOfferbyId(category_id);
-        setOffers([]);
-        setTimeout(() => {
-          setOffers(res);
-        }, 100);
+        getOffersViaParams();
       })
       .catch((err) => {
         setToastData({ message: "Failed to update status", color: "red" });
@@ -96,6 +110,7 @@ const useOfferHook = () => {
         setToastData({ message: "Failed to update status", color: "red" });
       });
   };
+
   const updateConverting = async (id, converting) => {
     axios
       .post(apis.updateIfConverting, { id, converting })
@@ -229,7 +244,15 @@ const useOfferHook = () => {
   const columns = [
     {
       name: "#",
-      selector: (row, i) => i + 1,
+      selector: (row, i) => {
+        return (
+          <div>
+            {Pagination?.currentPage > 1
+              ? (Pagination?.currentPage - 1) * 10 + i + 1
+              : i + 1}
+          </div>
+        );
+      },
       width: "60px",
     },
     {
@@ -412,6 +435,8 @@ const useOfferHook = () => {
     handleSubmit,
     Data,
     access,
+    Pagination,
+    onNextPageClick,
   };
 };
 
