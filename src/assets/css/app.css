@@ -18779,7 +18779,7 @@ strong {
 }
 
 .wrapper[mode="dark"] .authentication-bg {
-  background-image: url("../images/auth-bg-dark.jpg");
+  /* background-image: url("../images/auth-bg-dark.jpg"); */
 }
 .wrapper[mode="dark"] .auth-brand .logo-light {
   display: block;
@@ -21885,11 +21885,17 @@ span.flatpickr-weekday,
 }
 
 .lead-card .left-outer img {
-  width: auto;
-  height: 250px;
-  object-fit: cover;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
   filter: drop-shadow(2px 4px 6px #00000020);
   border-radius: 10px;
+}
+
+.lead-card .form-control{
+  background-color: #fff;
+  border-color: #dee2e6;
+  color: #000;
 }
 
 .lead-card-data h2 {
