@@ -21,7 +21,7 @@ function MyLeads() {
 
   const getOffer = async () => {
     await axios
-      .post(apis.getOfferWeb, { id: offerId })
+      .post(apis.getOfferByIdWeb, { id: offerId })
       .then((res) => {
         let data = res?.data?.data;
         setOffer(data);
@@ -147,6 +147,8 @@ function MyLeads() {
         console.error("Error copying text to clipboard:", error);
       });
   };
+
+  
   return (
     <section className="authentication-bg position-relative">
       <div className="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5 position-relative">
