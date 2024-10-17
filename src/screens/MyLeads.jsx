@@ -29,7 +29,7 @@ function MyLeads() {
         const link = document.querySelector("link[rel~='icon']");
         if (link) {
           link.href = data?.mobile_data?.product_image_web;
-          console.log(data?.mobile_data?.product_image_web);
+          // console.log(data?.mobile_data?.product_image_web);
         } else {
           const newLink = document.createElement("link");
           newLink.rel = "icon";
@@ -97,7 +97,7 @@ function MyLeads() {
     const data = {
       offer_id: offerId,
       user_id: userId,
-      category_id: offer?.category_info?._id,
+      category_id: offer?.type_id,
       click_id: date,
       affiliate_id: affiliateId,
       customer_url: window?.location?.href,
@@ -111,6 +111,10 @@ function MyLeads() {
       earning: offer?.mobile_data?.earning,
     };
 
+    // console.log(data);
+
+    // return;
+
     axios
       .post(apis.createLead, data)
       .then((e) => {
@@ -119,10 +123,15 @@ function MyLeads() {
         window.location.href = click_id;
       })
       .catch((err) => {
-        console.log(err);
-        setToastData({ message: "Unknown error occured", color: "red" });
+        console.log(err.response.data.err.message);
+        setToastData({
+          message: err?.response?.data?.err?.message || "Unknown Error",
+          color: "red",
+        });
       });
   };
+
+  // console.log(offer);
 
   const applyLead = (oid) => {
     const url = `${AppInfo.webUrl}/my-leads?oid=${oid}&uid=${userId}&afid=${affiliateId}`;
@@ -148,7 +157,6 @@ function MyLeads() {
       });
   };
 
-  
   return (
     <section className="authentication-bg position-relative">
       <div className="account-pages pt-2 pt-sm-5 pb-4 pb-sm-5 position-relative">
