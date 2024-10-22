@@ -18,7 +18,11 @@ function ViewUser() {
                 <div className="col-12 col-md-4">
                   <div className="profile-user-img w-100 h-100">
                     <ImageModal
-                      src={selectedUser?.profile_image?selectedUser?.profile_image:images.avatar_1}
+                      src={
+                        selectedUser?.profile_image
+                          ? selectedUser?.profile_image
+                          : images.avatar_1
+                      }
                       alt=""
                       className="img-thumbnail w-100 h-100"
                     />
@@ -53,11 +57,15 @@ function ViewUser() {
                       <div className="user-bank-img mb-1">
                         <ButtonModal
                           image={true}
-                          src={selectedUser?.pan_image?selectedUser?.pan_image:images.imageUpload}
+                          src={
+                            selectedUser?.pan_image
+                              ? selectedUser?.pan_image
+                              : images.imageUpload
+                          }
                           alt={selectedUser?.pan_image}
                           className="btn btn-primary w-100"
                           title=" PAN Image "
-                          noModal
+                          // noModal
                           imgStyle={{
                             height: "100px",
                             width: "100%",

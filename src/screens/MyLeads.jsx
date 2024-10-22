@@ -71,7 +71,7 @@ function MyLeads() {
 
   const submitLeads = async (e) => {
     e.preventDefault();
-    console.log(e);
+    // console.log(e);
 
     if (!userDetails?.name) {
       alert("Name cannot be empty");

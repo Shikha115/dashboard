@@ -19,8 +19,8 @@ function ButtonModal(props) {
 
   return (
     <div>
-      <button className={props.className} onClick={onShow}>
-        {props.title}
+      <button className={props?.className} onClick={onShow}>
+        {props?.title}
       </button>
       {image ? (
         <img
