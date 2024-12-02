@@ -101,13 +101,23 @@ const useHooksWithOrders = () => {
       selector: (row) => row?.total,
     },
     {
-      name: "Date",
+      name: "Created Date",
       center: "true",
       width: "auto",
       selector: (row) => {
         return row?.created_at
           ? moment(row?.created_at)?.format("YYYY-MM-DD  HH:mm:ss")
           : row?.created_at;
+      },
+    },
+    {
+      name: "Settlement Date",
+      center: "true",
+      width: "auto",
+      selector: (row) => {
+        return row?.settled
+          ? moment(row?.updated_at)?.format("YYYY-MM-DD  HH:mm:ss")
+          : "Not Settled Yet";
       },
     },
 

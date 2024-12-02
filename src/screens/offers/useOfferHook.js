@@ -207,6 +207,7 @@ const useOfferHook = () => {
       id: Data?._id,
       mobile_data: obj,
     };
+    console.log(data);
 
     axios
       .post(apis.updateOffer, data)

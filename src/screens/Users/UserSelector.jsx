@@ -13,10 +13,10 @@ function UserTypeSelector({
       <select
         onChange={onChangeSelector}
         className="form-select "
-        defaultValue={value}
+        defaultValue={"Select"}
         value={value}
       >
-        <option disabled>Select</option>
+        <option>Select</option>
         {data?.length > 0 &&
           data?.map((item, i) => {
             return (

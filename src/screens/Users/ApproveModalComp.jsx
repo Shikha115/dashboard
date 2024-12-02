@@ -10,11 +10,34 @@ const ApproveModalComp = ({
   currentData,
   ApproveModal,
   getAllUsers,
+  bulkUserModal,
+  setBulkUserModal,
+  SelectUsers,
+  setSelectUsers,
 }) => {
   const { theme } = useAuthStore();
 
   const { setToastData } = useToastStore();
   const approve = () => {
+    if (bulkUserModal) {
+      axios
+        .post(apis.bulkApproveProfile, { ids: SelectUsers, value: "approved" })
+        .then((e) => {
+          // console.log(e);
+          setToastData({ message: e.data?.message });
+          getAllUsers();
+          setApproveModal(false);
+          setBulkUserModal(false);
+          setSelectUsers([]);
+        })
+        .catch((err) => {
+          setToastData({ message: "Failed to update users" });
+          setApproveModal(false);
+          setBulkUserModal(false);
+        });
+      return;
+    }
+
     axios
       .post(apis.approveProfile, { id: currentData?._id, value: "approved" })
       .then((e) => {
@@ -28,7 +51,26 @@ const ApproveModalComp = ({
         setApproveModal(false);
       });
   };
+
   const reject = () => {
+    if (bulkUserModal) {
+      axios
+        .post(apis.bulkApproveProfile, { ids: SelectUsers, value: "rejected" })
+        .then((e) => {
+          // console.log(e);
+          setToastData({ message: e.data?.message });
+          getAllUsers();
+          setApproveModal(false);
+          setBulkUserModal(false);
+          setSelectUsers([]);
+        })
+        .catch((err) => {
+          setToastData({ message: "Failed to update users" });
+          setApproveModal(false);
+          setBulkUserModal(false);
+        });
+      return;
+    }
     axios
       .post(apis.approveProfile, { id: currentData?._id, value: "rejected" })
       .then((e) => {

@@ -19,6 +19,7 @@ import { FaX } from "react-icons/fa6";
 import NoDataComponent from "../../components/NoDataComp";
 import Loader from "../../components/Loader";
 import EditUserModal from "./EditUserModal";
+import BulkUserModal from "./BulkUserModal";
 
 function Users() {
   const { theme } = useAuthStore();
@@ -52,6 +53,11 @@ function Users() {
     onNextPageClick,
     setFilter,
     access,
+    bulkUserModal,
+    setBulkUserModal,
+    SelectUsers,
+    setSelectUsers,
+    fetchWithParams,
   } = useUserManagementHook();
 
   const [denyAccess, setDenyAccess] = useState(false);
@@ -73,6 +79,18 @@ function Users() {
                 <div className="page-title-right">
                   <div className="app-search">
                     <form className="column d-flex gap-2">
+                      {SelectUsers?.length ? (
+                        <Link
+                          className="btn btn-soft-danger btn-sm mr-2"
+                          style={{ textWrap: "nowrap", marginRight: 10 }}
+                          onClick={() => {
+                            setBulkUserModal(true);
+                            setApproveModal(true);
+                          }}
+                        >
+                          Bulk User Approval
+                        </Link>
+                      ) : null}
                       {!filter?.type || filter?.type === "Select" ? null : (
                         <Link
                           className="btn btn-soft-danger btn-sm mr-2"
@@ -81,22 +99,38 @@ function Users() {
                             setFilter({ ...filter, type: "Select" });
                           }}
                         >
-                          {filter?.type} <FaX size={10} />
+                          {filter?.value} <FaX size={10} />
                         </Link>
                       )}
                       <UserTypeSelector
-                        value={filter?.type}
+                        value={filter?.value}
                         title={false}
                         style={{ minWidth: "250px" }}
                         data={[
+                          // { type: "new", id: 0 },
                           { type: "approved", id: 1 },
                           { type: "rejected", id: 2 },
                           { type: "pending", id: 3 },
                           { type: "updated", id: 4 },
                         ]}
                         onChangeSelector={(e) => {
-                          setFilter({ ...filter, type: e?.target?.value });
-                          console.log(e?.target.value);
+                          if (e?.target?.value === "new") {
+                            setFilter({
+                              ...filter,
+                              type: "pending",
+                              sortField: "created_at",
+                              value: e?.target?.value,
+                            });
+                            // console.log(e.target.value);
+                          } else {
+                            setFilter({
+                              ...filter,
+                              type: e?.target?.value,
+                              sortField: "",
+                              value: e?.target?.value,
+                            });
+                          }
+                          // console.log(e?.target.value);
                         }}
                       />
                       <div className="input-group">
@@ -143,6 +177,18 @@ function Users() {
           )}
         </div>
       </div>
+
+      {/* {bulkUserModal ? (
+        <BulkUserModal
+          bulkUserModal={bulkUserModal}
+          setBulkUserModal={setBulkUserModal}
+          Users={Users}
+          filter={filter}
+          columns={columns}
+          onNextPageClick={onNextPageClick}
+          setFilter={setFilter}
+        />
+      ) : null} */}
 
       <Modal
         className={theme && theme}
@@ -219,9 +265,13 @@ function Users() {
       {ApproveModal && (
         <ApproveModalComp
           setApproveModal={setApproveModal}
+          setBulkUserModal={setBulkUserModal}
+          bulkUserModal={bulkUserModal}
+          setSelectUsers={setSelectUsers}
+          SelectUsers={SelectUsers}
           currentData={currentData}
           ApproveModal={ApproveModal}
-          getAllUsers={getAllUsers}
+          getAllUsers={fetchWithParams}
         />
       )}
       {OrderModal && (

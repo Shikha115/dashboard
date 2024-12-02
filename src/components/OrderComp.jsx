@@ -25,7 +25,7 @@ function OrderComp({ id }) {
     setIsLoading(true);
 
     axios
-      .post(apis.getAllPayment + urlParams, { id })
+      .post(apis.getAllPayment + urlParams, { user_id: id })
       .then((res) => {
         setOrders(res?.data?.data || []);
         setPagination({

@@ -3,9 +3,34 @@ import { Modal } from "react-bootstrap";
 import ImageUpload from "../../components/ImageUpload";
 import _ from "lodash";
 import TextEditor from "../../components/TextEditor";
+import { Link } from "react-router-dom";
 
 function AddModalComp(props) {
   const [changed, setChanged] = useState(false);
+  // console.log(props);
+
+  const getAddonData = () => {
+    const findDifferences = (arr1, arr2) => {
+      const diffInArr1 = arr1.filter(
+        (obj1) => !arr2.some((obj2) => obj1.key === obj2.key)
+      );
+      const diffInArr2 = arr2.filter(
+        (obj2) => !arr1.some((obj1) => obj2.key === obj1.key)
+      );
+
+      return [...diffInArr1, ...diffInArr2];
+    };
+    const myArr = findDifferences(
+      props?.currentCategory?.offer_data,
+      props?.currentData
+    );
+    if (myArr.length) {
+      props?.setCurrentData([
+        ...props?.currentData,
+        { ...myArr[0], value: "" },
+      ]);
+    }
+  };
 
   return (
     <Modal
@@ -55,9 +80,11 @@ function AddModalComp(props) {
                             ? item.value.join("")
                             : item?.value
                         }
-                        onChange={(e) => {
-                          // console.log(e);
-                          item.value = e;
+                        onChange={(event, editor) => {
+                          const data = editor.getData(); // This is the HTML output
+                          console.log(data);
+
+                          item.value = data;
                         }}
                       />
                     </div>
@@ -182,6 +209,13 @@ function AddModalComp(props) {
         </form>
       </Modal.Body>
       <Modal.Footer>
+        <Link
+          className="btn btn-soft-danger btn-sm"
+          style={{ textWrap: "nowrap" }}
+          onClick={getAddonData}
+        >
+          Add Extra
+        </Link>
         <button
           className="btn btn-secondary"
           onClick={() =>

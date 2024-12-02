@@ -1,7 +1,15 @@
 import { useState, useEffect } from "react";
 import useDataStore from "../../store/dataStore";
 import useAuthStore from "../../store/authStore";
-import { FaEye } from "react-icons/fa";
+import {
+  FaCheck,
+  FaCheckCircle,
+  FaCross,
+  FaExclamation,
+  FaExclamationCircle,
+  FaEye,
+  FaRegWindowClose,
+} from "react-icons/fa";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -17,7 +25,10 @@ const useUserManagementHook = () => {
   const { users, getAllUsers, setSelectedUser, selectedUser } = useDataStore();
   const [isLoading, setIsLoading] = useState(true);
   const [Page, setPage] = useState(0);
+  const [SelectUsers, setSelectUsers] = useState([]);
+
   const [deleteModal, setDeleteModal] = useState(false);
+  const [bulkUserModal, setBulkUserModal] = useState(false);
   const [settleModal, setSettleModal] = useState(false);
   const [viewModal, setViewModal] = useState(false);
   const [ApproveModal, setApproveModal] = useState(false);
@@ -34,7 +45,34 @@ const useUserManagementHook = () => {
     nextPage: 2,
     limit: 10,
     totalDocuments: 10,
+    sortField: "",
+    value: "",
+    sortOrder: "desc",
   });
+
+  const onPressCheckBox = (val) => {
+    if (SelectUsers?.includes(val)) {
+      setSelectUsers((prev) => prev?.filter((item) => item !== val));
+    } else {
+      setSelectUsers((prev) => [...prev, val]);
+    }
+  };
+
+  const onPressAllCheckBox = () => {
+    if (SelectUsers?.length) {
+      setSelectUsers([]);
+    } else {
+      setSelectUsers(() => Users?.map((item) => item?._id));
+    }
+  };
+
+  useEffect(() => {
+    if (SelectUsers.length) {
+      setBulkUserModal(true);
+      return;
+    }
+    setBulkUserModal(false);
+  }, [SelectUsers.length]);
 
   const columns = [
     {
@@ -45,6 +83,18 @@ const useUserManagementHook = () => {
             ? (filter?.currentPage - 1) * 10 + i + 1
             : i + 1}
         </div>
+      ),
+      width: "50px",
+      center: true,
+    },
+    {
+      name: <input type="checkbox" onClick={onPressAllCheckBox} />,
+      cell: (row) => (
+        <input
+          checked={SelectUsers?.includes(row?._id)}
+          type="checkbox"
+          onClick={() => onPressCheckBox(row?._id)}
+        />
       ),
       width: "50px",
       center: true,
@@ -165,7 +215,7 @@ const useUserManagementHook = () => {
                   setToastData({ message: "No pending payment" });
                 }}
               >
-                Payment Processed
+                Payment Status
               </Link>
             )}
 
@@ -190,39 +240,59 @@ const useUserManagementHook = () => {
       width: "auto",
       cell: (row) => {
         return (
-          <button
-            className={`btn  btn-sm ${
-              !row?.isProfileComplete
-                ? "btn-soft-warning"
+          <>
+            <button
+              className={`btn  btn-sm ${
+                !row?.isProfileComplete
+                  ? "btn-soft-warning"
+                  : !row?.profile_status || row?.profile_status === "pending"
+                  ? "btn-soft-primary"
+                  : row?.profile_status === "rejected"
+                  ? "btn-soft-danger"
+                  : row?.profile_status === "updated"
+                  ? "btn-soft-primary"
+                  : row?.profile_status === "approved"
+                  ? "btn-soft-success"
+                  : ""
+              }`}
+              style={{ textWrap: "nowrap" }}
+              onClick={() => {
+                if (!access?.user?.edit) {
+                  setToastData({
+                    message: "You don't have edit access",
+                    color: "purple",
+                  });
+                  return;
+                }
+                setCurrentData(row);
+                setApproveModal(true);
+              }}
+            >
+              {row?.profile_status === "rejected" ? (
+                <FaRegWindowClose
+                  color="red"
+                  style={{ position: "absolute", left: 2, top: 10 }}
+                />
+              ) : null}
+              {row?.profile_status === "approved" ? (
+                <FaCheckCircle
+                  color="green"
+                  size={15}
+                  style={{ position: "absolute", left: 2, top: 10 }}
+                />
+              ) : null}
+              {row?.isProfileComplete ? (
+                <FaExclamationCircle
+                  style={{ marginTop: -2, marginRight: 3 }}
+                />
+              ) : null}
+              {!row?.isProfileComplete
+                ? "Profile Incomplete"
                 : !row?.profile_status || row?.profile_status === "pending"
-                ? "btn-soft-primary"
-                : row?.profile_status === "rejected"
-                ? "btn-soft-danger"
-                : row?.profile_status === "updated"
-                ? "btn-soft-primary"
-                : row?.profile_status === "approved"
-                ? "btn-soft-success"
-                : ""
-            }`}
-            style={{ textWrap: "nowrap" }}
-            onClick={() => {
-              if (!access?.user?.edit) {
-                setToastData({
-                  message: "You don't have edit access",
-                  color: "purple",
-                });
-                return;
-              }
-              setCurrentData(row);
-              setApproveModal(true);
-            }}
-          >
-            {!row?.isProfileComplete
-              ? "Profile Incomplete"
-              : !row?.profile_status || row?.profile_status === "pending"
-              ? "New Profile "
-              : "Profile " + row?.profile_status}
-          </button>
+                ? "New Profile "
+                : "Profile " + row?.profile_status}
+            </button>
+          </>
         );
       },
       // cell: (row) =>
@@ -353,13 +423,17 @@ const useUserManagementHook = () => {
       "&type=" +
       (filter?.type === "Select" || !filter?.type ? "" : filter?.type) +
       "&page=" +
-      (page ? page : filter?.currentPage);
+      (page ? page : filter?.currentPage) +
+      "&sortField=" +
+      filter.sortField +
+      "&sortOrder=" +
+      filter?.sortOrder;
     setIsLoading(true);
 
     axios
       .get(apis?.getAllLUsers + params)
       .then((res) => {
-        // console.log(res?.data);
+        console.log(res?.data);
         setFilter({ ...filter, ...res?.data?.pagination });
         setUsers(res?.data?.data);
         setIsLoading(false);
@@ -408,6 +482,10 @@ const useUserManagementHook = () => {
     fetchWithParams,
     onNextPageClick,
     access,
+    bulkUserModal,
+    setBulkUserModal,
+    SelectUsers,
+    setSelectUsers,
   };
 };
 
