@@ -281,16 +281,18 @@ const useUserManagementHook = () => {
                   style={{ position: "absolute", left: 2, top: 10 }}
                 />
               ) : null}
-              {row?.isProfileComplete ? (
+              {!row?.isProfileComplete ? (
                 <FaExclamationCircle
                   style={{ marginTop: -2, marginRight: 3 }}
                 />
               ) : null}
-              {!row?.isProfileComplete
-                ? "Profile Incomplete"
-                : !row?.profile_status || row?.profile_status === "pending"
-                ? "New Profile "
-                : "Profile " + row?.profile_status}
+              <div style={{ flexDirection: "row", display: "flex" }}>
+                {!row?.isProfileComplete
+                  ? "Profile Incomplete"
+                  : !row?.profile_status || row?.profile_status === "pending"
+                  ? "Profile Completed "
+                  : "Profile " + row?.profile_status}
+              </div>
             </button>
           </>
         );

@@ -23,6 +23,7 @@ import { LogoComp } from "./Landing";
 import Slider from "react-slick";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { apis } from "../utils/URL";
 
 // Control sidebar navigation
 let items = document.querySelectorAll(".menu-item-has-children > a");
@@ -291,7 +292,7 @@ const Home2 = () => {
                     data-aos-duration="1500"
                     onClick={() =>
                       window.open(
-                        "https://rojgarapp.in/rojgarApp.apk",
+                       "https://rojgarapp.in/rojgarApp.apk",
                         "_blank",
                         "noopener,noreferrer"
                       )
