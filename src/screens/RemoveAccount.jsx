@@ -25,7 +25,7 @@ function RemoveAccount() {
     axios
       .post(apis.accountDeletionRequest, { email, phone })
       .then((e) => {
-        console.log(e);
+        // console.log(e);
         setShowToast(true);
         setToastData({
           color: "#3fba4f",

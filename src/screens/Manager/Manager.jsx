@@ -37,7 +37,7 @@ function Manager() {
     axios
       .post(apis.register, { ...managerDetails })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setAddModal({ state: false });
         setToastData({ message: "Manager added successfully" });
         setManagerDetails(INITIAL_DATA);
@@ -46,7 +46,7 @@ function Manager() {
       .catch((err) => {
         setToastData({ message: "Failed to add Manager!" });
 
-        console.log(err);
+        // console.log(err);
       });
 
     // console.log(managerDetails);
@@ -87,7 +87,7 @@ function Manager() {
         setIsLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setIsLoading(false);
       });
   };

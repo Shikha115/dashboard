@@ -23,7 +23,6 @@ const ApproveModalComp = ({
       axios
         .post(apis.bulkApproveProfile, { ids: SelectUsers, value: "approved" })
         .then((e) => {
-          // console.log(e);
           setToastData({ message: e.data?.message });
           getAllUsers();
           setApproveModal(false);
@@ -41,7 +40,6 @@ const ApproveModalComp = ({
     axios
       .post(apis.approveProfile, { id: currentData?._id, value: "approved" })
       .then((e) => {
-        // console.log(e);
         setToastData({ message: e.data?.message });
         getAllUsers();
         setApproveModal(false);

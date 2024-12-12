@@ -95,7 +95,7 @@ function Navbar() {
                   type="checkbox"
                   checked={theme === "light" ? true : false}
                   onChange={(e) => {
-                    console.log(typeof e.target.checked);
+                    // console.log(typeof e.target.checked);
                     setTheme(e.target.checked ? "light" : "dark");
                   }}
                 />

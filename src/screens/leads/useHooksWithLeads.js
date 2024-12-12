@@ -353,7 +353,7 @@ const useHooksWithLeads = () => {
 
       return;
       let res = await axios.post(apis.settleLeads, { data: arrayData });
-      console.log(res);
+      // console.log(res);
     };
 
     reader.readAsArrayBuffer(file);

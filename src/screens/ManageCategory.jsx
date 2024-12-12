@@ -238,7 +238,7 @@ function ManageCategory() {
         setAddCategory("");
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setToastData({ message: "Failed to create Category" });
       });
   };
@@ -255,13 +255,13 @@ function ManageCategory() {
     await axios
       .post(apis.updateCategory, data)
       .then((e) => {
-        console.log(e);
+        // console.log(e);
         setToastData({ message: e.data.message });
         getAllCategory();
         setAddCategory("");
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setToastData({ message: "Failed to create Category" });
       });
   };
@@ -274,13 +274,13 @@ function ManageCategory() {
     await axios
       .post(apis.deleteCategory, { id })
       .then((e) => {
-        console.log(e);
+        // console.log(e);
         setToastData({ message: e.data.message });
         setDeleteModal(false);
         getAllCategory();
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setToastData({ message: "Failed to delete", color: "red" });
         setDeleteModal(false);
       });

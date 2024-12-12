@@ -59,6 +59,8 @@ export const apis = {
   getAllWebUsers: `${baseURL}/profile/get-all-web-profiles`,
   approveProfile: `${baseURL}/profile/approve-profile`,
   bulkApproveProfile: `${baseURL}/profile/bulk-approve-profile`,
+  downloadProfile: `${baseURL}/profile/download-csv`,
+  bulkDownloadProfile: `${baseURL}/profile/download-all-csv`,
 
   //---------------- offer ------------- //
   getallOffers: `${baseURL}/offers/get-all-offers-web`,

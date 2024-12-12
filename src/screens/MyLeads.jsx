@@ -35,11 +35,11 @@ function MyLeads() {
           newLink.rel = "icon";
           newLink.href = data?.mobile_data?.product_image_web;
           document.head.appendChild(newLink);
-          console.log(data?.mobile_data?.product_image_web);
+          // console.log(data?.mobile_data?.product_image_web);
         }
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 
@@ -50,7 +50,7 @@ function MyLeads() {
         setAllFeaturedOffers(res?.data?.data);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 
@@ -118,12 +118,12 @@ function MyLeads() {
     axios
       .post(apis.createLead, data)
       .then((e) => {
-        console.log(e);
+        // console.log(e);
         setToastData({ message: "Successfull" });
         window.location.href = click_id;
       })
       .catch((err) => {
-        console.log(err.response.data.err.message);
+        // console.log(err.response.data.err.message);
         setToastData({
           message: err?.response?.data?.err?.message || "Unknown Error",
           color: "red",

@@ -95,12 +95,12 @@ const SettleModalComp = ({ settleModal, setSettleModal, currentData }) => {
   ];
 
   const getSelectedLeads = async (data) => {
-    console.log(data);
+    // console.log(data);
 
     axios
       .post(apis.getSelectedLeadsById + "?limit=200", { ids: data })
       .then((e) => {
-        console.log(e);
+        // console.log(e);
 
         setFetchedLeads(e?.data?.data);
         setTimeout(() => {
@@ -108,7 +108,7 @@ const SettleModalComp = ({ settleModal, setSettleModal, currentData }) => {
         }, 1000);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setIsLoading(false);
       });
   };
@@ -149,7 +149,7 @@ const SettleModalComp = ({ settleModal, setSettleModal, currentData }) => {
         }, 200);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setIsLoading(false);
         setSettleModal(false);
       });
@@ -165,7 +165,7 @@ const SettleModalComp = ({ settleModal, setSettleModal, currentData }) => {
         }, 200);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setIsLoading(false);
         setSettleModal(false);
       });

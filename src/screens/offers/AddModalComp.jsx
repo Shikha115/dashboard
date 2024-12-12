@@ -80,11 +80,10 @@ function AddModalComp(props) {
                             ? item.value.join("")
                             : item?.value
                         }
-                        onChange={(event, editor) => {
-                          const data = editor.getData(); // This is the HTML output
-                          console.log(data);
-
-                          item.value = data;
+                        onChange={(event) => {
+                          // const data = editor.getData(); // This is the HTML output
+                          // console.log(event);
+                          item.value = event;
                         }}
                       />
                     </div>

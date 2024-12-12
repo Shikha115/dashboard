@@ -121,7 +121,7 @@ function FilterCard(props) {
                     onClick={(e) => {
                       e.preventDefault();
                       props?.setPaymentModal(true);
-                      console.log(props?.isSelection);
+                      // console.log(props?.isSelection);
                     }}
                   >
                     Settle Selected Payments - {props?.selection?.length}
@@ -135,7 +135,7 @@ function FilterCard(props) {
                     onClick={(e) => {
                       e.preventDefault();
                       props?.setSelection([]);
-                      console.log(props?.isSelection);
+                      // console.log(props?.isSelection);
                     }}
                   >
                     Clear All
@@ -145,7 +145,7 @@ function FilterCard(props) {
                     onClick={(e) => {
                       e.preventDefault();
                       props?.selectAll();
-                      console.log(props?.isSelection);
+                      // console.log(props?.isSelection);
                     }}
                   >
                     Select All

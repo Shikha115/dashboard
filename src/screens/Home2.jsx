@@ -56,7 +56,7 @@ const Home2 = () => {
   };
   const searchActive = () => {
     setSearchShow(!searchShow);
-    console.log("hell");
+    // console.log("hell");
   };
   // Control sidebar navigation
   let items = document.querySelectorAll(".menu-item-has-children > a");

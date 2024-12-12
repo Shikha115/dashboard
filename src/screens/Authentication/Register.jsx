@@ -19,15 +19,15 @@ function Register() {
       email: email.current.value,
       password: password.current.value,
     };
-    console.log(data, "abc");
+    // console.log(data, "abc");
     axios
       .post(apis.register, data)
       .then((e) => {
-        console.log(e?.data, "res");
+        // console.log(e?.data, "res");
         // localStorage.setItem("token", e.data);
       })
       .catch((error) => {
-        console.log(error.response.data.message);
+        // console.log(error.response.data.message);
       });
   };
 

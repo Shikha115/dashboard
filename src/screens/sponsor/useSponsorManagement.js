@@ -73,7 +73,7 @@ function useSponsorManagement() {
         setDeleteModal(false);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setToastData({
           color: "#d03f3f",
           message: `Failed to delete bank`,
@@ -111,7 +111,7 @@ function useSponsorManagement() {
         setTimeout(() => {}, 2000);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setToastData({
           color: "red",
           message: `Failed to update Sponsor`,
@@ -138,7 +138,7 @@ function useSponsorManagement() {
         setAddModal({ ...addModal, state: false });
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setToastData({
           color: "red",
           message: `Failed to update Banner`,

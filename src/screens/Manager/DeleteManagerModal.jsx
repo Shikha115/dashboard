@@ -12,14 +12,14 @@ function DeleteManagerModal(props) {
       axios
         .post(apis.deleteWebUser, { id: props.managerDetails?._id })
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
 
           setToastData({ message: "User Deleted", color: "green" });
           props.getAllUsers();
           props.setDeleteModal(false);
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
 
           setToastData({ message: "Failed to delete user", color: "red" });
         });

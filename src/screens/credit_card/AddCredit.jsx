@@ -51,10 +51,10 @@ function AddCredit() {
     axios
       .post(apis.getallOffers, data)
       .then((response) => {
-        console.log(data, "data");
+        // console.log(data, "data");
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
   };
 

@@ -12,13 +12,13 @@ function DeleteModalComp(props) {
       axios
         .post(apis.deleteUser, { id: props.currentData._id })
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
 
           setToastData({ message: "User Deleted", color: "green" });
           props.setDeleteModal(false);
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
 
           setToastData({ message: "Failed to delete user", color: "red" });
         });

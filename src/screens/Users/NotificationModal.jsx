@@ -42,7 +42,7 @@ function NotificationModal(props) {
           setToastData({ message: "Notification sent" });
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           setToastData({
             message: "Failed to send notification",
             color: "red",
@@ -70,14 +70,14 @@ function NotificationModal(props) {
               // console.log(item);
             })
             .catch((err) => {
-              console.log(err);
+              // console.log(err);
             });
           // console.log(e);
           props.setNotificationModal(false);
           setToastData({ message: "Notification sent" });
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           setToastData({
             message: "Failed to send notification",
             color: "red",

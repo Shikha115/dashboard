@@ -110,7 +110,7 @@ function ManageBank() {
         setDeleteModal(false);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setToastData({
           color: "red",
           message: `Failed to delete bank`,
@@ -138,7 +138,7 @@ function ManageBank() {
         setTimeout(() => {}, 2000);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setToastData({
           color: "red",
           message: `Failed to update bank`,
@@ -168,7 +168,7 @@ function ManageBank() {
         setAddModal({ ...addModal, state: false });
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setToastData({
           color: "red",
           message: `Failed to update bank`,

@@ -19,7 +19,6 @@ import { FaX } from "react-icons/fa6";
 import NoDataComponent from "../../components/NoDataComp";
 import Loader from "../../components/Loader";
 import EditUserModal from "./EditUserModal";
-import BulkUserModal from "./BulkUserModal";
 
 function Users() {
   const { theme } = useAuthStore();
@@ -48,7 +47,6 @@ function Users() {
     OrderModal,
     PayModal,
     Users,
-    getAllUsers,
     filter,
     onNextPageClick,
     setFilter,
@@ -58,6 +56,8 @@ function Users() {
     SelectUsers,
     setSelectUsers,
     fetchWithParams,
+    downloadUser,
+    downloadAllUser,
   } = useUserManagementHook();
 
   const [denyAccess, setDenyAccess] = useState(false);
@@ -84,13 +84,43 @@ function Users() {
                           className="btn btn-soft-danger btn-sm mr-2"
                           style={{ textWrap: "nowrap", marginRight: 10 }}
                           onClick={() => {
+                            setSelectUsers([]);
+                          }}
+                        >
+                          Clear - {SelectUsers?.length}{" "}
+                          {SelectUsers?.length > 1 ? "Users" : "User"}
+                        </Link>
+                      ) : null}
+                      {SelectUsers?.length ? (
+                        <Link
+                          className="btn btn-soft-danger btn-sm mr-2"
+                          style={{ textWrap: "nowrap", marginRight: 10 }}
+                          onClick={() => {
                             setBulkUserModal(true);
                             setApproveModal(true);
                           }}
                         >
-                          Bulk User Approval
+                          Bulk User Approval - {SelectUsers?.length}
                         </Link>
                       ) : null}
+                      {SelectUsers?.length ? (
+                        <Link
+                          className="btn btn-soft-danger btn-sm mr-2"
+                          style={{ textWrap: "nowrap", marginRight: 10 }}
+                          onClick={downloadUser}
+                        >
+                          Download User Data - {SelectUsers?.length}
+                        </Link>
+                      ) : null}
+
+                      <Link
+                        className="btn btn-soft-danger btn-sm mr-2"
+                        style={{ textWrap: "nowrap", marginRight: 10 }}
+                        onClick={downloadAllUser}
+                      >
+                        Download All User Data
+                      </Link>
+
                       {!filter?.type || filter?.type === "Select" ? null : (
                         <Link
                           className="btn btn-soft-danger btn-sm mr-2"
@@ -121,7 +151,6 @@ function Users() {
                               sortField: "created_at",
                               value: e?.target?.value,
                             });
-                            // console.log(e.target.value);
                           } else {
                             setFilter({
                               ...filter,
@@ -130,7 +159,6 @@ function Users() {
                               value: e?.target?.value,
                             });
                           }
-                          // console.log(e?.target.value);
                         }}
                       />
                       <div className="input-group">

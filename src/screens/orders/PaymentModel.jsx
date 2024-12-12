@@ -31,7 +31,7 @@ const PaymentModel = ({
     axios
       .post(apis.settlePaymentOffline, { paymentIds: selection })
       .then((e) => {
-        console.log(e.data);
+        // console.log(e.data);
         setToastData({
           message: "Payment Settled Succesfully",
           color: "green",
@@ -41,7 +41,7 @@ const PaymentModel = ({
         onRefresh();
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setToastData({ message: "Payment Failed try again later" });
       })
       .finally(() => {

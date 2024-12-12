@@ -64,7 +64,7 @@ function FixedDeposit() {
               setAddModal({ type: "edit", state: true });
               setCurrentData(row);
               setTimeout(() => {
-                console.log(currentData, "Current Row Clicked");
+                // console.log(currentData, "Current Row Clicked");
               }, 2000);
             }}
           >
@@ -82,7 +82,7 @@ function FixedDeposit() {
     setImageData((prev) => {
       return { ...prev, image };
     });
-    console.log(image, "image");
+    // console.log(image, "image");
     if (imageData.type == "edit") {
       setCurrentData({ ...currentData, image });
     }

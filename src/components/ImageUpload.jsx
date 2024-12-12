@@ -12,7 +12,7 @@ function ImageUpload({ img, purpose, setImage, disabled }) {
     await axios
       .post(apis.uploadImage, formData)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setToastData({ message: res?.data?.message });
         setImage(res.data.image);
       })
@@ -56,7 +56,7 @@ export const uploadFileToServer = async (file) => {
       },
     });
 
-    console.log(response, "res");
+    // console.log(response, "res");
     return response.data.image;
   } catch (error) {
     console.error("Error uploading file:", error);

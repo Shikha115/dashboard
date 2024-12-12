@@ -2,10 +2,7 @@ import { useState, useEffect } from "react";
 import useDataStore from "../../store/dataStore";
 import useAuthStore from "../../store/authStore";
 import {
-  FaCheck,
   FaCheckCircle,
-  FaCross,
-  FaExclamation,
   FaExclamationCircle,
   FaEye,
   FaRegWindowClose,
@@ -58,11 +55,65 @@ const useUserManagementHook = () => {
     }
   };
 
+  const downloadCsv = (csvData) => {
+    const currentDateTime = new Date().toISOString().replace(/[:.]/g, "-"); // Format: YYYY-MM-DDTHH-MM-SS
+    const userName = "User_Data"; // Replace with actual user data if available
+    const fileName = `${userName}_${currentDateTime}.csv`;
+
+    // Create a blob from the CSV string
+    const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    // Create a link to trigger the download
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", fileName); // Use the dynamic file name
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const downloadUser = () => {
+    axios
+      .post(apis.downloadProfile, { ids: SelectUsers })
+      .then((res) => {
+        downloadCsv(res.data);
+        setToastData({
+          message: "User Data Downloaded",
+          color: "green",
+        });
+      })
+      .catch((err) => {
+        // console.log(err);
+        setToastData({
+          message: "User Data failed to Download",
+          color: "red",
+        });
+      });
+  };
+  const downloadAllUser = () => {
+    axios
+      .get(apis.bulkDownloadProfile)
+      .then((res) => {
+        downloadCsv(res.data);
+        setToastData({
+          message: "All User Data Downloaded",
+          color: "green",
+        });
+      })
+      .catch((err) =>
+        setToastData({
+          message: "User Data failed to Download",
+          color: "red",
+        })
+      );
+  };
+
   const onPressAllCheckBox = () => {
     if (SelectUsers?.length) {
-      setSelectUsers([]);
+      // setSelectUsers([]);
     } else {
-      setSelectUsers(() => Users?.map((item) => item?._id));
+      // setSelectUsers(() => Users?.map((item) => item?._id));
     }
   };
 
@@ -117,12 +168,7 @@ const useUserManagementHook = () => {
       center: true,
       width: "auto",
     },
-    // {
-    //   name: "Type",
-    //   selector: (row) => row.type,
-    //   center: true,
-    //   width: "80px",
-    // },
+
     {
       name: "Wallet",
       selector: (row) => row.wallet,
@@ -218,18 +264,6 @@ const useUserManagementHook = () => {
                 Payment Status
               </Link>
             )}
-
-            {/* {row?.redeem_wallet ? (
-              <Link
-                className="btn btn-soft-warning  btn-sm "
-                onClick={() => {
-                  setCurrentData(row);
-                  setSettleModal(true);
-                }}
-              >
-                Pay
-              </Link>
-            ) : null} */}
           </div>
         );
       },
@@ -297,37 +331,6 @@ const useUserManagementHook = () => {
           </>
         );
       },
-      // cell: (row) =>
-      //   row?.profile_status ? (
-      //     <button
-      //       className="btn btn-soft-primary btn-sm"
-      //       style={{ textWrap: "nowrap" }}
-      //       onClick={() => {
-      //         setCurrentData(row);
-      //         setApproveModal(true);
-      //       }}
-      //     >
-      //       Profile Verified
-      //     </button>
-      //   ) : row?.isProfileComplete ? (
-      //     <Link
-      //       className="btn btn-soft-danger btn-sm"
-      //       style={{ lineHeight: "17px" }}
-      //       onClick={() => {
-      //         setCurrentData(row);
-      //         setApproveModal(true);
-      //       }}
-      //     >
-      //       Approve Profile
-      //     </Link>
-      //   ) : (
-      //     <button
-      //       className="btn btn-soft-warning btn-sm"
-      //       style={{ textWrap: "nowrap" }}
-      //     >
-      //       Profile Incomplete
-      //     </button>
-      //   ),
     },
 
     {
@@ -435,13 +438,13 @@ const useUserManagementHook = () => {
     axios
       .get(apis?.getAllLUsers + params)
       .then((res) => {
-        console.log(res?.data);
+        // console.log(res?.data);
         setFilter({ ...filter, ...res?.data?.pagination });
         setUsers(res?.data?.data);
         setIsLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setIsLoading(true);
       });
   };
@@ -488,6 +491,8 @@ const useUserManagementHook = () => {
     setBulkUserModal,
     SelectUsers,
     setSelectUsers,
+    downloadUser,
+    downloadAllUser,
   };
 };
 

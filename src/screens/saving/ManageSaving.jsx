@@ -49,7 +49,7 @@ function ManageSaving() {
     setImageData((prev) => {
       return { ...prev, image };
     });
-    console.log(image, "image");
+    // console.log(image, "image");
     if (imageData.type == "edit") {
       setCurrentData({ ...currentData, image });
     }
@@ -199,7 +199,7 @@ function ManageSaving() {
         setAddModal({ ...addModal, state: false });
       })
       .catch((error) => {
-        console.log(error.response.data);
+        // console.log(error.response.data);
       });
   };
   const UpdateData = async () => {
@@ -240,7 +240,7 @@ function ManageSaving() {
         setAddModal({ ...addModal, state: false });
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
       });
   };
 

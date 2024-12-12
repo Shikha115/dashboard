@@ -42,7 +42,7 @@ const useAuthStore = create((set) => ({
         set({ profile: e.data.data, loading: false });
       })
       .catch((err) => {
-        console.log(err.response.data.message);
+        // console.log(err.response.data.message);
 
         if (
           err.response.data.message === "Access denied!!!. No token provided" ||

@@ -28,7 +28,7 @@ function MutualFund() {
     setImageData((prev) => {
       return { ...prev, image };
     });
-    console.log(image, "image");
+    // console.log(image, "image");
     if (imageData.type == "edit") {
       setCurrentData({ ...currentData, image });
     }
@@ -69,9 +69,9 @@ function MutualFund() {
             onClick={() => {
               setAddModal({ type: "edit", state: true });
               setCurrentData(row);
-              setTimeout(() => {
-                console.log(currentData, "Current Row Clicked");
-              }, 2000);
+              // setTimeout(() => {
+              //   console.log(currentData, "Current Row Clicked");
+              // }, 2000);
             }}
           >
             <MdEdit className="fs-18" />

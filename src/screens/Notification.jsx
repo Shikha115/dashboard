@@ -163,7 +163,7 @@ function Notification() {
         setAddModal({ type: "add", state: false });
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setToastData({ message: "Failed to create template" });
       });
   };
@@ -180,7 +180,7 @@ function Notification() {
         setAddModal({ type: "add", state: false });
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         setToastData({ message: "Failed to create template" });
       });
   };
@@ -353,7 +353,7 @@ function Notification() {
               <select
                 className="form-select"
                 onChange={(e) => {
-                  console.log(e.target.value);
+                  // console.log(e.target.value);
                   setCurrentRow({ ...currentRow, type: e.target.value });
                 }}
                 defaultValue={currentRow?.type}

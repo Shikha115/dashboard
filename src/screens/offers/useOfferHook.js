@@ -60,7 +60,7 @@ const useOfferHook = () => {
         setPagination(res.data.pagination);
       })
       .catch((err) => {
-        console.log();
+        // console.log();
       })
       .finally(() => {
         setIsLoading(false);
@@ -187,7 +187,7 @@ const useOfferHook = () => {
         setCurrentData(null);
       })
       .catch((error) => {
-        console.log(error.response.data);
+        // console.log(error.response.data);
         setToastData({ message: "Failed to create offer", color: "red" });
         setAddModal({ ...addModal, state: false });
         setIsLoading(false);
@@ -207,7 +207,7 @@ const useOfferHook = () => {
       id: Data?._id,
       mobile_data: obj,
     };
-    console.log(data);
+    // console.log(data);
 
     axios
       .post(apis.updateOffer, data)
@@ -363,7 +363,7 @@ const useOfferHook = () => {
               let val = e.target.value;
               updateRank(row?._id, val);
               row.rank = val;
-              console.log(val);
+              // console.log(val);
             }}
           />
         </div>

@@ -69,7 +69,7 @@ const useHooksWithOrders = () => {
                   if (!e.target.checked) {
                     const index = selection.findIndex((id) => id === row?._id);
                     if (index !== -1) {
-                      console.log(index);
+                      // console.log(index);
                       setSelection(selection.filter((_, i) => i !== index));
                     }
                   } else {
@@ -201,7 +201,7 @@ const useHooksWithOrders = () => {
 
     const req = await axios.get(apis.downloadAllOrders + "?" + params);
 
-    console.log(req);
+    // console.log(req);
 
     return;
     data = await req?.data?.data?.map((item) => {
@@ -362,7 +362,7 @@ const useHooksWithOrders = () => {
     if (searchFilterData.type) {
       params = params + "&type=" + searchFilterData?.type;
     }
-    console.log(params);
+    // console.log(params);
 
     fetchWithParams(params);
   };
@@ -384,7 +384,7 @@ const useHooksWithOrders = () => {
       params = params + "&toDate=" + searchFilterData?.to;
     }
 
-    console.log(params);
+    // console.log(params);
     fetchWithParams(params);
   };
 
@@ -437,7 +437,7 @@ const useHooksWithOrders = () => {
 
       return;
       let res = await axios.post(apis.settleLeads, { data: arrayData });
-      console.log(res);
+      // console.log(res);
     };
 
     reader.readAsArrayBuffer(file);
