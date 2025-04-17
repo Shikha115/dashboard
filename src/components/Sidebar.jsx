@@ -85,6 +85,13 @@ const Sidebar_data2 = [
   },
   {
     icon: <FaUsers />,
+    category: "Tutorial",
+    subcategory: [],
+    isActive: false,
+    link: "/manage-tutorial",
+  },
+  {
+    icon: <FaUsers />,
     category: "Sponsor Ad",
     subcategory: [],
     isActive: false,

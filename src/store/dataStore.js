@@ -20,6 +20,7 @@ const useDataStore = create((set, getState) => ({
   banner: [],
   sponsor: [],
   templates: [],
+  tutorials: [],
 
   setIsLoading: (data) => set({ isLoading: data }),
 
@@ -109,6 +110,11 @@ const useDataStore = create((set, getState) => ({
   setSelectedUser: (data) => {
     set({ selectedUser: data });
   },
+
+  setTutorial: async (data) => {
+    set({ tutorials: data })
+  }
+
 }));
 
 export default useDataStore;

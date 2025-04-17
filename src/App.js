@@ -14,6 +14,7 @@ const ForgotPassword = React.lazy(() =>
   import("./screens/Authentication/ForgotPassword")
 );
 const ManageBank = React.lazy(() => import("./screens/ManageBank"));
+const ManageTutorials = React.lazy(() => import("./screens/tutorials/Tutorials"));
 const Lead = React.lazy(() => import("./screens/leads/Lead"));
 const Order = React.lazy(() => import("./screens/orders/Order"));
 const MyLeads = React.lazy(() => import("./screens/MyLeads"));
@@ -144,6 +145,15 @@ function App() {
                   <ProtectedRoute
                     path="/manage-banner"
                     Component={ManageBanner}
+                    header={true}
+                  />
+                }
+              />{" "}   <Route
+                path="/manage-tutorial"
+                element={
+                  <ProtectedRoute
+                    path="/manage-tutorial"
+                    Component={ManageTutorials}
                     header={true}
                   />
                 }

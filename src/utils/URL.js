@@ -2,11 +2,11 @@ export const AppInfo = {
   // baseUrlAPI: "http://localhost:5001", // Rojgar Dev local
   // webUrl: "http://localhost:3000",
 
-  baseUrlAPI: "https://api.dev.rojgarapp.in", // Rojgar Dev
-  webUrl: "https://web.dev.rojgarapp.in",
+  // baseUrlAPI: "https://api.dev.rojgarapp.in", // Rojgar Dev
+  // webUrl: "https://web.dev.rojgarapp.in",
 
-  // baseUrlAPI: "https://api.prod.rojgarapp.in", // Rojgar Prod
-  // webUrl: "https://bfsiportal.com",
+  baseUrlAPI: "https://api.prod.rojgarapp.in", // Rojgar Prod
+  webUrl: "https://bfsiportal.com",
 
   apiVersion: "api/v1",
 };
@@ -117,4 +117,10 @@ export const apis = {
   createTemplate: `${baseURL}/template/create-template`,
   updateTemplate: `${baseURL}/template/update-template`,
   deleteTemplate: `${baseURL}/template/delete-template`,
+
+  //---------------- tutorial ------------- //
+  getAllTutorials: `${baseURL}/tutorial/get-all-tutorial-web`,
+  createTutorial: `${baseURL}/tutorial/create-tutorial`,
+  updateTutorial: `${baseURL}/tutorial/update-tutorial`,
+  deleteTutorial: `${baseURL}/tutorial/delete-tutorial`,
 };

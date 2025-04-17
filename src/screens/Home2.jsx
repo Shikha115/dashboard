@@ -4,10 +4,8 @@ import {
   FaFacebookF,
   FaInstagram,
   FaTwitter,
-  FaSearch,
   FaYoutube,
   FaStar,
-  FaPlus,
   FaCheckCircle,
   FaMapMarkerAlt,
   FaPhoneAlt,
@@ -23,7 +21,6 @@ import { LogoComp } from "./Landing";
 import Slider from "react-slick";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { apis } from "../utils/URL";
 
 // Control sidebar navigation
 let items = document.querySelectorAll(".menu-item-has-children > a");
@@ -285,21 +282,21 @@ const Home2 = () => {
                   Cultivation Business Are Necessary.
                 </p>
                 <div className="btns">
-                  <Link
+                  {/* <Link
                     className="btn btn-border-base-2 rounded-2"
                     data-aos="fade-right"
                     data-aos-delay="450"
                     data-aos-duration="1500"
                     onClick={() =>
                       window.open(
-                       "https://rojgarapp.in/rojgarApp.apk",
+                        "https://rojgarapp.in/rojgarApp.apk",
                         "_blank",
                         "noopener,noreferrer"
                       )
                     }
                   >
                     Download App
-                  </Link>
+                  </Link> */}
                   <Link
                     className="ms-2"
                     data-aos="fade-right"
