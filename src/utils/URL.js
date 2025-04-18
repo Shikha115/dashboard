@@ -2,11 +2,11 @@ export const AppInfo = {
   // baseUrlAPI: "http://localhost:5001", // Rojgar Dev local
   // webUrl: "http://localhost:3000",
 
-  // baseUrlAPI: "https://api.dev.rojgarapp.in", // Rojgar Dev
-  // webUrl: "https://web.dev.rojgarapp.in",
+  baseUrlAPI: "https://api.dev.rojgarapp.in", // Rojgar Dev
+  webUrl: "https://web.dev.rojgarapp.in",
 
-  baseUrlAPI: "https://api.prod.rojgarapp.in", // Rojgar Prod
-  webUrl: "https://bfsiportal.com",
+  // baseUrlAPI: "https://api.prod.rojgarapp.in", // Rojgar Prod
+  // webUrl: "https://bfsiportal.com",
 
   apiVersion: "api/v1",
 };
@@ -84,6 +84,13 @@ export const apis = {
   getSelectedLeads: `${baseURL}/lead/get-selected-leads`,
   getSelectedLeadsById: `${baseURL}/lead/get-selected-leads-by-id`,
   rejectLead: `${baseURL}/lead/reject-lead`,
+
+  //---------------- objection ------------- //
+  updateObjection: `${baseURL}/lead/update-objection`,
+  deleteObjection: `${baseURL}/lead/delete-objection`,
+  getAllObjections: `${baseURL}/lead/get-all-objections`,
+  getObjectionsById: `${baseURL}/lead/reject-lead`,
+  getObjectionsByLeadId: `${baseURL}/lead/reject-lead`,
 
   //---------------- order ------------- //
   getSelectedOrders: `${baseURL}/order/get-selected-orders`,

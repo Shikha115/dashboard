@@ -63,6 +63,13 @@ const Sidebar_data2 = [
   },
   {
     icon: <FaUsers />,
+    category: "Objection",
+    subcategory: [],
+    isActive: false,
+    link: "/manage-objection",
+  },
+  {
+    icon: <FaUsers />,
     category: "Managers",
     subcategory: [],
     isActive: false,
@@ -83,6 +90,7 @@ const Sidebar_data2 = [
     isActive: false,
     link: "/manage-banner",
   },
+
   {
     icon: <FaUsers />,
     category: "Tutorial",
