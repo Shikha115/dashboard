@@ -70,6 +70,13 @@ const Sidebar_data2 = [
   },
   {
     icon: <FaUsers />,
+    category: "Contact",
+    subcategory: [],
+    isActive: false,
+    link: "/manage-contact",
+  },
+  {
+    icon: <FaUsers />,
     category: "Managers",
     subcategory: [],
     isActive: false,

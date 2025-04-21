@@ -130,4 +130,10 @@ export const apis = {
   createTutorial: `${baseURL}/tutorial/create-tutorial`,
   updateTutorial: `${baseURL}/tutorial/update-tutorial`,
   deleteTutorial: `${baseURL}/tutorial/delete-tutorial`,
+
+  //---------------- contact ------------- //
+  getAllContacts: `${baseURL}/contact/get-all-contact`,
+  createContact: `${baseURL}/contact/create`,
+  updateContact: `${baseURL}/contact/update`,
+  deleteContact: `${baseURL}/contact/delete`,
 };

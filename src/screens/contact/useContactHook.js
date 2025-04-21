@@ -7,10 +7,11 @@ import { Link } from "react-router-dom";
 import SmallVideoFrame from "../../components/SmallVideoFrame";
 import useAuthStore from "../../store/authStore";
 import useToastStore from "../../store/toastStore";
+import moment from "moment";
 let tutTimer;
 let searchTimer;
 
-const useObjectionHook = () => {
+const useContactHook = () => {
   const { tutorials, setTutorial } = useDataStore();
   const [isLoading, setisLoading] = useState(true);
   const { setToastData } = useToastStore();
@@ -65,7 +66,7 @@ const useObjectionHook = () => {
     }).toString();
 
     axios
-      .get(`${apis?.getAllObjections}?${params}`)
+      .get(`${apis?.getAllContacts}?${params}`)
       .then((res) => {
         setFilter({ ...filter, ...res?.data?.pagination });
         setTutorial(res?.data?.data);
@@ -82,7 +83,7 @@ const useObjectionHook = () => {
 
   const getAllObjections = async () => {
     clearTimeout(tutTimer);
-    const res = await axios.get(apis.getAllObjections);
+    const res = await axios.get(apis.getAllContacts);
     tutTimer = setTimeout(() => {
       setisLoading(false);
     }, 500);
@@ -97,7 +98,7 @@ const useObjectionHook = () => {
 
   const DeleteBank = async () => {
     axios
-      .delete(apis.deleteObjection + "/" + currentData?._id, {
+      .delete(apis.deleteContact + "/" + currentData?._id, {
         id: currentData?._id,
       })
       .then(async (e) => {
@@ -147,7 +148,7 @@ const useObjectionHook = () => {
 
   const columns = [
     {
-      name: "S.No",
+      name: "S.no",
       selector: (row, i) => (
         <div>
           {filter?.currentPage > 1
@@ -155,7 +156,14 @@ const useObjectionHook = () => {
             : i + 1}
         </div>
       ),
-      width: "70px",
+      width: "60px",
+    },
+    {
+      name: "Date",
+      center: true,
+      width: "auto",
+      selector: (row) =>
+        moment(row?.created_at).format("h:mm:ss A, D, MMM YYYY"),
     },
     {
       name: "Name",
@@ -171,18 +179,18 @@ const useObjectionHook = () => {
       selector: (row) => row?.phone,
     },
     {
-      name: "Reason",
+      name: "Subject",
       center: true,
       width: "auto",
-      selector: (row) => row?.reason,
+      selector: (row) => row?.subject,
     },
 
     {
-      name: "Resolved",
+      name: "Message",
       center: true,
       width: "auto",
       // style: { width: 1000 },
-      selector: (row) => (row?.is_resolved ? "Yes" : "No"),
+      selector: (row) => row?.message,
     },
 
     {
@@ -254,4 +262,4 @@ const useObjectionHook = () => {
   };
 };
 
-export default useObjectionHook;
+export default useContactHook;
