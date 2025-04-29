@@ -163,23 +163,23 @@ function Sidebar() {
   return (
     <div className="leftside-menu menuitem-active" mode={theme ? theme : ""}>
       {/* Brand Logo Light */}
-      <Link to="/" className="logo logo-light">
+      <div className="logo logo-light">
         <span className="logo-lg">
           <img src={images.logo} alt="logo" />
         </span>
         <span className="logo-sm">
           <img src={images.logo_sm} alt="small logo" />
         </span>
-      </Link>
+      </div>
       {/* Brand Logo Dark */}
-      <Link to="/" className="logo logo-dark">
+      <div className="logo logo-dark">
         <span className="logo-lg">
           <img src={images.logo_dark} alt="dark logo" />
         </span>
         <span className="logo-sm">
           <img src={images.logo_sm} alt="small logo" />
         </span>
-      </Link>
+      </div>
       {/* Sidebar -left */}
       <div className="h-100" id="leftside-menu-container">
         {/*- Sidemenu */}
