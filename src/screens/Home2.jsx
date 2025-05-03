@@ -26,6 +26,7 @@ import axios from "axios";
 import ToastComponent from "../components/ToastComponent";
 import useAuthStore from "../store/authStore";
 import useToastStore from "../store/toastStore";
+import styled from "styled-components";
 
 const Home2 = () => {
   const { setToastData } = useToastStore();
@@ -50,6 +51,15 @@ const Home2 = () => {
       subject: formRef.current.elements.subject.value,
       message: formRef.current.elements.message.value,
     };
+    const { name, email, phone, subject, message } = formData;
+
+    if (!name || !email || !phone || !subject || !message) {
+      setToastData({
+        color: "red",
+        message: `Please enter all details`,
+      });
+      return;
+    }
 
     try {
       const response = await axios.post(apis.createContact, formData);
@@ -61,10 +71,20 @@ const Home2 = () => {
       formRef.current.reset();
     } catch (error) {
       console.error("Error:", error);
-      setToastData({
-        color: "red",
-        message: `Failed try again!`,
-      });
+      if (
+        error?.response?.data?.error ===
+        "Message should be at least 10 characters long"
+      ) {
+        setToastData({
+          color: "red",
+          message: `Message should be at least 10 characters long!`,
+        });
+      } else {
+        setToastData({
+          color: "red",
+          message: `Failed try again!`,
+        });
+      }
     }
   };
 
@@ -254,9 +274,9 @@ const Home2 = () => {
             className="logo text-start position-relative"
             style={{ filter: "invert(1)" }}
           >
-            <Link to="/">
-              <LogoComp color={"white"} />
-            </Link>
+            {/* <Link to="/"> */}
+            <LogoComp color={"white"} />
+            {/* </Link> */}
           </div>
           <div className="row pt-4 pb-5">
             <div className="col-lg-6 align-self-center">
@@ -306,10 +326,9 @@ const Home2 = () => {
                       )
                     }
                   >
-                    <img
+                    <PlayStoreImage
                       src={images.play_store}
                       alt="Download from Play Store"
-                      className="play-store h-100"
                     />
                   </Link>
                 </div>
@@ -353,83 +372,59 @@ const Home2 = () => {
             </div>
           </div>
           <div className="work-process-area-inner-2">
-            <div className="row">
-              <div className="col-lg-3 col-sm-6">
-                <div className="single-work-process-inner style-2 text-center">
-                  <img
-                    className="line-img"
-                    src="assets/img/about/29.png"
-                    alt="process"
-                  />
-                  <div className="thumb mb-3">
-                    <img src="assets/img/icon/36.svg" alt="install" />
-                  </div>
-                  <div className="details">
-                    <h5 className="mb-3">Install Rojgar App</h5>
-                    <p className="content">
-                      Download the RojgarApp and get started on your journey to
-                      earning online.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-3 col-sm-6">
-                <div className="single-work-process-inner style-2 text-center">
-                  <img
-                    className="line-img"
-                    src="assets/img/about/30.png"
-                    alt="process"
-                  />
-                  <div className="thumb mb-3">
-                    <img src="assets/img/icon/37.svg" alt="register" />
-                  </div>
-                  <div className="details">
-                    <h5 className="mb-3">Register Yourself</h5>
-                    <p className="content">
-                      Sign up with your details and create your account in just
-                      a few minutes.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-3 col-sm-6">
-                <div className="single-work-process-inner style-2 text-center">
-                  <img
-                    className="line-img"
-                    src="assets/img/about/29.png"
-                    alt="process"
-                  />
-                  <div className="thumb mb-3">
-                    <img src="assets/img/icon/38.svg" alt="training" />
-                  </div>
-                  <div className="details">
-                    <h5 className="mb-3">Attend trainings and share links</h5>
-                    <p className="content">
-                      Learn how to promote financial products effectively and
-                      start sharing referral links.
-                    </p>
+            <div className="row" style={{ display: "flex", flexWrap: "wrap" }}>
+              {[
+                {
+                  img: "assets/img/icon/36.svg",
+                  title: "Install Rojgar App",
+                  desc: "Download the RojgarApp and get started on your journey to earning online.",
+                },
+                {
+                  img: "assets/img/icon/37.svg",
+                  title: "Register Yourself",
+                  desc: "Sign up with your details and create your account in just a few minutes.",
+                },
+                {
+                  img: "assets/img/icon/38.svg",
+                  title: "Attend trainings and share links",
+                  desc: "Learn how to promote financial products effectively and start sharing referral links.",
+                },
+                {
+                  img: "assets/img/icon/39.svg",
+                  title: "Start earning 1 Lakh+ monthly",
+                  desc: "The more you share, the more you earn - unlock unlimited income potential!",
+                },
+              ].map((step, idx) => (
+                <div className="col-lg-3 col-sm-6" key={step.toString()}>
+                  <div
+                    className="single-work-process-inner style-2 text-center"
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                      height: "100%", // Fill the column height
+                      minHeight: 370, // Force equal height
+                      padding: "20px",
+                      boxSizing: "border-box",
+                      border: "1px solid #eee",
+                      borderRadius: 10,
+                    }}
+                  >
+                    <img
+                      className="line-img"
+                      src="assets/img/about/29.png"
+                      alt="process"
+                    />
+                    <div className="thumb mb-3">
+                      <img src={step.img} alt="step-icon" />
+                    </div>
+                    <div className="details">
+                      <h5 className="mb-3">{step.title}</h5>
+                      <p className="content">{step.desc}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="col-lg-3 col-sm-6">
-                <div className="single-work-process-inner style-2 text-center">
-                  <img
-                    className="line-img"
-                    src="assets/img/about/29.png"
-                    alt="process"
-                  />
-                  <div className="thumb mb-3">
-                    <img src="assets/img/icon/39.svg" alt="earn" />
-                  </div>
-                  <div className="details">
-                    <h5 className="mb-3">Start earning 1 Lakh+ monthly</h5>
-                    <p className="content">
-                      The more you share, the more you earn - unlock unlimited
-                      income potential!
-                    </p>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
@@ -513,10 +508,9 @@ const Home2 = () => {
                       )
                     }
                   >
-                    <img
+                    <PlayStoreImage
                       src={images.play_store}
                       alt="Download from Play Store"
-                      className="play-store h-100"
                     />
                   </Link>
                 </div>
@@ -546,7 +540,7 @@ const Home2 = () => {
             <div className="col-lg-4 col-md-6">
               {services.slice(0, 3).map((service, index) => (
                 <div
-                  key={index}
+                  key={service.toString()}
                   className="single-service-inner-3 single-service-inner-3-left"
                 >
                   <div className="thumb">
@@ -561,15 +555,15 @@ const Home2 = () => {
                 </div>
               ))}
             </div>
-            <div className="col-lg-4 col-md-6 bg-blue-right d-lg-inline-block d-none">
-              <div className="service-thumb service-middle-section align-self-end">
-                <img src={images.app_6} alt="RojgarApp services" />
-              </div>
-            </div>
+            <ColumnWrapper>
+              <ServiceThumb>
+                <ServiceImage src={images.app_6} alt="RojgarApp services" />
+              </ServiceThumb>
+            </ColumnWrapper>
             <div className="col-lg-4 col-md-6">
               {services.slice(3).map((service, index) => (
                 <div
-                  key={index}
+                  key={service.toString()}
                   className="single-service-inner-3 single-service-inner-3-right"
                 >
                   <div className="thumb">
@@ -822,10 +816,9 @@ const Home2 = () => {
                     )
                   }
                 >
-                  <img
+                  <PlayStoreImage
                     src={images.play_store}
                     alt="Download from Play Store"
-                    className="play-store"
                   />
                 </Link>
               </div>
@@ -863,7 +856,10 @@ const Home2 = () => {
                       </a>
                     </li>
                     <li>
-                      <a href="#" className="sky">
+                      <a
+                        href="https://www.youtube.com/@rojgar_app"
+                        className="sky"
+                      >
                         <FaYoutube />
                       </a>
                     </li>
@@ -893,3 +889,41 @@ const Home2 = () => {
 };
 
 export default Home2;
+
+const PlayStoreImage = styled.img`
+  width: 180px;
+  height: auto;
+  border-radius: 10px;
+  background-color: black;
+  @media (max-width: 768px) {
+    width: 220px;
+  }
+`;
+
+const ColumnWrapper = styled.div`
+  width: 33.3333%; /* col-lg-4 */
+  display: none; /* d-none by default */
+
+  @media (min-width: 992px) {
+    display: inline-block; /* d-lg-inline-block */
+  }
+
+  @media (max-width: 991.98px) and (min-width: 768px) {
+    width: 50%; /* col-md-6 */
+  }
+
+  background-color: #ffff; /* bg-blue-right, you can use your own class or color */
+`;
+
+const ServiceThumb = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* Ensures vertical centering */
+  padding: 20px;
+`;
+
+const ServiceImage = styled.img`
+  max-width: 100%;
+  height: auto;
+`;

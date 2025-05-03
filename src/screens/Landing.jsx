@@ -74,15 +74,15 @@ export default Landing;
 export function LogoComp({ color }) {
   return (
     <AView>
-      <Text size={60} color={color}>
+      <ResponsiveText size={60} color={color}>
         R
-      </Text>
+      </ResponsiveText>
       <Text size={40} color={color}>
         ojgar
       </Text>
-      <Text size={60} color={color}>
+      <ResponsiveText size={60} color={color}>
         A
-      </Text>
+      </ResponsiveText>
       <Text size={40} color={color}>
         pp
       </Text>
@@ -97,12 +97,24 @@ const Text = styled.span`
 
 const AView = styled.div`
   justify-content: center;
-  align-items: center;
-  // display: flex;
-  // position: absolute;
-  // left: 20px;
-  // top: 0px;
+  // align-items: center;
 `;
+
+const ResponsiveText = styled.span`
+  // font-size: ${(props) => props.size}px;
+  color: ${(props) => props.color || "#481e14"};
+  // font-weight: bold;
+
+  @media (max-width: 2000px) {
+    font-size: ${(props) => props.size}px;
+  }
+
+  @media (max-width: 500px) {
+    font-size: ${(props) => props.size}px;
+    font-weight: bold;
+  }
+`;
+
 const Root = styled.div`
   background-color: #ffedd8;
   flex: 1;

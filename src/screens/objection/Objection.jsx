@@ -7,7 +7,9 @@ import { CiSearch, CiWarning } from "react-icons/ci";
 import useObjectionHook from "./useObjectionHook";
 import { Form } from "react-bootstrap";
 import ImageModal from "../../components/ImageModal";
-import { MdEdit } from "react-icons/md";
+import { MdEdit, MdGamepad } from "react-icons/md";
+import { Link } from "react-router-dom";
+import { apis, AppInfo } from "../../utils/URL";
 
 function Objection() {
   const {
@@ -135,6 +137,23 @@ function Objection() {
                 required
                 defaultValue={currentData?._id ?? ""}
               />
+            </div>{" "}
+            <div className="col-12 col-md-6 mb-3">
+              <label className="form-label">Lead ID</label>{" "}
+              <Link
+                to={AppInfo.webUrl + "/lead?" + currentData?.lead_id}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Open
+              </Link>
+              <input
+                disabled
+                className="form-control"
+                type="text"
+                required
+                defaultValue={currentData?.lead_id ?? ""}
+              />
             </div>
             <div className="col-12 col-md-6 mb-3">
               <label className="form-label">Name</label>
@@ -244,7 +263,7 @@ function Objection() {
                         alt={`objection-img-${index}`}
                         className="img-fluid rounded border"
                         style={{
-                          objectFit: "cover",
+                          objectFit: "contain",
                         }}
                       />
                     </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import useDataStore from "../../store/dataStore";
 import moment from "moment";
 import * as XLSX from "xlsx";
@@ -8,6 +8,7 @@ import useToastStore from "../../store/toastStore";
 import CustomDropdown from "../../components/CustomDropdown";
 import ListSelector from "../../components/ListSelector";
 import useAuthStore from "../../store/authStore";
+import { useLocation } from "react-router-dom";
 
 const useHooksWithLeads = () => {
   const { lead, getAlLeads, getMyLeads } = useDataStore();
@@ -34,9 +35,22 @@ const useHooksWithLeads = () => {
     to: Date.now(),
   });
 
-  useEffect(() => {
-    setleads(lead);
-  }, [lead]);
+  const location = useLocation();
+
+  useLayoutEffect(() => {
+    const params = new URLSearchParams(location.search);
+
+    for (const [key] of params.entries()) {
+      setSearchFilterData({ ...searchFilterData, search: key });
+      setTimeout(() => {
+        fetchWithParams(`search=${key}`);
+      }, 1000);
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   // setleads(lead);
+  // }, [lead]);
 
   const columns = [
     {
@@ -276,7 +290,6 @@ const useHooksWithLeads = () => {
 
   const onFilter = () => {
     let params = getParams();
-    // console.log(params);
     fetchWithParams(params);
   };
 
@@ -287,8 +300,13 @@ const useHooksWithLeads = () => {
   };
 
   const searchFilter = (val) => {
-    val.preventDefault();
-    const value = val?.target?.value;
+    let value;
+    if (typeof val === "string") {
+      value = val;
+    } else {
+      value = val?.target?.value;
+      val.preventDefault();
+    }
     setSearchFilterData((prev) => ({ ...prev, search: value }));
     let params = "search=" + value;
 
@@ -301,17 +319,20 @@ const useHooksWithLeads = () => {
     if (searchFilterData.type) {
       params = params + "&type=" + searchFilterData?.type;
     }
+
     fetchWithParams(params);
   };
 
   const fetchWithParams = async (params) => {
     setIsLoading(true);
+    console.log(params);
 
     let res = await getMyLeads(params);
     if (res?.data?.length > 0) {
       setleads(res?.data);
       setPagination(res?.pagination);
       setIsLoading(false);
+      console.log(res.data);
     } else {
       setleads([]);
       setIsLoading(false);
