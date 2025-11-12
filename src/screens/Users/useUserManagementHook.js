@@ -135,7 +135,7 @@ const useUserManagementHook = () => {
             : i + 1}
         </div>
       ),
-      width: "50px",
+      width: "120px",
       center: true,
     },
     {
@@ -153,6 +153,12 @@ const useUserManagementHook = () => {
     {
       name: "Contact No.",
       selector: (row) => row.phone,
+      center: true,
+      width: "120px",
+    },
+    {
+      name: "Joined On",
+      selector: (row) => row?.createdAt ?? "Unavailable",
       center: true,
       width: "120px",
     },

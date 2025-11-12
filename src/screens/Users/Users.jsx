@@ -61,7 +61,6 @@ function Users() {
   } = useUserManagementHook();
 
   const [denyAccess, setDenyAccess] = useState(false);
-
   return (
     <>
       <div className="content">
