@@ -40,7 +40,11 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:dev": "cp .env.development .env.development.local && react-scripts start",
+    "start:prod": "cp .env.production  && react-scripts start",
     "build": "react-scripts build",
+    "build:dev": "REACT_APP_ENV=development react-scripts build",
+    "build:prod": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

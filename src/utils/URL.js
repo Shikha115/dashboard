@@ -1,14 +1,7 @@
 export const AppInfo = {
-  // baseUrlAPI: "http://localhost:5001", // Rojgar Dev local
-  // webUrl: "http://localhost:3000",
-
-  // baseUrlAPI: "https://api.dev.rojgarapp.in", // Rojgar Dev
-  // webUrl: "https://web.dev.rojgarapp.in",
-
-  baseUrlAPI: "https://api.prod.rojgarapp.in", // Rojgar Prod
-  webUrl: "https://bfsiportal.com",
-
-  apiVersion: "api/v1",
+  baseUrlAPI: process.env.REACT_APP_API_BASE_URL,
+  webUrl: process.env.REACT_APP_WEB_URL,
+  apiVersion: process.env.REACT_APP_API_VERSION,
 };
 
 const baseURL = AppInfo.baseUrlAPI + "/" + AppInfo.apiVersion;
