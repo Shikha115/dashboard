@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { apis } from "../../utils/URL";
 import useToastStore from "../../store/toastStore";
+import moment from "moment/moment";
 
 let searchTimer;
 const useUserManagementHook = () => {
@@ -158,7 +159,8 @@ const useUserManagementHook = () => {
     },
     {
       name: "Joined On",
-      selector: (row) => row?.createdAt ?? "Unavailable",
+      selector: (row) =>
+        moment(row?.createdAt).format("DD MMM YY") ?? "Unavailable",
       center: true,
       width: "120px",
     },
