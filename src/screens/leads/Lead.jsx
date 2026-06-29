@@ -31,6 +31,8 @@ function Lead() {
     access,
   } = useHooksWithLeads();
 
+  // leads?.forEach((it, i) => console.log(it?.isComplete, i + 1));
+
   return (
     <div className="content">
       <div className="container-fluid">

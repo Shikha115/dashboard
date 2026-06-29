@@ -128,7 +128,7 @@ const useHooksWithLeads = () => {
           onChange={(e) => onSelect(e.target.value, row)}
           className="form-select "
           disabled={!access?.lead?.edit}
-          defaultValue={row?.isComplete || "pending"}
+          value={row?.isComplete ?? "pending"}
         >
           {["pending", "approved", "rejected"]?.map((item, i) => {
             return (
@@ -325,14 +325,14 @@ const useHooksWithLeads = () => {
 
   const fetchWithParams = async (params) => {
     setIsLoading(true);
-    console.log(params);
+    // console.log(params);
 
     let res = await getMyLeads(params);
     if (res?.data?.length > 0) {
       setleads(res?.data);
       setPagination(res?.pagination);
       setIsLoading(false);
-      console.log(res.data);
+      // console.log(res.data);
     } else {
       setleads([]);
       setIsLoading(false);
@@ -394,7 +394,7 @@ const useHooksWithLeads = () => {
       params = params + "&toDate=" + searchFilterData?.to;
     }
     if (searchFilterData.type) {
-      params = params + "&type=" + searchFilterData?.to;
+      params = params + "&type=" + searchFilterData?.type;
     }
     if (page) {
       params = params + "&page=" + page;
