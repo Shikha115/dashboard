@@ -162,6 +162,7 @@ const useOfferHook = () => {
 
     let data = {
       ...addonData,
+      notification: addonData?.notification ?? false,
       offer_data: currentData,
       type_id: currentCategory?._id,
       mobile_data: { ...obj, card_type: currentCategory?._id },
@@ -203,6 +204,7 @@ const useOfferHook = () => {
 
     let data = {
       ...addonData,
+      notification: addonData?.notification ?? false,
       offer_data: currentData,
       id: Data?._id,
       mobile_data: obj,
@@ -387,7 +389,7 @@ const useOfferHook = () => {
               }
               setData(row);
               setCurrentData(row?.offer_data);
-              setAddonData({ status: row?.status, rank: row?.rank });
+              setAddonData({ status: row?.status, rank: row?.rank, notification: row?.notification ?? false });
               //   setbankData(getBankById(bank, row?.bank_id));
               setAddModal({ type: "edit", state: true });
             }}

@@ -1,4 +1,5 @@
 import React, { useLayoutEffect, useState } from "react";
+import moment from "moment";
 import useDataStore from "../../store/dataStore";
 import axios from "axios";
 import { apis } from "../../utils/URL";
@@ -181,8 +182,25 @@ const useObjectionHook = () => {
       name: "Resolved",
       center: true,
       width: "auto",
-      // style: { width: 1000 },
       selector: (row) => (row?.is_resolved ? "Yes" : "No"),
+    },
+    {
+      name: "Created At",
+      center: true,
+      width: "auto",
+      selector: (row) =>
+        row?.created_at
+          ? moment(row.created_at).format("YYYY-MM-DD  HH:mm:ss")
+          : "-",
+    },
+    {
+      name: "Updated At",
+      center: true,
+      width: "auto",
+      selector: (row) =>
+        row?.updated_at
+          ? moment(row.updated_at).format("YYYY-MM-DD  HH:mm:ss")
+          : "-",
     },
 
     {

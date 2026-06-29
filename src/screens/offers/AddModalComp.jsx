@@ -55,6 +55,22 @@ function AddModalComp(props) {
       </Modal.Header>
       <Modal.Body>
         <form className="row">
+          <div className="col-12 col-md-6 mb-3">
+            <label className="form-label">Send Notification</label>
+            <div className="form-check form-switch mt-2">
+              <input
+                type="checkbox"
+                className="form-check-input"
+                checked={!!props.addonData?.notification}
+                onChange={(e) =>
+                  props.setAddonData({
+                    ...props.addonData,
+                    notification: e.target.checked,
+                  })
+                }
+              />
+            </div>
+          </div>
           {props.currentData?.length > 0 &&
             props.currentData?.map((item, index) => {
               if (item?.key === "Card Type" || item?.key === "Status") {

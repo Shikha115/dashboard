@@ -10,10 +10,26 @@ import { Modal } from "react-bootstrap";
 
 function LeadModalComp({ LeadModal, setLeadModal }) {
   const [SelectedOffer, setSelectedOffer] = useState();
+  const [categorySearch, setCategorySearch] = useState("");
+  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
+  const [selectedLabel, setSelectedLabel] = useState("");
+  const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0, width: 0 });
+  const categoryRef = useRef(null);
+  const categoryInputRef = useRef(null);
   const fileInputRef = useRef(null);
   const { allOffer, getAllOffer } = useDataStore();
   const { setToastData } = useToastStore();
   const { theme } = useAuthStore();
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (categoryRef.current && !categoryRef.current.contains(e.target)) {
+        setShowCategoryDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   useEffect(() => {
     getAllOffer();
@@ -88,6 +104,8 @@ function LeadModalComp({ LeadModal, setLeadModal }) {
       scrollable
       onHide={() => {
         setSelectedOffer("");
+        setSelectedLabel("");
+        setCategorySearch("");
         setLeadModal(false);
       }}
     >
@@ -96,23 +114,82 @@ function LeadModalComp({ LeadModal, setLeadModal }) {
       </Modal.Header>
       <Modal.Body>
         <form className="row">
-          <div className="col-12 col-md-6 mb-3">
+          <div className="col-12 col-md-6 mb-3" ref={categoryRef}>
             <label className="form-label">Category</label>
-            <select
-              className="form-select"
-              onChange={(e) => {
-                setSelectedOffer(e.target.value);
-              }}
-            >
-              <option disabled value={""} selected={true}>
-                Select Category
-              </option>
-              {allOffer?.map((e, i) => (
-                <option index={i} key={e?._id} value={e?._id}>
-                  {e?.mobile_data?.title} - {e?.mobile_data?.earning}
-                </option>
-              ))}
-            </select>
+            <div style={{ position: "relative" }}>
+              <input
+                ref={categoryInputRef}
+                type="text"
+                className="form-control"
+                placeholder={selectedLabel || "Search category..."}
+                value={categorySearch}
+                onFocus={() => {
+                  const rect = categoryInputRef.current?.getBoundingClientRect();
+                  if (rect) {
+                    setDropdownPos({ top: rect.bottom + window.scrollY, left: rect.left, width: rect.width });
+                  }
+                  setShowCategoryDropdown(true);
+                }}
+                onChange={(e) => {
+                  setCategorySearch(e.target.value);
+                  const rect = categoryInputRef.current?.getBoundingClientRect();
+                  if (rect) {
+                    setDropdownPos({ top: rect.bottom + window.scrollY, left: rect.left, width: rect.width });
+                  }
+                  setShowCategoryDropdown(true);
+                }}
+              />
+              {showCategoryDropdown && (
+                <ul
+                  className="list-group"
+                  style={{
+                    position: "fixed",
+                    top: dropdownPos.top,
+                    left: dropdownPos.left,
+                    width: dropdownPos.width,
+                    zIndex: 9999,
+                    maxHeight: 200,
+                    overflowY: "auto",
+                    border: "1px solid #dee2e6",
+                    borderRadius: "0 0 4px 4px",
+                    backgroundColor: "var(--bs-body-bg, #fff)",
+                  }}
+                >
+                  {allOffer
+                    ?.filter((o) =>
+                      `${o?.mobile_data?.title} ${o?.mobile_data?.earning}`
+                        .toLowerCase()
+                        .includes(categorySearch.toLowerCase())
+                    )
+                    .map((o) => (
+                      <li
+                        key={o._id}
+                        className="list-group-item list-group-item-action"
+                        style={{ cursor: "pointer" }}
+                        onMouseDown={() => {
+                          setSelectedOffer(o._id);
+                          setSelectedLabel(
+                            `${o?.mobile_data?.title} - ${o?.mobile_data?.earning}`
+                          );
+                          setCategorySearch("");
+                          setShowCategoryDropdown(false);
+                        }}
+                      >
+                        {o?.mobile_data?.title} - {o?.mobile_data?.earning}
+                      </li>
+                    ))}
+                  {allOffer?.filter((o) =>
+                    `${o?.mobile_data?.title} ${o?.mobile_data?.earning}`
+                      .toLowerCase()
+                      .includes(categorySearch.toLowerCase())
+                  ).length === 0 && (
+                    <li className="list-group-item text-muted">
+                      No categories found
+                    </li>
+                  )}
+                </ul>
+              )}
+            </div>
           </div>
           <div className="">
             {" "}
@@ -146,6 +223,8 @@ function LeadModalComp({ LeadModal, setLeadModal }) {
           className="btn btn-secondary"
           onClick={() => {
             setSelectedOffer("");
+            setSelectedLabel("");
+            setCategorySearch("");
             setLeadModal(false);
           }}
         >
