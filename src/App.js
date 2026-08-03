@@ -1,6 +1,6 @@
 import "./assets/css/app.css";
 import React, { Suspense, useEffect, useLayoutEffect } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import useAuthStore from "./store/authStore";
 import useDataStore from "./store/dataStore";
 import ToastComponent from "./components/ToastComponent";
@@ -41,7 +41,6 @@ const MyOffer = React.lazy(() => import("./screens/offers/MyOffer"));
 const NotFound = React.lazy(() => import("./screens/NotFound"));
 const ManageBanner = React.lazy(() => import("./screens/Banner"));
 const ManageSponsor = React.lazy(() => import("./screens/sponsor/Sponsor"));
-const Home2 = React.lazy(() => import("./screens/Home2"));
 const RedirectToApp = React.lazy(() => import("./screens/RedirectToApp"));
 
 function App() {
@@ -89,7 +88,7 @@ function App() {
           <Location />
           <Suspense fallback={<div>Loading...</div>}>
             <Routes>
-              <Route path="/" element={<Home2 />} exact />
+              <Route path="/" element={<Navigate to="/login" replace />} />
               <Route
                 path="/dashboard"
                 element={

@@ -2,7 +2,9 @@
   "name": "dashboard",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/dashboard",
   "dependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/plugin-transform-private-property-in-object": "^7.23.4",
     "@ckeditor/ckeditor5-build-classic": "^43.3.1",
     "@ckeditor/ckeditor5-build-decoupled-document": "^44.0.0",
@@ -67,7 +69,6 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.3"
   }
