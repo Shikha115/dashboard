@@ -5,21 +5,25 @@ import Sidebar from "./Sidebar";
 import Footer from "./Footer";
 import Loader from "./Loader";
 import useAuthStore from "../store/authStore";
+import { isAuthenticated } from "../utils/session";
 
 function ProtectedRoute({ Component, header, path }) {
   const navigate = useNavigate();
-  const { loading } = useAuthStore();
+  const { loading, authChecked } = useAuthStore();
 
   useEffect(() => {
-    let token = localStorage.getItem("token");
-    // localStorage.removeItem("token");
-    if (!token) {
-      // navigate(`/login?path=${path}`);
+    // Wait for the boot-time refresh before deciding: on a page reload the
+    // access token is briefly absent even though the session is valid.
+    if (authChecked && !isAuthenticated()) {
       navigate(`/login`);
     }
-  }, []);
+  }, [authChecked, navigate]);
 
-  if (!localStorage.getItem("token")) {
+  if (!authChecked) {
+    return <Loader />;
+  }
+
+  if (!isAuthenticated()) {
     return null;
   }
   return (

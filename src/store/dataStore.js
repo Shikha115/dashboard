@@ -38,9 +38,17 @@ const useDataStore = create((set, getState) => ({
 
   setCategory: (data) => set({ category: data }),
   getAllCategory: async () => {
-    const res = await axios.get(apis.getCategories);
-    res?.data?.data.sort((a, b) => a?.rank - b?.rank);
-    set({ category: res.data?.data });
+    try {
+      const res = await axios.get(apis.getCategories);
+      const list = Array.isArray(res?.data?.data) ? [...res.data.data] : [];
+      list.sort((a, b) => a?.rank - b?.rank);
+      set({ category: list });
+    } catch (err) {
+      // The sidebar renders empty rather than taking the app down: this runs
+      // fire-and-forget on boot and right after login, so a throw here would
+      // surface as an unhandled rejection with no UI to catch it.
+      set({ category: [] });
+    }
   },
 
   getCategory: async (id) => {
@@ -113,8 +121,31 @@ const useDataStore = create((set, getState) => ({
 
   setTutorial: async (data) => {
     set({ tutorials: data })
-  }
+  },
 
+  // Called on logout: every list here is data fetched for the account that is
+  // signing out, so none of it may leak into the next session.
+  reset: () =>
+    set({
+      bank: [],
+      allOffer: [],
+      credit: [],
+      saving: [],
+      loan: [],
+      lead: [],
+      demat: [],
+      fixedDeposit: [],
+      mutualFund: [],
+      selectedUser: {},
+      users: [],
+      category: [],
+      allOrders: [],
+      banner: [],
+      sponsor: [],
+      templates: [],
+      tutorials: [],
+      isLoading: false,
+    }),
 }));
 
 export default useDataStore;

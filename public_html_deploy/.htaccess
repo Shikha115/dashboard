@@ -1,0 +1,29 @@
+# public_html root: landing site + React dashboard in /dashboard
+# Upload this file separately as public_html/.htaccess — do NOT put it inside rojgarwebfiles/,
+# since that folder gets overwritten on landing page updates.
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Real files and directories win (landing pages/assets, /dashboard/static/*)
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Everything under /dashboard/ is handled by dashboard/.htaccess. Without this
+  # guard the redirect below would rewrite /dashboard/login to
+  # /dashboard/dashboard/login and loop.
+  RewriteCond %{REQUEST_URI} ^/dashboard/
+  RewriteRule ^ - [L]
+
+  # The React router now runs with basename="/dashboard", so its routes live at
+  # /dashboard/login, /dashboard/users and so on. Old root-level links and
+  # bookmarks (/login, /users, ...) are sent to their new home instead of being
+  # served the dashboard's index.html at a path the router cannot match.
+  RewriteRule ^(.*)$ /dashboard/$1 [R=301,L]
+</IfModule>
+
+<IfModule mod_mime.c>
+  AddType application/javascript .js
+</IfModule>

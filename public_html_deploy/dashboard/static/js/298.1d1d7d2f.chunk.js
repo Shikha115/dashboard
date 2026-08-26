@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkdashboard=self.webpackChunkdashboard||[]).push([[298],{3298:(d,s,a)=>{a.r(s),a.d(s,{default:()=>n});a(2791);var e=a(184);const n=function(){return(0,e.jsx)("div",{children:"NotFound"})}}}]);
+//# sourceMappingURL=298.1d1d7d2f.chunk.js.map

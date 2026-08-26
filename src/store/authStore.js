@@ -1,10 +1,15 @@
 import axios from "axios";
 import { create } from "zustand";
-import { apis, config } from "../utils/URL";
+import { apis } from "../utils/URL";
+import { clearSession, getUserId } from "../utils/session";
 
 const useAuthStore = create((set) => ({
   token: "",
   setToken: (data) => set({ token: data }),
+
+  // False until the boot-time refresh call has resolved.
+  authChecked: false,
+  setAuthChecked: (data) => set({ authChecked: data }),
 
   showToast: false,
   setShowToast: (data) => set({ showToast: data }),
@@ -33,25 +38,34 @@ const useAuthStore = create((set) => ({
 
   profile: {},
   getProfileWeb: async () => {
-    let token = localStorage.getItem("token");
-    let id = localStorage.getItem("id");
+    const id = getUserId();
 
-    axios
-      .post(apis.getProfileWeb, { id }, config(token))
+    // The axios interceptor attaches the bearer token and handles refresh and
+    // logout on 401, so no token juggling is needed here.
+    return axios
+      .post(apis.getProfileWeb, { id })
       .then((e) => {
         set({ profile: e.data.data, loading: false });
       })
       .catch((err) => {
-        // console.log(err.response.data.message);
-
-        if (
-          err.response.data.message === "Access denied!!!. No token provided" ||
-          err.response.data.message === "Invalid token!!!!"
-        ) {
-          localStorage.removeItem("token");
+        set({ loading: false });
+        if (err?.response?.status === 401) {
+          clearSession();
         }
       });
   },
+
+  // Called on logout. Theme and sidebar are UI preferences, not session data,
+  // so they survive. authChecked stays true: the session state is known (logged
+  // out), and flipping it back would leave ProtectedRoute stuck on the loader.
+  reset: () =>
+    set({
+      token: "",
+      profile: {},
+      currentPath: "",
+      loading: false,
+      authChecked: true,
+    }),
 }));
 
 export default useAuthStore;

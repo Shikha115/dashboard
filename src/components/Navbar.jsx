@@ -4,8 +4,11 @@ import { Link } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import { FaBars, FaChevronDown } from "react-icons/fa";
 import Collapse from "react-bootstrap/Collapse";
+import axios from "axios";
 import useAuthStore from "../store/authStore";
 import useDataStore from "../store/dataStore";
+import { apis } from "../utils/URL";
+import { clearSession } from "../utils/session";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
@@ -156,10 +159,18 @@ function Navbar() {
 
                 <Link
                   to="/logout"
-                  onClick={() => {
-                    localStorage.removeItem("token");
-                    useAuthStore.getState().reset();
-                    useDataStore.getState().reset();
+                  onClick={async () => {
+                    // Revoke the refresh session server side, then drop local
+                    // state. The request is best effort: the UI logs out either
+                    // way.
+                    try {
+                      await axios.post(apis.logoutWeb, {});
+                    } catch (err) {
+                      // already logged out or offline
+                    }
+                    clearSession();
+                    useAuthStore.getState().reset?.();
+                    useDataStore.getState().reset?.();
                   }}
                   className="dropdown-item"
                 >

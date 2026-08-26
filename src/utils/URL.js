@@ -1,23 +1,34 @@
+// API endpoint. Override per environment with REACT_APP_API_BASE_URL in a
+// .env file (see ENV_SETUP.md) instead of editing this file.
+//
+//   local   http://localhost:5001              (.env.development)
+//   prod    https://api.prodv.rojgarapp.in     (.env.production, hardened API)
+//
+// Only the hardened API can serve this build: it keeps the access token in
+// memory and relies on the httpOnly refresh cookie that only that backend
+// issues. api.prod.rojgarapp.in and api.dev.rojgarapp.in still run the legacy
+// backend — they answer /auth/refresh with 404, so a session dies on the first
+// page reload.
+//
+// Whichever host is used must list this origin in the backend's CORS_ORIGINS
+// and serve a CA-signed certificate. A cert the browser rejects surfaces as a
+// bare "Network Error" with no response and no status code.
 export const AppInfo = {
-  // baseUrlAPI: "http://localhost:5001", // Rojgar Dev local
-  // webUrl: "http://localhost:3000",
-
-  // baseUrlAPI: "https://api.dev.rojgarapp.in", // Rojgar Dev
-  // webUrl: "https://web.dev.rojgarapp.in",
-
-  baseUrlAPI: "https://api.prod.rojgarapp.in", // Rojgar Prod
-  webUrl: "https://bfsiportal.com",
-
-  apiVersion: "api/v1",
+  baseUrlAPI: process.env.REACT_APP_API_BASE_URL || "http://localhost:5001",
+  webUrl: process.env.REACT_APP_WEB_URL || "https://bfsiportal.com",
+  apiVersion: process.env.REACT_APP_API_VERSION || "api/v1",
 };
 
-const baseURL = AppInfo.baseUrlAPI + "/" + AppInfo.apiVersion;
+export const baseURL = AppInfo.baseUrlAPI + "/" + AppInfo.apiVersion;
 
+// The axios interceptor in utils/http.js attaches the bearer token to every
+// call to our API, so callers no longer need to pass one. Kept for existing
+// call sites.
 export const config = (token) => {
   return {
     headers: {
       "Content-Type": "application/json",
-      Authorization: token,
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
   };
 };
@@ -27,6 +38,10 @@ export const apis = {
   loginWithOtp: `${baseURL}/auth/login-via-otp`,
   verifyOTP: `${baseURL}/auth/verify-otp`,
   login: `${baseURL}/auth/login`,
+  refreshToken: `${baseURL}/auth/refresh`,
+  logoutWeb: `${baseURL}/auth/logout-web`,
+  me: `${baseURL}/auth/me`,
+  confirmAccountDeletion: `${baseURL}/auth/confirm-account-deletion`,
   register: `${baseURL}/auth/register`,
   deleteUser: `${baseURL}/auth/delete-user`,
   deleteWebUser: `${baseURL}/auth/delete-web-user`,

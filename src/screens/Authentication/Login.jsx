@@ -6,10 +6,15 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import useToastStore from "../../store/toastStore";
 import { apis } from "../../utils/URL";
 import useAuthStore from "../../store/authStore";
+import useDataStore from "../../store/dataStore";
+import { setSession } from "../../utils/session";
+import { errorMessage } from "../../utils/http";
 
 function Login() {
   const navigate = useNavigate();
   const { setToastData, setShowToast } = useToastStore();
+  const { getProfileWeb } = useAuthStore();
+  const { getAllCategory } = useDataStore();
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -34,8 +39,24 @@ function Login() {
     axios
       .post(apis.login, data)
       .then((e) => {
-        localStorage.setItem("token", e?.data?.token);
-        localStorage.setItem("id", e?.data?._id);
+        const token = e?.data?.token;
+        if (!token) {
+          setToastData({
+            color: "#d03f3f",
+            message: "Login failed: the server returned no token.",
+          });
+          return;
+        }
+
+        // Access token stays in memory; the refresh token arrived as an
+        // httpOnly cookie that JavaScript cannot read.
+        setSession({ token, id: e?.data?._id });
+
+        // App's boot effect already ran with no session, so the profile and
+        // the category list have to be loaded here or the sidebar and the user
+        // menu stay empty until a manual page reload.
+        getProfileWeb();
+        getAllCategory();
 
         navigate(`${path ? path : "/manage-category"}`);
         setToastData({
@@ -46,7 +67,7 @@ function Login() {
       .catch((error) => {
         setToastData({
           color: "#d03f3f",
-          message: error?.response.data?.message,
+          message: errorMessage(error, "Login failed"),
         });
       });
   };

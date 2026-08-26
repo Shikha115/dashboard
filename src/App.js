@@ -1,7 +1,9 @@
 import "./assets/css/app.css";
+import "./utils/http"; // installs the auth interceptors before any request
 import React, { Suspense, useEffect, useLayoutEffect } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import useAuthStore from "./store/authStore";
+import { bootstrapSession } from "./utils/http";
 import useDataStore from "./store/dataStore";
 import ToastComponent from "./components/ToastComponent";
 import Location from "./components/Location";
@@ -36,6 +38,7 @@ const DeleteAccount = React.lazy(() => import("./screens/DeleteAccount"));
 const PrivacyPolicy = React.lazy(() => import("./screens/PrivacyPolicy"));
 const TermCondition = React.lazy(() => import("./screens/TermCondition"));
 // const Landing = React.lazy(() => import("./screens/Landing"));
+const Home2 = React.lazy(() => import("./screens/Home2"));
 const Dashboard = React.lazy(() => import("./screens/Dashboard"));
 const MyOffer = React.lazy(() => import("./screens/offers/MyOffer"));
 const NotFound = React.lazy(() => import("./screens/NotFound"));
@@ -52,6 +55,7 @@ function App() {
     setDefaultSidebar,
     theme,
     getTheme,
+    setAuthChecked,
   } = useAuthStore();
   const { getAllCategory, category } = useDataStore();
 
@@ -68,18 +72,29 @@ function App() {
 
   const getData = async () => {
     setLoading(true);
-    let tokenVal = localStorage.getItem("token");
-    // return;
-    if (tokenVal) {
-      await getProfileWeb(tokenVal);
+
+    // Turns the httpOnly refresh cookie back into an access token, so a reload
+    // keeps the session without ever storing a token in the browser.
+    const restored = await bootstrapSession();
+    setAuthChecked(true);
+
+    // Both calls need a session. Firing them for a signed-out visitor only
+    // produced 401s on the public pages (privacy policy, deletion link).
+    if (restored) {
+      await getProfileWeb();
+      getAllCategory(category);
     }
-    getAllCategory(category);
     setLoading(false);
   };
   return (
     <>
       <ToastComponent />
-      <BrowserRouter>
+      {/* The app is deployed under /dashboard (package.json "homepage"), with a
+          separate static site at the domain root. Without the basename the
+          router read the deploy path "/dashboard" as the Dashboard route, so
+          the entry URL bounced to login and the landing page below was
+          unreachable. PUBLIC_URL is derived from "homepage" at build time. */}
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
         <section
           className={`wrapper ${loading ? "overflow-hidden" : ""}`}
           id={`${defaultSidebar ? defaultSidebar : ""}`}
@@ -88,7 +103,11 @@ function App() {
           <Location />
           <Suspense fallback={<div>Loading...</div>}>
             <Routes>
-              <Route path="/" element={<Navigate to="/login" replace />} />
+              {/* Public marketing landing page, as it was before the auth
+                  hardening replaced it with a redirect to /login. It only
+                  posts to the public contact endpoint, so it needs no
+                  session. */}
+              <Route path="/" element={<Home2 />} />
               <Route
                 path="/dashboard"
                 element={
