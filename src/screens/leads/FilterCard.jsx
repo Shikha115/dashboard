@@ -4,6 +4,14 @@ import SearchBarComp from "./SearchBarComp";
 import ListSelector from "../../components/ListSelector";
 import useDataStore from "../../store/dataStore";
 
+// The filter posts these straight into a query string, so the value has to be
+// both URL-safe unencoded and unambiguous to `new Date()` on the server. An ISO
+// UTC timestamp is both: no "+" to be mangled into a space, and the exact
+// instant the user picked rather than a date the server re-reads in its own
+// timezone. An empty input clears the filter instead of producing
+// "Invalid date".
+const toTimestamp = (value) => (value ? moment(value).toISOString() : "");
+
 function FilterCard(props) {
   const { allOffer } = useDataStore();
   return (
@@ -11,29 +19,31 @@ function FilterCard(props) {
       <div className="card-body">
         <form action="#" className="row">
           <div className="col-12 col-md-3 mb-3">
-            <label className="form-label">From Date</label>
+            <label className="form-label">From Date &amp; Time</label>
             <input
               className="form-control"
-              type="date"
-              name="date"
+              type="datetime-local"
+              name="from"
+              step="1"
               onChange={(e) => {
                 props.setSearchFilterData((prev) => ({
                   ...prev,
-                  from: moment(e.target.value).format("YYYY/MM/DD"),
+                  from: toTimestamp(e.target.value),
                 }));
               }}
             />
           </div>
           <div className="col-12 col-md-3 mb-3">
-            <label className="form-label">To Date</label>
+            <label className="form-label">To Date &amp; Time</label>
             <input
               className="form-control"
-              type="date"
-              name="date" // defaultValue={moment()?.format("YYYY/MM/DD")}
+              type="datetime-local"
+              name="to"
+              step="1"
               onChange={(e) => {
                 props.setSearchFilterData((prev) => ({
                   ...prev,
-                  to: moment(e.target.value).format("YYYY/MM/DD"),
+                  to: toTimestamp(e.target.value),
                 }));
               }}
             />

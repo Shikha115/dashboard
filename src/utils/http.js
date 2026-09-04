@@ -18,23 +18,18 @@ axios.interceptors.request.use((config) => {
   return config;
 });
 
-// Bounce to the login screen only when a live session actually died. A 401 on
-// a visitor who was never signed in is normal — the privacy policy, the terms
-// page and the account-deletion link from the confirmation email are public,
-// and a blanket redirect made all of them unreachable.
-const redirectToLogin = () => {
-  const hadSession = !!getToken();
+// Ends the session only when a live one actually died. A 401 on a visitor who
+// was never signed in is normal — the privacy policy, the terms page and the
+// account-deletion link from the confirmation email are all public.
+//
+// Clearing the session is the whole job. ProtectedRoute subscribes to it and
+// swaps in the login screen at the current URL, so there is no navigation and
+// the address bar keeps pointing at the page the user was on. Sending the
+// browser to /login instead rewrote the URL on every reload and lost the deep
+// link the user had open.
+const endSession = () => {
+  if (!getToken()) return;
   clearSession();
-
-  if (!hadSession) return;
-
-  // This is a full page load, not a router navigation, so it needs the deploy
-  // prefix the router gets from basename. Without it the browser leaves the
-  // app's directory entirely and the host serves a 404.
-  const loginPath = `${process.env.PUBLIC_URL || ""}/login`;
-  if (window.location.pathname !== loginPath) {
-    window.location.replace(loginPath);
-  }
 };
 
 // Single-flight refresh so a burst of expired calls triggers one rotation.
@@ -92,13 +87,13 @@ axios.interceptors.response.use(
       }
       // Only a refused refresh token ends the session. A rate-limited or
       // unreachable refresh must not log the user out.
-      if (rejected) redirectToLogin();
+      if (rejected) endSession();
       return Promise.reject(error);
     }
 
     // Missing, revoked or tampered token: the session is over.
     if (status === 401 && !original?._skipAuthRefresh) {
-      redirectToLogin();
+      endSession();
     }
 
     return Promise.reject(error);

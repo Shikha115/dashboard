@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 import { MdAccountBox } from "react-icons/md";
 import { GiProgression, GiTakeMyMoney } from "react-icons/gi";
-import { FaStar } from "react-icons/fa6";
+import { FaStar, FaGear, FaDatabase } from "react-icons/fa6";
 import Collapse from "react-bootstrap/Collapse";
 import useAuthStore from "../store/authStore";
 import useDataStore from "../store/dataStore";
@@ -111,6 +111,20 @@ const Sidebar_data2 = [
     subcategory: [],
     isActive: false,
     link: "/manage-sponsor",
+  },
+  {
+    icon: <FaDatabase />,
+    category: "DB Backup",
+    subcategory: [],
+    isActive: false,
+    link: "/backup",
+  },
+  {
+    icon: <FaGear />,
+    category: "Settings",
+    subcategory: [],
+    isActive: false,
+    link: "/settings",
   },
 ];
 function Sidebar() {

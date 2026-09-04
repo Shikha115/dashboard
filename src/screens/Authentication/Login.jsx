@@ -10,7 +10,11 @@ import useDataStore from "../../store/dataStore";
 import { setSession } from "../../utils/session";
 import { errorMessage } from "../../utils/http";
 
-function Login() {
+// `inline` is set when ProtectedRoute renders this in place of a page the user
+// is not signed in for. In that mode the URL already points at where they want
+// to be, so logging in must not navigate anywhere — ProtectedRoute re-renders
+// the real page as soon as the session exists.
+function Login({ inline = false }) {
   const navigate = useNavigate();
   const { setToastData, setShowToast } = useToastStore();
   const { getProfileWeb } = useAuthStore();
@@ -18,7 +22,17 @@ function Login() {
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const path = queryParams.get("path");
+
+  // Only ever return to an in-app path. A value like "//evil.com" or
+  // "https://evil.com" would otherwise turn this into an open redirect that
+  // sends someone straight off the dashboard right after they authenticate.
+  const requestedPath = queryParams.get("path");
+  const path =
+    requestedPath &&
+    requestedPath.startsWith("/") &&
+    !requestedPath.startsWith("//")
+      ? requestedPath
+      : null;
   const emailRef = useRef();
   const passwordRef = useRef();
 
@@ -58,7 +72,9 @@ function Login() {
         getProfileWeb();
         getAllCategory();
 
-        navigate(`${path ? path : "/manage-category"}`);
+        if (!inline) {
+          navigate(`${path ? path : "/manage-category"}`);
+        }
         setToastData({
           color: "#33b0e0",
           message: `Login Successfully`,

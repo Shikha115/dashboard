@@ -14,6 +14,7 @@ import { static_pages } from "../utils/extraData";
 import ImageModal from "../components/ImageModal";
 import { getAccessName } from "../utils/helperfunctions";
 
+import DeleteConfirmModal from "../components/DeleteConfirmModal";
 function Notification() {
   const { getTemplates, templates, allOffer, getAllOffer } = useDataStore();
   const { setToastData } = useToastStore();
@@ -500,29 +501,12 @@ function Notification() {
           </button>
         </Modal.Footer>
       </Modal>{" "}
-      <Modal
-        className={theme ? theme : ""}
-        size="sm"
+      <DeleteConfirmModal
         show={deleteModal}
-        centered
         onHide={() => setDeleteModal(false)}
-      >
-        <Modal.Body className="text-center p-4">
-          <CiWarning className="fs-48 text-danger" />
-          <h4 className="mt-2">Are You Sure?</h4>
-          <p className="mt-3">
-            Warning: You are about to delete this item. This action cannot be
-            undone. Are you sure you want to proceed with the deletion?
-          </p>
-          <button
-            type="button"
-            className="btn btn-danger my-2"
-            onClick={Delete}
-          >
-            Continue
-          </button>
-        </Modal.Body>
-      </Modal>
+        onConfirm={Delete}
+        confirmLabel="Continue"
+      />
     </>
   );
 }

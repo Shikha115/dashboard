@@ -8,6 +8,8 @@ import useDataStore from "./store/dataStore";
 import ToastComponent from "./components/ToastComponent";
 import Location from "./components/Location";
 import ProtectedRoute from "./components/protectedRoute";
+import Settings from "./screens/Settings";
+import Backup from "./screens/Backup";
 import Profile from "./screens/Profile";
 
 const Login = React.lazy(() => import("./screens/Authentication/Login"));
@@ -158,6 +160,26 @@ function App() {
                 }
               />
               <Route
+                path="/settings"
+                element={
+                  <ProtectedRoute
+                    path="/settings"
+                    Component={Settings}
+                    header={true}
+                  />
+                }
+              />
+              <Route
+                path="/backup"
+                element={
+                  <ProtectedRoute
+                    path="/backup"
+                    Component={Backup}
+                    header={true}
+                  />
+                }
+              />
+              <Route
                 path="/manager"
                 element={
                   <ProtectedRoute Component={AddManager} header={true} />
@@ -213,24 +235,22 @@ function App() {
                   />
                 }
               />
-              {category?.map((item, index) => {
-                if (!item?.status) {
-                  return null;
-                }
-                return (
-                  <Route
-                    key={index}
-                    path={`/offer/${item?._id}`}
-                    element={
-                      <ProtectedRoute
-                        path={`/offer/${item?._id}`}
-                        Component={MyOffer}
-                        header={true}
-                      />
-                    }
+              {/* One parameterised route, not one route per category. The
+                  generated version only existed once `category` had loaded, so
+                  a hard refresh on /offer/<id> hit the "*" catch-all and
+                  rendered NotFound before the categories arrived. useOfferHook
+                  reads the id straight off the pathname, so it never needed a
+                  route per category. */}
+              <Route
+                path="/offer/:id"
+                element={
+                  <ProtectedRoute
+                    path="/offer/:id"
+                    Component={MyOffer}
+                    header={true}
                   />
-                );
-              })}
+                }
+              />
               <Route path="/my-leads" element={<MyLeads />} />
               <Route
                 path="/users"

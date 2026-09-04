@@ -10,6 +10,7 @@ import ImageUpload from "../../components/ImageUpload";
 import { images } from "../../components/Images";
 import useAuthStore from "../../store/authStore";
 
+import DeleteConfirmModal from "../../components/DeleteConfirmModal";
 function ManageSaving() {
   const [isLoading, setIsLoading] = useState(true);
   const { saving, getSaving } = useDataStore();
@@ -287,29 +288,12 @@ function ManageSaving() {
           </div>
         </div>
       </div>
-      <Modal
-        className={theme ? theme : ""}
-        size="sm"
+      <DeleteConfirmModal
         show={deleteModal}
-        centered
         onHide={() => setDeleteModal(false)}
-      >
-        <Modal.Body className="text-center p-4">
-          <CiWarning className="fs-48 text-danger" />
-          <h4 className="mt-2">Are You Sure?</h4>
-          <p className="mt-3">
-            Warning: You are about to delete this item. This action cannot be
-            undone. Are you sure you want to proceed with the deletion?
-          </p>
-          <button
-            type="button"
-            className="btn btn-danger my-2"
-            onClick={() => setDeleteModal(false)}
-          >
-            Continue
-          </button>
-        </Modal.Body>
-      </Modal>
+        onConfirm={() => setDeleteModal(false)}
+        confirmLabel="Continue"
+      />
       <Modal
         className={theme ? theme : ""}
         size="lg"

@@ -15,6 +15,7 @@ import { getAccessName, isEmptyObject } from "../utils/helperfunctions";
 import _ from "lodash";
 import ImageModal from "../components/ImageModal";
 
+import DeleteConfirmModal from "../components/DeleteConfirmModal";
 const RequiredData = [
   { key: "Title", required: true, can_delete: false },
   // { key: "Bank Name", required: true, can_delete: false },
@@ -387,32 +388,12 @@ function DeleteModalComp({ deleteModal, setDeleteModal, item, handleDelete }) {
     handleDelete(item?._id);
   };
   return (
-    <Modal
-      className={theme ? theme : ""}
-      size="sm"
+    <DeleteConfirmModal
       show={deleteModal}
-      centered
       onHide={() => setDeleteModal(false)}
-    >
-      <Modal.Body className="text-center p-4">
-        <CiWarning className="fs-48 text-danger" />
-        <h4 className="mt-2">Are You Sure?</h4>
-        <p className="mt-3">
-          Warning: You are about to delete this item. This action cannot be
-          undone. Are you sure you want to proceed with the deletion?
-        </p>
-        <input
-          type="search"
-          className="form-control"
-          placeholder="Enter password"
-          onChange={(e) => setpassword(e.target.value)}
-        />
-
-        <button type="button" className="btn btn-danger my-2" onClick={verify}>
-          Delete
-        </button>
-      </Modal.Body>
-    </Modal>
+      onConfirm={verify}
+      confirmLabel="Delete"
+    />
   );
 }
 

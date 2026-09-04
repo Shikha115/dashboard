@@ -146,6 +146,16 @@ export const apis = {
   updateTutorial: `${baseURL}/tutorial/update-tutorial`,
   deleteTutorial: `${baseURL}/tutorial/delete-tutorial`,
 
+  //---------------- settings ------------- //
+  getSettings: `${baseURL}/settings`,
+  updateSettings: `${baseURL}/settings/update`,
+
+  //---------------- backup ------------- //
+  getBackupCollections: `${baseURL}/backup/collections`,
+  getBackups: `${baseURL}/backup`,
+  runBackup: `${baseURL}/backup/run`,
+  downloadBackup: `${baseURL}/backup/download`,
+
   //---------------- contact ------------- //
   getAllContacts: `${baseURL}/contact/get-all-contact`,
   createContact: `${baseURL}/contact/create`,
