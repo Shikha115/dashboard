@@ -10,6 +10,9 @@
 .env.development.local
 .env.test.local
 .env.production.local
+.env.production
+.env.productionv2
+
 
 # testing
 /coverage
@@ -29,3 +32,4 @@ yarn-error.log*
 # files hold public API hostnames that end up in the built bundle anyway, and
 # ENV_SETUP.md documents them as committed — ignoring them meant every clone
 # started with no endpoint configured at all.
+.env.production
