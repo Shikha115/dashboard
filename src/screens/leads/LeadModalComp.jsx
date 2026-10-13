@@ -82,14 +82,21 @@ function LeadModalComp({ LeadModal, setLeadModal }) {
         offer_id: SelectedOffer,
       });
 
-      if (res.data.message === "Invalid offer selected") {
-        setToastData({ message: res.data.message, color: "red" });
-      } else {
-        setToastData({
-          message: res.data.message,
-          color: res.data.color ?? "red",
-        });
-      }
+      // Name the first few rows the server skipped, so the operator can fix
+      // the sheet instead of guessing which line was wrong.
+      const skipped = res.data.skipped || [];
+      const detail = skipped
+        .slice(0, 3)
+        .map((r) => `${r.refferal_id}_${r.click_id}: ${r.reason}`)
+        .join("; ");
+      const more = skipped.length > 3 ? ` (+${skipped.length - 3} more)` : "";
+
+      setToastData({
+        message: detail
+          ? `${res.data.message}. ${detail}${more}`
+          : res.data.message,
+        color: res.data.color ?? "red",
+      });
     };
 
     reader.readAsArrayBuffer(file);

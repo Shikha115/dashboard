@@ -42,7 +42,6 @@ function OrderModalComp({ LeadModal, setLeadModal }) {
           obj[header?.toLowerCase()] =
             typeof row[index] === "number" ? String(row[index]) : row[index];
 
-          obj["offer_id"] = SelectedOffer;
           if (header?.toLowerCase() === "affiliate_id") {
             obj["refferal_id"] = obj?.affiliate_id?.split("_")[0];
             obj["click_id"] = obj?.affiliate_id?.split("_")[1];
@@ -56,7 +55,13 @@ function OrderModalComp({ LeadModal, setLeadModal }) {
       // return;
 
       let apiArr = arrayData.filter((val) => val?.status);
-      let res = await axios.post(apis.settleLeads, { data: apiArr });
+      // The backend reads offer_id from the top level of the body, not from
+      // each row. Sent per row, it arrived as undefined and every upload was
+      // rejected with "Invalid Offer".
+      let res = await axios.post(apis.settleLeads, {
+        data: apiArr,
+        offer_id: SelectedOffer,
+      });
       if (res.data.message === "Invalid offer selected") {
         setToastData({ message: res.data.message, color: "red" });
       } else {
