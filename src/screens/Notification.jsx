@@ -15,6 +15,8 @@ import ImageModal from "../components/ImageModal";
 import { getAccessName } from "../utils/helperfunctions";
 
 import DeleteConfirmModal from "../components/DeleteConfirmModal";
+import SentNotifications from "./SentNotifications";
+
 function Notification() {
   const { getTemplates, templates, allOffer, getAllOffer } = useDataStore();
   const { setToastData } = useToastStore();
@@ -25,6 +27,8 @@ function Notification() {
   const [deleteModal, setDeleteModal] = useState(false);
   const [filteredTemplate, setFilteredTemplate] = useState();
   const [Pages, setPages] = useState([...static_pages]);
+  // Bumped after a send so the "Sent notifications" table reloads.
+  const [sentKey, setSentKey] = useState(0);
   const {
     profile: { access },
   } = useAuthStore();
@@ -223,8 +227,21 @@ function Notification() {
     setFilteredTemplate(arr);
   };
 
+  // Announcement: every app user sees it, and every device gets a push.
+  // Personal notifications are sent from the Users page instead.
   const BulkNotification = () => {
     const { _id, ...rest } = currentRow;
+    if (!rest.title || !rest.message) {
+      setToastData({ color: "red", message: "Add a title and a message" });
+      return;
+    }
+    if (
+      !window.confirm(
+        `Send "${rest.title}" to every app user? This cannot be undone.`
+      )
+    ) {
+      return;
+    }
 
     axios
       .post(apis.bulkNotification, { ...rest, body: rest.message })
@@ -232,9 +249,10 @@ function Notification() {
         setCurrentRow({});
         setToastData({
           color: "#00ff1e",
-          message: `Bulk notification sent Successfully`,
+          message: `Sent to everyone`,
         });
         setAddModal(false);
+        setSentKey((k) => k + 1);
       })
       .catch((err) => {
         setToastData({
@@ -324,6 +342,12 @@ function Notification() {
                 progressPending={isLoading}
                 pagination
               />
+              <p className="text-muted small mt-2 mb-0">
+                Templates can be sent to everyone from here. To send to one
+                user or a selection, go to Users and use Notification or
+                Notify selected.
+              </p>
+              <SentNotifications access={access} refreshKey={sentKey} />
             </div>
           )}
         </div>
@@ -479,8 +503,9 @@ function Notification() {
             type="submit"
             className="btn btn-dark"
             onClick={BulkNotification}
+            title="Every app user sees this. To message specific users, use Users → Notification."
           >
-            Bulk Notification
+            Send to everyone
           </button>
           <button
             className="btn btn-secondary"

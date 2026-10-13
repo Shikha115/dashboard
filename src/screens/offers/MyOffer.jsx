@@ -69,6 +69,9 @@ function MyOffer() {
                       className="btn btn-primary"
                       onClick={() => {
                         setCurrentData(currentCategory?.offer_data);
+                        // Start every new offer with an empty app card, not
+                        // the one left over from the last offer edited.
+                        setAddonData({ notification: false, card: undefined });
                         setAddModal({ type: "add", state: true });
                       }}
                     >

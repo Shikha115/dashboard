@@ -133,6 +133,10 @@ export const apis = {
   multiNotification: `${baseURL}/notification/multi-notification`,
   singleNotification: `${baseURL}/notification/single-notification`,
   saveNotification: `${baseURL}/notification/save-notification`,
+  // Personal notification to chosen users; history of everything sent.
+  sendNotificationToUsers: `${baseURL}/notification/send-to-users`,
+  getSentNotifications: `${baseURL}/notification/sent`,
+  deleteSentNotification: `${baseURL}/notification/delete-sent`,
 
   //---------------- template ------------- //
   getAllTemplates: `${baseURL}/template/get-all-templates`,

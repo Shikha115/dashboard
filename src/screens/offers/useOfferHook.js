@@ -389,7 +389,12 @@ const useOfferHook = () => {
               }
               setData(row);
               setCurrentData(row?.offer_data);
-              setAddonData({ status: row?.status, rank: row?.rank, notification: row?.notification ?? false });
+              setAddonData({
+                status: row?.status,
+                rank: row?.rank,
+                notification: row?.notification ?? false,
+                card: row?.card,
+              });
               //   setbankData(getBankById(bank, row?.bank_id));
               setAddModal({ type: "edit", state: true });
             }}

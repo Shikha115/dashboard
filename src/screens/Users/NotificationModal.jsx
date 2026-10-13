@@ -1,94 +1,89 @@
-import React, { useEffect, useState } from "react";
-import ImageUpload from "../../components/ImageUpload";
+import React, { useEffect, useMemo, useState } from "react";
 import { Modal } from "react-bootstrap";
 import axios from "axios";
+import ImageUpload from "../../components/ImageUpload";
 import { apis } from "../../utils/URL";
 import useToastStore from "../../store/toastStore";
 import useDataStore from "../../store/dataStore";
 import useAuthStore from "../../store/authStore";
 
+// Personal notification to one user (row button) or to every ticked user
+// ("Notify selected"). Each recipient gets their own copy in the app's
+// notification list, marked "For you", plus a push.
 function NotificationModal(props) {
   const { getTemplates, templates } = useDataStore();
   const { setToastData } = useToastStore();
   const { theme } = useAuthStore();
 
-  const [SelectedTemplate, setSelectedTemplate] = useState();
+  const [draft, setDraft] = useState({ title: "", message: "", image: "" });
+  const [sending, setSending] = useState(false);
 
-  const sendNotification = async () => {
-    if (!SelectedTemplate) {
-      setToastData({ message: "Select a template to continue" });
-      return;
-    }
+  const userIds = useMemo(
+    () => (Array.isArray(props.userIds) ? props.userIds.filter(Boolean) : []),
+    [props.userIds]
+  );
+  const single = userIds.length === 1 && props.currentData?._id;
 
-    // console.log(props);
-
-    // return;
-    // console.log(SelectedTemplate);
-    if (SelectedTemplate?.type === "email") {
-      const params = {
-        tokens: props.currentData?.fcm_token,
-        title: SelectedTemplate?.title,
-        body: SelectedTemplate?.message,
-        image: SelectedTemplate?.image,
-      };
-
-      axios
-        .post(apis.multiNotification, {
-          ...params,
-        })
-        .then((e) => {
-          // console.log(e);
-          props.setNotificationModal(false);
-          setToastData({ message: "Notification sent" });
-        })
-        .catch((err) => {
-          // console.log(err);
-          setToastData({
-            message: "Failed to send notification",
-            color: "red",
-          });
-        });
-    } else {
-      const params = {
-        tokens: props.currentData?.fcm_token,
-        user_id: props?.currentData?._id,
-        title: SelectedTemplate?.title,
-        body: SelectedTemplate?.message,
-        image: SelectedTemplate?.image,
-        route: SelectedTemplate?.route,
-        route_id: SelectedTemplate?.route_id,
-      };
-
-      axios
-        .post(apis.multiNotification, {
-          ...params,
-        })
-        .then((e) => {
-          axios
-            .post(apis.saveNotification, { ...params })
-            .then((item) => {
-              // console.log(item);
-            })
-            .catch((err) => {
-              // console.log(err);
-            });
-          // console.log(e);
-          props.setNotificationModal(false);
-          setToastData({ message: "Notification sent" });
-        })
-        .catch((err) => {
-          // console.log(err);
-          setToastData({
-            message: "Failed to send notification",
-            color: "red",
-          });
-        });
-    }
-  };
+  // Email templates can't be pushed; only offer notification ones.
+  const pushTemplates = (templates || []).filter(
+    (t) => !t?.type || t.type === "notification"
+  );
 
   useEffect(() => {
     getTemplates();
   }, []);
+
+  const close = () => {
+    props.setNotificationModal(false);
+    setDraft({ title: "", message: "", image: "" });
+  };
+
+  const pickTemplate = (index) => {
+    const t = pushTemplates[index];
+    if (!t) {
+      setDraft({ title: "", message: "", image: "" });
+      return;
+    }
+    setDraft({
+      title: t.title || "",
+      message: t.message || "",
+      image: t.image || "",
+      route: t.route || "",
+      route_id: t.route_id || "",
+    });
+  };
+
+  const send = async () => {
+    if (!userIds.length) {
+      setToastData({ message: "Select at least one user", color: "red" });
+      return;
+    }
+    if (!draft.title?.trim() || !draft.message?.trim()) {
+      setToastData({ message: "Add a title and a message", color: "red" });
+      return;
+    }
+    setSending(true);
+    try {
+      const res = await axios.post(apis.sendNotificationToUsers, {
+        user_ids: userIds,
+        title: draft.title.trim(),
+        body: draft.message.trim(),
+        image: draft.image || "",
+        route: draft.route || "",
+        route_id: draft.route_id || "",
+      });
+      setToastData({ message: res?.data?.message || "Notification sent" });
+      close();
+    } catch (err) {
+      setToastData({
+        message:
+          err?.response?.data?.message || "Failed to send notification",
+        color: "red",
+      });
+    } finally {
+      setSending(false);
+    }
+  };
 
   return (
     <Modal
@@ -96,112 +91,83 @@ function NotificationModal(props) {
       size="md"
       show={props.notificationModal}
       centered
-      onHide={() => {
-        props.setNotificationModal(false);
-        setSelectedTemplate({});
-      }}
+      onHide={close}
     >
       <Modal.Header closeButton>
-        <Modal.Title>Send Notification</Modal.Title>
+        <Modal.Title>Send personal notification</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <form action="#" className="row">
+        <div className="alert alert-light border py-2 mb-3">
+          <strong>To: </strong>
+          {single
+            ? `${props.currentData?.name || "User"} (${
+                props.currentData?.phone || ""
+              })`
+            : `${userIds.length} selected user${
+                userIds.length === 1 ? "" : "s"
+              }`}
+          <div className="small text-muted">
+            Only {single ? "this user" : "these users"} will see it, marked
+            "For you" in the app.
+          </div>
+        </div>
+        <form className="row" onSubmit={(e) => e.preventDefault()}>
           <div className="col-12 mb-2">
-            <label className="form-label">
-              Select a Template <span className="fs-17 text-danger">*</span>
-            </label>
+            <label className="form-label">Start from a template</label>
             <select
               className="form-select"
-              required
-              onChange={(e) => {
-                const selectedPage = templates[e.target.selectedIndex - 1];
-                // console.log(templates);
-                setSelectedTemplate(selectedPage);
-              }}
-              defaultValue={""}
+              defaultValue=""
+              onChange={(e) => pickTemplate(e.target.selectedIndex - 1)}
             >
-              <option disabled value={""} selected={true}>
-                Select Template
-              </option>
-              {templates &&
-                templates?.map((val, index) => {
-                  return (
-                    <option key={index} defaultValue={val?.title}>
-                      {val?.title} - {val?.type}
-                    </option>
-                  );
-                })}
+              <option value="">Write my own</option>
+              {pushTemplates.map((val, index) => (
+                <option key={val?._id || index} value={index}>
+                  {val?.title}
+                </option>
+              ))}
             </select>
           </div>
-          <div className="col-12 col-md-6 mb-2">
-            <label className="form-label">Title</label>
+          <div className="col-12 mb-2">
+            <label className="form-label">
+              Title <span className="text-danger">*</span>
+            </label>
             <input
-              disabled
               className="form-control"
               type="text"
-              required=""
-              value={SelectedTemplate?.title ?? ""}
+              maxLength={80}
+              value={draft.title}
+              onChange={(e) => setDraft({ ...draft, title: e.target.value })}
             />
-          </div>{" "}
-          <div className="col-12 col-md-6 mb-2">
-            <label className="form-label">Type</label>
-            <input
-              disabled
+          </div>
+          <div className="col-12 mb-2">
+            <label className="form-label">
+              Message <span className="text-danger">*</span>
+            </label>
+            <textarea
               className="form-control"
-              type="text"
-              required=""
-              value={SelectedTemplate?.type ?? ""}
+              rows={3}
+              maxLength={240}
+              value={draft.message}
+              onChange={(e) => setDraft({ ...draft, message: e.target.value })}
             />
-          </div>{" "}
-          {SelectedTemplate?.subject ? (
-            <div className="col-12 col-md-12 mb-2">
-              <label className="form-label">Subject</label>
-              <input
-                disabled
-                className="form-control"
-                type="text"
-                required=""
-                defaultValue={SelectedTemplate?.subject ?? ""}
-              />
-            </div>
-          ) : null}
-          <div className="col-12 col-md-12 mb-2">
-            <label className="form-label">Message</label>
-            <input
-              disabled
-              className="form-control"
-              type="text"
-              required=""
-              value={SelectedTemplate?.message ?? ""}
-            />
-          </div>{" "}
-          <div className="col-12 col-md-12">
-            <label className="form-label">Upload Image</label>
+          </div>
+          <div className="col-12">
+            <label className="form-label">Image (optional)</label>
             <ImageUpload
-              img={SelectedTemplate?.image}
-              purpose={"add"}
-              disabled={true}
+              img={draft.image}
+              setImage={(image) => setDraft({ ...draft, image })}
             />
           </div>
         </form>
       </Modal.Body>
       <Modal.Footer>
-        <button
-          className="btn btn-secondary"
-          onClick={() => {
-            props.setNotificationModal(false);
-            setSelectedTemplate({});
-          }}
-        >
+        <button className="btn btn-secondary" onClick={close}>
           Cancel
         </button>
-        <button
-          className="btn btn-primary"
-          onClick={() => {
-            sendNotification();
-          }}
-        >
-          Send
+        <button className="btn btn-primary" onClick={send} disabled={sending}>
+          {sending
+            ? "Sending…"
+            : `Send to ${userIds.length} user${userIds.length === 1 ? "" : "s"}`}
         </button>
       </Modal.Footer>
     </Modal>

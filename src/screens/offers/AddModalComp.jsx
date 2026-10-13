@@ -4,6 +4,12 @@ import ImageUpload from "../../components/ImageUpload";
 import _ from "lodash";
 import TextEditor from "../../components/TextEditor";
 import { Link } from "react-router-dom";
+import AppCardEditor from "./AppCardEditor";
+
+const fieldValue = (data, key) => {
+  const value = data?.find?.((item) => item?.key === key)?.value;
+  return Array.isArray(value) ? value.join(" ") : value;
+};
 
 function AddModalComp(props) {
   const [changed, setChanged] = useState(false);
@@ -71,6 +77,16 @@ function AddModalComp(props) {
               />
             </div>
           </div>
+          <AppCardEditor
+            card={props.addonData?.card}
+            title={fieldValue(props.currentData, "Title")}
+            earning={fieldValue(props.currentData, "Earning")}
+            image={fieldValue(props.currentData, "Product Image")}
+            onChange={(card) => {
+              setChanged(true);
+              props.setAddonData({ ...props.addonData, card });
+            }}
+          />
           {props.currentData?.length > 0 &&
             props.currentData?.map((item, index) => {
               if (item?.key === "Card Type" || item?.key === "Status") {

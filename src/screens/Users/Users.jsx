@@ -106,6 +106,18 @@ function Users() {
                         <Link
                           className="btn btn-soft-danger btn-sm mr-2"
                           style={{ textWrap: "nowrap", marginRight: 10 }}
+                          onClick={() => {
+                            setCurrentData({});
+                            setNotificationModal(true);
+                          }}
+                        >
+                          Notify selected - {SelectUsers?.length}
+                        </Link>
+                      ) : null}
+                      {SelectUsers?.length ? (
+                        <Link
+                          className="btn btn-soft-danger btn-sm mr-2"
+                          style={{ textWrap: "nowrap", marginRight: 10 }}
                           onClick={downloadUser}
                         >
                           Download User Data - {SelectUsers?.length}
@@ -315,6 +327,8 @@ function Users() {
           notificationModal={notificationModal}
           setNotificationModal={setNotificationModal}
           currentData={currentData}
+          // From a row: that user. From "Notify selected": every ticked user.
+          userIds={currentData?._id ? [currentData._id] : SelectUsers}
         />
       )}
       {settleModal ? (
