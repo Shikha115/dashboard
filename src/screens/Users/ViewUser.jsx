@@ -4,6 +4,7 @@ import useDataStore from "../../store/dataStore";
 import ImageModal from "../../components/ImageModal";
 import ButtonModal from "../../components/ButtonModal";
 import { images } from "../../components/Images";
+import { languageName } from "../../utils/languages";
 
 function ViewUser() {
   const { selectedUser } = useDataStore();
@@ -41,6 +42,12 @@ function ViewUser() {
                     <li>
                       <b>Phone: </b>
                       <span>{selectedUser?.phone}</span>
+                    </li>
+                    <li>
+                      <b>App language: </b>
+                      <span>
+                        {languageName(selectedUser?.language) || "Not chosen"}
+                      </span>
                     </li>
                     {/* <li>
                       <b>DOB: </b>

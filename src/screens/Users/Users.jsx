@@ -19,6 +19,7 @@ import { FaX } from "react-icons/fa6";
 import NoDataComponent from "../../components/NoDataComp";
 import Loader from "../../components/Loader";
 import EditUserModal from "./EditUserModal";
+import { LANGUAGES } from "../../utils/languages";
 
 function Users() {
   const { theme } = useAuthStore();
@@ -172,6 +173,23 @@ function Users() {
                           }
                         }}
                       />
+                      <select
+                        className="form-select"
+                        style={{ minWidth: 150, marginRight: 10 }}
+                        aria-label="Filter by app language"
+                        value={filter?.language || ""}
+                        onChange={(e) =>
+                          setFilter({ ...filter, language: e.target.value })
+                        }
+                      >
+                        <option value="">Any language</option>
+                        {LANGUAGES.map((l) => (
+                          <option key={l.code} value={l.code}>
+                            {l.name}
+                          </option>
+                        ))}
+                        <option value="none">Not chosen</option>
+                      </select>
                       <div className="input-group">
                         <input
                           type="search"

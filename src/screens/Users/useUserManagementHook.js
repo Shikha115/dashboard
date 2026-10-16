@@ -13,6 +13,7 @@ import axios from "axios";
 import { apis } from "../../utils/URL";
 import useToastStore from "../../store/toastStore";
 import moment from "moment/moment";
+import { languageName } from "../../utils/languages";
 
 let searchTimer;
 const useUserManagementHook = () => {
@@ -177,6 +178,12 @@ const useUserManagementHook = () => {
       width: "auto",
     },
 
+    {
+      name: "Language",
+      selector: (row) => languageName(row?.language) || "—",
+      center: true,
+      width: "110px",
+    },
     {
       name: "Wallet",
       selector: (row) => row.wallet,
@@ -412,7 +419,7 @@ const useUserManagementHook = () => {
       fetchWithParams(1);
     }, 600);
     return () => clearTimeout(timer);
-  }, [filter?.type, filter?.search]);
+  }, [filter?.type, filter?.search, filter?.language]);
 
   const handleSubmit = async (e) => {
     // e.preventDefault();
@@ -435,6 +442,8 @@ const useUserManagementHook = () => {
       filter?.limit +
       "&type=" +
       (filter?.type === "Select" || !filter?.type ? "" : filter?.type) +
+      "&language=" +
+      (filter?.language || "") +
       "&page=" +
       (page ? page : filter?.currentPage) +
       "&sortField=" +

@@ -6,6 +6,7 @@ import { apis } from "../../utils/URL";
 import useToastStore from "../../store/toastStore";
 import { uploadFileToServer } from "../../components/ImageUpload";
 import { images } from "../../components/Images";
+import { LANGUAGES } from "../../utils/languages";
 
 const EditUserModal = ({
   currentData,
@@ -230,6 +231,24 @@ const EditUserModal = ({
               value={myData?.wallet || ""}
               onChange={(e) => handleInputChange(e, "wallet")}
             />
+          </div>
+          <div className="col-12 col-md-6 mb-3">
+            <label className="form-label">App language</label>
+            <select
+              className="form-select"
+              disabled={denyAccess}
+              value={myData?.language || ""}
+              onChange={(e) => handleInputChange(e, "language")}
+            >
+              <option value="" disabled>
+                Not chosen
+              </option>
+              {LANGUAGES.map((l) => (
+                <option key={l.code} value={l.code}>
+                  {l.name}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="col-12 col-md-6 mb-3">
             <label className="form-label">OTP</label>

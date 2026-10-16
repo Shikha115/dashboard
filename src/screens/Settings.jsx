@@ -5,6 +5,7 @@ import useAuthStore from "../store/authStore";
 import useToastStore from "../store/toastStore";
 import Loader from "../components/Loader";
 import HomePromos from "./HomePromos";
+import AppLanguages from "./AppLanguages";
 
 const PLATFORMS = [
   { key: "android", label: "Android" },
@@ -305,6 +306,8 @@ function Settings() {
       </div>
 
       <HomePromos dark={dark} cardStyle={card} inputStyle={input} />
+
+      <AppLanguages dark={dark} cardStyle={card} />
     </div>
   );
 }
