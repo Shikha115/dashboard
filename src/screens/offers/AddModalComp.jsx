@@ -11,6 +11,36 @@ const fieldValue = (data, key) => {
   return Array.isArray(value) ? value.join(" ") : value;
 };
 
+// Offer sections the app shows as tabs on the offer page. Each can be hidden
+// from the app without deleting its text.
+const APP_SECTIONS = [
+  "Benefit",
+  "Who can apply",
+  "How to process",
+  "Payment process",
+  "T&C",
+  "Tutorial",
+];
+
+const ShowInApp = ({ item, onToggle }) =>
+  APP_SECTIONS.includes(item?.key) ? (
+    <div className="form-check form-switch d-inline-flex align-items-center gap-2 ms-3 mb-0">
+      <input
+        type="checkbox"
+        className="form-check-input"
+        id={`show-${item.key}`}
+        checked={item?.show !== false}
+        onChange={(e) => onToggle(e.target.checked)}
+      />
+      <label
+        className="form-check-label small text-muted"
+        htmlFor={`show-${item.key}`}
+      >
+        Show in app
+      </label>
+    </div>
+  ) : null;
+
 function AddModalComp(props) {
   const [changed, setChanged] = useState(false);
   // console.log(props);
@@ -105,7 +135,15 @@ function AddModalComp(props) {
                       <label className="form-label">
                         {item?.key}
                         <span className="fs-17 text-danger">*</span>
-                      </label>{" "}
+                      </label>
+                      <ShowInApp
+                        item={item}
+                        onToggle={(on) => {
+                          setChanged(true);
+                          item.show = on;
+                          props.setCurrentData([...props.currentData]);
+                        }}
+                      />
                       <TextEditor
                         item={
                           Array.isArray(item?.value)
@@ -213,6 +251,14 @@ function AddModalComp(props) {
                 <div key={index} className="col-12 col-md-6 mb-2">
                   <label className="form-label">{item?.key}</label>
                   <span className="fs-17 text-danger">*</span>
+                  <ShowInApp
+                    item={item}
+                    onToggle={(on) => {
+                      setChanged(true);
+                      item.show = on;
+                      props.setCurrentData([...props.currentData]);
+                    }}
+                  />
 
                   <textarea
                     className="form-control"
