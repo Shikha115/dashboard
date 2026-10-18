@@ -1,6 +1,9 @@
-import React from "react";
-import JoditEditor from "jodit-react";
+import React, { Suspense } from "react";
 import styled from "styled-components";
+
+// Jodit is ~850 KB; load it when an editor is actually shown, not with every
+// page that might open one.
+const JoditEditor = React.lazy(() => import("jodit-react"));
 
 const StyledEditorContainer = styled.div`
   ::selection {
@@ -36,6 +39,7 @@ function TextEditor({ item, onChange }) {
 
   return (
     <StyledEditorContainer>
+      <Suspense fallback={<div style={{ minHeight: 200 }}>Loading editor…</div>}>
       <JoditEditor
         value={item}
         config={config}
@@ -44,6 +48,7 @@ function TextEditor({ item, onChange }) {
           onChange(newContent);
         }}
       />
+      </Suspense>
     </StyledEditorContainer>
   );
 }

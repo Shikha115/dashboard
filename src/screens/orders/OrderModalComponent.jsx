@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import * as XLSX from "xlsx";
+import { loadXLSX } from "../../utils/xlsx";
 
 import useDataStore from "../../store/dataStore";
 import useToastStore from "../../store/toastStore";
@@ -25,6 +25,7 @@ function OrderModalComp({ LeadModal, setLeadModal }) {
 
     reader.onload = async (e) => {
       const data = new Uint8Array(e.target.result);
+      const XLSX = await loadXLSX();
       const workbook = XLSX.read(data, { type: "array" });
 
       const sheetName = workbook.SheetNames[0];

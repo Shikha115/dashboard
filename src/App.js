@@ -8,10 +8,10 @@ import useDataStore from "./store/dataStore";
 import ToastComponent from "./components/ToastComponent";
 import Location from "./components/Location";
 import ProtectedRoute from "./components/protectedRoute";
-import Settings from "./screens/Settings";
-import Backup from "./screens/Backup";
-import Profile from "./screens/Profile";
 
+const Settings = React.lazy(() => import("./screens/Settings"));
+const Backup = React.lazy(() => import("./screens/Backup"));
+const Profile = React.lazy(() => import("./screens/Profile"));
 const Login = React.lazy(() => import("./screens/Authentication/Login"));
 const Register = React.lazy(() => import("./screens/Authentication/Register"));
 const ForgotPassword = React.lazy(() =>

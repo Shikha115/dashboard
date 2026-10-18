@@ -6,7 +6,7 @@ import axios from "axios";
 import { apis } from "../../utils/URL";
 import useToastStore from "../../store/toastStore";
 import { LoaderComp } from "../../components/ToastComponent";
-import * as XLSX from "xlsx";
+import { loadXLSX } from "../../utils/xlsx";
 
 const PaymentModel = ({
   PaymentModal,
@@ -52,7 +52,7 @@ const PaymentModel = ({
       });
   };
 
-  const generateExcel = (data) => {
+  const generateExcel = async (data) => {
     const formattedData = data.map((item) => ({
       "Transaction type (Within Bank (WIB)/ NEFT (NFT)/ RTGS (RTG)/IMPS (IFC)":
         "IFC",
@@ -75,6 +75,7 @@ const PaymentModel = ({
     }));
 
     // Create a worksheet from the formatted data
+    const XLSX = await loadXLSX();
     const worksheet = XLSX.utils.json_to_sheet(formattedData);
 
     // Create a new workbook and append the worksheet

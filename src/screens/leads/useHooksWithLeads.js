@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import useDataStore from "../../store/dataStore";
 import moment from "moment";
-import * as XLSX from "xlsx";
+import { loadXLSX } from "../../utils/xlsx";
 import { apis } from "../../utils/URL";
 import axios from "axios";
 import useToastStore from "../../store/toastStore";
@@ -239,6 +239,7 @@ const useHooksWithLeads = () => {
     dataArray.unshift(keys);
 
     // Create a new workbook
+    const XLSX = await loadXLSX();
     const wb = XLSX.utils.book_new();
     // Convert data array to worksheet
     const ws = XLSX.utils.aoa_to_sheet(dataArray);
@@ -345,6 +346,7 @@ const useHooksWithLeads = () => {
 
     reader.onload = async (e) => {
       const data = new Uint8Array(e.target.result);
+      const XLSX = await loadXLSX();
       const workbook = XLSX.read(data, { type: "array" });
 
       const sheetName = workbook.SheetNames[0];
